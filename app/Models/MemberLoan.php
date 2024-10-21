@@ -11,7 +11,7 @@ class MemberLoan extends Model implements Auditable
 {
     use HasFactory,AuditableTrait;
     protected $fillable = [
-        'user_id','plan_id','status','monthly_return','total_left','total_refund','total_applied',
+        'user_id','company_id','plan_id','status','monthly_return','total_left','total_refund','total_applied',
         'applied_date','approval_status','uuid','payment_status','uploaded','released','disbursed_date'
     ];
     protected static function boot()

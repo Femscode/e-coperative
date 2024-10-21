@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
+use App\Models\Company;
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -70,5 +72,35 @@ class RegisterController extends Controller
             'user_type' => 'Admin',
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function coop_reg() {
+        return view('auth.coop_reg');
+    }
+
+    public function save_coop_reg(Request $request)
+    {
+        $data = $request->all();
+        // dd($data);
+        // return Validator::make($data, [
+        //     'name' => ['required', 'string', 'max:255'],
+        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        //     'password' => ['required', 'string', 'min:8', 'confirmed'],
+        // ]);
+        // dd('here');
+        $company = Company::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'address' => $request->address,
+        ]);
+       
+         User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'user_type' => 'Admin',
+            'password' => Hash::make($data['password']),
+            'company_id' => $company->id,
+        ]);
+        return redirect('/login')->with('message','Registration Successful! Proceed to login');
     }
 }

@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Company;
 use App\Models\Transaction;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -25,9 +28,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        $company = Company::where('id',$user->company_id)->first();
         $data['now'] = Carbon::now();
-        $data['users'] = User::all();
-        $transacts = Transaction::where('status','Success');
+        $data['users'] = User::where('company_id',$user->company_id)->get();
+        $transacts = Transaction::where('company_id',$user->company_id)->where('status','Success');
         $data['transactions'] = $transacts->get();
         $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->paginate(20);
         return view('admin.home', $data);

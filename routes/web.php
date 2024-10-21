@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//
+
+Route::get('/cooperative/signup', [App\Http\Controllers\Auth\RegisterController::class, 'coop_reg'])->name('coop_reg');
+Route::post('/cooperative/save_coop_reg', [App\Http\Controllers\Auth\RegisterController::class, 'save_coop_reg'])->name('save_coop_reg');
 
 Route::get('/paystack/transaction-successful', [App\Http\Controllers\TransactionController::class, 'verifyPayment'])->name('verify-payment');
 Route::get('/get-plan-details', [App\Http\Controllers\PlanController::class, 'planDetails'])->name('get_plan_details_by_id');
