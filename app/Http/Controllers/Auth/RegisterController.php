@@ -76,13 +76,18 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function coop_reg() {
+    public function coop_reg()
+    {
         return view('auth.coop_reg');
     }
 
     public function save_coop_reg(Request $request)
     {
         $data = $request->all();
+
+        $randomNumber = rand(1, 1000);
+        $prefix = strtoupper(substr($request->name, 0, 3));
+        $uuid = $prefix . str_pad($randomNumber, 4, '0', STR_PAD_LEFT);
         // dd($data);
         // return Validator::make($data, [
         //     'name' => ['required', 'string', 'max:255'],
@@ -94,9 +99,10 @@ class RegisterController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'address' => $request->address,
+            'uuid' => $uuid,
         ]);
-       
-         $user = User::create([
+
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'user_type' => 'Admin',
