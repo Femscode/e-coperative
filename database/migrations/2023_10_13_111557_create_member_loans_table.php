@@ -16,7 +16,7 @@ class CreateMemberLoansTable extends Migration
         Schema::create('member_loans', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
-            $table->bigInteger('company_id')->nullable();
+            $table->string('company_id')->nullable();
             $table->string('plan_id');
             $table->date('applied_date');
             $table->decimal('total_applied',18,2);

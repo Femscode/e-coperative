@@ -1,17 +1,18 @@
 <?php
 
 namespace App\Models;
-use OwenIt\Auditing\Contracts\Auditable;
-use OwenIt\Auditing\Auditable as AuditableTrait;
+use App\Models\Plan;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Plan;
-use Laravel\Scout\Searchable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
 class User extends Authenticatable implements Auditable
 {
@@ -95,5 +96,14 @@ class User extends Authenticatable implements Auditable
     public function scopeSearch($query, $term)
     {
         return empty($term) ? $query : $query->search($term);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::saving(function ($user) {
+            
+            $user->uuid = $user->uuid ?? Str::uuid();
+        });
     }
 }

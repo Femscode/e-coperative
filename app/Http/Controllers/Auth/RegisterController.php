@@ -106,7 +106,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'user_type' => 'Admin',
             'password' => Hash::make($data['password']),
-            'company_id' => $company->id,
+            'company_id' => $company->uuid,
         ]);
         return redirect('/login')->with('message', 'Registration Successful! Proceed to login');
     }
