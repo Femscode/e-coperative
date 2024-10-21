@@ -17,12 +17,13 @@ class AllTransactions extends Component
     public function render()
     {
         $data['title'] = "All Transactions";
+        $user = auth()->user();
         if($this->search == ''){
-            $data['transactions'] = Transaction::where([
+            $data['transactions'] = Transaction::where('company_id',$user->company_id)->where([
                 ['status', 'Success'],
             ])->paginate(10);
         }else{
-            $data['transactions'] = Transaction::where(function ($query) {
+            $data['transactions'] = Transaction::where('company_id',$user->company_id)->where(function ($query) {
                 $query->where('status', 'Success');
             })
             ->where(function ($query) {
