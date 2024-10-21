@@ -16,7 +16,7 @@ class CreatePlansTable extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->bigInteger('company_id')->nullable();
+            $table->string('company_id')->nullable();
             $table->decimal('reg_fee',18,2);
             $table->decimal('monthly_charge',18,2);
             $table->decimal('monthly_dues',18,2);

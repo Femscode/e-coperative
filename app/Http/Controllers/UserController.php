@@ -11,7 +11,8 @@ use App\Models\User;
 class UserController extends Controller
 {
     public function index(Request $request){
-        $data['users'] = User::where('user_type', 'Admin')->get();
+        $user = auth()->user();
+        $data['users'] = User::where('company_id',$user->company_id)->where('user_type', 'Admin')->get();
         return view('user_home', $data);
     }
 
