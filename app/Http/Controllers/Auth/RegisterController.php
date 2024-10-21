@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -95,13 +96,46 @@ class RegisterController extends Controller
             'address' => $request->address,
         ]);
        
-         User::create([
+         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'user_type' => 'Admin',
             'password' => Hash::make($data['password']),
             'company_id' => $company->uuid,
+        ]); 
+        Auth::login($user);
+        return redirect('/dashboard ')->with('message','Registration Successful! Proceed to login');
+        // return redirect(RouteServiceProvider::HOME);
+    }
+
+    public function signup() {
+        $data['coperative'] = Company::all();
+        return view('auth.register',$data);
+    }
+
+    public function register_user(Request $request)
+    {
+        $data = $request->all();
+        // dd($data);
+        // return Validator::make($data, [
+        //     'name' => ['required', 'string', 'max:255'],
+        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        //     'password' => ['required', 'string', 'min:8', 'confirmed'],
+        // ]);
+        // dd('here');
+      
+       
+         $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'user_type' => 'Member',
+            'password' => Hash::make($data['password']),
+            'company_id' => $data['company'],
+            'address' => $data['address'],
+            'referred_by' => $data['referred_by']
         ]);
-        return redirect('/login')->with('message','Registration Successful! Proceed to login');
+        Auth::login($user);
+        // return redirect(RouteServiceProvider::HOME);
+        return redirect('/dashboard')->with('message','Registration Successful! Proceed to login');
     }
 }
