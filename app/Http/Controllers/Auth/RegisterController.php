@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -74,13 +75,18 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function coop_reg() {
+    public function coop_reg()
+    {
         return view('auth.coop_reg');
     }
 
     public function save_coop_reg(Request $request)
     {
         $data = $request->all();
+
+        $randomNumber = rand(1, 1000);
+        $prefix = strtoupper(substr($request->name, 0, 3));
+        $uuid = $prefix . str_pad($randomNumber, 4, '0', STR_PAD_LEFT);
         // dd($data);
         // return Validator::make($data, [
         //     'name' => ['required', 'string', 'max:255'],
@@ -92,15 +98,16 @@ class RegisterController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'address' => $request->address,
+            'uuid' => $uuid,
         ]);
-       
-         User::create([
+
+        User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'user_type' => 'Admin',
             'password' => Hash::make($data['password']),
             'company_id' => $company->id,
         ]);
-        return redirect('/login')->with('message','Registration Successful! Proceed to login');
+        return redirect('/login')->with('message', 'Registration Successful! Proceed to login');
     }
 }
