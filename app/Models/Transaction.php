@@ -11,6 +11,7 @@ class Transaction extends Model implements Auditable
     use HasFactory,AuditableTrait;
     protected $fillable = [
         'user_id',
+        'company_id',
         'amount',
         'transaction_id',
         'status',
