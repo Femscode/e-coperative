@@ -122,12 +122,7 @@
 
                          <div class="card">
                               <div class="card-body">
-                                   <div class="text-center">
-
-                                        <p class="font-16 text-muted mb-2"></p>
-                                        <h5><a href="javascript: void(0);" class="text-dark">Recent Transactions
-                                             </a></h5>
-                                   </div>
+                                   
                                    <div class="row">
                                         <div class="col-xl-12">
                                              <div class="card">

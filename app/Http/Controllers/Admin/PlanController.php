@@ -12,6 +12,7 @@ class PlanController extends Controller
 {
     public function index(){
         $data['plans'] = Plan::orderBy('created_at', 'desc')->get();
+        return view('dashboard.plan', $data);
         return view('admin.plan.index', $data);
     }
 

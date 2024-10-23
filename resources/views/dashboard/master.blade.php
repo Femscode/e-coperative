@@ -7,7 +7,7 @@
 <head>
      <!-- Title Meta -->
      <meta charset="utf-8" />
-     <title>CTTaste | Vendor's Dashboard</title>
+     <title>ECoop | Coop's Dashboard</title>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta name="description" content="No. Ordering Platform" />
      <meta name="author" content="Techzaa" />
@@ -128,8 +128,8 @@
                               <div class="dropdown topbar-item">
                                    <a type="button" class="topbar-button" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="d-flex align-items-center">
-                                             @if($user->image !== null)
-                                             <img src="{{ config('app.env') === 'local' ? url('profilePic/' . $user->image) : 'https://cttaste.com/cttaste_files/public/profilePic/' . $user->image }}"
+                                             @if($user->image ?? auth()->user()->image !== null)
+                                             <img src="{{ config('app.env') === 'local' ? url('profilePic/' . $user->image ??  auth()->user()->image) : 'https://cttaste.com/cttaste_files/public/profilePic/' . $user->image ??  auth()->user()->name }}"
                                                   alt="" class="rounded-circle" width="32">
                                              @else
                                              <img src="https://dnasoundstudio.com/producers/assets/images/music-dashboard/feature-album/05.png"
@@ -139,8 +139,8 @@
                                    </a>
                                    <div class="dropdown-menu dropdown-menu-end">
                                         <!-- item-->
-                                        <h6 class="dropdown-header">Welcome {{$user->name}}!</h6>
-                                        <a class="dropdown-item" href="/profile">
+                                        <h6 class="dropdown-header">Welcome {{$user->name ?? auth()->user()->name }}!</h6>
+                                        <a class="dropdown-item" href="/my-profile">
                                              <i class="bx bx-user-circle text-muted fs-18 align-middle me-1"></i><span class="align-middle">Profile</span>
                                         </a>
 
@@ -175,13 +175,15 @@
           <div class="main-nav">
                <!-- Sidebar Logo -->
                <div class="logo-box">
-                    <a href="/dashboard" class="logo-dark">
+                    <a href="/admin" class="logo-dark">
 
-                    <img src="{{url('assets/images/logo-wh.png')}}" alt="" height="30">
+                    <img src="{{ asset('assets/images/favicon.ico') }}" alt="" height="30"> 
+                    <span class='text-white' style='font-size:large'>E-COOP</span>
                     </a>
 
-                    <a href="/dashboard" class="logo-light">
-                    <img src="{{url('assets/images/logo-wh.png')}}" alt="" height="30">
+                    <a href="/admin" class="logo-light">
+                    <img src="{{ asset('assets/images/favicon.ico') }}" alt="" height="30"> 
+                    <span class='text-white' style='font-size:large'>E-COOP</span>
                     </a>
                </div>
 
@@ -205,7 +207,7 @@
                          </li>
 
                          <li class="nav-item">
-                              <a class="nav-link " href="/profile">
+                              <a class="nav-link " href="/my-profile">
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:user-bold-duotone"></iconify-icon>
                                    </span>
@@ -227,10 +229,10 @@
                               <div class="collapse" id="sidebarExtendedUI">
                                    <ul class="nav sub-navbar-nav">
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="/today_orders">Today Orders</a>
+                                             <a class="sub-nav-link" href="/admin/user">Users</a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="/orders">All Orders</a>
+                                             <a class="sub-nav-link" href="/admin/member">Members</a>
                                         </li>
 
                                    </ul>
@@ -241,89 +243,18 @@
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:document-text-bold-duotone"></iconify-icon>
                                    </span>
-                                   <span class="nav-text"> Analysis </span>
+                                   <span class="nav-text"> Manage Settings </span>
                               </a>
                               <div class="collapse" id="sidebarExtendedAN">
                                    <ul class="nav sub-navbar-nav">
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="/order_analysis">Order Analysis</a>
+                                             <a class="sub-nav-link" href="/admin/plan">Plan / Rules</a>
                                         </li>
-                                        <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="/sales_analysis">Sales Analysis</a>
-                                        </li>
+                                       
 
                                    </ul>
                               </div>
                          </li>
-
-
-                         <li class="nav-item">
-                              <a class="nav-link " href="/working_hours">
-                                   <span class="nav-icon">
-                                        <iconify-icon icon="solar:box-bold-duotone"></iconify-icon>
-                                   </span>
-                                   <span class="nav-text"> Working Hours </span>
-                              </a>
-
-                         </li>
-
-
-
-
-
-
-                         <li class="nav-item">
-                              <a class="nav-link " href="/brand_promotion">
-                                   <span class="nav-icon">
-                                        <iconify-icon icon="solar:chart-bold-duotone"></iconify-icon>
-                                   </span>
-                                   <span class="nav-text"> Brand Promotion </span>
-                              </a>
-
-                         </li>
-
-                         <!-- <li class="nav-item">
-                              <a class="nav-link " href="/mywrap" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAttributes">
-                                   <span class="nav-icon">
-                                        <iconify-icon icon="solar:confetti-minimalistic-bold-duotone"></iconify-icon>
-                                   </span>
-                                   <span class="nav-text"> My Wrap </span>
-                              </a>
-
-                         </li> -->
-
-                         <li class="nav-item">
-                              <a class="nav-link " href="/transactions">
-                                   <span class="nav-icon">
-                                        <iconify-icon icon="solar:bill-list-bold-duotone"></iconify-icon>
-                                   </span>
-                                   <span class="nav-text"> Transactions </span>
-                              </a>
-
-                         </li>
-
-
-
-                         <li class="nav-item">
-                              <a class="nav-link" href="/checkreviews">
-                                   <span class="nav-icon">
-                                        <iconify-icon icon="solar:chat-square-like-bold-duotone"></iconify-icon>
-                                   </span>
-                                   <span class="nav-text"> Reviews </span>
-                              </a>
-                         </li>
-
-
-                         <li class="nav-item">
-                              <a class="nav-link " href="/myevent">
-                                   <span class="nav-icon">
-                                        <iconify-icon icon="solar:gift-bold-duotone"></iconify-icon>
-                                   </span>
-                                   <span class="nav-text"> Catering Events </span>
-                              </a>
-
-                         </li>
-
 
 
 
@@ -332,15 +263,27 @@
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:streets-map-point-bold-duotone"></iconify-icon>
                                    </span>
-                                   <span class="nav-text"> Delivery </span>
+                                   <span class="nav-text"> Manage Transactions </span>
                               </a>
                               <div class="collapse" id="sidebarMaps">
                                    <ul class="nav sub-navbar-nav">
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="/delivery_locations">Delivery Locations</a>
+                                             <a class="sub-nav-link" href="/admin/application">Loan Applications</a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="/delivery_tracking">Delivery Tracking</a>
+                                             <a class="sub-nav-link" href="/admin/transaction/registration">Registration</a>
+                                        </li>
+                                        <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="/admin/transaction/monthly_dues">Monthly Dues</a>
+                                        </li>
+                                        <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="/admin/transaction/all">All</a>
+                                        </li>
+                                        <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="/admin/transaction/form">Form</a>
+                                        </li>
+                                        <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="/admin/transaction/repayment">Repayment</a>
                                         </li>
                                    </ul>
                               </div>
@@ -428,8 +371,9 @@
      <!-- Dashboard Js -->
      <script src="{{url('vendorsdashboard/js/pages/dashboard.js')}}"></script>
      <script src="{{url('cdn/sweetalert.min.js')}}" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-     <script src="{{ url('api_user/assets/libs/jquery/jquery.min.js')}}"></script>
-
+     <script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
+     <script src="{{ asset('js\requestController.js') }}"></script>
+     <script src="{{ asset('js\formController.js') }}"></script>
      <script src="{{ url('api_user/assets/libs/datatables.net/js/jquery.dataTables.min.js')}}"></script>
      <script src="{{ url('api_user/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
      <script src="{{ url('api_user/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js')}}"></script>

@@ -66,7 +66,7 @@ Route::group(['middleware' => ['auth']], function(){
                 });
                 Route::group(['prefix' => 'transaction'], function () {
                     Route::get('/registration', [App\Http\Controllers\Admin\TransactionController::class, 'registration'])->name('admin.registration.transactions');
-                    Route::get('/monthly-dues', [App\Http\Controllers\Admin\TransactionController::class, 'dues'])->name('admin.dues.transactions');
+                    Route::get('/monthly_dues', [App\Http\Controllers\Admin\TransactionController::class, 'dues'])->name('admin.dues.transactions');
                     Route::get('/all', [App\Http\Controllers\Admin\TransactionController::class, 'all'])->name('admin.all.transactions');
                     Route::get('/form', [App\Http\Controllers\Admin\TransactionController::class, 'form'])->name('admin.form.transactions');
                     Route::get('/repayment', [App\Http\Controllers\Admin\TransactionController::class, 'repayment'])->name('admin.repayment.transactions');

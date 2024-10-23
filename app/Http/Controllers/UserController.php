@@ -13,6 +13,7 @@ class UserController extends Controller
     public function index(Request $request){
         $user = auth()->user();
         $data['users'] = User::where('company_id',$user->company_id)->where('user_type', 'Admin')->get();
+        return view('dashboard.users', $data);
         return view('user_home', $data);
     }
 

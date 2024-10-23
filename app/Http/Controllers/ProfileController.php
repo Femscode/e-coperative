@@ -36,6 +36,7 @@ class ProfileController extends Controller
         }
         $data['banks'] = Bank::orderBy('name','asc')->get();
         // dd($plan);
+        return view('dashboard.profile', $data);
         return view('member.profile', $data);
     }
 
@@ -95,6 +96,7 @@ class ProfileController extends Controller
     public function update(Request $request){
         try {
             $input = $request->except('user_type','password','email','phone','plan_id','coop_id');
+           
             $user = Auth::user();
             $user->update($input);
                 return api_request_response(

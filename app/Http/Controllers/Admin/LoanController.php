@@ -15,6 +15,7 @@ class LoanController extends Controller
 {
     public function index(){
         $data['title'] = "Loan Applications";
+        return view('dashboard.loan', $data);
         return view('admin.loan.index', $data);
     }
 
