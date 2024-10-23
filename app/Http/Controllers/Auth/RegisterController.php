@@ -83,8 +83,13 @@ class RegisterController extends Controller
 
     public function save_coop_reg(Request $request)
     {
+        $this->validate($request, [
+          'name' => ['required','unique:companies'],
+          'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+          'password' => ['required', 'string', 'min:8', 'confirmed'],
+          'address' => ['required']
+        ]);
         $data = $request->all();
-
         $randomNumber = rand(1, 1000);
         $prefix = strtoupper(substr($request->name, 0, 3));
         $uuid = $prefix . str_pad($randomNumber, 4, '0', STR_PAD_LEFT);
@@ -97,6 +102,7 @@ class RegisterController extends Controller
         // dd('here');
         $company = Company::create([
             'name' => $request->name,
+            'slug' => str_replace(' ', '', $request->name),
             'description' => $request->description,
             'address' => $request->address,
             'uuid' => $uuid,
@@ -114,8 +120,12 @@ class RegisterController extends Controller
         // return redirect(RouteServiceProvider::HOME);
     }
 
-    public function signup() {
+    public function signup($slug = null) {
         $data['coperative'] = Company::all();
+        if($slug !== null) {
+            $data['company'] = $company = Company::where('slug', $slug)->first();
+        }
+        $data['slug'] = $slug;
         return view('auth.register',$data);
     }
 

@@ -310,7 +310,13 @@
                                                 <div class="row">
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
-                                                        <label class="form-label" for="gen-info-password-input">Select Coperative</label>
+                                                        @if(isset($slug))
+                                                        <label class="form-label" for="gen-info-password-input">Coperative Name</label>
+                                                        <h4>{{$company->name}}</h4>
+                                                            <input class='form-control' value="{{$company->id}}" name='company' type='hidden'/>
+                                                               
+                                                            @else 
+                                                            <label class="form-label" for="gen-info-password-input">Select Coperative</label>
                                                             <select class='form-control' name='company'>
                                                                 <option>--Select Cooperative--</option>
                                                                 @foreach($coperative ?? App\Models\Company::all() as $coop) 
@@ -318,6 +324,7 @@
                                                                 @endforeach
 
                                                             </select>
+                                                            @endif
                                                            
                                                     </div>
                                                 </div>
