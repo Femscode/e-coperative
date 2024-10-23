@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/cooperative/signup', [App\Http\Controllers\Auth\RegisterController::class, 'coop_reg'])->name('coop_reg');
 Route::post('/cooperative/save_coop_reg', [App\Http\Controllers\Auth\RegisterController::class, 'save_coop_reg'])->name('save_coop_reg');
+Route::get('/signup', [App\Http\Controllers\Auth\RegisterController::class, 'signup'])->name('signup');
+Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'signup'])->name('signup');
+Route::post('/register_user', [App\Http\Controllers\Auth\RegisterController::class, 'register_user'])->name('save_coop_reg');
 
 Route::get('/paystack/transaction-successful', [App\Http\Controllers\TransactionController::class, 'verifyPayment'])->name('verify-payment');
 Route::get('/get-plan-details', [App\Http\Controllers\PlanController::class, 'planDetails'])->name('get_plan_details_by_id');

@@ -29,7 +29,7 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $company = Company::where('id',$user->company_id)->first();
+       
         $data['now'] = Carbon::now();
         $data['users'] = User::where('company_id',$user->company_id)->get();
         $transacts = Transaction::where('company_id',$user->company_id)->where('status','Success');

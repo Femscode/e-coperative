@@ -13,15 +13,15 @@
         <link rel="shortcut icon" href="assets/images/favicon.ico">
 
         <!-- Layout config Js -->
-        <script src="{{url('assets/js/layout.js')}}"></script>
+        <script src="assets/js/layout.js"></script>
         <!-- Bootstrap Css -->
-        <link href="{{url('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- Icons Css -->
-        <link href="{{url('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
         <!-- App Css-->
-        <link href="{{url('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
+        <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
         <!-- custom Css-->
-        <link href="{{url('assets/css/custom.min.css')}}" rel="stylesheet" type="text/css" />
+        <link href="assets/css/custom.min.css" rel="stylesheet" type="text/css" />
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
        <style>
@@ -266,12 +266,11 @@
                             <div class="card">
                                 <!-- end card header -->
                                 <div class="card-body form-steps">
-                                    <form action='register_user' method="post">
+                                    <form id="process-order-form" method="post">
                                         @csrf
                                         <div class="text-center mt-2">
-                                            <h5 class="text-primary">Go Digital, Go Far!</h5> 
-                                            <h6> Bring Your Cooperative into the Digital Age!</h6>
-                                           
+                                            <h5 class="text-primary">We Are Eager To Have You !</h5>
+                                            <p class="text-muted">Register To Join The Move!.</p>
                                         </div>
                                         <div class="step-arrow-nav mb-4">
                                             <ul class="nav nav-pills custom-nav nav-justified" role="tablist">
@@ -307,30 +306,12 @@
                                             <div class="tab-pane fade show active" id="steparrow-gen-info" role="tabpanel"
                                                 aria-labelledby="steparrow-gen-info-tab">
                                                 <div>
-                                                <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="gen-info-password-input">Select Coperative</label>
-                                                            <select class='form-control' name='company'>
-                                                                <option>--Select Cooperative--</option>
-                                                                @foreach($coperative ?? App\Models\Company::all() as $coop) 
-                                                                <option value='{{$coop->uuid}}'>{{ $coop->name }}</option>
-                                                                @endforeach
-
-                                                            </select>
-                                                           
-                                                    </div>
-                                                </div>
-                                                    <div class="col-lg-6">
                                                     <div class="mb-3">
                                                         <label class="form-label"
-                                                            for="gen-info-password-input">Full Name</label>
+                                                            for="gen-info-password-input">Name</label>
                                                         <input type="text" class="form-control" required name="name"
-                                                            id="gen-info-password-input" placeholder="Enter Full Name Of Your Co-operative" />
+                                                            id="gen-info-password-input" placeholder="enter full name" />
                                                     </div>
-
-                                                    </div>
-                                                </div>
                                                     <div class="row">
                                                         <div class="col-lg-6">
                                                             <div class="mb-3">
@@ -338,7 +319,7 @@
                                                                     for="gen-info-email-input">Email</label>
                                                                 <input type="email" class="form-control" required name="email"
                                                                     id="gen-info-email-input email"
-                                                                    placeholder="Enter email" />
+                                                                    placeholder="enter email" />
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-6">
@@ -347,7 +328,7 @@
                                                                     for="gen-info-username-input">Phone Number</label>
                                                                 <input type="number" class="form-control" required name="phone"
                                                                     id="gen-info-username-input"
-                                                                    placeholder="Enter phone number" />
+                                                                    placeholder="enter phone number" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -358,7 +339,7 @@
                                                         data-nexttab="steparrow-description-info-tab">
                                                         <i
                                                             class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go
-                                                        to description
+                                                        to more info
                                                     </button>
                                                 </div>
                                             </div>
@@ -368,23 +349,24 @@
                                                 role="tabpanel" aria-labelledby="steparrow-description-info-tab">
                                                 <div>
                                                     <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <div class="mb-3">
-                                                                <label class="form-label"
-                                                                    for="gen-info-email-input">Address</label>
-                                                                <input type="text" class="form-control"  name="address"
-                                                                   placeholder="House Address"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-12">
+                                                        <div class="col-lg-6">
                                                             <div class="mb-3">
                                                                 <label class="form-label"
                                                                     for="gen-info-email-input">Referred By</label>
                                                                 <input type="text" class="form-control"  name="referred_by"
-                                                                   placeholder=" "/>
+                                                                    id="gen-info-email-input"
+                                                                    placeholder="Enter cooperative member number " />
                                                             </div>
                                                         </div>
-                                                    
+                                                        <div class="col-lg-6">
+                                                            <div class="mb-3">
+                                                                <label class="form-label"
+                                                                    for="gen-info-username-input">User Name</label>
+                                                                <input type="text" class="form-control" name="username"
+                                                                    id="gen-info-username-input"
+                                                                    placeholder="Enter User Name" />
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-lg-6">
@@ -420,7 +402,8 @@
                                                         class="btn btn-success btn-label right ms-auto nexttab nexttab"
                                                         data-nexttab="pills-experience-tab">
                                                         <i
-                                                            class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Finish
+                                                            class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go
+                                                        to Plan Info
                                                     </button>
                                                     {{-- <button type="button"
                                                         class="btn btn-success btn-label right ms-auto nexttab nexttab"
@@ -434,15 +417,71 @@
 
                                             <div class="tab-pane fade" id="pills-experience" role="tabpanel">
                                                 <div>
-                                                   
                                                     <div class="row">
-                                                        <div class="col-lg-12">
+                                                        <div class="col-lg-6">
                                                             <div class="mb-3">
-                                                                <input type="radio" /> I Agree to the <a href='#'>terms & conditions.</a>
-                                                               
+                                                                <label class="form-label"
+                                                                    for="gen-info-email-input">Available Plans</label>
+                                                                    <select class="form-select planId" required name="plan_id" id="country">
+                                                                        <option value="">Choose Plan</option>
+                                                                            @foreach ($plans as $plan)
+                                                                            <option value="{{$plan->id}}">{{$plan->name}}</option>
+                                                                            @endforeach
+                                                                    </select>
                                                             </div>
                                                         </div>
-                                                      
+                                                        <div class="col-lg-6">
+                                                            <div class="mb-3">
+                                                                <label class="form-label"
+                                                                    for="gen-info-username-input">Registration Fee</label>
+                                                                <input type="text" readonly required class="form-control" id="regFee" name="fee[]"
+                                                                    id="gen-info-username-input"
+                                                                    placeholder="registration fee" />
+                                                                    <input type="hidden" name="payment_type[]" value="Registration">
+                                                                    <input type="hidden" name="original[]" id="regFee2">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="mb-3">
+                                                                <label class="form-label"
+                                                                    for="gen-info-email-input">Weekly Dues(Mondays In Month)</label>
+                                                                <input type="text" readonly required class="form-control" id="mDues"
+                                                                    id="gen-info-email-input"
+                                                                    placeholder="monthly dues " />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="mb-3">
+                                                                <label class="form-label"
+                                                                    for="gen-info-username-input">Monthly Charge</label>
+                                                                <input type="text" readonly required class="form-control" id="mCharge"
+                                                                    id="gen-info-username-input"
+                                                                    placeholder="monthly charge" />
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" name="fee[]" id="monthlyPayment">
+                                                        <input type="hidden" name="payment_type[]" value="Monthly Dues">
+                                                        <input type="hidden" name="original[]" id="currentMonthAmount">
+                                                        <div class="col-lg-6">
+                                                            <div class="mb-3">
+                                                                <label class="form-label"
+                                                                    for="gen-info-username-input">Current Month Dues </label>
+                                                                <input type="text" required class="form-control" readonly id="currentMonth"
+                                                                    id="gen-info-username-input"
+                                                                    placeholder="current month due with charge with registration" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="mb-3">
+                                                                <label class="form-label"
+                                                                    for="gen-info-username-input">Total Payment</label>
+                                                                <input type="text" required class="form-control" id="totalCharge" name="total_amount"
+                                                                    id="gen-info-username-input" readonly
+                                                                    placeholder="current month due with charge with registration" />
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="d-flex align-items-start gap-3 mt-4">
@@ -497,21 +536,21 @@
 
         <!-- JAVASCRIPT -->
         <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
-        <script src="{{url('assets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-        <script src="{{url('assets/libs/simplebar/simplebar.min.js')}}"></script>
-        <script src="{{url('assets/libs/node-waves/waves.min.js')}}"></script>
-        <script src="{{url('assets/libs/feather-icons/feather.min.js')}}"></script>
-        <script src="{{url('assets/js/pages/plugins/lord-icon-2.1.0.js')}}"></script>
-        <script src="{{url('assets/js/plugins.js')}}"></script>
+        <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/libs/simplebar/simplebar.min.js"></script>
+        <script src="assets/libs/node-waves/waves.min.js"></script>
+        <script src="assets/libs/feather-icons/feather.min.js"></script>
+        <script src="assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
+        <script src="assets/js/plugins.js"></script>
 
         <!-- particles js -->
-        <script src="{{url('assets/libs/particles.js/particles.js')}}"></script>
+        <script src="assets/libs/particles.js/particles.js"></script>
         <!-- particles app js -->
-        <script src="{{url('assets/js/pages/particles.app.js')}}"></script>
+        <script src="assets/js/pages/particles.app.js"></script>
         <!-- validation init -->
-        <script src="{{url('assets/js/pages/form-validation.init.js')}}"></script>
+        <script src="assets/js/pages/form-validation.init.js"></script>
          <!-- form wizard init -->
-        <script src="{{url('assets/js/pages/form-wizard.init.js')}}"></script>
+        <script src="assets/js/pages/form-wizard.init.js"></script>
 
         <!-- App js -->
         <script src="assets/js/app.js"></script>
