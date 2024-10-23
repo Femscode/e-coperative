@@ -7,6 +7,12 @@
         </a>
     </li>
     <li class="nav-item">
+        <a class="nav-link {{ Route::is('admin.plan') ? 'active' : '' }}" href="{{route('admin.plan')}}" role="button"
+            aria-expanded="false" aria-controls="sidebarApps">
+            <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Manage Settings</span>
+        </a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link menu-link {{ Route::is('user_home','admin_member_home') ? 'active' : '' }}" href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
         @if(Route::is('user_home','admin_member_home')) aria-expanded='true' @else aria-expanded='false' @endif aria-controls="sidebarDashboards">
             <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Manage Users</span>
@@ -23,20 +29,6 @@
             </ul>
         </div>
     </li> <!-- end Dashboard Menu -->
-    <li class="nav-item">
-        <a class="nav-link menu-link {{ Route::is('admin.plan') ? 'active' : '' }}" href="#sidebarApps" data-bs-toggle="collapse"
-            role="button" @if(Route::is('admin.plan')) aria-expanded='true' @else aria-expanded='false' @endif aria-controls="sidebarApps">
-            <i class="ri-apps-2-line"></i> <span data-key="t-apps">Manage Settings</span>
-        </a>
-        <div class="collapse menu-dropdown {{ Route::is('admin.plan') ? 'show' : '' }}" id="sidebarApps">
-            <ul class="nav nav-sm flex-column">
-                <li class="nav-item ">
-                    <a href="{{route('admin.plan')}}" class="nav-link {{ Route::is('admin.plan') ? 'active' : '' }}" data-key="t-calendar"> Plan </a>
-                </li>
-
-            </ul>
-        </div>
-    </li>
     <li class="nav-item">
         <a class="nav-link menu-link {{ in_array(Route::currentRouteName(), ['admin.registration.transactions', 'admin.dues.transactions', 'admin.all.transactions','admin.form.transactions','admin.repayment.transactions']) ? 'active' : '' }}" href="#sidebarLayouts" data-bs-toggle="collapse" role="button" @if(in_array(Route::currentRouteName(), ['admin.registration.transactions', 'admin.dues.transactions', 'admin.all.transactions','admin.form.transactions','admin.repayment.transactions'])) aria-expanded='true' @else aria-expanded='false' @endif aria-controls="sidebarLayouts">
             <i class="ri-layout-3-line"></i> <span data-key="t-layouts">Manage Transactions</span>
