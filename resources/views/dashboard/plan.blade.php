@@ -4,14 +4,13 @@
 @endsection
 
 @section('content')
-
 <div class="container-fluid">
 
     <!-- start page title -->
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Plans</h4>
+                <h4 class="mb-sm-0">Settings</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
@@ -34,273 +33,105 @@
                 </div><!--end col-->
                 <div class="col-xl-2 ms-auto">
                     <div>
-                        <select class="form-control" data-choices data-choices-search-false>
-                            <option value="">Select Categories</option>
-                            <option value="All">All</option>
-                            <option value="Retailer">Retailer</option>
-                            <option value="Health & Medicine">Health & Medicine</option>
-                            <option value="Manufacturer">Manufacturer</option>
-                            <option value="Food Service">Food Service</option>
-                            <option value="Computers & Electronics">Computers & Electronics</option>
-                        </select>
+                       
                     </div>
                 </div><!--end col-->
                 <div class="col-lg-auto">
                     <div class="hstack gap-2">
                         <button type="button" class="btn btn-danger"><i class="ri-equalizer-fill me-1 align-bottom"></i> Filters</button>
-                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSeller"><i class="ri-add-fill me-1 align-bottom"></i> Add Plan</button>
+                        {{--  <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSeller"><i class="ri-add-fill me-1 align-bottom"></i> Add Plan</button>  --}}
                     </div>
                 </div><!--end col-->
             </div><!--end row-->
         </div>
+        <div class="card-body p-4">
+            <div class="row mt-4">
+                <form id="specifyCoop" method="post">
+                    @csrf
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="lastnameInput" class="form-label">Registration Fee</label>
+                                <input type="number" required name="reg_fee" value="{{ $plan->reg_fee }}" class="form-control rounded-pill mb-3" id="lastnameInput" placeholder="Enter registration fee ">
+                            </div>
+                        </div><!--end col-->
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Coop Operation Mode (Payment)</label>
+                                <select class="form-select rounded-pill mb-3 changeMode" required name="mode" aria-label="Default select example">
+                                    <option value="" >Choose Mode</option>
+                                    <option value="Anytime"  {{ $plan->mode == "Anytime" ? 'selected' : '' }}>Anytime</option>
+                                    <option value="Weekly"  {{ $plan->mode == "Weekly" ? 'selected' : '' }}>Weekly</option>
+                                    <option value="Monthly"  {{ $plan->mode == "Monthly" ? 'selected' : '' }}>Monthly</option>
+                                </select>
+                            </div>
+                        </div><!--end col-->
+                        <div class="col-lg-6 duesDiv" style="display: none">
+                            <div class="mb-3">
+                                <label for="contactnumberInput" class="form-label duesLabel">Dues</label>
+                                <input type="number" class="form-control dueInput rounded-pill mb-3" value="{{ $plan->dues }}" name="dues" placeholder="Enter dues">
+                            </div>
+                        </div><!--end col-->
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="phonenumberInput" class="form-label">Member Month For Loan</label>
+                                <input type="number" class="form-control rounded-pill mb-3" value="{{ $plan->month }}" required name="month" placeholder="Enter number of month(s) a member must have joined before loan application">
+                            </div>
+                        </div><!--end col-->
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="emailidInput" class="form-label">Loan Application Form Amount</label>
+                                <input type="number" class="form-control rounded-pill mb-3" value="{{ $plan->loan_form_amount }}" required name="loan_form_amount" placeholder="Enter amount for loan form">
+                            </div>
+                        </div><!--end col-->
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="contactnumberInput" class="form-label">Min Loan Application</label>
+                                <input type="number"  class="form-control rounded-pill mb-3" value="{{ $plan->min_loan_range }}" required name="min_loan_range" placeholder="member savings times inputed value">
+                            </div>
+                        </div><!--end col-->
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="phonenumberInput" class="form-label">Max Loan Application</label>
+                                <input type="number" class="form-control rounded-pill mb-3" value="{{ $plan->max_loan_range }}" required name="max_loan_range" placeholder="member savings times inputed value">
+                            </div>
+                        </div><!--end col-->
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="lastnameInput" class="form-label">Loan Repayment Month</label>
+                                <input type="number" name="loan_month_repayment" required value="{{ $plan->loan_month_repayment }}" class="form-control rounded-pill mb-3" id="lastnameInput" placeholder="Enter number of month(s) for repayment">
+                            </div>
+                        </div><!--end col-->            
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="emailidInput" class="form-label">Loan Defaulter Charge</label>
+                                <input type="number" class="form-control rounded-pill mb-3" value="{{ $plan->default_charge }}" required name="default_charge" placeholder="Enter amount for defaulters">
+                            </div>
+                        </div><!--end col-->
+                        
+                        <div class="col-lg-12">
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Note</label>
+                                <textarea class="form-control" name="note" required rows="3" placeholder="Enter plan description">{{ $plan->note }}</textarea>
+                            </div>
+                        </div><!--end col-->
+                        <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                                <button type="button"
+                                        class="btn btn-link link-success text-decoration-none fw-medium"
+                                        data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i>
+                                        Close</button>
+                                <button type="submit" class="btn btn-primary"><i class="ri-save-3-line align-bottom me-1"></i> Save</button>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </form>
+            </div><!--end row-->
+        </div>
     </div>
 
-    <div class="row mt-4">
-        @foreach ($plans as $plan)
-            <div class="col-xl-3 col-lg-6">
-                <div class="card ribbon-box right overflow-hidden">
-                    <div class="card-body text-center p-4">
-                        <div class="ribbon ribbon-info ribbon-shape trending-ribbon"><i class="ri-flashlight-fill text-white align-bottom"></i> <span class="trending-ribbon-text">Trending</span></div>
-                        <img src="{{ asset('assets/images/companies/img-1.png ')}}" alt="" height="45">
-                        <h5 class="mb-1 mt-4"><a href="apps-ecommerce-seller-details.html" class="link-primary">{{ $plan->name }}</a></h5>
-                        <p class="text-muted mb-4"></p>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <div id="chart-seller1" data-colors='["--vz-danger"]'></div>
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col-lg-6 border-end-dashed border-end">
-                                <h5>&#x20A6;{{ $plan->monthly_dues }}</h5>
-                                <span class="text-muted">Weekly Dues</span>
-                            </div>
-                            <div class="col-lg-6">
-                                <h5>&#x20A6;{{ $plan->monthly_charge }}</h5>
-                                <span class="text-muted">Monthly Charge</span>
-                            </div>
-                        </div>
-                    <div class="mt-4">
-                            <a data-bs-toggle="modal" data-id="{{ $plan->id }}" data-bs-target="#editSeller" class="btn btn-light w-100 edit-plan">View Details</a>
-                    </div>
-                    </div>
-                </div>
-            </div><!--end col-->
-        @endforeach
-    </div><!--end row-->
+    
 
-    <!-- Modal -->
-    <div class="modal fade zoomIn" id="addSeller" tabindex="-1" aria-labelledby="addSellerLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addSellerLabel">Add Plan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-content border-0 mt-3">
-                    <ul class="nav nav-tabs nav-tabs-custom nav-success p-2 pb-0 bg-light" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails" role="tab" aria-selected="true">
-                                Specify Plan Details 
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="modal-body">
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="personalDetails" role="tabpanel">
-                            <form id="planForm" method="post">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="" class="form-label">Plan Name</label>
-                                            <input type="text" name="name" class="form-control" id="" placeholder="Enter plan ame">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="lastnameInput" class="form-label">Plan registration Fee</label>
-                                            <input type="number" name="reg_fee" class="form-control" id="lastnameInput" placeholder="Enter plan registration fee">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="lastnameInput" class="form-label">Repayment Month</label>
-                                            <input type="number" name="loan_month_repayment" class="form-control" id="lastnameInput" placeholder="Enter number of month to payback">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="contactnumberInput" class="form-label">Plan Weekly Dues</label>
-                                            <input type="number" class="form-control" name="monthly_dues" placeholder="Enter plan weekly dues">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label for="phonenumberInput" class="form-label">Plan Monthly Charge</label>
-                                            <input type="number" class="form-control" name="monthly_charge" placeholder="Enter monthly charge">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label for="emailidInput" class="form-label">Plan Loan Application Referrer</label>
-                                            <input type="number" class="form-control" name="referrer_no" placeholder="Enter number of referrer for loan application eligibility">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label for="contactnumberInput" class="form-label">Min Loan Application</label>
-                                            <input type="number" class="form-control" name="min_loan_range" placeholder="Enter plan minimum loan application">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label for="phonenumberInput" class="form-label">Max Loan Application</label>
-                                            <input type="number" class="form-control" name="max_loan_range" placeholder="Enter plan maximum loan application">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label for="emailidInput" class="form-label">Defaulter Loan Charge</label>
-                                            <input type="number" class="form-control" name="default_charge" placeholder="Enter amount for defaulters">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label for="emailidInput" class="form-label">Form Loan Amount</label>
-                                            <input type="number" class="form-control" name="form_amount" placeholder="Enter amount for loan form">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label for="exampleFormControlTextarea1" class="form-label">Note</label>
-                                            <textarea class="form-control" name="note" rows="3" placeholder="Enter plan description"></textarea>
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-12">
-                                        <div class="hstack gap-2 justify-content-end">
-                                            <button type="button"
-                                                    class="btn btn-link link-success text-decoration-none fw-medium"
-                                                    data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i>
-                                                    Close</button>
-                                            <button type="submit" class="btn btn-primary"><i class="ri-save-3-line align-bottom me-1"></i> Save</button>
-                                        </div>
-                                    </div><!--end col-->
-                                </div><!--end row-->
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div><!--end modal-->
-    <!-- Modal -->
-    <div class="modal fade zoomIn" id="editSeller" tabindex="-1" aria-labelledby="addSellerLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title planHeader" id="addSellerLabel" >Add Plan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-content border-0 mt-3">
-                    <ul class="nav nav-tabs nav-tabs-custom nav-success p-2 pb-0 bg-light" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails" role="tab" aria-selected="true">
-                                Specify Plan Details 
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="modal-body">
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="personalDetails" role="tabpanel">
-                            <form id="planUpdate" method="post">
-                                @csrf
-                                <input type="hidden" name="id" class="planId">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="" class="form-label">Plan Name</label>
-                                            <input type="text" name="name" class="form-control planName" id="" placeholder="Enter plan ame">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="lastnameInput" class="form-label">Plan registration Fee</label>
-                                            <input type="number" name="reg_fee" class="form-control regFee" id="lastnameInput" placeholder="Enter plan registration fee">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="lastnameInput" class="form-label">Repayment Month</label>
-                                            <input type="number" name="loan_month_repayment" class="form-control repaymentMonth" id="lastnameInput" placeholder="Enter number of month to payback">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-6">
-                                        <div class="mb-3">
-                                            <label for="contactnumberInput" class="form-label">Plan Weekly Dues</label>
-                                            <input type="number" class="form-control weeklyDues" name="monthly_dues" placeholder="Enter plan weekly dues">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label for="phonenumberInput" class="form-label">Plan Monthly Charge</label>
-                                            <input type="number" class="form-control planCharge" name="monthly_charge" placeholder="Enter monthly charge">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label for="emailidInput" class="form-label">Plan Loan Application Referrer</label>
-                                            <input type="number" class="form-control planReferrer" name="referrer_no" placeholder="Enter number of referrer for loan application eligibility">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label for="contactnumberInput" class="form-label">Min Loan Application</label>
-                                            <input type="number" class="form-control planMin" name="min_loan_range" placeholder="Enter plan minimum loan application">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label for="phonenumberInput" class="form-label">Max Loan Application</label>
-                                            <input type="number" class="form-control planMax" name="max_loan_range" placeholder="Enter plan maximum loan application">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label for="emailidInput" class="form-label">Defaulter Loan Charge</label>
-                                            <input type="number" class="form-control planDefaulter" name="default_charge" placeholder="Enter amount for defaulters">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-4">
-                                        <div class="mb-3">
-                                            <label for="emailidInput" class="form-label">Form Loan Amount</label>
-                                            <input type="number" class="form-control planForm" name="form_amount" placeholder="Enter amount for loan form">
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label for="exampleFormControlTextarea1" class="form-label">Note</label>
-                                            <textarea class="form-control planNote" name="note" rows="3" placeholder="Enter plan description"></textarea>
-                                        </div>
-                                    </div><!--end col-->
-                                    <div class="col-lg-12">
-                                        <div class="hstack gap-2 justify-content-end">
-                                            <button type="button"
-                                                    class="btn btn-link link-success text-decoration-none fw-medium"
-                                                    data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i>
-                                                    Close</button>
-                                            <button type="submit" class="btn btn-primary"><i class="ri-save-3-line align-bottom me-1"></i> Save</button>
-                                        </div>
-                                    </div><!--end col-->
-                                </div><!--end row-->
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div><!--end modal-->
 
 </div>
 @endsection
@@ -333,18 +164,18 @@
             })
         });
 
-        $("#planForm").on('submit', async function(e) {
+        $("#specifyCoop").on('submit', async function(e) {
             e.preventDefault();
             $(".preloader").show()
-            const serializedData = $("#planForm").serializeArray();
+            const serializedData = $("#specifyCoop").serializeArray();
             try {
                     const postRequest = await request("/admin/plan/create",
                     processFormInputs(
                         serializedData), 'post');
                     // console.log('postRequest.message', postRequest.message);
                     new swal("Good Job", postRequest.message, "success");
-                    $('#planForm').trigger("reset");
-                    $("#planForm .close").click();
+                    $('#specifyCoop').trigger("reset");
+                    $("#specifyCoop .close").click();
                     window.location.reload();
             } catch (e) {
                 $(".preloader").hide()
@@ -432,6 +263,20 @@
                 let alert = new swal(e.message);
             }
         }
+        //onchange of coop mode
+        $('.changeMode').on('change', function() {
+            var mode = $(this).val();
+            if (mode == "" || mode == "Anytime") {
+                // Checkbox is checked
+                $('.duesDiv').hide();
+                $('.dueInput').removeAttr('required');
+            } else {
+                $('.dueInput').attr('required', true);
+                $('.duesDiv').show();
+                $('.duesLabel').html(mode + " Payment");
+                // Checkbox is unchecked
+            }
+        });
 
     })
 </script>

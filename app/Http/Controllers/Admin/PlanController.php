@@ -14,6 +14,7 @@ class PlanController extends Controller
     public function index(){
         $data['plan'] = Company::where('uuid', auth()->user()->company_id)->first();
         // dd($data);
+        return view('dashboard.plan', $data);
         return view('admin.plan.index', $data);
     }
 
