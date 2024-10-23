@@ -98,6 +98,10 @@ class User extends Authenticatable implements Auditable
         return empty($term) ? $query : $query->search($term);
     }
 
+    public function company() {
+        return $this->belongsTo(Company::class, 'company_id', 'uuid');
+    }
+
     protected static function boot()
     {
         parent::boot();

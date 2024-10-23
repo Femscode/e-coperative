@@ -28,13 +28,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
+        $data['user'] = $user = Auth::user();
        
         $data['now'] = Carbon::now();
         $data['users'] = User::where('company_id',$user->company_id)->get();
         $transacts = Transaction::where('company_id',$user->company_id)->where('status','Success');
         $data['transactions'] = $transacts->get();
         $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->paginate(20);
+        return view('dashboard.index', $data);
         return view('admin.home', $data);
     }
 }
