@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Company;
 use Carbon\Carbon;
 use App\Models\Plan;
 use Illuminate\Http\Request;
@@ -17,26 +19,9 @@ class PlanController extends Controller
         //
     }
 
+    
     public function planDetails(Request $request){
-        $data['plan'] = $plan = Plan::where('id', $request->id)->first();
-        if($plan){
-            $currentMonth = Carbon::now()->month;
-            // Create a Carbon instance for the first day of the current month
-            $firstDayOfMonth = Carbon::createFromDate(null, $currentMonth, 1);
-
-            // Get the day of the week for the first day of the month (0=Sunday, 1=Monday, etc.)
-            $firstDayOfWeek = $firstDayOfMonth->dayOfWeek;
-
-            // Calculate the number of Mondays in the month based on the day of the week for the first day
-            $numMondays = intval($firstDayOfMonth->daysInMonth / 7) + ($firstDayOfWeek <= Carbon::MONDAY && ($firstDayOfMonth->daysInMonth % 7 >= Carbon::MONDAY - $firstDayOfWeek));
-            $data['current'] =$plan->monthly_dues * $numMondays  ;
-            $data['month'] =$plan->monthly_dues * $numMondays +  $plan->monthly_charge ;
-            $data['amount'] = $plan->monthly_dues * $numMondays + $plan->reg_fee + $plan->monthly_charge;
-        }else{
-            $data['month'] = "";
-            $data['amount'] = "";
-            $data['current'] = "";
-        }
+        $data['plan']  = Company::where('uuid', $request->id)->first();
         // dd($data);
         return $data;
     }
