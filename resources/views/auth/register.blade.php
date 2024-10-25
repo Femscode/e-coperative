@@ -458,7 +458,7 @@
                 processPayment(form_details);
             })
 
-        }
+        
 
             function processPayment(data) {
                 data = data;
@@ -596,14 +596,19 @@
     <!--SWEET ALERT JS -->
     <script src="{{asset('swal.js')}}"></script>
 
-            @if (session()->has('message'))
-                Swal.fire(
-                    'Success!',
-                    `{{ session()->get('message') }}`,
-                    'success'
-                )
-            @endif
-        </script>
+    <script>
+        @if ($errors->any())
+            Swal.fire('Oops...', `{!! implode('', $errors->all('<p>:message</p>')) !!}`, 'error')
+        @endif
+
+        @if (session()->has('message'))
+            Swal.fire(
+                'Success!',
+                `{{ session()->get('message') }}`,
+                'success'
+            )
+        @endif
+    </script>
     <script>
         $(document).ready(function() {
             $.ajaxSetup({
