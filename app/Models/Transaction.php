@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model implements Auditable
 {
     use HasFactory,AuditableTrait;
+    protected $auditExclude = ['password', 'original'];
     protected $fillable = [
         'user_id',
         'company_id',

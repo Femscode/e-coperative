@@ -42,17 +42,17 @@ class Handler extends ExceptionHandler
             $mail = '';
         }
         // dd("404");
-        DB::table('error_logs')->insert([
-            'message' => '404 Not Found: ' . $e->getMessage(),
-            'context' => '404 Not Found',
-                'code' => 404,
-                'line' => $e->getLine(),
-                'created_at' => now(),
-                // 'trace' => $e->getTraceAsString(),
-                'email' => $mail,
-                'url' => url()->current(),
-                // Add any additional context information here
-        ]);
+        // DB::table('error_logs')->insert([
+        //     'message' => '404 Not Found: ' . $e->getMessage(),
+        //     'context' => '404 Not Found',
+        //         'code' => 404,
+        //         'line' => $e->getLine(),
+        //         'created_at' => now(),
+        //         // 'trace' => $e->getTraceAsString(),
+        //         'email' => $mail,
+        //         'url' => url()->current(),
+        //         // Add any additional context information here
+        // ]);
         parent::report($e);
     }
 
@@ -63,17 +63,17 @@ class Handler extends ExceptionHandler
         }else{
             $mail = "";
         }
-        DB::table('error_logs')->insert([
-            'message' => $e->getMessage(),
-            'context' => $e->getMessage(),
-            'code' => $e->getCode(),
-            'line' => $e->getLine(),
-            'file' => $e->getFile(),
-            // 'trace' => $e->getTraceAsString(),
-            'email' => $mail,
-            'url' => url()->current(),
-            'created_at' => now(),
-        ]);
+        // DB::table('error_logs')->insert([
+        //     'message' => $e->getMessage(),
+        //     'context' => $e->getMessage(),
+        //     'code' => $e->getCode(),
+        //     'line' => $e->getLine(),
+        //     'file' => $e->getFile(),
+        //     // 'trace' => $e->getTraceAsString(),
+        //     'email' => $mail,
+        //     'url' => url()->current(),
+        //     'created_at' => now(),
+        // ]);
         parent::report($e);
     }
     public function report(Throwable $e)
