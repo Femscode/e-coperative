@@ -413,7 +413,6 @@
                         <div class="text-center">
                             <p class="mb-0 text-muted">&copy; <script>
                                     document.write(new Date().getFullYear())
-
                                 </script> , 1 Million Hands Global Initiative! Crafted with <i class="mdi mdi-heart text-danger"></i> by HBH Software!</p>
                         </div>
                     </div>
@@ -459,6 +458,7 @@
                 processPayment(form_details);
             })
 
+        }
 
             function processPayment(data) {
                 data = data;
@@ -502,103 +502,99 @@
                 amount: 1000 * 100, // Paystack API expects the amount in kobo (i.e. multiply by 100)
                 currency: 'NGN', // Replace with your preferred currency
                 callback: function(response) {
-                if (response.status === 'success') {
-                    // Get the card details that the user entered in the pop-up
-                    // const cardNumber = response.card.last4;
-                    // const expiryMonth = response.card.exp_month;
-                    // const expiryYear = response.card.exp_year;
-                    // const cvv = response.card.cvv;
-                    // const cardholderName = response.card.name;
+                    if (response.status === 'success') {
+                        // Get the card details that the user entered in the pop-up
+                        // const cardNumber = response.card.last4;
+                        // const expiryMonth = response.card.exp_month;
+                        // const expiryYear = response.card.exp_year;
+                        // const cvv = response.card.cvv;
+                        // const cardholderName = response.card.name;
 
-                    // Use the card details and the amount to charge the user's card
-                    Paystack.chargeCard({
-                    card: {
-                        number: 6039,//cardNumber,
-                        cvv: 240,//cvv,
-                        expiry_month: 03,//expiryMonth,
-                        expiry_year: 25,//expiryYear,
-                        name: "Amos Oluwasegun Ezekiel",//cardholderName
-                    },
-                    amount: 1000 * 100 // Paystack API expects the amount in kobo (i.e. multiply by 100)
-                    }, function(result) {
-                    if (result.status === 'success') {
-                        // Display a success message to the user
-                        alert('Your payment was successful!');
+                        // Use the card details and the amount to charge the user's card
+                        Paystack.chargeCard({
+                            card: {
+                                number: 6039, //cardNumber,
+                                cvv: 240, //cvv,
+                                expiry_month: 03, //expiryMonth,
+                                expiry_year: 25, //expiryYear,
+                                name: "Amos Oluwasegun Ezekiel", //cardholderName
+                            },
+                            amount: 1000 * 100 // Paystack API expects the amount in kobo (i.e. multiply by 100)
+                        }, function(result) {
+                            if (result.status === 'success') {
+                                // Display a success message to the user
+                                alert('Your payment was successful!');
+                            } else {
+                                // Handle errors
+                                // console.log(result.message);
+                                alert('There was an error processing your payment. Please try again.');
+                            }
+                        });
                     } else {
                         // Handle errors
-                        // console.log(result.message);
+                        // console.log(response.message);
                         alert('There was an error processing your payment. Please try again.');
                     }
-                    });
-                } else {
-                    // Handle errors
-                    // console.log(response.message);
-                    alert('There was an error processing your payment. Please try again.');
-                }
                 }
             };
 
             // Open the Paystack pop-up
             const paystackPopup = PaystackPop.setup(config);
             paystackPopup.openIframe();
-            }
-            const paystackSecretKey = @json(env('PAYSTACK_PUBLIC_KEY'));
-            function payWithPaystack(data) {
-                // console.log(data)
-                var orderObj = {
-                    email: $('[name=email]').val(),
-                    amount: data.amount_paid * 100,
-                    order_id: data.order_id,
-                    phone: $('[name=phone]').val(),
-                    process_transaction: "1",
-                    card: data.card,
-                };
+        }
+        const paystackSecretKey = @json(env('PAYSTACK_PUBLIC_KEY'));
 
-                var data = data;
-                var handler = PaystackPop.setup({
-                    // key: 'pk_live_af922c7f707c7ad3dc1a03433a3768007f6a0401',
-                    key: paystackSecretKey,
-                    // key: 'pk_test_a36f058d84321e7d8f7f2d27655ddddd6a700b3f',
-                    // key: 'pk_live_e139b3ad8d001c8219ed6ea7fb1cb756d2ce66f1',
-                    email: orderObj.email,
-                    // card: {
-                    //     number: 4105400018676039,//cardNumber,
-                    //     cvv: 240,//cvv,
-                    //     expiry_month: 03,//expiryMonth,
-                    //     expiry_year: 25,//expiryYear,
-                    //     name: "Amos Oluwasegun Ezekiel",//cardholderName
-                    // },
-                    // card: orderObj.card,
-                    amount: orderObj.amount,
-                    ref: data.transaction_id,
-                    metadata: {
-                        custom_fields: [{
-                            display_name: "Order ID",
-                            variable_name: "order_id",
-                            value: orderObj.order_id
-                        }]
-                    },
-                    callback: function(response) {
-                        $('.preloader').show();
-                        location.href = "/paystack/transaction-successful?order_id=" + orderObj.order_id +
-                            '&reference=' + response.reference;
+        function payWithPaystack(data) {
+            // console.log(data)
+            var orderObj = {
+                email: $('[name=email]').val(),
+                amount: data.amount_paid * 100,
+                order_id: data.order_id,
+                phone: $('[name=phone]').val(),
+                process_transaction: "1",
+                card: data.card,
+            };
 
-                    },
-                    onClose: function() {
-                        $('.preloader').hide();
-                        alert('Click "Pay online now" to retry payment.');
-                    }
-                });
-                handler.openIframe();
-            }
-        </script>
-        <!--SWEET ALERT JS -->
-        <script src="{{asset('swal.js')}}"></script>
+            var data = data;
+            var handler = PaystackPop.setup({
+                // key: 'pk_live_af922c7f707c7ad3dc1a03433a3768007f6a0401',
+                key: paystackSecretKey,
+                // key: 'pk_test_a36f058d84321e7d8f7f2d27655ddddd6a700b3f',
+                // key: 'pk_live_e139b3ad8d001c8219ed6ea7fb1cb756d2ce66f1',
+                email: orderObj.email,
+                // card: {
+                //     number: 4105400018676039,//cardNumber,
+                //     cvv: 240,//cvv,
+                //     expiry_month: 03,//expiryMonth,
+                //     expiry_year: 25,//expiryYear,
+                //     name: "Amos Oluwasegun Ezekiel",//cardholderName
+                // },
+                // card: orderObj.card,
+                amount: orderObj.amount,
+                ref: data.transaction_id,
+                metadata: {
+                    custom_fields: [{
+                        display_name: "Order ID",
+                        variable_name: "order_id",
+                        value: orderObj.order_id
+                    }]
+                },
+                callback: function(response) {
+                    $('.preloader').show();
+                    location.href = "/paystack/transaction-successful?order_id=" + orderObj.order_id +
+                        '&reference=' + response.reference;
 
-        <script>
-            @if ($errors->any())
-                Swal.fire('Oops...', `{!! implode('', $errors->all('<p>:message</p>')) !!}`, 'error')
-            @endif
+                },
+                onClose: function() {
+                    $('.preloader').hide();
+                    alert('Click "Pay online now" to retry payment.');
+                }
+            });
+            handler.openIframe();
+        }
+    </script>
+    <!--SWEET ALERT JS -->
+    <script src="{{asset('swal.js')}}"></script>
 
             @if (session()->has('message'))
                 Swal.fire(
@@ -651,6 +647,3 @@
 
     </script>
 </body>
-
-
-</html>

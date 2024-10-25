@@ -1,48 +1,89 @@
-@extends('frontend.master')
-@section('header')
-<script src="{{url('assets/js/layout.js')}}"></script>
-<!-- Bootstrap Css -->
-<link href="{{url('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
-<!-- Icons Css -->
-<link href="{{url('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
-<!-- App Css-->
-<link href="{{url('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
-<!-- custom Css-->
-<link href="{{url('assets/css/custom.min.css')}}" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg">
 
-@endsection
 
-@section('content')
-<div class="page-banner-area position-relative overflow-hidden" 
-     style="background-image: url({{url('frontend_assets/images/hero/hero-image-1.svg')}})">
-<!-- <div class="page-banner-area position-relative overflow-hidden" style="background-image: url({{url('frontend_assets/images/hero/hero-image-1.svg')}})"> -->
-    <div class="container">
-        <div class="page-banner-content">
-            <h1>Register Your Cooperative</h1>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li>Sign In</li>
-            </ul>
-        </div>
-    </div>
-    <div class="shape-image">
-        <img class="page-banner-shape-1 moveHorizontal_reverse" src="{{url('frontend_assets/images/shape/feature-shape-1.png')}}" alt="shape">
-        <img class="page-banner-shape-2 moveVertical" src="{{url('frontend_assets/images/shape/feature-shape-1.png')}}" alt="shape">
-    </div>
-</div>
+<head>
 
+    <meta charset="utf-8" />
+    <title>Sign Up | 1 Million Hands COOP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="1 Million Hands" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+    <!-- Layout config Js -->
+    <script src="{{url('assets/js/layout.js')}}"></script>
+    <!-- Bootstrap Css -->
+    <link href="{{url('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="{{url('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="{{url('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="{{url('assets/css/custom.min.css')}}" rel="stylesheet" type="text/css" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <style>
+        .field-icon {
+            float: right;
+            left: -10px;
+            margin-top: -23px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .preloader {
+            align-items: center;
+            background: gray;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            left: 0;
+            position: fixed;
+            top: 0;
+            transition: opacity 0.3s linear;
+            width: 100%;
+            z-index: 9999;
+            opacity: 0.4;
+        }
+    </style>
+</head>
 
 <body>
-   
+    <div class="preloader" style="display:none">
+        <div class="spinner-grow text-info m-1" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        {{-- <img src="spinner.svg" alt="spinner"> --}}
+    </div>
     <div class="auth-page-wrapper pt-5">
         <!-- auth page bg -->
-      
+        <div class="auth-one-bg-position auth-one-bg" id="auth-particles">
+            <div class="bg-overlay"></div>
+
+            <div class="shape">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 120">
+                    <path d="M 0,36 C 144,53.6 432,123.2 720,124 C 1008,124.8 1296,56.8 1440,40L1440 140L0 140z"></path>
+                </svg>
+            </div>
+        </div>
 
         <!-- auth page content -->
         <div class="auth-page-content">
             <div class="container">
-                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center mt-sm-5 mb-4 text-white-50">
+                            <div>
+                                <a href="/" class="d-inline-block auth-logo">
+                                    <img src="{{ asset('website/images/logo4.png')}}" alt="" height="60">
+                                </a>
+                            </div>
+                            {{-- <p class="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p> --}}
+                        </div>
+                    </div>
+                </div>
                 <!-- end row -->
 
                 <div class="row justify-content-center">
@@ -225,7 +266,7 @@
                     <div class="col-xl-6">
                         <div class="card">
                             <!-- end card header -->
-                            <div class="card-body form-steps bg-color-fffaeb">
+                            <div class="card-body form-steps">
                                 <form action='save_coop_reg' method="post">
                                     @csrf
                                     <div class="text-center mt-2">
@@ -608,11 +649,11 @@
     <script src="{{asset('swal.js')}}"></script>
 
     <script>
-        @if($errors->any())
+        @if($errors - > any())
         Swal.fire('Oops...', `{!! implode('', $errors->all('<p>:message</p>')) !!}`, 'error')
         @endif
 
-        @if(session()->has('message'))
+        @if(session() - > has('message'))
         Swal.fire(
             'Success!',
             `{{ session()->get('message') }}`,
@@ -629,7 +670,8 @@
             });
 
             var check = $('.planId').val();
-            $.get('{{ route('get_plan_details_by_id') }}?id=' + check,
+            $.get('{{ route('
+                get_plan_details_by_id ') }}?id=' + check,
                 function(data) {
                     // console.log(data);
                     $("#regFee").val(data['plan'].reg_fee ?? "");
@@ -659,7 +701,8 @@
                 $("#totalCharge").val("");
                 $("#currentMonth").val("");
                 $("#monthlyPayment").val("");
-                $.get('{{ route('get_plan_details_by_id') }}?id=' + id,
+                $.get('{{ route('
+                    get_plan_details_by_id ') }}?id=' + id,
                     function(data) {
                         // console.log(data);
                         $("#regFee").val(data['plan'].reg_fee ?? "");
@@ -676,4 +719,6 @@
         });
     </script>
 </body>
-@endsection
+
+
+</html>
