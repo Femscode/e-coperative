@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 //
+Route::get('/checkpayment', [App\Http\Controllers\WebsiteController::class, 'checkpayment'])->name('checkpayment');
 
 Route::get('/cooperative/signup', [App\Http\Controllers\Auth\RegisterController::class, 'coop_reg'])->name('coop_reg');
 Route::post('/cooperative/save_coop_reg', [App\Http\Controllers\Auth\RegisterController::class, 'save_coop_reg'])->name('save_coop_reg');
