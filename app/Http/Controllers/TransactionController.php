@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -23,8 +25,8 @@ class TransactionController extends Controller
      */
 
     public function planPayment(Request $request){
-
-        $data = $request->all();
+        ini_set('memory_limit', '256M');
+        $data = $request->except('_token');
         // dd($data);
         $validator = Validator::make($data, [
             'referred_by' => ['nullable', 'unique:users'],
@@ -32,7 +34,8 @@ class TransactionController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'referred_by' => 'exists:users,coop_id'
+            'referred_by' => 'exists:users,coop_id',
+            'company' => 'exists:companies,uuid'
         ]);
 
         if($validator->fails()) {
@@ -47,31 +50,73 @@ class TransactionController extends Controller
                 'data' => $formattedNumber['data'],
             ],400);
         }
+        //check if coop has reg fee
+        $coop = Company::where('uuid', $request->company)->first();
+        $fee = $coop->reg_fee;
+        
         // dd($formattedNumber);
-        $input = $request->all();
-        // amount to pay
-        $fees = $data['fee'];
-        $amount = $data['total_amount']  ;
+        $input = $request->except('_token');
         $input['password'] = Hash::make($request->password);
-        $input['amount'] = $amount ;
-        $input['month'] = now()->format('F Y');
+        $coopD = Company::where('uuid', $request->company)->first();
+        $amount = $coopD->reg_fee;
         $tag = date("dY");
         $input['transaction_id'] = $transaction_id = intval($tag) + rand(0, 30) * 50;
-        foreach($fees as $key => $fee){
-            // dd($fee);
-            $input['balance'] = floatval($fee) ;
-            $input['original'] = floatval($request->original[$key]) ;
-            $input['payment_type'] =$request->payment_type[$key];
-            $transaction = Transaction::create($input);
+        if($fee < 1){
+            $status = 0;
+            $checkNumber =  NumberCount::where('coop_id', $coop->id)->first();
+            // attempt to give new member coop id
+            if($checkNumber){
+                $code = $checkNumber->count + 1;
+                $checkNumber->update([
+                    "count" => $checkNumber->count + 1,
+                ]);
+            }else{
+                $code = 1;
+                NumberCount::create([
+                    "count" => 1, "coop_id" => $coop->id
+                ]);
+            }
+            // $code = mt_rand(100000, 999999);
+            $transaction = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => $input['password'],
+                'user_type' => "Member",
+                'coop_id' => convertToUppercase($coopD->name).''.$code,
+                'company_id' => $coopD->id,
+            ]);
+        }else{
+            // dd("here");
+            $status = 1;
+            $input['amount'] = $input['balance'] = $amount ;
+            $input['company_id'] = $coop->id ;
+            $input['month'] = now()->format('F Y');
+           
+        //    dd($input);
+        $transaction = Transaction::create($input);
+            // $transaction = Transaction::create([
+            //     "name" => $input['name'],
+            //     "email" => $input['email'],
+            //     "phone" => $input['phone'],
+            //     "amount" => $input['amount'],
+            //     "balance" => $input['amount'],
+            //     "referred_by" => $input['referred_by'],
+            //     "password" => $input['password'],
+            //     "company_id" => $coopD->id,
+            // ]);
+            // dd("here");
         }
+       
 
-        // $transaction->update(["transaction_id" => $transaction_id]);
+       // $transaction->update(["transaction_id" => $transaction_id]);
         $result = array(
             "transaction_id" => $transaction_id,
-            "order_id" => $transaction,
+            "order_id" => $transaction_id,
             "payment_process" => 1,
             "status" => "success",
-            "amount_paid" => $transaction->amount,
+            "amount_paid" => $amount,
+            "status" => $status,
         );
         echo json_encode($result);
     }
@@ -183,7 +228,8 @@ class TransactionController extends Controller
                     }
                 }
                 if(!$checkUser){
-                    $checkNumber =  NumberCount::first();
+                    $coopD = Company::find($check[0]["company_id"]);
+                    $checkNumber =  NumberCount::where('coop_id', $check[0]["company_id"])->first();
                     // attempt to give new member coop id
                     if($checkNumber){
                         $code = $checkNumber->count + 1;
@@ -193,7 +239,7 @@ class TransactionController extends Controller
                     }else{
                         $code = 1;
                         NumberCount::create([
-                            "count" => 1,
+                            "count" => 1, 'coop_id' => $check[0]["company_id"]
                         ]);
                     }
                     // $code = mt_rand(100000, 999999);
@@ -203,11 +249,12 @@ class TransactionController extends Controller
                         'phone' => $check[0]['phone'],
                         'password' => $check[0]['password'],
                         'user_type' => "Member",
-                        'coop_id' => $code,
+                        'coop_id' => convertToUppercase($coopD->name).''.$code,
                         'month' => now()->format('F Y'),
                         'referred_by' => $check[0]['referred_by'],
                         'username' => $check[0]['username'],
-                        'plan_id' => $check[0]['plan_id'],
+                        'company_id' => $check[0]["company_id"]
+                        // 'plan_id' => $check[0]['plan_id'],
                     ]);
                 }
                 Transaction::where('transaction_id', $reference)->update(['user_id' => $checkUser->id]);

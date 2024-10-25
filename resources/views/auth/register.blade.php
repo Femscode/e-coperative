@@ -222,7 +222,7 @@
                         <div class="card">
                             <!-- end card header -->
                             <div class="card-body form-steps">
-                                <form action='process-order-form' method="post">
+                                <form id="process-order-form" method="post">
                                     @csrf
                                     <div class="text-center mt-2">
                                         <h5 class="text-primary">Go Digital, Go Far!</h5>
@@ -346,11 +346,11 @@
                                                             @if(isset($slug))
                                                             <label class="form-label" for="gen-info-password-input">Coperative Name</label>
                                                             <h4>{{$company->name}}</h4>
-                                                            <input class='form-control' value="{{$company->id}}" name='company' type='hidden' />
+                                                            <input class='form-control' value="{{$company->uuid}}" name='company' type='hidden' />
 
                                                             @else
                                                             <label class="form-label" for="gen-info-password-input">Select Coperative</label>
-                                                            <select class='form-control planId' name='company'>
+                                                            <select class='form-control planId' required name='company'>
                                                                 <option value="">--Select Cooperative--</option>
                                                                 @foreach($coperative ?? App\Models\Company::all() as $coop)
                                                                 <option value='{{$coop->uuid}}'>{{ $coop->name }}</option>
@@ -458,9 +458,38 @@
                 processPayment(form_details);
             })
 
-        }
+        
 
-        function handlePaystackPopup(event) {
+            function processPayment(data) {
+                data = data;
+                $('.preloader').show();
+                $.ajax({
+                    type: 'POST',
+                    url: 'pay-for-plan',
+                    dataType: 'json',
+                    data: data,
+                    success: function(e) {
+                        $('.preloader').hide();
+                        $('.preloader').hide();
+                        if(e.status == 0){
+                            new swal("Congratulations!","Registration Succesful","success");
+                        }else{
+                            payWithPaystack(e);
+                        }
+                    },
+                    error: function(e) {
+                        $('.preloader').hide();
+                        // var errorList = '';
+                        // Object.keys(e.responseJSON.message).forEach(function(key) {
+                        // errorList += '<li>' + e.responseJSON.message[key][0] + '</li>';
+                        // });
+                        new swal("Opss",e.responseJSON.message,"error");
+                    }
+                })
+
+            }
+
+            function handlePaystackPopup(event) {
             // event.preventDefault();
 
             // Get the amount to be charged from the form
@@ -567,14 +596,19 @@
     <!--SWEET ALERT JS -->
     <script src="{{asset('swal.js')}}"></script>
 
-            @if (session()->has('message'))
-                Swal.fire(
-                    'Success!',
-                    `{{ session()->get('message') }}`,
-                    'success'
-                )
-            @endif
-        </script>
+    <script>
+        @if ($errors->any())
+            Swal.fire('Oops...', `{!! implode('', $errors->all('<p>:message</p>')) !!}`, 'error')
+        @endif
+
+        @if (session()->has('message'))
+            Swal.fire(
+                'Success!',
+                `{{ session()->get('message') }}`,
+                'success'
+            )
+        @endif
+    </script>
     <script>
         $(document).ready(function() {
             $.ajaxSetup({

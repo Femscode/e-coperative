@@ -49,3 +49,14 @@ use Jenssegers\Agent\Agent;
         $uploadedFile = $file->move(public_path($path), $file_name_extension);
         return $path . '/' . $file_name_extension;
     }
+
+    function convertToUppercase($word)
+{
+    $words = explode(' ', $word);
+    $result = '';
+    foreach ($words as $word) {
+        $result .= strtoupper(substr($word, 0, 1));
+    }
+    return $result;
+    // return response()->json(['converted_word' => $result]);
+}
