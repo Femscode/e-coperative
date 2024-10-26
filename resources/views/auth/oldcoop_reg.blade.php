@@ -47,7 +47,6 @@
             z-index: 9999;
             opacity: 0.4;
         }
-
     </style>
 </head>
 
@@ -101,22 +100,35 @@
                                     </div>
                                     <div id="custom-progress-bar" class="progress-nav mb-4">
                                         <div class="progress" style="height: 1px">
-                                            <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar" role="progressbar" style="width: 0%"
+                                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
 
                                         <ul class="nav nav-pills progress-bar-tab custom-nav" role="tablist">
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link rounded-pill active" data-progressbar="custom-progress-bar" id="pills-gen-info-tab" data-bs-toggle="pill" data-bs-target="#pills-gen-info" type="button" role="tab" aria-controls="pills-gen-info" aria-selected="true">
+                                                <button class="nav-link rounded-pill active"
+                                                    data-progressbar="custom-progress-bar" id="pills-gen-info-tab"
+                                                    data-bs-toggle="pill" data-bs-target="#pills-gen-info"
+                                                    type="button" role="tab" aria-controls="pills-gen-info"
+                                                    aria-selected="true">
                                                     1
                                                 </button>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link rounded-pill" data-progressbar="custom-progress-bar" id="pills-info-desc-tab" data-bs-toggle="pill" data-bs-target="#pills-info-desc" type="button" role="tab" aria-controls="pills-info-desc" aria-selected="false">
+                                                <button class="nav-link rounded-pill"
+                                                    data-progressbar="custom-progress-bar" id="pills-info-desc-tab"
+                                                    data-bs-toggle="pill" data-bs-target="#pills-info-desc"
+                                                    type="button" role="tab" aria-controls="pills-info-desc"
+                                                    aria-selected="false">
                                                     2
                                                 </button>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link rounded-pill" data-progressbar="custom-progress-bar" id="pills-success-tab" data-bs-toggle="pill" data-bs-target="#pills-success" type="button" role="tab" aria-controls="pills-success" aria-selected="false">
+                                                <button class="nav-link rounded-pill"
+                                                    data-progressbar="custom-progress-bar" id="pills-success-tab"
+                                                    data-bs-toggle="pill" data-bs-target="#pills-success"
+                                                    type="button" role="tab" aria-controls="pills-success"
+                                                    aria-selected="false">
                                                     3
                                                 </button>
                                             </li>
@@ -124,7 +136,8 @@
                                     </div>
 
                                     <div class="tab-content">
-                                        <div class="tab-pane fade show active" id="pills-gen-info" role="tabpanel" aria-labelledby="pills-gen-info-tab">
+                                        <div class="tab-pane fade show active" id="pills-gen-info" role="tabpanel"
+                                            aria-labelledby="pills-gen-info-tab">
                                             <div>
                                                 <div class="mb-4">
                                                     <div>
@@ -137,40 +150,60 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label class="form-label" for="gen-info-email-input">Email</label>
-                                                            <input type="text" class="form-control" id="gen-info-email-input" placeholder="Enter Email" />
+                                                            <label class="form-label"
+                                                                for="gen-info-email-input">Email</label>
+                                                            <input type="text" class="form-control"
+                                                                id="gen-info-email-input"
+                                                                placeholder="Enter Email" />
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label class="form-label" for="gen-info-username-input">User Name</label>
-                                                            <input type="text" class="form-control" id="gen-info-username-input" placeholder="Enter User Name" />
+                                                            <label class="form-label"
+                                                                for="gen-info-username-input">User Name</label>
+                                                            <input type="text" class="form-control"
+                                                                id="gen-info-username-input"
+                                                                placeholder="Enter User Name" />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label class="form-label" for="gen-info-password-input">Password</label>
-                                                    <input type="password" class="form-control" id="gen-info-password-input" placeholder="Enter Password" />
+                                                    <label class="form-label"
+                                                        for="gen-info-password-input">Password</label>
+                                                    <input type="password" class="form-control"
+                                                        id="gen-info-password-input" placeholder="Enter Password" />
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" data-nexttab="pills-info-desc-tab">
-                                                    <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go
+                                                <button type="button"
+                                                    class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                                                    data-nexttab="pills-info-desc-tab">
+                                                    <i
+                                                        class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go
                                                     to more info
                                                 </button>
                                             </div>
                                         </div>
                                         <!-- end tab pane -->
 
-                                        <div class="tab-pane fade" id="pills-info-desc" role="tabpanel" aria-labelledby="pills-info-desc-tab">
+                                        <div class="tab-pane fade" id="pills-info-desc" role="tabpanel"
+                                            aria-labelledby="pills-info-desc-tab">
                                             <div>
                                                 <div class="text-center">
-                                                    <div class="profile-user position-relative d-inline-block mx-auto mb-2">
-                                                        <img src="assets/images/users/user-dummy-img.jpg" class="rounded-circle avatar-lg img-thumbnail user-profile-image" alt="user-profile-image" />
-                                                        <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
-                                                            <input id="profile-img-file-input" type="file" class="profile-img-file-input" accept="image/png, image/jpeg" />
-                                                            <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
-                                                                <span class="avatar-title rounded-circle bg-light text-body">
+                                                    <div
+                                                        class="profile-user position-relative d-inline-block mx-auto mb-2">
+                                                        <img src="assets/images/users/user-dummy-img.jpg"
+                                                            class="rounded-circle avatar-lg img-thumbnail user-profile-image"
+                                                            alt="user-profile-image" />
+                                                        <div
+                                                            class="avatar-xs p-0 rounded-circle profile-photo-edit">
+                                                            <input id="profile-img-file-input" type="file"
+                                                                class="profile-img-file-input"
+                                                                accept="image/png, image/jpeg" />
+                                                            <label for="profile-img-file-input"
+                                                                class="profile-photo-edit avatar-xs">
+                                                                <span
+                                                                    class="avatar-title rounded-circle bg-light text-body">
                                                                     <i class="ri-camera-fill"></i>
                                                                 </span>
                                                             </label>
@@ -179,27 +212,39 @@
                                                     <h5 class="fs-14">Add Image</h5>
                                                 </div>
                                                 <div>
-                                                    <label class="form-label" for="gen-info-description-input">Description</label>
-                                                    <textarea class="form-control" placeholder="Enter Description" id="gen-info-description-input" rows="2"></textarea>
+                                                    <label class="form-label"
+                                                        for="gen-info-description-input">Description</label>
+                                                    <textarea class="form-control" placeholder="Enter Description"
+                                                        id="gen-info-description-input" rows="2"></textarea>
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button type="button" class="btn btn-link text-decoration-none btn-label previestab" data-previous="pills-gen-info-tab">
-                                                    <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
+                                                <button type="button"
+                                                    class="btn btn-link text-decoration-none btn-label previestab"
+                                                    data-previous="pills-gen-info-tab">
+                                                    <i
+                                                        class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
                                                     Back to General
                                                 </button>
-                                                <button type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" data-nexttab="pills-success-tab">
-                                                    <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Submit
+                                                <button type="button"
+                                                    class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                                                    data-nexttab="pills-success-tab">
+                                                    <i
+                                                        class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Submit
                                                 </button>
                                             </div>
                                         </div>
                                         <!-- end tab pane -->
 
-                                        <div class="tab-pane fade" id="pills-success" role="tabpanel" aria-labelledby="pills-success-tab">
+                                        <div class="tab-pane fade" id="pills-success" role="tabpanel"
+                                            aria-labelledby="pills-success-tab">
                                             <div>
                                                 <div class="text-center">
                                                     <div class="mb-4">
-                                                        <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width: 120px; height: 120px"></lord-icon>
+                                                        <lord-icon src="https://cdn.lordicon.com/lupuorrc.json"
+                                                            trigger="loop"
+                                                            colors="primary:#0ab39c,secondary:#405189"
+                                                            style="width: 120px; height: 120px"></lord-icon>
                                                     </div>
                                                     <h5>Well Done !</h5>
                                                     <p class="text-muted">
@@ -222,7 +267,7 @@
                         <div class="card">
                             <!-- end card header -->
                             <div class="card-body form-steps">
-                                <form id="process-order-form" method="post">
+                                <form action='save_coop_reg' method="post">
                                     @csrf
                                     <div class="text-center mt-2">
                                         <h5 class="text-primary">Go Digital, Go Far!</h5>
@@ -232,17 +277,27 @@
                                     <div class="step-arrow-nav mb-4">
                                         <ul class="nav nav-pills custom-nav nav-justified" role="tablist">
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link done active" id="steparrow-gen-info-tab" data-bs-toggle="pill" data-bs-target="#steparrow-gen-info" type="button" role="tab" aria-controls="steparrow-gen-info" aria-selected="true">
+                                                <button class="nav-link done active" id="steparrow-gen-info-tab"
+                                                    data-bs-toggle="pill" data-bs-target="#steparrow-gen-info"
+                                                    type="button" role="tab" aria-controls="steparrow-gen-info"
+                                                    aria-selected="true">
                                                     General
                                                 </button>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link " id="steparrow-description-info-tab" data-bs-toggle="pill" data-bs-target="#steparrow-description-info" type="button" role="tab" aria-controls="steparrow-description-info" aria-selected="false">
+                                                <button class="nav-link " id="steparrow-description-info-tab"
+                                                    data-bs-toggle="pill"
+                                                    data-bs-target="#steparrow-description-info" type="button"
+                                                    role="tab" aria-controls="steparrow-description-info"
+                                                    aria-selected="false">
                                                     Description
                                                 </button>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link" id="pills-experience-tab" data-bs-toggle="pill" data-bs-target="#pills-experience" type="button" role="tab" aria-controls="pills-experience" aria-selected="false">
+                                                <button class="nav-link" id="pills-experience-tab"
+                                                    data-bs-toggle="pill" data-bs-target="#pills-experience"
+                                                    type="button" role="tab" aria-controls="pills-experience"
+                                                    aria-selected="false">
                                                     Finish
                                                 </button>
                                             </li>
@@ -250,54 +305,66 @@
                                     </div>
 
                                     <div class="tab-content">
-                                        <div class="tab-pane fade show active" id="steparrow-gen-info" role="tabpanel" aria-labelledby="steparrow-gen-info-tab">
+                                        <div class="tab-pane fade show active" id="steparrow-gen-info" role="tabpanel"
+                                            aria-labelledby="steparrow-gen-info-tab">
                                             <div>
-                                                <div class="row">                                             
-                                                    <div class="col-lg-6">
-                                                        <div class="mb-3">
-                                                            <label class="form-label" for="gen-info-password-input">Full Name</label>
-                                                            <input type="text" class="form-control" required name="name" id="gen-info-password-input" placeholder="Enter Full Name Of Your Co-operative" />
-                                                        </div>
-
-                                                    </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label"
+                                                        for="gen-info-password-input">Co-operative Name</label>
+                                                    <input type="text" class="form-control" required name="name"
+                                                        id="gen-info-password-input" placeholder="Enter Full Name Of Your Co-operative" />
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label class="form-label" for="gen-info-email-input">Email</label>
-                                                            <input type="email" class="form-control" required name="email" id="gen-info-email-input email" placeholder="Enter email" />
+                                                            <label class="form-label"
+                                                                for="gen-info-email-input">Email</label>
+                                                            <input type="email" class="form-control" required name="email"
+                                                                id="gen-info-email-input email"
+                                                                placeholder="Enter email" />
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label class="form-label" for="gen-info-username-input">Phone Number</label>
-                                                            <input type="number" class="form-control" required name="phone" id="gen-info-username-input" placeholder="Enter phone number" />
+                                                            <label class="form-label"
+                                                                for="gen-info-username-input">Phone Number</label>
+                                                            <input type="number" class="form-control" required name="phone"
+                                                                id="gen-info-username-input"
+                                                                placeholder="Enter phone number" />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" data-nexttab="steparrow-description-info-tab">
-                                                    <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go
+                                                <button type="button"
+                                                    class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                                                    data-nexttab="steparrow-description-info-tab">
+                                                    <i
+                                                        class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go
                                                     to description
                                                 </button>
                                             </div>
                                         </div>
                                         <!-- end tab pane -->
 
-                                        <div class="tab-pane fade " id="steparrow-description-info" role="tabpanel" aria-labelledby="steparrow-description-info-tab">
+                                        <div class="tab-pane fade " id="steparrow-description-info"
+                                            role="tabpanel" aria-labelledby="steparrow-description-info-tab">
                                             <div>
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <div class="mb-3">
-                                                            <label class="form-label" for="gen-info-email-input">Address</label>
-                                                            <input type="text" class="form-control" name="address" placeholder="House Address" />
+                                                            <label class="form-label"
+                                                                for="gen-info-email-input">Description</label>
+                                                            <textarea type="text" class="form-control" name="description"
+                                                                placeholder="Short description / Bio "></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <div class="mb-3">
-                                                            <label class="form-label" for="gen-info-email-input">Referred By</label>
-                                                            <input type="text" class="form-control" name="referred_by" placeholder=" " />
+                                                            <label class="form-label"
+                                                                for="gen-info-email-input">Address</label>
+                                                            <input type="text" class="form-control" name="address"
+                                                                placeholder="Physical address of meeting place " />
                                                         </div>
                                                     </div>
 
@@ -305,27 +372,38 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label class="form-label" for="gen-info-email-input">Password</label>
-                                                            <input type="password" class="form-control" required name="password" id="password-fieldx" placeholder="enter password " />
+                                                            <label class="form-label"
+                                                                for="gen-info-email-input">Password</label>
+                                                            <input type="password" class="form-control" required name="password"
+                                                                id="password-fieldx"
+                                                                placeholder="enter password " />
                                                             <span toggle="#password-fieldx" class="fas toggle-password field-icon fa-eye-slash"></span>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label class="form-label" for="gen-info-username-input">Confirm Password</label>
-                                                            <input type="password" class="form-control" required name="password_confirmation" id="password-fieldc" placeholder="confirm password" />
+                                                            <label class="form-label"
+                                                                for="gen-info-username-input">Confirm Password</label>
+                                                            <input type="password" class="form-control" required name="password_confirmation"
+                                                                id="password-fieldc"
+                                                                placeholder="confirm password" />
                                                             <span toggle="#password-fieldc" class="fas toggle-password field-icon fa-eye-slash"></span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button type="button" class="btn btn-light btn-label previestab" data-previous="steparrow-gen-info-tab">
-                                                    <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
+                                                <button type="button" class="btn btn-light btn-label previestab"
+                                                    data-previous="steparrow-gen-info-tab">
+                                                    <i
+                                                        class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
                                                     Back to General
                                                 </button>
-                                                <button type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" data-nexttab="pills-experience-tab">
-                                                    <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Finish
+                                                <button type="button"
+                                                    class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                                                    data-nexttab="pills-experience-tab">
+                                                    <i
+                                                        class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Finish
                                                 </button>
                                                 {{-- <button type="button"
                                                         class="btn btn-success btn-label right ms-auto nexttab nexttab"
@@ -341,32 +419,6 @@
                                             <div>
 
                                                 <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="mb-3">
-                                                            @if(isset($slug))
-                                                            <label class="form-label" for="gen-info-password-input">Coperative Name</label>
-                                                            <h4>{{$company->name}}</h4>
-                                                            <input class='form-control' value="{{$company->uuid}}" name='company' type='hidden' />
-
-                                                            @else
-                                                            <label class="form-label" for="gen-info-password-input">Select Coperative</label>
-                                                            <select class='form-control planId' required name='company'>
-                                                                <option value="">--Select Cooperative--</option>
-                                                                @foreach($coperative ?? App\Models\Company::all() as $coop)
-                                                                <option value='{{$coop->uuid}}'>{{ $coop->name }}</option>
-                                                                @endforeach
-
-                                                            </select>
-                                                            @endif
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6 displayReg" style="display:none">
-                                                        <div class="mb-3">
-                                                            <label class="form-label" for="gen-info-email-input">Registration Fee</label>
-                                                            <input type="text" class="form-control feeInput" readonly name="reg_fee" placeholder=" " />
-                                                        </div>
-                                                    </div>
                                                     <div class="col-lg-12">
                                                         <div class="mb-3">
                                                             <input type="radio" /> I Agree to the <a href='#'>terms & conditions.</a>
@@ -377,12 +429,17 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button type="button" class="btn btn-light btn-label previestab" data-previous="steparrow-description-info-tab">
-                                                    <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
+                                                <button type="button" class="btn btn-light btn-label previestab"
+                                                    data-previous="steparrow-description-info-tab">
+                                                    <i
+                                                        class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
                                                     Back to Description
                                                 </button>
-                                                <button type="submit" class="btn btn-success btn-label right ms-auto nexttab nexttab" data-nexttab="pills-experience-tab">
-                                                    <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Submit
+                                                <button type="submit"
+                                                    class="btn btn-success btn-label right ms-auto nexttab nexttab"
+                                                    data-nexttab="pills-experience-tab">
+                                                    <i
+                                                        class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Submit
                                                 </button>
                                             </div>
                                         </div>
@@ -444,52 +501,47 @@
     <!-- App js -->
     <script src="assets/js/app.js"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
-        <script>
-            $('#process-order-form').submit(function(e) {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                // $('.preloader').show();
-                e.preventDefault();
-                // alert("ere")
-                var form_details = $(this).serializeArray();
-                processPayment(form_details);
+    <script>
+        $('#process-order-form').submit(function(e) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            // $('.preloader').show();
+            e.preventDefault();
+            // alert("ere")
+            var form_details = $(this).serializeArray();
+            processPayment(form_details);
+        })
+
+
+        function processPayment(data) {
+            data = data;
+            $('.preloader').show();
+            $.ajax({
+                type: 'POST',
+                url: 'pay-for-plan',
+                dataType: 'json',
+                data: data,
+                success: function(e) {
+                    $('.preloader').hide();
+                    $('.preloader').hide();
+                    payWithPaystack(e);
+                },
+                error: function(e) {
+                    $('.preloader').hide();
+                    // var errorList = '';
+                    // Object.keys(e.responseJSON.message).forEach(function(key) {
+                    // errorList += '<li>' + e.responseJSON.message[key][0] + '</li>';
+                    // });
+                    new swal("Opss", e.responseJSON.message, "error");
+                }
             })
 
-        
+        }
 
-            function processPayment(data) {
-                data = data;
-                $('.preloader').show();
-                $.ajax({
-                    type: 'POST',
-                    url: 'pay-for-plan',
-                    dataType: 'json',
-                    data: data,
-                    success: function(e) {
-                        $('.preloader').hide();
-                        $('.preloader').hide();
-                        if(e.status == 0){
-                            new swal("Congratulations!","Registration Succesful","success");
-                        }else{
-                            payWithPaystack(e);
-                        }
-                    },
-                    error: function(e) {
-                        $('.preloader').hide();
-                        // var errorList = '';
-                        // Object.keys(e.responseJSON.message).forEach(function(key) {
-                        // errorList += '<li>' + e.responseJSON.message[key][0] + '</li>';
-                        // });
-                        new swal("Opss",e.responseJSON.message,"error");
-                    }
-                })
-
-            }
-
-            function handlePaystackPopup(event) {
+        function handlePaystackPopup(event) {
             // event.preventDefault();
 
             // Get the amount to be charged from the form
@@ -597,16 +649,16 @@
     <script src="{{asset('swal.js')}}"></script>
 
     <script>
-        @if ($errors->any())
-            Swal.fire('Oops...', `{!! implode('', $errors->all('<p>:message</p>')) !!}`, 'error')
+        @if($errors - > any())
+        Swal.fire('Oops...', `{!! implode('', $errors->all('<p>:message</p>')) !!}`, 'error')
         @endif
 
-        @if (session()->has('message'))
-            Swal.fire(
-                'Success!',
-                `{{ session()->get('message') }}`,
-                'success'
-            )
+        @if(session() - > has('message'))
+        Swal.fire(
+            'Success!',
+            `{{ session()->get('message') }}`,
+            'success'
+        )
         @endif
     </script>
     <script>
@@ -617,6 +669,20 @@
                 }
             });
 
+            var check = $('.planId').val();
+            $.get('{{ route('
+                get_plan_details_by_id ') }}?id=' + check,
+                function(data) {
+                    // console.log(data);
+                    $("#regFee").val(data['plan'].reg_fee ?? "");
+                    $("#regFee2").val(data['plan'].reg_fee ?? "");
+                    $("#mDues").val(data['plan'].monthly_dues ?? "");
+                    $("#mCharge").val(data['plan'].monthly_charge ?? "");
+                    $("#totalCharge").val(data['amount']);
+                    $("#monthlyPayment").val(data['month']);
+                    $("#currentMonth").val(data['month']);
+                    $("#currentMonthAmount").val(data['current']);
+                })
             $(".toggle-password").click(function() {
                 $(this).toggleClass("fa-eye fa-eye-slash");
                 var input = $($(this).attr("toggle"));
@@ -628,27 +694,31 @@
             });
 
             $(".planId").on("change", function(e) {
-                var id  = $(this).val();//$(this).data('id');
-                if(id == ""){
-                    $('.displayReg').hide();
-                    $('.feeInput').removeAttr('required');
-                    $('.feeInput').val("");
-                    return;
-                }
-                $.get('{{ route('get_plan_details_by_id') }}?id=' + id, function (data) {
-                    if(data['plan'].reg_fee > 0){
-                        $('.displayReg').show();
-                        $('.feeInput').attr('required', true);
-                        $('.feeInput').val(data['plan'].reg_fee);
-                    }else{
-                         $('.displayReg').hide();
-                        $('.feeInput').removeAttr('required');
-                        $('.feeInput').val("");
-                    }
-                })
+                var id = $(this).val(); //$(this).data('id');
+                $("#regFee").val("");
+                $("#mDues").val("");
+                $("#mCharge").val("");
+                $("#totalCharge").val("");
+                $("#currentMonth").val("");
+                $("#monthlyPayment").val("");
+                $.get('{{ route('
+                    get_plan_details_by_id ') }}?id=' + id,
+                    function(data) {
+                        // console.log(data);
+                        $("#regFee").val(data['plan'].reg_fee ?? "");
+                        $("#regFee2").val(data['plan'].reg_fee ?? "");
+                        $("#mDues").val(data['plan'].monthly_dues ?? "");
+                        $("#mCharge").val(data['plan'].monthly_charge ?? "");
+                        $("#totalCharge").val(data['amount']);
+                        $("#monthlyPayment").val(data['month']);
+                        $("#currentMonth").val(data['month']);
+                        $("#currentMonthAmount").val(data['current']);
+                    })
 
             });
         });
-
     </script>
 </body>
+
+
+</html>

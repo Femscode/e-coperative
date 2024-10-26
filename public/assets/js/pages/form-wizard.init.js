@@ -1,1 +1,71 @@
-document.querySelector("#profile-img-file-input").addEventListener("change",function(){var e=document.querySelector(".user-profile-image"),t=document.querySelector(".profile-img-file-input").files[0],o=new FileReader;o.addEventListener("load",function(){e.src=o.result},!1),t&&o.readAsDataURL(t)}),document.querySelectorAll(".form-steps").forEach(function(n){n.querySelectorAll(".nexttab").forEach(function(t){n.querySelectorAll('button[data-bs-toggle="pill"]').forEach(function(e){e.addEventListener("show.bs.tab",function(e){e.target.classList.add("done")})}),t.addEventListener("click",function(){var e=t.getAttribute("data-nexttab");document.getElementById(e).click()})}),n.querySelectorAll(".previestab").forEach(function(r){r.addEventListener("click",function(){for(var e=r.getAttribute("data-previous"),t=r.closest("form").querySelectorAll(".custom-nav .done").length,o=t-1;o<t;o++)r.closest("form").querySelectorAll(".custom-nav .done")[o]&&r.closest("form").querySelectorAll(".custom-nav .done")[o].classList.remove("done");document.getElementById(e).click()})});var l=n.querySelectorAll('button[data-bs-toggle="pill"]');l.forEach(function(o,r){o.setAttribute("data-position",r),o.addEventListener("click",function(){var e;o.getAttribute("data-progressbar")&&(e=document.getElementById("custom-progress-bar").querySelectorAll("li").length-1,e=r/e*100,document.getElementById("custom-progress-bar").querySelector(".progress-bar").style.width=e+"%"),0<n.querySelectorAll(".custom-nav .done").length&&n.querySelectorAll(".custom-nav .done").forEach(function(e){e.classList.remove("done")});for(var t=0;t<=r;t++)l[t].classList.contains("active")?l[t].classList.remove("done"):l[t].classList.add("done")})})});
+document.querySelector("#profile-img-file-input").addEventListener("change", function () {
+    var imageElement = document.querySelector(".user-profile-image"),
+        fileInput = document.querySelector(".profile-img-file-input").files[0],
+        reader = new FileReader();
+
+    reader.addEventListener("load", function () {
+        imageElement.src = reader.result;
+    }, false);
+
+    if (fileInput) reader.readAsDataURL(fileInput);
+});
+
+document.querySelectorAll(".form-steps").forEach(function (step) {
+    step.querySelectorAll(".nexttab").forEach(function (nextButton) {
+        step.querySelectorAll('button[data-bs-toggle="pill"]').forEach(function (tabButton) {
+            tabButton.addEventListener("show.bs.tab", function (event) {
+                event.target.classList.add("done");
+            });
+        });
+
+        nextButton.addEventListener("click", function () {
+            var nextTabId = nextButton.getAttribute("data-nexttab");
+            document.getElementById(nextTabId).click();
+        });
+    });
+
+    step.querySelectorAll(".previestab").forEach(function (prevButton) {
+        prevButton.addEventListener("click", function () {
+            var prevTabId = prevButton.getAttribute("data-previous"),
+                doneSteps = prevButton.closest("form").querySelectorAll(".custom-nav .done"),
+                totalDone = doneSteps.length,
+                lastDoneIndex = totalDone - 1;
+
+            if (doneSteps[lastDoneIndex]) {
+                doneSteps[lastDoneIndex].classList.remove("done");
+            }
+
+            document.getElementById(prevTabId).click();
+        });
+    });
+
+    var tabButtons = step.querySelectorAll('button[data-bs-toggle="pill"]');
+    
+    tabButtons.forEach(function (tabButton, index) {
+        tabButton.setAttribute("data-position", index);
+
+        tabButton.addEventListener("click", function () {
+            var progressBarElement;
+
+            if (tabButton.getAttribute("data-progressbar")) {
+                var totalTabs = document.getElementById("custom-progress-bar").querySelectorAll("li").length - 1;
+                var progressPercent = (index / totalTabs) * 100;
+                document.getElementById("custom-progress-bar").querySelector(".progress-bar").style.width = progressPercent + "%";
+            }
+
+            if (step.querySelectorAll(".custom-nav .done").length > 0) {
+                step.querySelectorAll(".custom-nav .done").forEach(function (doneStep) {
+                    doneStep.classList.remove("done");
+                });
+            }
+
+            for (var i = 0; i <= index; i++) {
+                if (tabButtons[i].classList.contains("active")) {
+                    tabButtons[i].classList.remove("done");
+                } else {
+                    tabButtons[i].classList.add("done");
+                }
+            }
+        });
+    });
+});
