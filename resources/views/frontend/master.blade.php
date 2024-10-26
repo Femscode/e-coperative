@@ -168,7 +168,7 @@
                         <a href="/signup" class="search-btn login"><i class="ri-account-circle-line"></i> Sign Up</a>
                     </li>
                     <li>
-                        <a href="#" class="default-btn">Get Started <i class="ri-arrow-right-up-line"></i></a>
+                        <a href="/cooperative/signup" class="default-btn">Get Started <i class="ri-arrow-right-up-line"></i></a>
                     </li>
                 </ul>
             </div>
