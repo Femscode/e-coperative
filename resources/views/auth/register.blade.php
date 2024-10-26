@@ -454,6 +454,7 @@
                         $('.preloader').hide();
                         if(e.status == 0){
                             new swal("Congratulations!","Registration Succesful","success");
+                            window.location.reload();
                         }else{
                             payWithPaystack(e);
                         }
