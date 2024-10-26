@@ -73,8 +73,12 @@ class User extends Authenticatable implements Auditable
         'email_verified_at' => 'datetime',
     ];
 
-    public function plan(){
+    public function plans(){
         $plan = Plan::find($this->plan_id);
+        return $plan;
+    }
+    public function plan(){
+        $plan = Company::find($this->company_id);
         return $plan;
     }
 

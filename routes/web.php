@@ -35,6 +35,7 @@ Route::get('/about-us', [App\Http\Controllers\WebsiteController::class, 'about']
 Route::get('/contact-us', [App\Http\Controllers\WebsiteController::class, 'contact'])->name('contact-page');
 Route::post('/pay-for-plan', [App\Http\Controllers\TransactionController::class, 'planPayment'])->name('pay-for-plan');
 Route::post('/pay-for-dues', [App\Http\Controllers\TransactionController::class, 'duesPayment'])->name('pay-dues');
+Route::post('/pay-for-anytime', [App\Http\Controllers\TransactionController::class, 'anytimePayment'])->name('pay-anytime');
 Route::post('/pay-for-form', [App\Http\Controllers\TransactionController::class, 'formPayment'])->name('pay-form');
 
 Route::get('/home', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('home');

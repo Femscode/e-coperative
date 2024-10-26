@@ -154,6 +154,36 @@ class TransactionController extends Controller
         );
         echo json_encode($result);
     }
+    public function anytimePayment(Request $request){
+
+        $data = $request->all();
+        // dd($formattedNumber);
+        $input = $request->all();
+        // amount to pay
+       // dd($data['checkedData'][1]['value']);
+        $fees = $data['checkedData'];
+        $amount = preg_replace('/[^\d.]/', '', $data['checkedData'][1]['value'])  ;
+        $input['password'] = Hash::make($request->password);
+        $input['amount'] = $amount ;
+        $input['balance'] = $amount ;
+        $input['payment_type'] = "Monthly Dues" ;
+        $input['user_id'] = Auth::user()->id;
+        $input['company_id'] = Auth::user()->company_id;
+        $tag = date("dY");
+        $input['month'] = $tag ;
+        $input['transaction_id'] = $transaction_id = intval($tag) + rand(0, 30) * 50;
+        $transaction = Transaction::create($input);
+
+        // $transaction->update(["transaction_id" => $transaction_id]);
+        $result = array(
+            "transaction_id" => $transaction_id,
+            "order_id" => $transaction,
+            "payment_process" => 1,
+            "status" => "success",
+            "amount_paid" => $transaction->amount,
+        );
+        echo json_encode($result);
+    }
     public function formPayment(Request $request){
 
         $data = $request->all();

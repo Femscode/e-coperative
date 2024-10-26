@@ -66,7 +66,7 @@
                                 <tr>
                                     <th scope="col">S/N</th>
                                     <th scope="col">Description</th>
-                                    <th scope="col">Month</th>
+                                    <th scope="col">Amount</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Date</th>
                                 </tr><!-- end tr -->
@@ -77,7 +77,7 @@
                                 <tr>
                                     <td class="fw-medium">{{ $loop->iteration }}</td>
                                     <td class="fw-medium">{{ $transaction->payment_type }}</td>
-                                    <td class="fw-medium">{{ $transaction->month }}</td>
+                                    <td class="fw-medium">{{ number_format($transaction->amount, 2 )}}</td>
                                     <td class="fw-medium"><i class="ri-check-double-line me-3 align-middle fs-16"></i></td>
                                     <td class="text-muted">{{ $transaction->updated_at }}</td>
                                 </tr><!-- end tr -->

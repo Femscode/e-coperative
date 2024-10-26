@@ -37,11 +37,11 @@
                                             <div class="mb-3">
                                                 <label for="" class="form-label">Amount</label>
                                                 <input type="text" name="total_applied" required
-                                                    data-min="{{ auth()->user()->plan()->min_loan_range }}"
-                                                    data-max="{{ auth()->user()->plan()->max_loan_range }}"
-                                                    data-refund="{{ auth()->user()->plan()->loan_month_repayment }}"
-                                                    min="{{ auth()->user()->plan()->min_loan_range }}"
-                                                    max="{{ auth()->user()->plan()->max_loan_range }}"
+                                                    data-min="{{ auth()->user()->plan()->min_loan_range ?? ""}}"
+                                                    data-max="{{ auth()->user()->plan()->max_loan_range ?? "" }}"
+                                                    data-refund="{{ auth()->user()->plan()->month ?? ""}}"
+                                                    min="{{ auth()->user()->plan()->min_loan_range ?? "" }}"
+                                                    max="{{ auth()->user()->plan()->max_loan_range ?? "" }}"
                                                     class="form-control loanAmount amount" id=""
                                                     placeholder="Enter amount">
                                                 <div id="passwordHelpBlock" class="form-text">

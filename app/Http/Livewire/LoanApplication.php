@@ -20,9 +20,9 @@ class LoanApplication extends Component
         $data['title'] = "Applications";
         $user = auth()->user();
         if($this->filter == ''){
-            $data['loans'] = MemberLoan::where('company_id',$user->company_id)->where('user_id', auth()->user()->id)->paginate(10);
+            $data['loans'] = MemberLoan::where('user_id', auth()->user()->id)->paginate(10);
         }else{
-            $data['loans'] = MemberLoan::where('company_id',$user->company_id)->where(function ($query) {
+            $data['loans'] = MemberLoan::where(function ($query) {
                 $query->where('user_id', auth()->user()->id);
             })
             ->where(function ($query) {

@@ -29,6 +29,31 @@ class MemberController extends Controller
     public function manualPayment(){
         $startDate = Carbon::parse(Auth::user()->created_at);
         $endDate = Carbon::now();
+        $mode = Auth::user()->plan()->mode;
+        //dd($mode);
+        switch($mode){
+            case 'Anytime':
+
+                return view ('member.payment.anytime');
+                    $this->redirectTo = '/admin';
+            return $this->redirectTo;
+                break;
+
+            case 'Monthly':
+
+                    $this->redirectTo = '/member';
+
+                return $this->redirectTo;
+                break;
+            case 'Weekly':
+
+                    $this->redirectTo = '/member';
+
+                return $this->redirectTo;
+                break;
+
+
+        }
         $currentDate = $startDate->copy()->startOfMonth();
         while ($currentDate->lte($endDate) && $currentDate->month <= $endDate->month) {
             $monthsToView[] = $currentDate->format('F Y');
