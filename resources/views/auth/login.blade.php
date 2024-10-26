@@ -43,10 +43,10 @@
                 <div class="col-md-8 col-lg-6 col-xl-5">
                     <div class="card mt-4">
                     
-                        <div class="card-body p-4 bg-color-fffaeb"> 
+                        <div style='background-color: #e5f7b3;' class="card-body p-4 bg-color-e5f7b3"> 
                             <div class="text-center mt-2">
-                                <h5 class="text-primary">Welcome Back !</h5>
-                                <p class="text-muted">Sign in to access your account.</p>
+                                <h3 class="text-primary" style='color:#082720'>Welcome Back !</h3>
+                                <p class="text-dark">Sign in to access your account.</p>
                             </div>
                             <div class="p-2 mt-4">
                                 <form method="POST" action="{{route('login')}}">
@@ -78,7 +78,7 @@
                                     </div>
                                     
                                     <div class="mt-4">
-                                        <button class="btn btn-success w-100" type="submit">
+                                        <button style='background-color: #082720 ;border:0px' class="btn btn-success w-100" type="submit">
                                         {{ __('Login') }}
                                         </button>
 

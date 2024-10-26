@@ -30,4 +30,7 @@ class WebsiteController extends Controller
         dd($results);
         return view('search', compact('results'));
     }
+    public function checkpayment() {
+        return view('frontend.checkpayment');
+    }
 }
