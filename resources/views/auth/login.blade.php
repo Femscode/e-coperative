@@ -10,7 +10,15 @@
         <!-- custom Css-->
         <link href="{{url('assets/css/custom.min.css')}}" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
-   
+        <style>
+            .field-icon {
+                float: right;
+                left: -10px;
+                margin-top: -23px;
+                position: relative;
+                z-index: 2;
+            }
+        </style>
 @endsection
 
 @section('content')
