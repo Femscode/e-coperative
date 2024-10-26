@@ -165,6 +165,7 @@
                         <div class="section-heading">
                             <span class="sub-title">TOP FEATURES</span>
                             <h2 class="text-white">Features That Empower Your <span><img src="frontend_assets/images/svg/lines-1.svg" alt="image">Cooperative</span> To The Next Level</h2>
+                            <a class='btn btn-primary' href='/cooperative/signup'>Register Your Co-operative Today</a>
                             <!-- <p class="text-white">With a robust suite of products ranging from digital banking and payment processing to wealth management and blockchain applications we empower our clients.</p> -->
                         </div>
                         <ul>

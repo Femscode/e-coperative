@@ -122,7 +122,7 @@
     <div class="mobile-navbar offcanvas offcanvas-end border-0" data-bs-backdrop="static" tabindex="-1" id="navbarOffcanvas">
         <div class="offcanvas-header">
             <a href="#" class="logo d-inline-block">
-                <img src="frontend_assets/images/white-logo.png" alt="logo">
+                <img src="{{ asset('assets/images/favicon.ico') }}" width=50 alt="logo">
             </a>
             <button type="button" class="close-btn bg-transparent position-relative lh-1 p-0 border-0" data-bs-dismiss="offcanvas" aria-label="close">
                 <i class="ri-close-fill"></i>
@@ -168,7 +168,7 @@
                         <a href="/signup" class="search-btn login"><i class="ri-account-circle-line"></i> Sign Up</a>
                     </li>
                     <li>
-                        <a href="#" class="default-btn">Get Started <i class="ri-arrow-right-up-line"></i></a>
+                        <a href="/cooperative/signup" class="default-btn">Get Started <i class="ri-arrow-right-up-line"></i></a>
                     </li>
                 </ul>
             </div>
