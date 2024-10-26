@@ -10,7 +10,29 @@
 <!-- custom Css-->
 <link href="{{url('assets/css/custom.min.css')}}" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
-
+<style>
+    .field-icon {
+       float: right;
+       left: -10px;
+       margin-top: -23px;
+       position: relative;
+       z-index: 2;
+   }
+   .preloader {
+      align-items: center;
+      background: gray;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      left: 0;
+      position: fixed;
+      top: 0;
+      transition: opacity 0.3s linear;
+      width: 100%;
+      z-index: 9999;
+      opacity: 0.4;
+  }
+</style>
 @endsection
 
 @section('content')
@@ -212,10 +234,10 @@
                                         <div class="tab-pane fade show active" id="steparrow-gen-info" role="tabpanel" aria-labelledby="steparrow-gen-info-tab">
                                             <div>
                                                 <div class="row">                                             
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-12">
                                                         <div class="mb-3">
                                                             <label class="form-label" for="gen-info-password-input">Full Name</label>
-                                                            <input type="text" class="form-control" required name="name" id="gen-info-password-input" placeholder="Enter Full Name Of Your Co-operative" />
+                                                            <input type="text" class="form-control" required name="name" id="gen-info-password-input" placeholder="Enter Full Name " />
                                                         </div>
 
                                                     </div>
