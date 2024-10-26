@@ -16,7 +16,7 @@
       
 
       var myHeaders = new Headers();
-      myHeaders.append("Authorization", "Payaza " +btoa('PZ78-PKTEST-9C385AB6-0175-45B0-9BD9-D1953EAE3490'));
+      myHeaders.append("Authorization", "Bearer " +btoa('PZ78-PKTEST-F9D350FC-8D1A-43A7-877B-0BE5858EADFC'));
       myHeaders.append("Content-Type", "application/json");
 
       
@@ -28,7 +28,7 @@
               "email_address": "johndoe@gmail.com",
               "phone_number": "01234567890",
               "amount": 0.01,
-              "transaction_reference": "PL-1KBPSCJCRD"+Math.floor((Math.random() * 10000000) + 1),
+              "transaction_reference": "PL-1KBPSCJCRDkkk"+Math.floor((Math.random() * 10000000) + 1),
               "currency": "USD",
               "description": "Test for 3DS",
               "card": {
@@ -37,7 +37,7 @@
                   "securityCode": securityCode,
                   "cardNumber": cardNumber
               },
-              "callback_url":"https://webhook.site/ed6dd42-dfcf-44a3-8fa7-4cc1ab55e029"             }
+              "callback_url":"https://cthostel.com"             }
       });
 
       var requestOptions = {

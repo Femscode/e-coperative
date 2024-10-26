@@ -342,8 +342,9 @@
                               <div class="col-12 text-center">
                                    <script>
                                         document.write(new Date().getFullYear())
-                                   </script> &copy; CTTaste. A product of <a
-                                        href="https://cthostel.com" class="text-green" target="_blank">CTHostel</a>
+                                   </script> &copy; E-Cooperative. 
+                                   <!-- A product of <a
+                                        href="https://cthostel.com" class="text-green" target="_blank">CTHostel</a> -->
                                         <!-- href="https://cthostel.com" class="fw-bold footer-text" target="_blank">CTHostel</a> -->
                               </div>
                          </div>

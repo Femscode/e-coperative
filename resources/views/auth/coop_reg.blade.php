@@ -55,7 +55,7 @@
                             <div class="card-body form-steps">
                                 <form action="#">
                                     <div class="text-center pt-3 pb-4 mb-1">
-                                        <h5>Signup Your Account</h5>
+                                        <h3 style='color:#082720'>Signup Your Account</h3>
                                     </div>
                                     <div id="custom-progress-bar" class="progress-nav mb-4">
                                         <div class="progress" style="height: 1px">
@@ -225,11 +225,11 @@
                     <div class="col-xl-6">
                         <div class="card">
                             <!-- end card header -->
-                            <div class="card-body form-steps bg-color-fffaeb">
+                            <div style='background-color: #e5f7b3;' class="card-body form-steps bg-color-">
                                 <form action='save_coop_reg' method="post">
                                     @csrf
                                     <div class="text-center mt-2">
-                                        <h5 class="text-primary">Go Digital, Go Far!</h5>
+                                        <h3 style='color:#082720' class="text-">Go Digital, Go Far!</h3>
                                         <h6> Bring Your Cooperative into the Digital Age!</h6>
 
                                     </div>
@@ -295,7 +295,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button type="button"
+                                                <button style='background-color:#082720;border:0px' type="button"
                                                     class="btn btn-success btn-label right ms-auto nexttab nexttab"
                                                     data-nexttab="steparrow-description-info-tab">
                                                     <i
@@ -352,13 +352,13 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button type="button" class="btn btn-light btn-label previestab"
+                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-success btn-label previestab"
                                                     data-previous="steparrow-gen-info-tab">
                                                     <i
                                                         class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
                                                     Back to General
                                                 </button>
-                                                <button type="button"
+                                                <button style='background-color:#082720;border:0px' type="button"
                                                     class="btn btn-success btn-label right ms-auto nexttab nexttab"
                                                     data-nexttab="pills-experience-tab">
                                                     <i
@@ -388,13 +388,13 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button type="button" class="btn btn-light btn-label previestab"
+                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-light btn-label previestab"
                                                     data-previous="steparrow-description-info-tab">
                                                     <i
                                                         class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
                                                     Back to Description
                                                 </button>
-                                                <button type="submit"
+                                                <button style='background-color:#082720;border:0px' type="submit"
                                                     class="btn btn-success btn-label right ms-auto nexttab nexttab"
                                                     data-nexttab="pills-experience-tab">
                                                     <i
