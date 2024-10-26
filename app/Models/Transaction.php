@@ -28,6 +28,7 @@ class Transaction extends Model implements Auditable
         'plan_id',
         'original',
         'uuid',
+        'week',
     ];
 
     public function user()

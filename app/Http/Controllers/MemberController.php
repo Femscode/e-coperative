@@ -106,12 +106,12 @@ class MemberController extends Controller
             $weeksToView[] = "$weekStart - $weekEnd";
             $currentDate->addWeek();  // Move to the next week
         }
-
+        // dd("here");
         // Assuming your `Transaction` records store weeks in a similar format as above (or adjust the format as needed)
         $myWeeks = Transaction::where('user_id', auth()->user()->id)
             ->where([
                 ['status', 'Success'],
-                ['payment_type', 'Monthly Dues']
+                ['payment_type', 'Weekly Dues']
             ])
             ->pluck('week')  // Change 'month' to 'week' if you have a week field
             ->toArray();
@@ -123,7 +123,7 @@ class MemberController extends Controller
                 $weeks[] = ['source' => '1', 'week' => $thisWeek];
             }
         }
-
+        // dd("here");
         // $currentDate = $startDate->copy()->startOfMonth();
         // while ($currentDate->lte($endDate) && $currentDate->month <= $endDate->month) {
         //     $monthsToView[] = $currentDate->format('F Y');
@@ -140,7 +140,7 @@ class MemberController extends Controller
         //     }
         // }
         // $data['months'] = $months ;
-        // $data['plan'] = Auth::user()->plan();
+        $data['plan'] = Auth::user()->plan();
         // // check if member has ongoing loan application
         // $check = MemberLoan::where([['user_id', auth()->user()->id],['status', 'Ongoing']])->first();
         // $dateArray = [];
@@ -171,7 +171,7 @@ class MemberController extends Controller
         $data['months'] = $weeks;//array_merge($months, $dateArray);
         // $data['months'] = $months + $dateArray;
         // dd($check, $data);
-        return view ('member.payment.pending', $data);
+        return view ('member.payment.weekly', $data);
     }
 
     public function automaticPayment(){

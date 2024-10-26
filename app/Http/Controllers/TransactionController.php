@@ -138,7 +138,12 @@ class TransactionController extends Controller
             // dd($fee['fee']);
             $input['uuid'] = $fee['uuid'] ;
             $input['company_id'] = Auth::user()->company_id ;
-            $input['month'] = $fee['month'] ;
+            if(isset( $fee['month'])){
+                $input['month'] = $fee['month'] ;
+            }else{
+                $input['week'] = $fee['week'] ;
+            }
+            $input['month'] = $fee['month'] ?? "";
             $input['balance'] = floatval($fee['fee']) ;
             $input['original'] = floatval($fee['original']) ;
             $input['payment_type'] =$fee['payment_type'];
