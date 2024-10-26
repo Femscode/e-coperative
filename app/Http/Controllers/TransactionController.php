@@ -137,6 +137,7 @@ class TransactionController extends Controller
         foreach($fees as $key => $fee){
             // dd($fee['fee']);
             $input['uuid'] = $fee['uuid'] ;
+            $input['company_id'] = Auth::user()->company_id ;
             $input['month'] = $fee['month'] ;
             $input['balance'] = floatval($fee['fee']) ;
             $input['original'] = floatval($fee['original']) ;
