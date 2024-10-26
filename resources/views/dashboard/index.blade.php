@@ -93,7 +93,7 @@
                                    <div class="card">
                                         <div class="card-body overflow-hidden position-relative">
                                              <iconify-icon icon="iconamoon:category-duotone" class="fs-36 text-success"></iconify-icon>
-                                             <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ $transactions->where('payment_type', 'Registration')->sum('balance')}}</h3>
+                                             <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Registration')->sum('balance'), 2)}}</h3>
                                              <a href='/today_orders' class="text-muted">Registration Revenue</a>
                                              <i class="bx bx-bar-chart-alt-2 widget-icon"></i>
                                         </div>

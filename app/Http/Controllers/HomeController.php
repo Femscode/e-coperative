@@ -31,8 +31,9 @@ class HomeController extends Controller
         $data['user'] = $user = Auth::user();
        
         $data['now'] = Carbon::now();
-        $data['users'] = User::where('company_id',$user->company_id)->get();
-        $transacts = Transaction::where('company_id',$user->company_id)->where('status','Success');
+        $company = Company::where('uuid', $user->company_id)->first();
+        $data['users'] = User::where('company_id',$company->id)->get();
+        $transacts = Transaction::where('company_id',$company->id)->where('status','Success');
         $data['transactions'] = $transacts->get();
         $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->paginate(20);
         return view('dashboard.index', $data);
