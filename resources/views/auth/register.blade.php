@@ -222,7 +222,7 @@
                         <div class="card">
                             <!-- end card header -->
                             <div class="card-body form-steps">
-                                <form action='process-order-form' method="post">
+                                <form id="process-order-form" method="post">
                                     @csrf
                                     <div class="text-center mt-2">
                                         <h5 class="text-primary">Go Digital, Go Far!</h5>
@@ -346,11 +346,11 @@
                                                             @if(isset($slug))
                                                             <label class="form-label" for="gen-info-password-input">Coperative Name</label>
                                                             <h4>{{$company->name}}</h4>
-                                                            <input class='form-control' value="{{$company->id}}" name='company' type='hidden' />
+                                                            <input class='form-control' value="{{$company->uuid}}" name='company' type='hidden' />
 
                                                             @else
                                                             <label class="form-label" for="gen-info-password-input">Select Coperative</label>
-                                                            <select class='form-control planId' name='company'>
+                                                            <select class='form-control planId' required name='company'>
                                                                 <option value="">--Select Cooperative--</option>
                                                                 @foreach($coperative ?? App\Models\Company::all() as $coop)
                                                                 <option value='{{$coop->uuid}}'>{{ $coop->name }}</option>
@@ -471,7 +471,11 @@
                     success: function(e) {
                         $('.preloader').hide();
                         $('.preloader').hide();
-                        payWithPaystack(e);
+                        if(e.status == 0){
+                            new swal("Congratulations!","Registration Succesful","success");
+                        }else{
+                            payWithPaystack(e);
+                        }
                     },
                     error: function(e) {
                         $('.preloader').hide();
