@@ -1,49 +1,90 @@
-@extends('frontend.master')
-@section('header')
-<script src="{{url('assets/js/layout.js')}}"></script>
-<!-- Bootstrap Css -->
-<link href="{{url('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
-<!-- Icons Css -->
-<link href="{{url('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
-<!-- App Css-->
-<link href="{{url('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
-<!-- custom Css-->
-<link href="{{url('assets/css/custom.min.css')}}" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg">
 
-@endsection
 
-@section('content')
-<div class="page-banner-area position-relative overflow-hidden" 
-     style="background-image: url({{url('frontend_assets/images/hero/hero-image-1.svg')}})">
+<head>
 
-<!-- <div class="page-banner-area position-relative overflow-hidden" style="background-image: url(frontend_assets/images/hero/hero-image-1.svg)"> -->
-    <div class="container">
-        <div class="page-banner-content">
-            <h1>Create An Account</h1>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li>Sign Up</li>
-            </ul>
-        </div>
-    </div>
-    <div class="shape-image">
-        <img class="page-banner-shape-1 moveHorizontal_reverse" src="{{url('frontend_assets/images/shape/feature-shape-1.png')}}" alt="shape">
-        <img class="page-banner-shape-2 moveVertical" src="{{url('frontend_assets/images/shape/feature-shape-1.png')}}" alt="shape">
-    </div>
-</div>
+    <meta charset="utf-8" />
+    <title>Sign Up | 1 Million Hands COOP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="1 Million Hands" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
 
+    <!-- Layout config Js -->
+    <script src="{{url('assets/js/layout.js')}}"></script>
+    <!-- Bootstrap Css -->
+    <link href="{{url('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="{{url('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="{{url('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="{{url('assets/css/custom.min.css')}}" rel="stylesheet" type="text/css" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <style>
+        .field-icon {
+            float: right;
+            left: -10px;
+            margin-top: -23px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .preloader {
+            align-items: center;
+            background: gray;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            left: 0;
+            position: fixed;
+            top: 0;
+            transition: opacity 0.3s linear;
+            width: 100%;
+            z-index: 9999;
+            opacity: 0.4;
+        }
+
+    </style>
+</head>
 
 <body>
-   
+    <div class="preloader" style="display:none">
+        <div class="spinner-grow text-info m-1" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        {{-- <img src="spinner.svg" alt="spinner"> --}}
+    </div>
     <div class="auth-page-wrapper pt-5">
         <!-- auth page bg -->
-       
+        <div class="auth-one-bg-position auth-one-bg" id="auth-particles">
+            <div class="bg-overlay"></div>
+
+            <div class="shape">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 120">
+                    <path d="M 0,36 C 144,53.6 432,123.2 720,124 C 1008,124.8 1296,56.8 1440,40L1440 140L0 140z"></path>
+                </svg>
+            </div>
+        </div>
 
         <!-- auth page content -->
         <div class="auth-page-content">
             <div class="container">
-               
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center mt-sm-5 mb-4 text-white-50">
+                            <div>
+                                <a href="/" class="d-inline-block auth-logo">
+                                    <img src="{{ asset('website/images/logo4.png')}}" alt="" height="60">
+                                </a>
+                            </div>
+                            {{-- <p class="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p> --}}
+                        </div>
+                    </div>
+                </div>
                 <!-- end row -->
 
                 <div class="row justify-content-center">
@@ -180,12 +221,12 @@
                     <div class="col-xl-6">
                         <div class="card">
                             <!-- end card header -->
-                            <div style='background-color: #e5f7b3;' class="card-body form-steps">
+                            <div class="card-body form-steps">
                                 <form id="process-order-form" method="post">
                                     @csrf
                                     <div class="text-center mt-2">
-                                        <h3 style='color:#082720' class="text-">Go Digital, Go Far!</h3>
-                                        <h6> Join a cooperative today!</h6>
+                                        <h5 class="text-primary">Go Digital, Go Far!</h5>
+                                        <h6> Bring Your Cooperative into the Digital Age!</h6>
 
                                     </div>
                                     <div class="step-arrow-nav mb-4">
@@ -236,7 +277,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" data-nexttab="steparrow-description-info-tab">
+                                                <button type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" data-nexttab="steparrow-description-info-tab">
                                                     <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go
                                                     to description
                                                 </button>
@@ -279,7 +320,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-light btn-label previestab" data-previous="steparrow-gen-info-tab">
+                                                <button type="button" class="btn btn-light btn-label previestab" data-previous="steparrow-gen-info-tab">
                                                     <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
                                                     Back to General
                                                 </button>
@@ -336,11 +377,11 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-light btn-label previestab" data-previous="steparrow-description-info-tab">
+                                                <button type="button" class="btn btn-light btn-label previestab" data-previous="steparrow-description-info-tab">
                                                     <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
                                                     Back to Description
                                                 </button>
-                                                <button style='background-color:#082720;border:0px' type="submit" class="btn btn-success btn-label right ms-auto nexttab nexttab" data-nexttab="pills-experience-tab">
+                                                <button type="submit" class="btn btn-success btn-label right ms-auto nexttab nexttab" data-nexttab="pills-experience-tab">
                                                     <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Submit
                                                 </button>
                                             </div>
@@ -611,4 +652,3 @@
 
     </script>
 </body>
-@endsection
