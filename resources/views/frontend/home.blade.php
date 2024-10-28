@@ -255,7 +255,9 @@
                         <span class="sub-title">Trending Cooperatives</span>
                         <h2>Find Yourself A <span><img src="frontend_assets/images/svg/lines-2.svg" alt>Cooperative</span></h2>
                         <p class="mb-5">Choose a suitable cooperative that suites your need.</p>
-                        <a href="services.html" class="default-btn two">See All Cooperatives <i class="ri-arrow-right-up-line"></i></a>
+                        {{-- <a href="services.html" class="default-btn two">See All Cooperatives <i class="ri-arrow-right-up-line"></i></a> --}}
+                        <a href="{{ route('cooperatives.list') }}" class="default-btn two">See All Cooperatives <i class="ri-arrow-right-up-line"></i></a>
+
                         <div class="services-btn">
                             <div class="swiper-button-next">
                                 <i class="ri-arrow-right-line"></i>

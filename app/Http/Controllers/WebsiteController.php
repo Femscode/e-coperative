@@ -7,20 +7,24 @@ use Illuminate\Http\Request;
 
 class WebsiteController extends Controller
 {
-    public function index(){
-        
+    public function index()
+    {
+
         $data['companies'] = Company::latest()->get();
         return view('frontend.home', $data);
         return view('website.index');
 
     }
-    public function about(){
+    public function about()
+    {
         return view('website.about');
     }
-    public function contact(){
+    public function contact()
+    {
         return view('website.contact');
     }
-    public function plan(){
+    public function plan()
+    {
         return view('website.plan');
     }
     public function search(Request $request)
@@ -30,7 +34,20 @@ class WebsiteController extends Controller
         dd($results);
         return view('search', compact('results'));
     }
-    public function checkpayment() {
+    public function checkpayment()
+    {
         return view('frontend.checkpayment');
+    }
+
+    public function list()
+    {
+        $cooperatives = Company::all();
+        return view('frontend.cooperativelist', compact('cooperatives')); // Pass to the view
+    }
+
+    public function show($id)
+    {
+        $cooperative = Company::findOrFail($id);
+        return view('cooperatives.details', compact('cooperative'));
     }
 }

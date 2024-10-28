@@ -37,17 +37,23 @@ Route::post('/pay-for-plan', [App\Http\Controllers\TransactionController::class,
 Route::post('/pay-for-dues', [App\Http\Controllers\TransactionController::class, 'duesPayment'])->name('pay-dues');
 Route::post('/pay-for-anytime', [App\Http\Controllers\TransactionController::class, 'anytimePayment'])->name('pay-anytime');
 Route::post('/pay-for-form', [App\Http\Controllers\TransactionController::class, 'formPayment'])->name('pay-form');
+// routes/web.php
+Route::get('/cooperatives-list', [App\Http\Controllers\WebsiteController::class, 'list'])->name('cooperatives.list');
+Route::get('//cooperatives/{id}', [App\Http\Controllers\WebsiteController::class, 'show'])->name('cooperatives.details');
+
+
+
 
 Route::get('/home', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('home');
 Auth::routes();
-Route::group(['middleware' => ['auth']], function(){
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/user/two-factor-authentication', [App\Http\Controllers\ProfileController::class, 'otp'])->name('t2fa');
     Route::get('/dashboard', [App\Http\Controllers\ProfileController::class, 'dashboard'])->name('dashboard');
     Route::get('/banks', [App\Http\Controllers\ProfileController::class, 'paystackBanks'])->name('get-paystack-banks');
     Route::post('/change-file', [App\Http\Controllers\ProfileController::class, 'saveFile'])->name('save-file');
     Route::post('/verify-account', [App\Http\Controllers\ProfileController::class, 'verifyAccount'])->name('verify-account');
     Route::post('/user/verify-two-factor-authentication', [App\Http\Controllers\ProfileController::class, 'verify'])->name('verify-otp');
-    Route::group(['middleware' => ['2fa']], function(){
+    Route::group(['middleware' => ['2fa']], function () {
         Route::post('/toggle-2fa', [App\Http\Controllers\ProfileController::class, 'toggleTwo'])->name('enable-2fa');
         Route::group(['middleware' => 'admin'], function () {
             Route::group(['prefix' => 'admin'], function () {
