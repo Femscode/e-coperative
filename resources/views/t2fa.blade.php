@@ -10,7 +10,7 @@
         <meta content="1 Million Hands Global Initiative" name="description" />
         <meta content="Themesbrand" name="author" />
         <!-- App favicon -->
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
+        <link rel="shortcut icon" href="assets/images/cooplogo.png">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Layout config Js -->
         <script src="{{ asset('assets/js/layout.js') }}"></script>

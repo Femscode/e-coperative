@@ -16,8 +16,8 @@
     <link rel="stylesheet" href="{{url('frontend_assets/css/style.css')}}">
     <link rel="stylesheet" href="{{url('frontend_assets/css/responsive.css')}}">
 
-    <title>E-Coperative</title>
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+    <title>E-Cooperative</title>
+    <link rel="shortcut icon" href="{{ asset('assets/images/cooplogo.png') }}">
     @yield('header')
 </head>
 
@@ -62,7 +62,7 @@
         <nav class="navbar navbar-expand-lg bg-color-ffffff" id="navbar">
             <div class="container-fluid side-padding position-relative">
                 <a class="navbar-brand logo-brand p-0" href="#">
-                    <img src="{{ asset('assets/images/favicon.ico') }}" width="50" alt="image">
+                    <img src="{{ asset('assets/images/cooplogo.png') }}" width="100" alt="image">
                 </a>
                 <a class="navbar-toggler" data-bs-toggle="offcanvas" href="#navbarOffcanvas" role="button" aria-controls="navbarOffcanvas">
                     <span class="burger-menu">
@@ -122,7 +122,7 @@
     <div class="mobile-navbar offcanvas offcanvas-end border-0" data-bs-backdrop="static" tabindex="-1" id="navbarOffcanvas">
         <div class="offcanvas-header">
             <a href="#" class="logo d-inline-block">
-                <img src="{{ asset('assets/images/favicon.ico') }}" width=50 alt="logo">
+                <img src="{{ asset('assets/images/cooplogo.png') }}" width=50 alt="logo">
             </a>
             <button type="button" class="close-btn bg-transparent position-relative lh-1 p-0 border-0" data-bs-dismiss="offcanvas" aria-label="close">
                 <i class="ri-close-fill"></i>

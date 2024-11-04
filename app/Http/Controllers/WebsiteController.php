@@ -41,8 +41,8 @@ class WebsiteController extends Controller
 
     public function list()
     {
-        $cooperatives = Company::all();
-        return view('frontend.cooperativelist', compact('cooperatives')); // Pass to the view
+        $data['companies'] = $data['cooperatives'] = $cooperatives = Company::all();
+        return view('frontend.cooperativelist', $data); // Pass to the view
     }
 
     public function show($id)
