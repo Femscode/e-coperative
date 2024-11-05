@@ -41,7 +41,7 @@ class WebsiteController extends Controller
 
     public function list()
     {
-        $data['companies'] = $data['cooperatives'] = $cooperatives = Company::all();
+        $data['companies'] = $data['cooperatives'] = $cooperatives = Company::paginate(10);
         return view('frontend.cooperativelist', $data); // Pass to the view
     }
 

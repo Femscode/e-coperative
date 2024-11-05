@@ -207,7 +207,13 @@
                                     @csrf
                                     <div class="text-center mt-2">
                                         <h3 style='color:#082720' class="text-">Go Digital, Go Far!</h3>
+                                        @if(isset($slug))
+                                        <h6> Join {{ $company->name }} today!</h6>
+
+                                        @else  
                                         <h6> Join a cooperative today!</h6>
+
+                                        @endif
 
                                     </div>
                                     <div class="step-arrow-nav mb-4">

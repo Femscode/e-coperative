@@ -1,6 +1,17 @@
 @extends('frontend.master')
 
 @section('header')
+<script src="{{url('assets/js/layout.js')}}"></script>
+<!-- Bootstrap Css -->
+<link href="{{url('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
+<!-- Icons Css -->
+<link href="{{url('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+<!-- App Css-->
+<link href="{{url('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
+<!-- custom Css-->
+<link href="{{url('assets/css/custom.min.css')}}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
 @endsection
 
 @section('content')
@@ -55,29 +66,7 @@
         <div class="service-pagination mt-5">
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="services.html" aria-label="Next">
-                            <span aria-hidden="true">
-                                <i class="ri-arrow-left-s-line"></i>
-                            </span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link active" href="services.html">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="services.html">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="services.html">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="services.html" aria-label="Next">
-                            <span aria-hidden="true">
-                                <i class="ri-arrow-right-s-line"></i>
-                            </span>
-                        </a>
-                    </li>
+                    {!! $cooperatives->links() !!}
                 </ul>
             </nav>
         </div>
