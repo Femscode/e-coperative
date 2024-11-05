@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{url('frontend_assets/css/responsive.css')}}">
 
     <title>E-Cooperative</title>
-    <link rel="shortcut icon" href="{{ asset('assets/images/cooplogo.png') }}">
+    <link rel="shortcut icon" href="{{ url('assets/images/cooplogo.png') }}">
     @yield('header')
 </head>
 
