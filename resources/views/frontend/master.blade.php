@@ -44,7 +44,7 @@
                         <ul class="left-side">
                             <li><span>Local Cooperatives to the Digital Era</span></li>
                             <li><a href="tel:+2349058744473"><i class="flaticon-phone-call"></i> <b>Call:</b> +234 (905) 8744473</a></li>
-                            <li><a href="#"><i class="flaticon-email-1"></i> <b>Mail:</b> <span class="__cf_email__" data-cfemail="6008050c0c0f2006090e140f4e030f0d">support@ecoop.com</span></a></li>
+                            <li><a href="#"><i class="flaticon-email-1"></i> <b>Mail:</b> <span class="__cf_email__">support@ecoop.com</span></a></li>
                         </ul>
                     </div>
                     <div class="col-lg-4 col-md-12">
@@ -285,7 +285,7 @@
                             <li>
                                 <img class="phone" src="frontend_assets/images/svg/mail.svg" alt="image">
                                 <span class="text-white"><b>Email:</b></span>
-                                <a href="https://templates.hibootstrap.com/cdn-cgi/l/email-protection#6b030e0707042b0d02051f0445080406"><span class="__cf_email__" data-cfemail="167e737a7a7956707f7862793875797b">support@e-coperative.com</span></a>
+                                <a><span class="__cf_email__">support@e-coperative.com</span></a>
                             </li>
                             <li>
                                 <img class="phone" src="frontend_assets/images/svg/phone.svg" alt="image">
