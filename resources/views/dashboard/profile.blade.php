@@ -34,7 +34,7 @@
 
 
                         <p class="d-flex align-items-center border p-2 rounded-2 border-dashed bg-body text-start mb-0">
-                            <span id="cttaste-link">https://ecoop.com/{{ $user->company->slug }}</span>
+                            <span id="cttaste-link">https://ecoop.com/{{ $user->company->slug ?? '' }}</span>
                             <a href="#!" class="ms-auto fs-4 copy-link"><i class="ti ti-copy"></i></a>
                         </p>
                     </div>
