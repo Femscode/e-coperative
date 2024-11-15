@@ -15,7 +15,7 @@ use App\Models\Transaction;
 use App\Models\NumberCount;
 use App\Models\MemberLoan;
 use Illuminate\Support\Facades\Validator;
-use Paystack;// Paystack package
+use Paystack; // Paystack package
 class TransactionController extends Controller
 {
     /**
@@ -24,7 +24,8 @@ class TransactionController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function planPayment(Request $request){
+    public function planPayment(Request $request)
+    {
         ini_set('memory_limit', '256M');
         $data = $request->except('_token');
         // dd($data);
@@ -38,22 +39,22 @@ class TransactionController extends Controller
             'company' => 'exists:companies,uuid'
         ]);
 
-        if($validator->fails()) {
-           return response()->json(['message' => $validator->errors()->first()], 400);
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], 400);
         }
 
         $formattedNumber = formatPhoneNumber($request->phone);
-        if($formattedNumber['status'] == false){
+        if ($formattedNumber['status'] == false) {
             return response()->json([
                 'status' => 'error',
-                'message' =>$formattedNumber['message'],
+                'message' => $formattedNumber['message'],
                 'data' => $formattedNumber['data'],
-            ],400);
+            ], 400);
         }
         //check if coop has reg fee
         $coop = Company::where('uuid', $request->company)->first();
         $fee = $coop->reg_fee;
-        
+
         // dd($formattedNumber);
         $input = $request->except('_token');
         $input['password'] = Hash::make($request->password);
@@ -61,19 +62,20 @@ class TransactionController extends Controller
         $amount = $coopD->reg_fee;
         $tag = date("dY");
         $input['transaction_id'] = $transaction_id = intval($tag) + rand(0, 30) * 50;
-        if($fee < 1){
+        if ($fee < 1) {
             $status = 0;
             $checkNumber =  NumberCount::where('coop_id', $coop->id)->first();
             // attempt to give new member coop id
-            if($checkNumber){
+            if ($checkNumber) {
                 $code = $checkNumber->count + 1;
                 $checkNumber->update([
                     "count" => $checkNumber->count + 1,
                 ]);
-            }else{
+            } else {
                 $code = 1;
                 NumberCount::create([
-                    "count" => 1, "coop_id" => $coop->id
+                    "count" => 1,
+                    "coop_id" => $coop->id
                 ]);
             }
             // $code = mt_rand(100000, 999999);
@@ -83,18 +85,18 @@ class TransactionController extends Controller
                 'phone' => $request->phone,
                 'password' => $input['password'],
                 'user_type' => "Member",
-                'coop_id' => convertToUppercase($coopD->name).''.$code,
+                'coop_id' => convertToUppercase($coopD->name) . '' . $code,
                 'company_id' => $coopD->id,
             ]);
-        }else{
+        } else {
             // dd("here");
             $status = 1;
-            $input['amount'] = $input['balance'] = $amount ;
-            $input['company_id'] = $coop->id ;
+            $input['amount'] = $input['balance'] = $amount;
+            $input['company_id'] = $coop->id;
             $input['month'] = now()->format('F Y');
-           
-        //    dd($input);
-        $transaction = Transaction::create($input);
+
+            //    dd($input);
+            $transaction = Transaction::create($input);
             // $transaction = Transaction::create([
             //     "name" => $input['name'],
             //     "email" => $input['email'],
@@ -107,9 +109,9 @@ class TransactionController extends Controller
             // ]);
             // dd("here");
         }
-       
 
-       // $transaction->update(["transaction_id" => $transaction_id]);
+
+        // $transaction->update(["transaction_id" => $transaction_id]);
         $result = array(
             "transaction_id" => $transaction_id,
             "order_id" => $transaction_id,
@@ -120,7 +122,8 @@ class TransactionController extends Controller
         );
         echo json_encode($result);
     }
-    public function duesPayment(Request $request){
+    public function duesPayment(Request $request)
+    {
 
         $data = $request->all();
         // dd($formattedNumber);
@@ -128,25 +131,25 @@ class TransactionController extends Controller
         // amount to pay
         // dd($data['checkedData']);
         $fees = $data['checkedData'];
-        $amount = preg_replace('/[^\d.]/', '', $data['total_amount'])  ;
+        $amount = preg_replace('/[^\d.]/', '', $data['total_amount']);
         $input['password'] = Hash::make($request->password);
-        $input['amount'] = $amount ;
+        $input['amount'] = $amount;
         $input['plan_id'] = Auth::user()->plan_id;
         $tag = date("dY");
         $input['transaction_id'] = $transaction_id = intval($tag) + rand(0, 30) * 50;
-        foreach($fees as $key => $fee){
+        foreach ($fees as $key => $fee) {
             // dd($fee['fee']);
-            $input['uuid'] = $fee['uuid'] ;
-            $input['company_id'] = Auth::user()->company_id ;
-            if(isset( $fee['month'])){
-                $input['month'] = $fee['month'] ;
-            }else{
-                $input['week'] = $fee['week'] ;
+            $input['uuid'] = $fee['uuid'];
+            $input['company_id'] = Auth::user()->company_id;
+            if (isset($fee['month'])) {
+                $input['month'] = $fee['month'];
+            } else {
+                $input['week'] = $fee['week'];
             }
             $input['month'] = $fee['month'] ?? "";
-            $input['balance'] = floatval($fee['fee']) ;
-            $input['original'] = floatval($fee['original']) ;
-            $input['payment_type'] =$fee['payment_type'];
+            $input['balance'] = floatval($fee['fee']);
+            $input['original'] = floatval($fee['original']);
+            $input['payment_type'] = $fee['payment_type'];
             $transaction = Transaction::create($input);
         }
 
@@ -160,23 +163,24 @@ class TransactionController extends Controller
         );
         echo json_encode($result);
     }
-    public function anytimePayment(Request $request){
+    public function anytimePayment(Request $request)
+    {
 
         $data = $request->all();
         // dd($formattedNumber);
         $input = $request->all();
         // amount to pay
-       // dd($data['checkedData'][1]['value']);
+        // dd($data['checkedData'][1]['value']);
         $fees = $data['checkedData'];
-        $amount = preg_replace('/[^\d.]/', '', $data['checkedData'][1]['value'])  ;
+        $amount = preg_replace('/[^\d.]/', '', $data['checkedData'][1]['value']);
         $input['password'] = Hash::make($request->password);
-        $input['amount'] = $amount ;
-        $input['balance'] = $amount ;
-        $input['payment_type'] = "Monthly Dues" ;
+        $input['amount'] = $amount;
+        $input['balance'] = $amount;
+        $input['payment_type'] = "Monthly Dues";
         $input['user_id'] = Auth::user()->id;
         $input['company_id'] = Auth::user()->company_id;
         $tag = date("dY");
-        $input['month'] = $tag ;
+        $input['month'] = $tag;
         $input['transaction_id'] = $transaction_id = intval($tag) + rand(0, 30) * 50;
         $transaction = Transaction::create($input);
 
@@ -190,26 +194,27 @@ class TransactionController extends Controller
         );
         echo json_encode($result);
     }
-    public function formPayment(Request $request){
+    public function formPayment(Request $request)
+    {
 
         $data = $request->all();
         // dd($formattedNumber);
         $input = $request->all();
         // amount to pay
         // dd($data['checkedData']);
-        $amount = preg_replace('/[^\d.]/', '', $data['total_amount'])  ;
+        $amount = preg_replace('/[^\d.]/', '', $data['total_amount']);
         $input['payment_type'] = "Form";
         $input['password'] = Hash::make($request->password);
         $input['month'] = now()->format('F Y');
-        $input['amount'] = $amount ;
+        $input['amount'] = $amount;
         $input['plan_id'] = Auth::user()->plan_id;
         $input['user_id'] = Auth::user()->id;
         $input['phone'] = Auth::user()->phone;
         $input['email'] = Auth::user()->email;
         $tag = date("dY");
         $input['transaction_id'] = $transaction_id = intval($tag) + rand(0, 30) * 50;
-        $input['balance'] = $amount ;
-        $input['original'] = $amount ;
+        $input['balance'] = $amount;
+        $input['original'] = $amount;
         $transaction = Transaction::create($input);
 
         // $transaction->update(["transaction_id" => $transaction_id]);
@@ -225,13 +230,14 @@ class TransactionController extends Controller
         echo json_encode($result);
     }
 
-    public function verifyPayment(Request $request){
-          //process online payment
-          //dd("here");
-          if (isset($_GET["reference"]) && !empty($_GET["reference"])) {
+    public function verifyPayment(Request $request)
+    {
+        //process online payment
+        //dd("here");
+        if (isset($_GET["reference"]) && !empty($_GET["reference"])) {
             //Required Details
             require("assets/paystack-class-master/Paystack.php");
-            $payment_key = env("PAYSTACK_SECRET_KEY");//'sk_test_17ff4ee65864548cbacbe76adc26445b04dd2e05';
+            $payment_key = env("PAYSTACK_SECRET_KEY"); //'sk_test_17ff4ee65864548cbacbe76adc26445b04dd2e05';
             // $payment_key = 'sk_test_91cf1a63ae5745670f6f2daa0871368b0e678934';
             //  $payment_key = 'sk_live_94614973c8c718d21f247f423115780a672b29e0';
             $paystack = new Paystack($payment_key);
@@ -244,38 +250,39 @@ class TransactionController extends Controller
                 $check  = Transaction::where('transaction_id', $reference)->get();
                 $checks  = Transaction::where('transaction_id', $reference)->update(['status' => "Success"]);
                 $checkUser = User::where('email', $check[0]["email"])->first();
-                foreach($check as $apply){
+                foreach ($check as $apply) {
                     $checkForm = MemberLoan::where('uuid', $apply->uuid)->first();
-                    if($checkForm){
-                        if($checkForm->payment_status == 1){
+                    if ($checkForm) {
+                        if ($checkForm->payment_status == 1) {
                             $balance = $checkForm->total_left;
                             $refund = $checkForm->total_refund;
                             $monthlyRefund = $checkForm->monthly_return;
                             $newRefund =  $refund + $monthlyRefund;
                             $newBalance = $balance - $monthlyRefund;
-                            if($newBalance < 1){
-                                $checkForm->update(['total_left' => $newBalance,'total_refund' => $newRefund,'status' => 'Completed']);
-                            }else{
-                                $checkForm->update(['total_left' => $newBalance,'total_refund' => $newRefund]);
+                            if ($newBalance < 1) {
+                                $checkForm->update(['total_left' => $newBalance, 'total_refund' => $newRefund, 'status' => 'Completed']);
+                            } else {
+                                $checkForm->update(['total_left' => $newBalance, 'total_refund' => $newRefund]);
                             }
-                        }else{
+                        } else {
                             $checkForm->update(['payment_status' => 1]);
                         }
                     }
                 }
-                if(!$checkUser){
+                if (!$checkUser) {
                     $coopD = Company::find($check[0]["company_id"]);
                     $checkNumber =  NumberCount::where('coop_id', $check[0]["company_id"])->first();
                     // attempt to give new member coop id
-                    if($checkNumber){
+                    if ($checkNumber) {
                         $code = $checkNumber->count + 1;
                         $checkNumber->update([
                             "count" => $checkNumber->count + 1,
                         ]);
-                    }else{
+                    } else {
                         $code = 1;
                         NumberCount::create([
-                            "count" => 1, 'coop_id' => $check[0]["company_id"]
+                            "count" => 1,
+                            'coop_id' => $check[0]["company_id"]
                         ]);
                     }
                     // $code = mt_rand(100000, 999999);
@@ -285,7 +292,7 @@ class TransactionController extends Controller
                         'phone' => $check[0]['phone'],
                         'password' => $check[0]['password'],
                         'user_type' => "Member",
-                        'coop_id' => convertToUppercase($coopD->name).''.$code,
+                        'coop_id' => convertToUppercase($coopD->name) . '' . $code,
                         'month' => now()->format('F Y'),
                         'referred_by' => $check[0]['referred_by'],
                         'username' => $check[0]['username'],
@@ -294,10 +301,106 @@ class TransactionController extends Controller
                     ]);
                 }
                 Transaction::where('transaction_id', $reference)->update(['user_id' => $checkUser->id]);
-
             }
         }
         return redirect()->back()->with('message', 'Payment made successfully');
+    }
+    public function payazaVerifyPayment(Request $request)
+    {
+        $this->validate($request, ['order_id' => 'required','reference'=> 'required']);
+        // dd($request->all(),$request->reference);
+        //process online payment
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://cards-live.78financials.com/card_charge/transaction_status',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => '{
+                    "service_payload": {
+                        "transaction_reference": "'.$request->reference.'"
+                    }
+            }',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer '.env('PAYAZA_API'),
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $real_response = json_decode($response, true);
+        // dd($response, $real_response, $real_response['response_code']);
+        //dd("here");
+        if ($real_response['response_code'] == 200 ) {
+            //Required Details
+          
+                $content = $real_response['response_content'];
+               
+                $check  = Transaction::where('transaction_id', $request->order_id)->get();
+                $checks  = Transaction::where('transaction_id', $request->order_id)->update(['status' => "Success"]);
+                $checkUser = User::where('email', $check[0]["email"])->first();
+                foreach ($check as $apply) {
+                    $checkForm = MemberLoan::where('uuid', $apply->uuid)->first();
+                    if ($checkForm) {
+                        if ($checkForm->payment_status == 1) {
+                            $balance = $checkForm->total_left;
+                            $refund = $checkForm->total_refund;
+                            $monthlyRefund = $checkForm->monthly_return;
+                            $newRefund =  $refund + $monthlyRefund;
+                            $newBalance = $balance - $monthlyRefund;
+                            if ($newBalance < 1) {
+                                $checkForm->update(['total_left' => $newBalance, 'total_refund' => $newRefund, 'status' => 'Completed']);
+                            } else {
+                                $checkForm->update(['total_left' => $newBalance, 'total_refund' => $newRefund]);
+                            }
+                        } else {
+                            $checkForm->update(['payment_status' => 1]);
+                        }
+                    }
+                }
+                if (!$checkUser) {
+                    $coopD = Company::find($check[0]["company_id"]);
+                    $checkNumber =  NumberCount::where('coop_id', $check[0]["company_id"])->first();
+                    // attempt to give new member coop id
+                    if ($checkNumber) {
+                        $code = $checkNumber->count + 1;
+                        $checkNumber->update([
+                            "count" => $checkNumber->count + 1,
+                        ]);
+                    } else {
+                        $code = 1;
+                        NumberCount::create([
+                            "count" => 1,
+                            'coop_id' => $check[0]["company_id"]
+                        ]);
+                    }
+                    // $code = mt_rand(100000, 999999);
+                    $checkUser = User::create([
+                        'name' => $check[0]['name'],
+                        'email' => $check[0]['email'],
+                        'phone' => $check[0]['phone'],
+                        'password' => $check[0]['password'],
+                        'user_type' => "Member",
+                        'coop_id' => convertToUppercase($coopD->name) . '' . $code,
+                        'month' => now()->format('F Y'),
+                        'referred_by' => $check[0]['referred_by'],
+                        'username' => $check[0]['username'],
+                        'company_id' => $check[0]["company_id"]
+                        // 'plan_id' => $check[0]['plan_id'],
+                    ]);
+                }
+                Transaction::where('transaction_id', $request->order_id)->update(['user_id' => $checkUser->id]);
+                Auth::login($checkUser);
+            
+        }
+        return redirect()->route('dashboard')->with('message', 'Payment made successfully');
     }
     public function index()
     {

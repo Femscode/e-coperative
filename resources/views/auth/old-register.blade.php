@@ -57,38 +57,6 @@
 
 
 <body>
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-center" id="paymentModalLabel">Complete Payment With Payaza</h5>
-               
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="payaza-form">
-                <div class='alert alert-danger'>For testing purpose, kindly use the default prefilled card details</div>
-                <div class='alert alert-success'>Amount to be paid : NGN<span id='amountToBePaid'>0</span></div>
-                    <div class="mb-3">
-                        <label for="card-number" class="form-label">Card Number</label>
-                        <input type='hidden' id='order_id'/>
-                        <input type="text" value='4012000033330026' id="card-number" class="form-control" required placeholder="Enter Card Number">
-                    </div>
-                    <div class="mb-3">
-                        <label for="expiry-date" class="form-label">Expiry Date</label>
-                        <input value='01/39' type="text" id="expiry-date" class="form-control" required placeholder="MM/YY">
-                    </div>
-                    <div class="mb-3">
-                        <label for="cvv" class="form-label">CVV</label>
-                        <input type="text" value='100' id="cvv" class="form-control" required placeholder="Enter CVV">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Pay Now</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
    
     <div class="auth-page-wrapper pt-5">
         <!-- auth page bg -->
@@ -197,7 +165,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button type="button" class="btn btn-link text-light text-decoration-none btn-label previestab" data-previous="pills-gen-info-tab">
+                                                <button type="button" class="btn btn-link text-decoration-none btn-label previestab" data-previous="pills-gen-info-tab">
                                                     <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
                                                     Back to General
                                                 </button>
@@ -339,7 +307,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-light text-light btn-label previestab" data-previous="steparrow-gen-info-tab">
+                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-light btn-label previestab" data-previous="steparrow-gen-info-tab">
                                                     <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
                                                     Back to General
                                                 </button>
@@ -396,7 +364,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-light text-light btn-label previestab" data-previous="steparrow-description-info-tab">
+                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-light btn-label previestab" data-previous="steparrow-description-info-tab">
                                                     <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
                                                     Back to Description
                                                 </button>
@@ -463,9 +431,7 @@
     <!-- App js -->
     <script src="assets/js/app.js"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-           
             $('#process-order-form').submit(function(e) {
                 $.ajaxSetup({
                     headers: {
@@ -476,9 +442,10 @@
                 e.preventDefault();
                 // alert("ere")
                 var form_details = $(this).serializeArray();
-               
                 processPayment(form_details);
             })
+
+        
 
             function processPayment(data) {
                 data = data;
@@ -495,9 +462,7 @@
                             new swal("Congratulations!","Registration Succesful","success");
                             window.location.reload();
                         }else{
-                            $("#order_id").val(e.order_id)
-                            $('#paymentModal').modal('show');
-                            
+                            payWithPaystack(e);
                         }
                     },
                     error: function(e) {
@@ -511,124 +476,6 @@
                 })
 
             }
-        
-            $('#payaza-form').submit(function(e) {
-            e.preventDefault();
-                Swal.fire({
-                    title: 'Processing payment, please wait...',
-                    icon: 'info',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                    Swal.showLoading()
-                }
-            })
-
-    // Collect card details
-    var cardDetails = {
-        number: $('#card-number').val(),
-        expiryMonth: $('#expiry-date').val().split('/')[0],  // Extract month from MM/YY
-        expiryYear: $('#expiry-date').val().split('/')[1],   // Extract year from MM/YY
-        cvv: $('#cvv').val()
-    };
-
-    // Prepare the data for the Payaza API request
-    var payload = {
-        "service_payload": {
-            "first_name": "Fasanya2", 
-            "last_name": "Oluwapelumi2",
-            "email_address": "fasanyafemi@gmail.com",
-            "phone_number": "09058744483",
-            "amount": 100, // The amount to charge (adjust as needed)
-            "transaction_reference": "PL-1KBPSCJCRD" + Math.floor((Math.random() * 10000000) + 1), // Unique transaction reference
-            "currency": "NGN", // Currency code (adjust as needed)
-            "description": "Testing Payment Pel", // Payment description
-            "card": {
-                "expiryMonth": cardDetails.expiryMonth,
-                "expiryYear": cardDetails.expiryYear,
-                "securityCode": cardDetails.cvv,
-                "cardNumber": cardDetails.number
-            },
-            "callback_url": "https://e-coop.cthostel.com/api/payment/webhook" // Your callback URL for payment updates
-        }
-    };
-
-    // Set up headers for the request
-    var headers = {
-        "Authorization": "Payaza " + "{{env('PAYAZA_API')}}", // Authorization token from Payaza
-        "Content-Type": "application/json"
-    };
-
-    // Send the AJAX request to Payaza API
-    $.ajax({
-        url: "https://cards-live.78financials.com/card_charge/", // Payaza endpoint
-        method: "POST",
-        headers: headers,
-        data: JSON.stringify(payload),
-        contentType: "application/json",
-        success: function(response) {
-            console.log("RAW RESULT: ", response);
-            if (response.statusOk) {
-                if (response.do3dsAuth) {
-                    if (response.formData && response.threeDsUrl) {
-                        const creq = document.getElementById("creq");
-                        creq.value = response.formData;
-                        const form = document.getElementById("threedsChallengeRedirectForm");
-                        form.setAttribute("action", response.threeDsUrl);
-                        form.submit();
-                    } else {
-                        console.log("Missing 3DS data:", response);
-                        Swal.fire({
-                            title: '3DS Authentication data missing. Please try again.',
-                            icon: 'error'
-                        })
-                        
-                    }
-                } else {
-                    console.log("Payment Process Journey Completed");
-                    $('#process-order-form').submit();
-                    Swal.fire('Payment Completed','Payment completed successfully!','success')
-                   
-                    location.href = "/payaza/transaction-successful?order_id=" + $("#order_id").val() +
-                    '&reference=' + response.transactionReference;
-                  
-                    // Optionally submit your order form here if payment is successful
-                    
-                }
-            } else {
-                console.log("Error found:", response.debugMessage);
-                Swal.fire({
-                            title: "Payment Failed: " + response.debugMessage,
-                            icon: 'error'
-                        })
-            }
-        },
-        error: function(xhr, status, error) {
-            console.log("Error:", error);
-            Swal.fire({
-                            title: "Exception Error: " + (error.debugMessage || error.message || "Unknown error"),
-                            icon: 'error'
-                    })
-        }
-    });
-});
-
-
-
-    function finalizeRegistration(transactionId) {
-        $.ajax({
-            type: 'POST',
-            url: 'confirm-registration',
-            data: { transactionId: transactionId },
-            success: function() {
-                Swal.fire("Success", "Your registration is complete!", "success").then(() => {
-                    window.location.href = "/welcome"; // Redirect on successful registration
-                });
-            },
-            error: function() {
-                Swal.fire("Error", "Could not complete registration. Please contact support.", "error");
-            }
-        });
-    }
 
             function handlePaystackPopup(event) {
             // event.preventDefault();
@@ -664,20 +511,17 @@
                         }, function(result) {
                             if (result.status === 'success') {
                                 // Display a success message to the user
-                                Swal.fire('Payment Successful', 'Your payment was processed successfully!','success');
-                               
+                                alert('Your payment was successful!');
                             } else {
                                 // Handle errors
                                 // console.log(result.message);
-                                Swal.fire('Payment Unsuccessful', 'There was an error processing your payment. Please try again!','error');
-                               
+                                alert('There was an error processing your payment. Please try again.');
                             }
                         });
                     } else {
                         // Handle errors
                         // console.log(response.message);
-                        Swal.fire('Payment Unsuccessful', 'There was an error processing your payment. Please try again!','error');
-                       
+                        alert('There was an error processing your payment. Please try again.');
                     }
                 }
             };
@@ -784,12 +628,10 @@
                         $('.displayReg').show();
                         $('.feeInput').attr('required', true);
                         $('.feeInput').val(data['plan'].reg_fee);
-                        $('#amountToBePaid').html(data['plan'].reg_fee);
                     }else{
                          $('.displayReg').hide();
                         $('.feeInput').removeAttr('required');
                         $('.feeInput').val("");
-                        $('#amountToBePaid').html('');
                     }
                 })
 

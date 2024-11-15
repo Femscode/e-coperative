@@ -6,9 +6,9 @@
   </div>
 
   <script>
-      const cardNumber = "4187451844054629"; // Card Number
-      const expiryMonth = "07"; // Card Expiry Month
-      const expiryYear = "23"; // Card Expiry Year
+      const cardNumber = "4012000033330026"; // Card Number
+      const expiryMonth = "01"; // Card Expiry Month
+      const expiryYear = "39"; // Card Expiry Year
       const securityCode = "100"; // Card Security Code
     
       var myHeaders = new Headers();

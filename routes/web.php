@@ -22,6 +22,7 @@ Route::get('/signup/{slug}', [App\Http\Controllers\Auth\RegisterController::clas
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'signup'])->name('signup');
 Route::post('/register_user', [App\Http\Controllers\Auth\RegisterController::class, 'register_user'])->name('save_coop_reg');
 
+Route::get('/payaza/transaction-successful', [App\Http\Controllers\TransactionController::class, 'payazaVerifyPayment'])->name('payazaVerifyPayment');
 Route::get('/paystack/transaction-successful', [App\Http\Controllers\TransactionController::class, 'verifyPayment'])->name('verify-payment');
 Route::get('/get-plan-details', [App\Http\Controllers\PlanController::class, 'planDetails'])->name('get_plan_details_by_id');
 Route::get('/test', function () {
