@@ -29,8 +29,8 @@
         <div class="page-banner-content">
             <h1>Register Your Cooperative</h1>
             <ul>
-                <li><a href="/">Home</a></li>
-                <li>Sign In</li>
+                <li><a href="/cooperative/signup">Cooperative Registration</a></li>
+                <li><a href='/register'>Personal Registration</a></li>
             </ul>
         </div>
     </div>

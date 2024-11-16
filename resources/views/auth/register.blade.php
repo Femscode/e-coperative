@@ -44,8 +44,8 @@
         <div class="page-banner-content">
             <h1>Create An Account</h1>
             <ul>
-                <li><a href="/">Home</a></li>
-                <li>Sign Up</li>
+                <li><a href="/cooperative/signup">Cooperative Registration</a></li>
+                <li><a href='/register'>Personal Registration</a></li>
             </ul>
         </div>
     </div>
@@ -325,17 +325,18 @@
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
                                                             <label class="form-label" for="gen-info-email-input">Password</label>
-                                                            <input type="password" class="form-control" required name="password" id="password-fieldx" placeholder="enter password " />
+                                                            <input type="password" class="form-control" required name="password" id="password-fieldx" placeholder="Enter password " />
                                                             <span toggle="#password-fieldx" class="fas toggle-password field-icon fa-eye-slash"></span>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
                                                             <label class="form-label" for="gen-info-username-input">Confirm Password</label>
-                                                            <input type="password" class="form-control" required name="password_confirmation" id="password-fieldc" placeholder="confirm password" />
+                                                            <input type="password" class="form-control" required name="password_confirmation" id="password-fieldc" placeholder="Confirm password" />
                                                             <span toggle="#password-fieldc" class="fas toggle-password field-icon fa-eye-slash"></span>
                                                         </div>
                                                     </div>
+                                                    <div id='danger_password'></div>
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
@@ -795,6 +796,16 @@
 
             });
         });
+
+        $("#password-fieldx").on('input', function() {
+            var password = $("#password-fieldx").val()
+            var confirm = $("#password-fieldc").val()
+            if(password !== confirm) {
+                $("#danger_password").html("<div class='alert alert-danger'>Password not matched!</div>");
+            } else {
+                $("#danger_password").html("<div class='alert alert-success'>Password matched!</div>")
+            }
+        })
 
     </script>
 </body>

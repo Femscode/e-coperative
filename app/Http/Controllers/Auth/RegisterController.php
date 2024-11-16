@@ -121,6 +121,7 @@ class RegisterController extends Controller
     }
 
     public function signup($slug = null) {
+        return redirect()->route('register');
         $data['coperative'] = Company::all();
         if($slug !== null) {
             $data['company'] = $company = Company::where('slug', $slug)->first();

@@ -26,11 +26,20 @@
     <div class="preloader-area text-center position-fixed top-0 bottom-0 start-0 end-0" id="preloader">
         <div class="loader position-absolute start-0 end-0">
             <div class="wavy position-relative fw-light">
-                <span class="d-inline-block"><img src="{{url('frontend_assets/images/favicon.png')}}" alt="favicon"></span>
+                <!-- <span class="d-inline-block"><img src="{{url('frontend_assets/images/favicon.png')}}" alt="favicon"></span> -->
+                <span class="d-inline-block">E</span>
+                <span class="d-inline-block">-</span>
                 <span class="d-inline-block">C</span>
                 <span class="d-inline-block">O</span>
                 <span class="d-inline-block">O</span>
                 <span class="d-inline-block">P</span>
+                <span class="d-inline-block">E</span>
+                <span class="d-inline-block">R</span>
+                <span class="d-inline-block">A</span>
+                <span class="d-inline-block">T</span>
+                <span class="d-inline-block">I</span>
+                <span class="d-inline-block">V</span>
+                <span class="d-inline-block">E</span>
             </div>
         </div>
     </div>
@@ -43,13 +52,13 @@
                     <div class="col-lg-8 col-md-12">
                         <ul class="left-side">
                             <li><span>Local Cooperatives to the Digital Era</span></li>
-                            <li><a href="tel:+2349058744473"><i class="flaticon-phone-call"></i> <b>Call:</b> +234 (905) 8744473</a></li>
-                            <li><a href="#"><i class="flaticon-email-1"></i> <b>Mail:</b> <span class="__cf_email__">support@ecoop.com</span></a></li>
+                            <!-- <li><a href="tel:+2349058744473"><i class="flaticon-phone-call"></i> <b>Call:</b> +234 (905) 8744473</a></li>
+                            <li><a href="#"><i class="flaticon-email-1"></i> <b>Mail:</b> <span class="__cf_email__">support@e-cooperative.com</span></a></li> -->
                         </ul>
                     </div>
                     <div class="col-lg-4 col-md-12">
                         <ul class="right-side">
-                            <li><a href="#">Support</a></li>
+                            <li><a href="/about-us">More Info</a></li>
                             <li><a href="#">Help</a></li>
                           
                         </ul>
@@ -62,7 +71,7 @@
         <nav class="navbar navbar-expand-lg bg-color-ffffff" id="navbar">
             <div class="container-fluid side-padding position-relative">
                 <a class="navbar-brand logo-brand p-0" href="#">
-                    <img src="{{ asset('assets/images/cooplogo.png') }}" width="100" alt="image">
+                    <img src="{{ asset('assets/images/cooplogo.png') }}" width="70" alt="image">
                 </a>
                 <a class="navbar-toggler" data-bs-toggle="offcanvas" href="#navbarOffcanvas" role="button" aria-controls="navbarOffcanvas">
                     <span class="burger-menu">
@@ -79,22 +88,22 @@
                             </a>
                           
                         </li>
+                      
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button">
-                                Services
-                            </a>
-                           
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button">
-                                About Us
+                            <a class="nav-link dropdown-toggle" href="/cooperative/signup" role="button">
+                                Cooperative Registration
                             </a>
                            
                         </li>
                      
                         <li class="nav-item dropdown">
-                            <a class="nav-link" href="contact.html">
-                                Contact
+                            <a class="nav-link" href="/register">
+                                Member Registration
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="https://wa.me/2349058744473">
+                                Contact Us
                             </a>
                         </li>
                     </ul>
@@ -107,10 +116,10 @@
                             </button>
                         </li> -->
                         <li>
-                            <a href="/signup" class="search-btn login"><i class="ri-account-circle-line"></i> Sign Up</a>
+                            <a href="/login" class="search-btn login"><i class="ri-account-circle-line"></i>Sign In</a>
                         </li>
                         <li>
-                            <a href="#" class="default-btn">Get Started <i class="ri-arrow-right-up-line"></i></a>
+                            <a href="/register" class="default-btn">Get Started <i class="ri-arrow-right-up-line"></i></a>
                         </li>
                     </ul>
                 </div>
@@ -201,13 +210,10 @@
             <div class="row" data-cues="slideInUp" data-duration="800">
                 <div class="col-xl-4 col-lg-9 col-md-6">
                     <div class="footer-weight">
-                        <h2 class="text-white">Subscribe Newsletter</h2>
-                        <form class="footer-form position-relative">
-                            <input type="email" class="form-control" placeholder="Enter Your Email">
-                            <button type="submit" class="default-btn">Subscribe <i class="ri-arrow-right-up-line"></i></button>
-                        </form>
+                        <h2 class="text-white">Follow the organizers of ABK FINHACK</h2>
+                       
                         <ul class="social">
-                            <li><span>Follow Us:</span></li>
+                           
                             <li>
                                 <a href="https://www.facebook.com/" target="_blank">
                                     <i class="ri-facebook-fill"></i>
@@ -236,24 +242,22 @@
                         <h3 class="text-white">Quick Links</h3>
                         <ul class="service-link">
                             <li>
-                                <a href="#">Terms & Conditions</a>
+                                <a href="/login">Sign In</a>
                             </li>
                             <li>
-                                <a href="#">Blog & News</a>
+                                <a href="/cooperative/signup">Cooperative Registration</a>
                             </li>
                             
                             <li>
-                                <a href="#">Why Choose Us</a>
+                                <a href="/register">Member's Registration</a>
                             </li>
-                            <li>
-                                <a href="#">Pricing Plan</a>
-                            </li>
+                           
                         </ul>
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-4 col-md-6">
                     <div class="footer-weight part-three ps-5">
-                        <h3 class="text-white">Our Services</h3>
+                        <h3 class="text-white">Project Features</h3>
                         <ul class="service-link">
                             <li>
                                 <a href="#">Cooperative registrations</a>
@@ -285,11 +289,15 @@
                             <li>
                                 <img class="phone" src="frontend_assets/images/svg/mail.svg" alt="image">
                                 <span class="text-white"><b>Email:</b></span>
-                                <a><span class="__cf_email__">support@e-coperative.com</span></a>
+                                <a><span class="__cf_email__">fasanyafemi@gmail.com</span></a>
+                                <a><span class="__cf_email__">amospersie@gmail.com</span></a>
+                                <a><span class="__cf_email__">gloryo@gmail.com</span></a>
                             </li>
                             <li>
                                 <img class="phone" src="frontend_assets/images/svg/phone.svg" alt="image">
                                 <span class="text-white"><b>Phone:</b></span>
+                                <a href="tel:09058744473">+234 (905) 8744473</a>
+                                <a href="tel:0018085550148">+234 (905) 8744473</a>
                                 <a href="tel:0018085550148">+234 (905) 8744473</a>
                             </li>
                         </ul>
@@ -317,11 +325,9 @@
                     <div class="col-lg-4 col-md-12">
                         <ul>
                             <li>
-                                <a href="privacy-policy.html">Privacy Policy</a>
+                                <a href="#">Project for the Abk Finhack</a>
                             </li>
-                            <li>
-                                <a href="terms-conditions.html">Terms & Conditions</a>
-                            </li>
+                            
                         </ul>
                     </div>
                 </div>
