@@ -18,8 +18,7 @@
                 <div class="col-xl-7 col-lg-12" data-cues="slideInLeft" data-duration="800">
                     <div class="info">
                        
-                        <p>The project is all about digitalizing cooperative society operations. Access savings, make payments, track loans, and engage with members anytime, anywhere.
-                        Bringing the power of financial communities right to your fingertips.</p>
+                        <p>This project is focused on transforming cooperative societies by digitalizing their operations. With this platform, members can access their savings, make payments, track loans, and engage with the community—all from any device, anytime, anywhere.</p>
                        
                     </div>
                 </div>
@@ -55,12 +54,12 @@
                             <li class="bg-color-29594b radius-20">
                                 <i class="flaticon-payment-method"></i>
                                 <h3 class="text-white">Secure Payment Processing</h3>
-                                <p class="text-white">Simplify transactions with robust payment solutions that allow members to make deposits, pay dues, and apply for loans with confidence.</p>
+                                <p class="text-white">Simplify transactions with robust payment solutions that allow members to make deposits, pay dues, and apply for loans all with payaza payment gateway.</p>
                             </li>
                             <li class="bg-color-29594b radius-20">
                                 <i class="flaticon-laptop-2"></i>
                                 <h3 class="text-white">Loan Management System</h3>
-                                <p class="text-white">Offer transparent and efficient loan applications, approvals, and repayments, helping your members access funds when they need them most.</p>
+                                <p class="text-white">Offer transparent and efficient loan applications, approvals, and repayments, helping cooperative members access funds when they need them.</p>
                             </li>
                         </ul>
                     </div>

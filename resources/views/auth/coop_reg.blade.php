@@ -342,7 +342,7 @@
                                                                 for="gen-info-email-input">Password</label>
                                                             <input type="password" class="form-control" required name="password"
                                                                 id="password-fieldx"
-                                                                placeholder="enter password " />
+                                                                placeholder="Enter password " />
                                                             <span toggle="#password-fieldx" class="fas toggle-password field-icon fa-eye-slash"></span>
                                                         </div>
                                                     </div>
@@ -352,10 +352,11 @@
                                                                 for="gen-info-username-input">Confirm Password</label>
                                                             <input type="password" class="form-control" required name="password_confirmation"
                                                                 id="password-fieldc"
-                                                                placeholder="confirm password" />
+                                                                placeholder="Confirm password" />
                                                             <span toggle="#password-fieldc" class="fas toggle-password field-icon fa-eye-slash"></span>
                                                         </div>
                                                     </div>
+                                                    <div id='danger_password'></div>
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
@@ -680,6 +681,20 @@
                     })
 
             });
+alert('nice')
+            $("#password-fieldx, #password-fieldc").on('input', function() {
+       
+       var password = $("#password-fieldx").val()
+       var confirm = $("#password-fieldc").val()
+       if(password.length > 7) {
+           if(password !== confirm) {
+           $("#danger_password").html("<div class='alert alert-danger'>Password not matched!</div>");
+       } else {
+           $("#danger_password").html("<div class='alert alert-success'>Password matched!</div>")
+       }
+       }
+       
+   })
         });
     </script>
 </body>

@@ -17,7 +17,7 @@
 
      <meta name="csrf-token" content="{{ csrf_token() }}">
 
-     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+     <link rel="shortcut icon" href="{{ asset('assets/images/cooplogo.png') }}">
      <!-- Vendor css (Require in all Page) -->
      <link href="{{url('vendorsdashboard/css/vendor.min.css')}}" rel="stylesheet" type="text/css" />
 
@@ -177,12 +177,12 @@
                <div class="logo-box">
                     <a href="/admin" class="logo-dark">
 
-                    <img src="{{ asset('assets/images/favicon.ico') }}" alt="" height="30"> 
+                    <img src="{{ asset('assets/images/cooplogo.png') }}" alt="" height="30"> 
                     <span class='text-white' style='font-size:large'>E-COOP</span>
                     </a>
 
                     <a href="/admin" class="logo-light">
-                    <img src="{{ asset('assets/images/favicon.ico') }}" alt="" height="30"> 
+                    <img src="{{ asset('assets/images/cooplogo.png') }}" alt="" height="30"> 
                     <span class='text-white' style='font-size:large'>E-COOP</span>
                     </a>
                </div>

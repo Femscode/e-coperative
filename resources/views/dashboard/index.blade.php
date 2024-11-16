@@ -17,7 +17,7 @@
 
                          <h6> Registration Link
                               <p class="d-flex align-items-center border p-2 rounded-2 border-dashed alert alert-primary text-start mb-0">
-                                   <span id="cttaste-link">https://ecoperative.com/{{ $user->company->slug }}</span>
+                                   <span id="cttaste-link">https://e-coop.cthostel.com/{{ $user->company->slug }}</span>
                                    <a href="#!" class="ms-auto fs-4 copy-link"><i class="ti ti-copy"></i></a>
                               </p>
                          </h6>
