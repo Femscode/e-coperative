@@ -40,7 +40,7 @@
                                         <div class="col-sm-12 pt-4 mt-4">
                                              <div class="pt-4 mt-4">
                                                   
-                                                  <div class='alert alert-primary'>
+                                                  <div class='alert alert-transparent'>
                                                        <div style="margin: auto;">
                                                             <canvas id="ordersChart"></canvas>
                                                        </div>

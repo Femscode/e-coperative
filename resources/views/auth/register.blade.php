@@ -274,8 +274,8 @@
                                                 <div class="row">                                             
                                                     <div class="col-lg-12">
                                                         <div class="mb-3">
-                                                            <label class="form-label" for="gen-info-password-input">Full Name</label>
-                                                            <input type="text" class="form-control" required name="name" id="gen-info-password-input" placeholder="Enter Full Name " />
+                                                            <label class="form-label" for="Full Name">Full Name</label>
+                                                            <input type="text" class="form-control" required name="name" id="payer_name" placeholder="Enter Full Name " />
                                                         </div>
 
                                                     </div>
@@ -283,14 +283,14 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label class="form-label" for="gen-info-email-input">Email</label>
-                                                            <input type="email" class="form-control" required name="email" id="gen-info-email-input email" placeholder="Enter email" />
+                                                            <label class="form-label" for="Email address">Email</label>
+                                                            <input type="email" class="form-control" required name="email" id="payer_email" placeholder="Enter email" />
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label class="form-label" for="gen-info-username-input">Phone Number</label>
-                                                            <input type="number" class="form-control" required name="phone" id="gen-info-username-input" placeholder="Enter phone number" />
+                                                            <label class="form-label" for="Phone Number">Phone Number</label>
+                                                            <input type="number" class="form-control" required name="phone" id="payer_phone" placeholder="Enter phone number" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -514,7 +514,7 @@
             }
         
             $('#payaza-form').submit(function(e) {
-            e.preventDefault();
+                e.preventDefault();
                 Swal.fire({
                     title: 'Processing payment, please wait...',
                     icon: 'info',
@@ -522,96 +522,97 @@
                     didOpen: () => {
                     Swal.showLoading()
                 }
-            })
+                })
 
-    // Collect card details
-    var cardDetails = {
-        number: $('#card-number').val(),
-        expiryMonth: $('#expiry-date').val().split('/')[0],  // Extract month from MM/YY
-        expiryYear: $('#expiry-date').val().split('/')[1],   // Extract year from MM/YY
-        cvv: $('#cvv').val()
-    };
+                // Collect card details
+                var cardDetails = {
+                    number: $('#card-number').val(),
+                    expiryMonth: $('#expiry-date').val().split('/')[0],  // Extract month from MM/YY
+                    expiryYear: $('#expiry-date').val().split('/')[1],   // Extract year from MM/YY
+                    cvv: $('#cvv').val()
+                };
 
-    // Prepare the data for the Payaza API request
-    var payload = {
-        "service_payload": {
-            "first_name": "Fasanya2", 
-            "last_name": "Oluwapelumi2",
-            "email_address": "fasanyafemi@gmail.com",
-            "phone_number": "09058744483",
-            "amount": 100, // The amount to charge (adjust as needed)
-            "transaction_reference": "PL-1KBPSCJCRD" + Math.floor((Math.random() * 10000000) + 1), // Unique transaction reference
-            "currency": "NGN", // Currency code (adjust as needed)
-            "description": "Testing Payment Pel", // Payment description
-            "card": {
-                "expiryMonth": cardDetails.expiryMonth,
-                "expiryYear": cardDetails.expiryYear,
-                "securityCode": cardDetails.cvv,
-                "cardNumber": cardDetails.number
-            },
-            "callback_url": "https://e-coop.cthostel.com/api/payment/webhook" // Your callback URL for payment updates
-        }
-    };
-
-    // Set up headers for the request
-    var headers = {
-        "Authorization": "Payaza " + "{{env('PAYAZA_API')}}", // Authorization token from Payaza
-        "Content-Type": "application/json"
-    };
-
-    // Send the AJAX request to Payaza API
-    $.ajax({
-        url: "https://cards-live.78financials.com/card_charge/", // Payaza endpoint
-        method: "POST",
-        headers: headers,
-        data: JSON.stringify(payload),
-        contentType: "application/json",
-        success: function(response) {
-            console.log("RAW RESULT: ", response);
-            if (response.statusOk) {
-                if (response.do3dsAuth) {
-                    if (response.formData && response.threeDsUrl) {
-                        const creq = document.getElementById("creq");
-                        creq.value = response.formData;
-                        const form = document.getElementById("threedsChallengeRedirectForm");
-                        form.setAttribute("action", response.threeDsUrl);
-                        form.submit();
-                    } else {
-                        console.log("Missing 3DS data:", response);
-                        Swal.fire({
-                            title: '3DS Authentication data missing. Please try again.',
-                            icon: 'error'
-                        })
-                        
+                // Prepare the data for the Payaza API request
+                console.log($("#payer_name").val(), $("#payer_email").val(), $("#amountToBePaid").html())
+                var payload = {
+                    "service_payload": {
+                        "first_name": $("#payer_name").val(), 
+                        "last_name": $("#payer_name").val(),
+                        "email_address": $("#payer_email").val(),
+                        "phone_number": $("#payer_phone").val(),
+                        "amount": $("#amountToBePaid").html(), // The amount to charge (adjust as needed)
+                        "transaction_reference": "PL-1KBPSCJCRD" + Math.floor((Math.random() * 10000000) + 1), // Unique transaction reference
+                        "currency": "NGN", // Currency code (adjust as needed)
+                        "description": "E-coop Registration Payment", // Payment description
+                        "card": {
+                            "expiryMonth": cardDetails.expiryMonth,
+                            "expiryYear": cardDetails.expiryYear,
+                            "securityCode": cardDetails.cvv,
+                            "cardNumber": cardDetails.number
+                        },
+                        "callback_url": "https://e-coop.cthostel.com/api/payment/webhook" // Your callback URL for payment updates
                     }
-                } else {
-                    console.log("Payment Process Journey Completed");
-                    $('#process-order-form').submit();
-                    Swal.fire('Payment Completed','Payment completed successfully!','success')
-                   
-                    location.href = "/payaza/transaction-successful?order_id=" + $("#order_id").val() +
-                    '&reference=' + response.transactionReference;
-                  
-                    // Optionally submit your order form here if payment is successful
-                    
+                };
+
+                // Set up headers for the request
+                var headers = {
+                    "Authorization": "Payaza " + "{{env('PAYAZA_API')}}", // Authorization token from Payaza
+                    "Content-Type": "application/json"
+                };
+
+                // Send the AJAX request to Payaza API
+                $.ajax({
+                    url: "https://cards-live.78financials.com/card_charge/", // Payaza endpoint
+                    method: "POST",
+                    headers: headers,
+                    data: JSON.stringify(payload),
+                    contentType: "application/json",
+                    success: function(response) {
+                        console.log("RAW RESULT: ", response);
+                        if (response.statusOk) {
+                            if (response.do3dsAuth) {
+                                if (response.formData && response.threeDsUrl) {
+                                    const creq = document.getElementById("creq");
+                                    creq.value = response.formData;
+                                    const form = document.getElementById("threedsChallengeRedirectForm");
+                                    form.setAttribute("action", response.threeDsUrl);
+                                    form.submit();
+                                } else {
+                                    console.log("Missing 3DS data:", response);
+                                    Swal.fire({
+                                        title: '3DS Authentication data missing. Please try again.',
+                                        icon: 'error'
+                                    })
+
+                                }
+                            } else {
+                                console.log("Payment Process Journey Completed");
+                                // $('#process-order-form').submit();
+                                Swal.fire('Payment Completed','Payment completed successfully!','success')
+                            
+                                location.href = "/payaza/transaction-successful?order_id=" + $("#order_id").val() +
+                                '&reference=' + response.transactionReference;
+                            
+                                // Optionally submit your order form here if payment is successful
+
+                        }
+                    } else {
+                    console.log("Error found:", response.debugMessage);
+                    Swal.fire({
+                                title: "Payment Failed: " + response.debugMessage,
+                                icon: 'error'
+                            })
                 }
-            } else {
-                console.log("Error found:", response.debugMessage);
+            },
+            error: function(xhr, status, error) {
+                console.log("Error:", error);
                 Swal.fire({
-                            title: "Payment Failed: " + response.debugMessage,
-                            icon: 'error'
+                                title: "Network connection error: " + (error.debugMessage || error.message || "Try again later"),
+                                icon: 'error'
                         })
             }
-        },
-        error: function(xhr, status, error) {
-            console.log("Error:", error);
-            Swal.fire({
-                            title: "Exception Error: " + (error.debugMessage || error.message || "Unknown error"),
-                            icon: 'error'
-                    })
-        }
-    });
-});
+            });
+        });
 
 
 
@@ -631,112 +632,7 @@
         });
     }
 
-            function handlePaystackPopup(event) {
-            // event.preventDefault();
-
-            // Get the amount to be charged from the form
-            // const amount = document.getElementById('amount').value;
-
-            // Configure the Paystack pop-up
-            const config = {
-                key: 'pk_live_af922c7f707c7ad3dc1a03433a3768007f6a0401', // Replace with your Paystack public key
-                email: 'amospersie@gmail.com', // Replace with the user's email address
-                amount: 1000 * 100, // Paystack API expects the amount in kobo (i.e. multiply by 100)
-                currency: 'NGN', // Replace with your preferred currency
-                callback: function(response) {
-                    if (response.status === 'success') {
-                        // Get the card details that the user entered in the pop-up
-                        // const cardNumber = response.card.last4;
-                        // const expiryMonth = response.card.exp_month;
-                        // const expiryYear = response.card.exp_year;
-                        // const cvv = response.card.cvv;
-                        // const cardholderName = response.card.name;
-
-                        // Use the card details and the amount to charge the user's card
-                        Paystack.chargeCard({
-                            card: {
-                                number: 6039, //cardNumber,
-                                cvv: 240, //cvv,
-                                expiry_month: 03, //expiryMonth,
-                                expiry_year: 25, //expiryYear,
-                                name: "Amos Oluwasegun Ezekiel", //cardholderName
-                            },
-                            amount: 1000 * 100 // Paystack API expects the amount in kobo (i.e. multiply by 100)
-                        }, function(result) {
-                            if (result.status === 'success') {
-                                // Display a success message to the user
-                                Swal.fire('Payment Successful', 'Your payment was processed successfully!','success');
-                               
-                            } else {
-                                // Handle errors
-                                // console.log(result.message);
-                                Swal.fire('Payment Unsuccessful', 'There was an error processing your payment. Please try again!','error');
-                               
-                            }
-                        });
-                    } else {
-                        // Handle errors
-                        // console.log(response.message);
-                        Swal.fire('Payment Unsuccessful', 'There was an error processing your payment. Please try again!','error');
-                       
-                    }
-                }
-            };
-
-            // Open the Paystack pop-up
-            const paystackPopup = PaystackPop.setup(config);
-            paystackPopup.openIframe();
-        }
-        const paystackSecretKey = @json(env('PAYSTACK_PUBLIC_KEY'));
-
-        function payWithPaystack(data) {
-            // console.log(data)
-            var orderObj = {
-                email: $('[name=email]').val(),
-                amount: data.amount_paid * 100,
-                order_id: data.order_id,
-                phone: $('[name=phone]').val(),
-                process_transaction: "1",
-                card: data.card,
-            };
-
-            var data = data;
-            var handler = PaystackPop.setup({
-                // key: 'pk_live_af922c7f707c7ad3dc1a03433a3768007f6a0401',
-                key: paystackSecretKey,
-                // key: 'pk_test_a36f058d84321e7d8f7f2d27655ddddd6a700b3f',
-                // key: 'pk_live_e139b3ad8d001c8219ed6ea7fb1cb756d2ce66f1',
-                email: orderObj.email,
-                // card: {
-                //     number: 4105400018676039,//cardNumber,
-                //     cvv: 240,//cvv,
-                //     expiry_month: 03,//expiryMonth,
-                //     expiry_year: 25,//expiryYear,
-                //     name: "Amos Oluwasegun Ezekiel",//cardholderName
-                // },
-                // card: orderObj.card,
-                amount: orderObj.amount,
-                ref: data.transaction_id,
-                metadata: {
-                    custom_fields: [{
-                        display_name: "Order ID",
-                        variable_name: "order_id",
-                        value: orderObj.order_id
-                    }]
-                },
-                callback: function(response) {
-                    $('.preloader').show();
-                    location.href = "/paystack/transaction-successful?order_id=" + orderObj.order_id +
-                        '&reference=' + response.reference;
-
-                },
-                onClose: function() {
-                    $('.preloader').hide();
-                    alert('Click "Pay online now" to retry payment.');
-                }
-            });
-            handler.openIframe();
-        }
+        
     </script>
     <!--SWEET ALERT JS -->
     <script src="{{asset('swal.js')}}"></script>
@@ -797,14 +693,18 @@
             });
         });
 
-        $("#password-fieldx").on('input', function() {
+        $("#password-fieldx, #password-fieldc").on('input', function() {
+       
             var password = $("#password-fieldx").val()
             var confirm = $("#password-fieldc").val()
-            if(password !== confirm) {
+            if(password.length > 7) {
+                if(password !== confirm) {
                 $("#danger_password").html("<div class='alert alert-danger'>Password not matched!</div>");
             } else {
                 $("#danger_password").html("<div class='alert alert-success'>Password matched!</div>")
             }
+            }
+            
         })
 
     </script>

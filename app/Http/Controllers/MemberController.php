@@ -169,6 +169,7 @@ class MemberController extends Controller
         // }
         // dd($dateArray);
         $data['months'] = $weeks;//array_merge($months, $dateArray);
+        $data['user'] = Auth::user();
         // $data['months'] = $months + $dateArray;
         // dd($check, $data);
         return view ('member.payment.weekly', $data);

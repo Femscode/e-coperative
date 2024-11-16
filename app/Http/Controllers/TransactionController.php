@@ -60,7 +60,8 @@ class TransactionController extends Controller
         $input['password'] = Hash::make($request->password);
         $coopD = Company::where('uuid', $request->company)->first();
         $amount = $coopD->reg_fee;
-        $tag = date("dY");
+        // $tag = date("dY");
+        $tag = uniqid(). date("dYHis").rand(100, 999);
         $input['transaction_id'] = $transaction_id = intval($tag) + rand(0, 30) * 50;
         if ($fee < 1) {
             $status = 0;
@@ -135,7 +136,8 @@ class TransactionController extends Controller
         $input['password'] = Hash::make($request->password);
         $input['amount'] = $amount;
         $input['plan_id'] = Auth::user()->plan_id;
-        $tag = date("dY");
+        // $tag = date("dY");
+        $tag = uniqid(). date("dYHis").rand(100, 999);
         $input['transaction_id'] = $transaction_id = intval($tag) + rand(0, 30) * 50;
         foreach ($fees as $key => $fee) {
             // dd($fee['fee']);
@@ -179,7 +181,8 @@ class TransactionController extends Controller
         $input['payment_type'] = "Monthly Dues";
         $input['user_id'] = Auth::user()->id;
         $input['company_id'] = Auth::user()->company_id;
-        $tag = date("dY");
+        // $tag = date("dY");
+        $tag = uniqid(). date("dYHis").rand(100, 999);
         $input['month'] = $tag;
         $input['transaction_id'] = $transaction_id = intval($tag) + rand(0, 30) * 50;
         $transaction = Transaction::create($input);
@@ -211,7 +214,8 @@ class TransactionController extends Controller
         $input['user_id'] = Auth::user()->id;
         $input['phone'] = Auth::user()->phone;
         $input['email'] = Auth::user()->email;
-        $tag = date("dY");
+        // $tag = date("dY");
+        $tag = uniqid(). date("dYHis").rand(100, 999);
         $input['transaction_id'] = $transaction_id = intval($tag) + rand(0, 30) * 50;
         $input['balance'] = $amount;
         $input['original'] = $amount;

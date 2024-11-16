@@ -4,7 +4,7 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>1 Million Hands | Admin</title>
+    <title>E-coop | Member's Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />

@@ -4,12 +4,12 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>1 Million Hands | Member Dashboard </title>
+    <title>E-Coop | Member Dashboard </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="1 Million Hands " name="description" />
-    <meta content="1 Million Hands " name="author" />
+    <meta content="E-Coop " name="description" />
+    <meta content="E-Coop " name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/cooplogo.png') }}">
 
     <!-- Layout config Js -->
     <script src="assets/js/layout.js"></script>

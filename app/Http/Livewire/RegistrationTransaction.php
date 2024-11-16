@@ -17,6 +17,7 @@ class RegistrationTransaction extends Component
     {
         $data['title'] = "Registration Transactions";
         $user = auth()->user();
+        
         if($this->search == ''){
             $data['transactions'] = Transaction::where('company_id',$user->company_id)->where([
                 ['status', 'Success'],
