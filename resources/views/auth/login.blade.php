@@ -149,7 +149,7 @@
 
 
             $("#member_login").on('click', function() {
-                $("#email").val('member@gmail.com')
+                $("#email").val('member2@gmail.com')
                 $("#password").val('Password123')
             });
             $("#admin_login").on('click', function() {
