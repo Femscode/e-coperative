@@ -140,27 +140,27 @@
         <div class="offcanvas-body">
             <ul class="mobile-menu">
                 <li class="mobile-menu-list active">
-                    <a href="javascript:void(0);">
+                    <a href="/">
                         Home
                     </a>
                    
                 </li>
                 <li class="mobile-menu-list">
-                    <a href="javascript:void(0);">
-                        Services
+                    <a href="/cooperative/signup" >
+                        Cooperative Registration
                     </a>
                   
                 </li>
                 <li class="mobile-menu-list">
-                    <a href="javascript:void(0);">
-                        About Us
+                    <a href="/register" >
+                        Member Registration
                     </a>
                  
                 </li>
              
           
                 <li class="mobile-menu-list without-icon">
-                    <a href="#" class="nav-link">
+                    <a href="http://wa.me/2349058744473" class="nav-link">
                         Contact
                     </a>
                 </li>
@@ -174,7 +174,7 @@
                         </button>
                     </li> -->
                     <li>
-                        <a href="/signup" class="search-btn login"><i class="ri-account-circle-line"></i> Sign Up</a>
+                        <a href="/register" class="search-btn login"><i class="ri-account-circle-line"></i> Sign Up</a>
                     </li>
                     <li>
                         <a href="/cooperative/signup" class="default-btn">Get Started <i class="ri-arrow-right-up-line"></i></a>

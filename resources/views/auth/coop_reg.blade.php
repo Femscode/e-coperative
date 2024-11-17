@@ -681,7 +681,6 @@
                     })
 
             });
-alert('nice')
             $("#password-fieldx, #password-fieldc").on('input', function() {
        
        var password = $("#password-fieldx").val()
