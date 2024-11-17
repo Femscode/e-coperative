@@ -130,7 +130,7 @@
 
     <div class="mobile-navbar offcanvas offcanvas-end border-0" data-bs-backdrop="static" tabindex="-1" id="navbarOffcanvas">
         <div class="offcanvas-header">
-            <a href="#" class="logo d-inline-block">
+            <a href="/" class="logo d-inline-block">
                 <img src="{{ asset('assets/images/cooplogo.png') }}" width=50 alt="logo">
             </a>
             <button type="button" class="close-btn bg-transparent position-relative lh-1 p-0 border-0" data-bs-dismiss="offcanvas" aria-label="close">
