@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="p-2 mt-4">
 
-                                    <form id="loginForm" method="POST">
+                                    <form id="loginForm" method="POST" action="{{ route('login') }}">
                                         @csrf
                                         <div class="mb-3">
                                             <label for="email" class="form-label">{{ __('Email Address') }} <span class="text-danger">*</span></label>
@@ -76,7 +76,7 @@
                                             @enderror
                                         </div>
                                         <div class="mt-4">
-                                            <button style="background-color: #082720; border: 0px" class="btn btn-success w-100" type="button" id="loginButton">{{ __('Login') }}</button>
+                                            <button style="background-color: #082720; border: 0px" class="btn btn-success w-100" type="submit" id="loginButtons">{{ __('Login') }}</button>
                                             <a class="btn btn-link" href="{{ route('password.request') }}">Login with a test account?</a>
                                             <div class="d-flex justify-content-center">
                                                 <a class="btn btn-primary m-2" id="member_login">Login As Member</a>
