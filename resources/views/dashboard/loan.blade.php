@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        @livewire('loan-application')
+        @livewire('loan')
 
 
         <!-- Modal -->
