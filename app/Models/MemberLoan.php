@@ -21,7 +21,8 @@ class MemberLoan extends Model implements Auditable
         static::creating(function ($loan) {
             // Set the value for the 'user id' column
             $loan->user_id = Auth::user()->id;
-            $loan->plan_id = Auth::user()->plan_id;
+            $loan->plan_id = Auth::user()->company_id;
+            $loan->company_id = Auth::user()->company_id;
             $loan->applied_date = now();
         });
     }
