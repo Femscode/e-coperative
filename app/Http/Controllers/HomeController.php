@@ -35,7 +35,9 @@ class HomeController extends Controller
         $data['users'] = User::where('company_id',$company->id)->get();
         $transacts = Transaction::where('company_id',$company->id)->where('status','Success');
         $data['transactions'] = $transacts->get();
-        $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->paginate(20);
+        $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->where('original','!=',0)->paginate(10);
+        $data['plan'] = Company::where('uuid', auth()->user()->company_id)->first();
+        // dd($data);
         return view('dashboard.index', $data);
         return view('admin.home', $data);
     }

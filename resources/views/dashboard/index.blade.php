@@ -9,7 +9,7 @@
 
      <!-- Start here.... -->
      <div class="row">
-          <div class="col-xxl-5">
+          <div class="col-xxl-12">
                <div class="row">
                     <div class="col-12">
 
@@ -30,7 +30,7 @@
 
 
                <div class="row">
-                    <div class="col-xl-4">
+                    <!-- <div class="col-xl-4">
                          <div class="card overflow-hidden" style='background-image:url("/assets/images/vbg3.jpg");background-repeat:no-repeat;background-size:cover'>
                               
                               <div class="card-body pt-0">
@@ -59,8 +59,8 @@
                               </div>
                          </div>
 
-                    </div>
-                    <div class="col-xl-8">
+                    </div> -->
+                    <div class="col-xl-12">
 
                          <!-- end row -->
 
@@ -93,8 +93,14 @@
                                    <div class="card">
                                         <div class="card-body overflow-hidden position-relative">
                                              <iconify-icon icon="iconamoon:category-duotone" class="fs-36 text-success"></iconify-icon>
-                                             <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Registration')->sum('balance'), 2)}}</h3>
-                                             <a href='/today_orders' class="text-muted">Registration Revenue</a>
+                                             <ul>
+                                                  <li>Registration Fee : ₦{{$plan->reg_fee}}</li>
+                                                  <li>Payment Mode : {{$plan->mode}}</li>
+                                                  <li>Loan Application Fee : ₦{{$plan->loan_form_amount}}</li>
+                                                  <li><strong>...</strong></li>
+                                             </ul>
+                                             <!-- <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Registration')->sum('balance'), 2)}}</h3> -->
+                                             <a href='/admin/plan' class="btn btn-sm btn-primary">Set Rule</a>
                                              <i class="bx bx-bar-chart-alt-2 widget-icon"></i>
                                         </div>
                                    </div>
@@ -120,9 +126,99 @@
 
 
 
+
+                    </div>
+               </div>
+
+
+               <div class="row">
+
+
+                    <div class="col-md-6 col-xl-3">
+                         <a href='/admin/application'>
+                              <div class="card">
+                                   <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                             <div>
+                                                  <h4 class="card-title mb-2">Loan Applications</h4>
+                                                  <h3 class="mb-0 fw-bold mt-3 mb-1">30</h3>
+                                             </div>
+                                             <div>
+                                                  <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                                                       <i class="bx bx-layer avatar-title fs-24 text-dark"></i>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </a>
+                    </div>
+                    <div class="col-md-6 col-xl-3">
+                         <a href='/admin/transaction/repayment'>
+                              <div class="card">
+                                   <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                             <div>
+                                                  <h4 class="card-title mb-2">Total Loan Repayment</h4>
+                                                  <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Loan Payment')->sum('balance'), 2)}}</h3>
+                                             </div>
+                                             <div>
+                                                  <div class="avatar-md bg-primary bg-opacity-10 rounded">
+
+                                                       <iconify-icon icon="solar:clock-circle-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </a>
+                    </div>
+                    <div class="col-md-6 col-xl-3">
+                         <a href='/admin/transaction/monthly_dues'>
+                              <div class="card">
+                                   <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                             <div>
+                                                  <h4 class="card-title mb-2">Total Monthly Dues Paid</h4>
+                                                  <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Weekly Dues')->sum('balance'), 2)}}</h3>
+                                             </div>
+                                             <div>
+                                                  <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                                                       <iconify-icon icon="solar:clipboard-check-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </a>
+                    </div>
+                    <div class="col-md-6 col-xl-3">
+                    <a href='/admin/transaction/registration'>
                          <div class="card">
                               <div class="card-body">
-                                   
+                                   <div class="d-flex align-items-center justify-content-between">
+                                        <div>
+                                             <h4 class="card-title mb-2">Registration Revenue</h4>
+                                             <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Registration')->sum('balance'), 2)}}</h3>
+                                        </div>
+                                        <div>
+                                             <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                                                  <iconify-icon icon="solar:inbox-line-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </a>
+                    </div>
+               </div>
+
+               <div class='row'>
+                    <div class='col-md-12'>
+
+                         <div class="card">
+                              <div class="card-body">
+
                                    <div class="row">
                                         <div class="col-xl-12">
                                              <div class="card">
@@ -175,7 +271,6 @@
 
                               </div>
                          </div>
-
                     </div>
                </div>
 

@@ -12,13 +12,13 @@
                 <div class="col-xl-5 col-lg-12" data-cues="slideInRight" data-duration="800">
                     <div class="main-banner-content">
                         <span class="sub-t">A project for the Abeokuta FinHack</span>
-                        <h1><span><img src="frontend_assets/images/svg/your.svg" alt="image">Digitalizing</span>  Cooperative Societies.</h1>
+                        <h1><span><img src="frontend_assets/images/svg/your.svg" alt="image">Digitizing</span>  Cooperative Societies.</h1>
                     </div>
                 </div>
                 <div class="col-xl-7 col-lg-12" data-cues="slideInLeft" data-duration="800">
                     <div class="info">
                        
-                        <p>This project is focused on transforming cooperative societies by digitalizing their operations. With this platform, members can access their savings, make payments, track loans, and engage with the community—all from any device, anytime, anywhere.</p>
+                        <p>This project is focused on transforming cooperative societies by digitizing their operations. With this platform, members can access their savings, make payments, track loans, and engage with the community—all from any device, anytime, anywhere.</p>
                        
                     </div>
                 </div>
