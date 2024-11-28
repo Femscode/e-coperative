@@ -208,13 +208,43 @@
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:streets-map-point-bold-duotone"></iconify-icon>
                                    </span>
-                                   <span class="nav-text"> Manage Transactions </span>
+                                   <span class="nav-text"> Manage Loan  </span>
                               </a>
                               <div class="collapse" id="sidebarMaps">
                                    <ul class="nav sub-navbar-nav">
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="/admin/application">Loan Applications</a>
+                                             <a class="sub-nav-link" href="/admin/application">Pending Loan Application(s)</a>
                                         </li>
+                                        <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="/admin/transaction/registration">Ongoing Loan Application(s)</a>
+                                        </li>
+                                        <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="/admin/transaction/monthly_dues">Completed Loan Application(s)</a>
+                                        </li>
+                                        {{--  <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="/admin/transaction/all">All</a>
+                                        </li>
+                                        <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="/admin/transaction/form">Form</a>
+                                        </li>
+                                        <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="/admin/transaction/repayment">Repayment</a>
+                                        </li>  --}}
+                                   </ul>
+                              </div>
+                         </li>
+                         <li class="nav-item">
+                              <a class="nav-link menu-arrow" href="#sidebarMaps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMaps">
+                                   <span class="nav-icon">
+                                        <iconify-icon icon="solar:streets-map-point-bold-duotone"></iconify-icon>
+                                   </span>
+                                   <span class="nav-text"> Manage Transactions </span>
+                              </a>
+                              <div class="collapse" id="sidebarMaps">
+                                   <ul class="nav sub-navbar-nav">
+                                        {{--  <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="/admin/application">Loan Applications</a>
+                                        </li>  --}}
                                         <li class="sub-nav-item">
                                              <a class="sub-nav-link" href="/admin/transaction/registration">Registration</a>
                                         </li>

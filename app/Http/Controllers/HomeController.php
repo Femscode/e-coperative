@@ -37,7 +37,7 @@ class HomeController extends Controller
         $transacts = Transaction::where('company_id',$company->id)->where('status','Success');
         $data['transactions'] = $transacts->get();
         $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->where('original','!=',0)->paginate(10);
-        $data['plan'] = Company::find(auth()->user()->company_id);
+        $data['plan'] = $company;//Company::find(auth()->user()->company_id);
         $data['loans'] = MemberLoan::where('company_id', $company->id)->get();
         // dd($data);
         return view('dashboard.index', $data);
