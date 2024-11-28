@@ -77,7 +77,7 @@
                                         </div>
                                         <div class="mt-4">
                                             <button style="background-color: #082720; border: 0px" class="btn btn-success w-100" type="submit" id="loginButtons">{{ __('Login') }}</button>
-                                            <a class="btn btn-link" href="{{ route('password.request') }}">Login with a test account?</a>
+                                            <a class="btn btn-link" href="{{ route('password.request') }}">Forget Password?</a>
                                             <div class="d-flex justify-content-center">
                                                 <a class="btn btn-primary m-2" id="member_login">Login As Member</a>
                                                 <a class="btn btn-dark m-2" id="admin_login">Login As Admin</a>
