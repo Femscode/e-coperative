@@ -32,7 +32,7 @@ class HomeController extends Controller
         $data['user'] = $user = Auth::user();
        
         $data['now'] = Carbon::now();
-        $company = Company::where('uuid',$user->company_id)->first();
+        $company = Company::find($user->company_id);
         $data['users'] = User::where('company_id',$company->id)->get();
         $transacts = Transaction::where('company_id',$company->id)->where('status','Success');
         $data['transactions'] = $transacts->get();
