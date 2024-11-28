@@ -1,11 +1,59 @@
+
+
+<div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light p-3">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    id="close-modal"></button>
+            </div>
+            
+            <form method="Post" action="{{route('create_user')}}">
+                @csrf
+                <div class="modal-body">
+
+                    <div class="mb-3" id="modal-id" style="display: none;">
+                        <label for="id-field" class="form-label">ID</label>
+                        <input type="text" id="id-field" class="form-control" placeholder="ID" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" class="form-control" placeholder="Enter Name" name="name" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter Email" name="email" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-control"  placeholder="Enter Password" name="password" required />
+                    </div>
+
+                
+                </div>
+                <div class="modal-footer">
+                    <div class="hstack gap-2 justify-content-end">
+                        <button type="button" class="btn btn-light close" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success" id="update-btn">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div>
     <div class="card">
         <div class="card-body">
             <div class="row g-2">
                 <div class="col-sm-4">
-                    <div class="search-box">
-                        <input type="text" wire:model="search" class="form-control" placeholder="Search for name, email,  or member number...">
-                        <i class="ri-search-line search-icon"></i>
+                    <div>
+                        <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#addUser"><i class="ri-add-line align-bottom me-1"></i> Add Member</button>
                     </div>
                 </div><!--end col-->
                 <div class="col-sm-auto ms-auto">
@@ -28,7 +76,7 @@
                             <div class="card-body">
                                 <div class="position-relative bg-light p-2 rounded text-center">
                                     <img @if($member->cover_image) src="{{ asset("$member->cover_image") }}" @else src="{{ asset('assets/images/profile-bg.jpg') }}" @endif alt="" class="avatar-xxl">
-                                
+
                                 </div>
                                 <div class="d-flex flex-wrap justify-content-between my-3">
                                     <div>
@@ -41,19 +89,19 @@
                                         <p class="mb-0"><span class="badge bg-light text-dark fs-12 me-1"><i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i> Coop ID: {{ $member->coop_id }}</span></p>
                                     </div>
                                 </div>
-                              
+
                                 <div class="d-flex align-items-center justify-content-between mt-3 mb-1">
                                     <p class="mb-0 fs-15 fw-medium text-dark">Referrals</p>
                                     <div>
                                         <p class="mb-0 fs-15 fw-medium text-dark">{{ $member->refers()->count() }} <span class="ms-1"><iconify-icon icon="solar:course-up-outline" class="text-success"></iconify-icon></span></p>
                                     </div>
                                 </div>
-                             
-                               
+
+
                             </div>
                             <div class="card-footer border-top gap-1 hstack">
                                 <a href="{{ route('admin-member-details', $member->id) }}" class="btn btn-primary w-100">View Profile</a>
-                             </div>
+                            </div>
                         </div>
                     </div>
                     <!-- <div class="col">

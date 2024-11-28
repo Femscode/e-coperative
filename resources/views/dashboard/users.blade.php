@@ -19,7 +19,7 @@
                     <div class="row g-4 mb-3">
                         <div class="col-sm-auto">
                             <div>
-                                <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> Add User</button>
+                                <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> Make Admin</button>
                             </div>
                         </div>
                         <div class="col-sm">
@@ -145,7 +145,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     id="close-modal"></button>
             </div>
-            <form method="Post" action="{{route('create_user')}}">
+            <form method="Post" action="{{route('make_admin')}}">
                 @csrf
                 <div class="modal-body">
 
@@ -155,19 +155,17 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" id="name" class="form-control" placeholder="Enter Name" name="name" required />
+                        <label for="name" class="form-label">Select Member</label>
+                        <select name='user_id' class='form-control'>
+                          
+                            @foreach($members as $member) 
+                            <option value='{{$member->id}}'>{{ $member->name }}</option>
+                            @endforeach
+                        </select>
+                        
                     </div>
 
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" id="email" class="form-control" placeholder="Enter Email" name="email" required />
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" id="password" class="form-control"  placeholder="Enter Password" name="password" required />
-                    </div>
+                   
 
                 
                 </div>
@@ -196,6 +194,20 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        @if(Session::has('message'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ Session::get('message') }}'
+        });
+    @endif
+    @if(Session::has('error'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ Session::get('error') }}'
+        });
+    @endif
         $('body').on('click', '.edit-user', function() {
             var id = $(this).data('id');
             $.get('{{ route('user_details') }}?id=' + id, function(data) {
@@ -260,7 +272,7 @@
         async function resetAccount(el, user_id) {
             const willUpdate = await new swal({
                 title: "Confirm Delete",
-                text: `Are you sure you want to delete this record?`,
+                text: `Are you sure you want to remove this user from an admin?`,
                 icon: "warning",
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Yes!",
@@ -272,20 +284,20 @@
                 //performReset()
                 performDelete(el, user_id);
             } else {
-                new swal("User record will not be deleted  :)");
+                new swal("User will not be removed  :)");
             }
         }
 
         function performDelete(el, user_id) {
             //alert(user_id);
             try {
-                $.get('{{ route('delete_users') }}?id=' + user_id,
+                $.get('{{ route('remove_user') }}?id=' + user_id,
                     function(data, status) {
                         if (data.status === "error") {
                             new swal("Opss", data.message, "error");
                         } else {
                             if (status === "success") {
-                                let alert = new swal(" record successfully deleted!.");
+                                let alert = new swal(" User removed successfully!.");
                                 $(el).closest("tr").remove();
                                 window.location.reload();
                                 // alert.then(() => {

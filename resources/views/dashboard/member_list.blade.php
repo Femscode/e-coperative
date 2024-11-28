@@ -172,6 +172,21 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        @if(Session::has('message'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ Session::get('message') }}'
+        });
+    @endif
+    @if(Session::has('error'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{{ Session::get('error') }}'
+        });
+    @endif
         var preLoader = $(".preloader")
         // import member file
         $("#importMemberForm").on('submit',async function(e) {

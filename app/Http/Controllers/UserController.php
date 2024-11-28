@@ -1,18 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Company;
+use App\Models\NumberCount;
+use App\Models\User;
 use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
 use function App\Helpers\success_status_code;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class UserController extends Controller
 {
     public function index(Request $request){
         $user = auth()->user();
         $data['users'] = User::where('company_id',$user->company_id)->where('user_type', 'Admin')->get();
+        $data['members'] = User::where('company_id',$user->company_id)->where('user_type','!=' ,'Admin')->get();
         return view('dashboard.users', $data);
         return view('user_home', $data);
     }
@@ -20,14 +24,52 @@ class UserController extends Controller
     public function add(Request $request){
         try {
             $input = $request->all();
-            User::create([
+            $admin = Auth::user();
+            $coopD = Company::find($admin->company_id);
+            $checkNumber =  NumberCount::where('coop_id', $admin->company_id)->first();
+            
+            // attempt to give new member coop id
+            if ($checkNumber) {
+                $code = $checkNumber->count + 1;
+                $checkNumber->update([
+                    "count" => $checkNumber->count + 1,
+                ]);
+            } else {
+                $code = 1;
+                NumberCount::create([
+                    "count" => 1,
+                    'coop_id' => $admin->company_id
+                ]);
+            }
+            
+           
+            $user = User::create([
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'user_type' => 'member',
+                'company_id' => $admin->company_id,
+                'coop_id' => convertToUppercase($coopD->name) . '' . $code,
                 'password' => Hash::make($input['password']),
             ]);
+            
 
             return redirect()->back()->with('message', 'User created successfully');
+
+        } catch (\Exception $exception) {
+           
+            return redirect()->back()->with('error',$exception->getMessage());
+            return redirect()->back()->withErrors(['exception' => $exception->getMessage()]);
+        }
+    }
+    public function make_admin(Request $request){
+        try {
+            $input = $request->all();
+            $user = User::find($request->user_id);
+            $user->user_type = "Admin";
+            $user->save();
+           
+
+            return redirect()->back()->with('message', 'User made admin successfully');
 
         } catch (\Exception $exception) {
 
@@ -74,6 +116,15 @@ class UserController extends Controller
         $loan->delete();
 
         return redirect()->back()->with('message', 'User deleted successfully');
+    }
+    public function remove_user(Request $request)
+    {
+       
+        $user = User::find($request->id);
+        $user->user_type = 'Member';
+        $user->save();
+
+        return redirect()->back()->with('message', 'User removed successfully');
     }
     
 }

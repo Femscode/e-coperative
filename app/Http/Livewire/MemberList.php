@@ -19,7 +19,7 @@ class MemberList extends Component
     public function render()
     {
         $user = auth()->user();
-        $company = Company::where('uuid', $user->company_id)->first();
+        $company = Company::find($user->company_id);
         if($this->search == ''){
             $data['members'] = User::where('company_id',$company->id)->where('user_type', "Member")->orderBy('created_at', 'desc')->paginate(21);
         }else{

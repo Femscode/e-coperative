@@ -31,12 +31,12 @@ class HomeController extends Controller
         $data['user'] = $user = Auth::user();
        
         $data['now'] = Carbon::now();
-        $company = Company::where('uuid', $user->company_id)->first();
+        $company = Company::find( $user->company_id);
         $data['users'] = User::where('company_id',$company->id)->get();
         $transacts = Transaction::where('company_id',$company->id)->where('status','Success');
         $data['transactions'] = $transacts->get();
         $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->where('original','!=',0)->paginate(10);
-        $data['plan'] = Company::where('uuid', auth()->user()->company_id)->first();
+        $data['plan'] = Company::find(auth()->user()->company_id);
         // dd($data);
         return view('dashboard.index', $data);
         return view('admin.home', $data);

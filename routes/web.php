@@ -62,9 +62,11 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::group(['prefix' => 'user'], function () {
                     Route::get('/', [App\Http\Controllers\UserController::class, 'index'])->name('user_home');
                     Route::get('/delete', [App\Http\Controllers\UserController::class, 'delete'])->name('delete_users');
+                    Route::get('/remove_user', [App\Http\Controllers\UserController::class, 'remove_user'])->name('remove_user');
                     Route::post('/update', [App\Http\Controllers\UserController::class, 'updateUser'])->name('update_user');
                     Route::get('/details', [App\Http\Controllers\UserController::class, 'details'])->name('user_details');
                     Route::post('/create_user', [App\Http\Controllers\UserController::class, 'add'])->name('create_user');
+                    Route::post('/make_admin', [App\Http\Controllers\UserController::class, 'make_admin'])->name('make_admin');
                     Route::post('/edit_user', [App\Http\Controllers\UserController::class, 'edit'])->name('edit_user');
                 });
 

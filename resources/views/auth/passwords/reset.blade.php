@@ -5,7 +5,7 @@
 <head>
         
         <meta charset="utf-8" />
-        <title>1 Million Hands - Change Password </title>
+        <title>E-Coop </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="1 Million Hands Global Initiative" name="description" />
         <meta content="Themesbrand" name="author" />

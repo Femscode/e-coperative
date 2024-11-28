@@ -111,7 +111,7 @@
                         <div class="text-center">
                             <p class="mb-0 text-muted">&copy; <script>
                                     document.write(new Date().getFullYear())
-                                </script>, 1 Million Hands Global Initiative! Crafted with <i class="mdi mdi-heart text-danger"></i> by HBH Software!</p>
+                                </script>, E-coop | AbkFinHack</p>
                         </div>
                     </div>
                 </div>
