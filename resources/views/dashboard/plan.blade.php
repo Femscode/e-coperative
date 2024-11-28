@@ -14,8 +14,8 @@
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Admin</a></li>
-                        <li class="breadcrumb-item active">Plans</li>
+                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Rules / Plans</li>
                     </ol>
                 </div>
 
@@ -24,28 +24,11 @@
     </div>
     <!-- end page title -->
     <div class="card">
-        <div class="card-header border-0 rounded">
-            <div class="row g-2">
-                <div class="col-xl-3">
-                    <div class="search-box">  
-                        <input type="text" class="form-control search" placeholder="Search for sellers & owner name or something...">  <i class="ri-search-line search-icon"></i>  
-                    </div>
-                </div><!--end col-->
-                <div class="col-xl-2 ms-auto">
-                    <div>
-                       
-                    </div>
-                </div><!--end col-->
-                <div class="col-lg-auto">
-                    <div class="hstack gap-2">
-                        <button type="button" class="btn btn-danger"><i class="ri-equalizer-fill me-1 align-bottom"></i> Filters</button>
-                        {{--  <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSeller"><i class="ri-add-fill me-1 align-bottom"></i> Add Plan</button>  --}}
-                    </div>
-                </div><!--end col-->
-            </div><!--end row-->
+        <div class="card-header border-0 rounded text-center">
+           <h1>Rules For Members</h1>
         </div>
         <div class="card-body p-4">
-            <div class="row mt-4">
+            <div class="row">
                 <form id="specifyCoop" method="post">
                     @csrf
                     <div class="row">

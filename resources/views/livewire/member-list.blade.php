@@ -28,21 +28,7 @@
                             <div class="card-body">
                                 <div class="position-relative bg-light p-2 rounded text-center">
                                     <img @if($member->cover_image) src="{{ asset("$member->cover_image") }}" @else src="{{ asset('assets/images/profile-bg.jpg') }}" @endif alt="" class="avatar-xxl">
-                                    <div class="position-absolute top-0 end-0 m-1">
-                                        <div class="dropdown">
-                                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <iconify-icon icon="iconamoon:menu-kebab-vertical-circle-duotone" class="fs-20 align-middle text-muted"></iconify-icon>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <!-- item-->
-                                                <a href="javascript:void(0);" class="dropdown-item">Download</a>
-                                                <!-- item-->
-                                                <a href="javascript:void(0);" class="dropdown-item">Export</a>
-                                                <!-- item-->
-                                                <a href="javascript:void(0);" class="dropdown-item">Import</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                
                                 </div>
                                 <div class="d-flex flex-wrap justify-content-between my-3">
                                     <div>
@@ -62,9 +48,7 @@
                                         <p class="mb-0 fs-15 fw-medium text-dark">{{ $member->refers()->count() }} <span class="ms-1"><iconify-icon icon="solar:course-up-outline" class="text-success"></iconify-icon></span></p>
                                     </div>
                                 </div>
-                                <div class="progress progress-soft progress-md">
-                                    <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" style="width: 80%" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
+                             
                                
                             </div>
                             <div class="card-footer border-top gap-1 hstack">

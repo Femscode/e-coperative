@@ -249,7 +249,7 @@
                                                                            <td class="fw-medium">{{ $transaction->user->name ?? ""}}</td>
                                                                            <td class="fw-medium">{{ $transaction->payment_type }}</td>
                                                                            <td class="fw-medium">{{ $transaction->month }}</td>
-                                                                           <td class="fw-medium">{{ number_format($transaction->original, 2) }}</td>
+                                                                           <td class="fw-medium">₦{{ number_format($transaction->original, 2) }}</td>
                                                                            <td class="text-muted">{{ \Carbon\Carbon::parse($transaction->updated_at)->format('jS M, Y - h:iA') }}</td>
                                                                       </tr>
                                                                       @endforeach

@@ -1,16 +1,18 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Models\Member;
-use App\Models\User;
-use App\Models\Bank;
 use App\Http\Controllers\Controller;
 use App\Imports\MemberImport;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Bank;
+use App\Models\Company;
+use App\Models\Member;
+use App\Models\User;
 use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
 use function App\Helpers\success_status_code;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 class MemberController extends Controller
 {
     /**
@@ -24,13 +26,15 @@ class MemberController extends Controller
         return view('dashboard.member_list');
         return view('admin.member.list');
     }
-
+    
     public function details($id){
         $data['user'] = $user = User::find($id);
         $data['plan'] = $user->plan();
         $data['banks'] = Bank::orderBy('name','asc')->get();
+       $data['coop'] = Company::find($user->company_id);
         // dd($plan);
         // return view('member.profile', $data);
+        return view('dashboard.member_details',$data);
         return view('admin.member.detail', $data);
     }
 

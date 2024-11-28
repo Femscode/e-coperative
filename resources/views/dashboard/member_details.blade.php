@@ -7,56 +7,45 @@
 
 <div class="container-fluid">
 
-    <div class="row" id='mainpreview'>
-        <div class="col-12">
-            <div class="card overflow-hidden">
-                <div class="card-body">
-
-
-                    <div class="bg-primary profile-bg rounded-top position-relative mx-n3 mt-n3">
-
-
-                        <img @if ($user->profile_image) src="{{ asset("$user->profile_image") }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif data-id="profile" id="userProfileImage" class="avatar-xl border border-light border-3 rounded-circle position-absolute top-100 start-0 translate-middle ms-5" alt="user-profile-image">
-
-                    </div>
-
-                    <div class="mt-5 d-flex flex-wrap align-items-center justify-content-between">
-                        <div>
-                            <h4 class="mb-1">{{ $user->name }} <i class='bx bxs-badge-check text-success align-middle'></i></h4>
-                            <p class="mb-0">{{$user->email}}</p>
-                        </div>
-                        <!-- <div class="d-flex align-items-center gap-2 my-2 my-lg-0">
-                            <a id='editbutton' class="btn btn-outline-primary"><i class="bx bx-edit"></i> Edit</a>
-                        </div> -->
-                    </div>
-
-
-
-                    <p class="d-flex align-items-center border p-2 rounded-2 border-dashed bg-body text-start mb-0">
-                        <span id="cttaste-link">https://ecoop.com/{{ $user->company->slug ?? '' }}</span>
-                        <a href="#!" class="ms-auto fs-4 copy-link"><i class="ti ti-copy"></i></a>
-                    </p>
+    <div class="position-relative">
+        <div class="profile-wid-bg profile-setting-img">
+            <div class="col">
+                <div class="text-end p-3">
+                    {{-- <div class="p-0 ms-auto rounded-circle profile-photo-edit">
+                        <input id="profile-foreground-img-file-input" type="file" data-id="cover" class="profile-foreground-img-file-input fileInput" >
+                        <label for="profile-foreground-img-file-input" class="profile-photo-edit btn btn-light">
+                                <i class="ri-image-edit-line align-bottom me-1"></i> Change Cover
+                        </label>
+                    </div>   --}}
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-5">
-                            <div class="flex-grow-1">
-                                <h5 class="card-title mb-0">Complete Your Profile</h5>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <a href="javascript:void(0);" class="badge bg-light text-primary fs-12"><i class="ri-edit-box-line align-bottom me-1"></i> Edit</a>
+    <div class="row">
+        <div class="col-xxl-3">
+            <div class="card mt-n5">
+                <div class="card-body p-4">
+                    <div class="text-center">
+                        <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                            <img @if($user->profile_image) src="{{ asset("$user->profile_image") }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif data-id="profile" id="userProfileImage" class="rounded-circle avatar-xl img-thumbnail user-profile-image previews" alt="user-profile-image">
+                            <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
+                                {{-- <input id="profile-img-file-input" type="file" data-id="profile" class="profile-img-file-input fileInput">
+                                <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                                    <span class="avatar-title rounded-circle bg-light text-body">
+                                        <i class="ri-camera-fill"></i>
+                                    </span>
+                                </label> --}}
                             </div>
                         </div>
-                        <div class="progress animated-progess custom-progress progress-label">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                <div class="label">30%</div>
-                            </div>
-                        </div>
+                        <h5 class="fs-16 mb-1">{{ $user->name }}</h5>
+                        <p class="text-muted mb-0">Member / {{$coop->name}}</p>
                     </div>
-                </div> -->
-
+                </div>
+            </div><!--end card-->
+          
+        </div><!--end col-->
+        <div class="col-xxl-9">
             <div class="card mt-xxl-n5">
                 <div class="card-header">
                     <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
@@ -66,34 +55,30 @@
                                 Personal Details
                             </a>
                         </li>
-                        @if($user->user_type == "Member")
                         <li class="nav-item">
                             <a class="nav-link " data-bs-toggle="tab" href="#myBank" role="tab">
                                 <i class="fas fa-bank"></i>
                                 Bank
                             </a>
                         </li>
-                        @endif
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#changePassword" role="tab">
+                            {{-- <a class="nav-link" data-bs-toggle="tab" href="#changePassword" role="tab">
                                 <i class="far fa-user"></i>
                                 Change Password
                             </a>
-                        </li>
-                        @if($user->user_type == "Member")
+                        </li> --}}
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#experience" role="tab">
                                 <i class="far fa-envelope"></i>
-                                My Plan
+                                User's Plan
                             </a>
                         </li>
-                        @endif
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#privacy" role="tab">
                                 <i class="mdi mdi-cog-outline"></i>
                                 Privacy Policy
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
                 <div class="card-body p-4">
@@ -142,7 +127,7 @@
                                         <div class="mb-3">
                                             <label for="cityInput" class="form-label">Gender</label>
                                             <select class="form-select rounded-pill mb-3" name="gender" aria-label="Default select example">
-                                                <option value="">Choose Gender</option>
+                                                <option value="" >Choose Gender</option>
                                                 <option value="Male" {{ $user->gender == "Male" ? 'selected' : '' }}>Male</option>
                                                 <option value="Female" {{ $user->gender == "Female" ? 'selected' : '' }}>Female</option>
                                             </select>
@@ -166,12 +151,7 @@
                                             <textarea class="form-control" id="exampleFormControlTextarea" name="bio" placeholder="Enter your bio" rows="3">{{ $user->bio }}</textarea>
                                         </div>
                                     </div><!--end col-->
-                                    <div class="col-lg-12">
-                                        <div class="hstack gap-2 justify-content-end">
-                                            <button type="submit" class="btn btn-primary">Update Profile</button>
-                                            {{-- <button type="button" class="btn btn-soft-success">Cancel</button> --}}
-                                        </div>
-                                    </div><!--end col-->
+                                    <!--end col-->
                                 </div><!--end row-->
                             </form>
                         </div><!--end tab-pane-->
@@ -193,13 +173,13 @@
                                     <div class="col-lg-4">
                                         <div>
                                             <label for="confirmpasswordInput" class="form-label">Account Number*</label>
-                                            <input class="form-control rounded-pill mb-3" value="{{ $user->account_number }}" type="text" class="form-control" pattern="^\d{10}$" required name="account_number" placeholder="account number">
+                                            <input  class="form-control rounded-pill mb-3" value="{{ $user->account_number }}" type="text" class="form-control" pattern="^\d{10}$" required  name="account_number"  placeholder="account number">
                                         </div>
                                     </div>
                                     <div class="col-lg-4" @if(!$user->account_name) style="display:none" @endif id="accountDiv">
                                         <div>
                                             <label for="newpasswordInput" class="form-label">Account Name*</label>
-                                            <input type="text" class="form-control rounded-pill mb-3" value="{{ $user->account_name }}" id="accountName" name="account_name" placeholder="account name">
+                                            <input type="text" class="form-control rounded-pill mb-3" value="{{ $user->account_name }}" id="accountName" name="account_name"  placeholder="account name">
                                         </div>
                                     </div><!--end col--><!--end col-->
                                     {{-- <div class="col-lg-12">
@@ -207,11 +187,11 @@
                                             <a href="javascript:void(0);" class="link-primary text-decoration-underline">Forgot Password ?</a>
                                         </div>
                                     </div><!--end col--> --}}
-                                    <div class="col-lg-12" @if($user->account_name) style="display:none" @endif id="accountDiv">
+                                    {{-- <div class="col-lg-12" @if($user->account_name) style="display:none" @endif id="accountDiv">
                                         <div class="text-end">
                                             <button type="submit" class="btn btn-success">verify</button>
                                         </div>
-                                    </div><!--end col-->
+                                    </div><!--end col--> --}}
                                 </div><!--end row-->
                             </form>
                         </div><!--end tab-pane-->
@@ -236,8 +216,8 @@
                                     <div class="col-lg-4">
                                         <div>
                                             <label for="confirmpasswordInput" class="form-label">Confirm Password*</label>
-                                            <input type="password" class="form-control" required name="confirm_password" id="password-fieldz" placeholder="Confirm password">
-                                            <span toggle="#password-fieldz" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                            <input type="password" class="form-control" required  name="confirm_password" id="password-fieldz" placeholder="Confirm password">
+                                            <span toggle="#password-fieldz"  class="fas toggle-password field-icon fa-eye-slash"></span>
                                         </div>
                                     </div><!--end col-->
                                     {{-- <div class="col-lg-12">
@@ -253,7 +233,6 @@
                                 </div><!--end row-->
                             </form>
                         </div><!--end tab-pane-->
-                        @if($user->user_type == "Member")
                         <div class="tab-pane" id="experience" role="tabpanel">
                             <div id="newlink">
                                 <div id="1">
@@ -261,55 +240,55 @@
                                         <div class="col-lg-6">
                                             <div class="mb-3">
                                                 <label for="" class="form-label">Plan Name</label>
-                                                <input type="text" name="name" class="form-control" value="{{ $plan->name }}" placeholder="Enter plan ame">
+                                                <input type="text" name="name" class="form-control" value="{{ $plan->name ?? "" }}" placeholder="Enter plan ame">
                                             </div>
                                         </div><!--end col-->
                                         <div class="col-lg-6">
                                             <div class="mb-3">
                                                 <label for="lastnameInput" class="form-label">Plan registration Fee</label>
-                                                <input type="number" name="reg_fee" class="form-control" value="{{ $plan->reg_fee }}" placeholder="Enter plan registration fee">
+                                                <input type="number" name="reg_fee" class="form-control" value="{{ $plan->reg_fee ?? "" }}" placeholder="Enter plan registration fee">
                                             </div>
                                         </div><!--end col-->
                                         <div class="col-lg-4">
                                             <div class="mb-3">
                                                 <label for="contactnumberInput" class="form-label">Plan Weekly Dues</label>
-                                                <input type="number" class="form-control" name="monthly_dues" value="{{ $plan->monthly_dues }}" placeholder="Enter plan weekly dues">
+                                                <input type="number" class="form-control" name="monthly_dues" value="{{ $plan->monthly_dues ?? "" }}" placeholder="Enter plan weekly dues">
                                             </div>
                                         </div><!--end col-->
                                         <div class="col-lg-4">
                                             <div class="mb-3">
                                                 <label for="phonenumberInput" class="form-label">Plan Monthly Charge</label>
-                                                <input type="number" class="form-control" value="{{ $plan->monthly_charge }}" name="monthly_charge" placeholder="Enter monthly charge">
+                                                <input type="number" class="form-control" value="{{ $plan->monthly_charge ?? "" }}" name="monthly_charge" placeholder="Enter monthly charge">
                                             </div>
                                         </div><!--end col-->
                                         <div class="col-lg-4">
                                             <div class="mb-3">
                                                 <label for="emailidInput" class="form-label">Plan Loan Application Referrer</label>
-                                                <input type="number" class="form-control" name="referrer_no" value="{{ $plan->referrer_no }}" placeholder="Enter number of referrer for loan application eligibility">
+                                                <input type="number" class="form-control" name="referrer_no" value="{{ $plan->referrer_no ?? "" }}" placeholder="Enter number of referrer for loan application eligibility">
                                             </div>
                                         </div><!--end col-->
                                         <div class="col-lg-4">
                                             <div class="mb-3">
                                                 <label for="contactnumberInput" class="form-label">Min Loan Application</label>
-                                                <input type="number" class="form-control" name="min_loan_range" value="{{ $plan->min_loan_range }}" placeholder="Enter plan minimum loan application">
+                                                <input type="number" class="form-control" name="min_loan_range" value="{{ $plan->min_loan_range ?? "" }}" placeholder="Enter plan minimum loan application">
                                             </div>
                                         </div><!--end col-->
                                         <div class="col-lg-4">
                                             <div class="mb-3">
                                                 <label for="phonenumberInput" class="form-label">Max Loan Application</label>
-                                                <input type="number" class="form-control" name="max_loan_range" value="{{ $plan->max_loan_range }}" placeholder="Enter plan maximum loan application">
+                                                <input type="number" class="form-control" name="max_loan_range" value="{{ $plan->max_loan_range ?? "" }}" placeholder="Enter plan maximum loan application">
                                             </div>
                                         </div><!--end col-->
                                         <div class="col-lg-4">
                                             <div class="mb-3">
                                                 <label for="emailidInput" class="form-label">Defaulter Loan Charge</label>
-                                                <input type="number" class="form-control" name="default_charge" value="{{ $plan->default_charge }}" placeholder="Enter amount for defaulters">
+                                                <input type="number" class="form-control" name="default_charge" value="{{ $plan->default_charge ?? "" }}" placeholder="Enter amount for defaulters">
                                             </div>
                                         </div><!--end col-->
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label for="exampleFormControlTextarea1" class="form-label">Note</label>
-                                                <textarea class="form-control" name="note" rows="3" placeholder="Enter plan description">{{ $plan->note }}</textarea>
+                                                <textarea class="form-control" name="note" rows="3" placeholder="Enter plan description">{{ $plan->note ?? "" }}</textarea>
                                             </div>
                                         </div><!--end col-->
                                     </div><!--end row-->
@@ -320,7 +299,6 @@
 
                             </div>
                         </div><!--end tab-pane-->
-                        @endif
                         <div class="tab-pane" id="privacy" role="tabpanel">
                             <div class="mb-4 pb-2">
                                 <h5 class="card-title text-decoration-underline mb-3">Security:</h5>
@@ -331,7 +309,7 @@
                                     </div>
                                     <div class="flex-shrink-0 ms-sm-3">
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input switchTwo" type="checkbox" role="switch" id="directMessage" {{ $user->tfa == "1" ? 'checked' : '' }} />
+                                            <input class="form-check-input switchTwo" disabled type="checkbox" role="switch" id="directMessage" {{ $user->tfa == "1" ? 'checked' : '' }} />
                                         </div>
                                     </div>
                                 </div>
@@ -351,28 +329,27 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div><!--end col-->
+    </div><!--end row-->
 
-    </div>
+    @livewire('referral' , ['user' => $user])
 
-
-</div>
 </div>
 @endsection
 
 @section('script')
-<script src="{{ asset('assets/libs/swiper/swiper-bundle.min.js') }}"></script>
+ <!-- swiper js -->
+ <script src="{{ asset('assets/libs/swiper/swiper-bundle.min.js') }}"></script>
 
-<!-- profile init js -->
-<script src="{{ asset('assets/js/pages/profile.init.js') }}"></script>
-<script>
+ <!-- profile init js -->
+ <script src="{{ asset('assets/js/pages/profile.init.js') }}"></script>
+ <script>
     $(document).ready(function() {
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
 
         $('.switchTwo').on('click', function() {
             if ($(this).is(':checked')) {
@@ -385,20 +362,22 @@
             const formData = new FormData();
             formData.append('type', type);
             $.ajax({
-                type: 'POST',
-                url: "{{route('enable-2fa')}}",
-                data: formData,
-                dataType: 'json',
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function(response) {},
-                error: function(data) {}
+                    type: 'POST',
+                    url: "{{route('enable-2fa')}}",
+                    data: formData,
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                success: function(response) {
+                },
+                error: function(data) {
+                }
             })
         });
 
         // Listen for changes in the file input field
-        $('.fileInput').change(function() {
+        $('.fileInput').change(function () {
             // Get the selected file
             const file = this.files[0];
             const type = $(this).data('id');
@@ -415,23 +394,25 @@
                     const reader = new FileReader();
 
                     // Define a callback function to execute when the file is loaded
-                    reader.onload = function(e) {
-                        // Get the image element by its ID
-                        img.attr('src', e.target.result);
-                    };
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{route('save-file')}}",
-                        data: formData,
-                        dataType: 'json',
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        success: function(response) {},
-                        error: function(data) {}
-                    })
-                    // Read the file as a data URL (this will trigger the onload function)
-                    reader.readAsDataURL(file);
+                    reader.onload = function (e) {
+                    // Get the image element by its ID
+                    img.attr('src', e.target.result);
+                };
+                $.ajax({
+                    type: 'POST',
+                    url: "{{route('save-file')}}",
+                    data: formData,
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                    },
+                    error: function(data) {
+                    }
+                })
+                // Read the file as a data URL (this will trigger the onload function)
+                reader.readAsDataURL(file);
                 } else {
                     // Display an error message for unsupported file types
                     $('.previews').html('Unsupported file type');
@@ -443,26 +424,25 @@
         });
         $('body').on('click', '.edit-user', function() {
             var id = $(this).data('id');
-            $.get('{{ route('user_details') }}?id=' + id,
-                function(data) {
-                    // alert('hhgf');
-                    $('#idUser').val(data.id);
-                    $('#emailDetail').val(data.email);
-                    $('#nameDetail').val(data.name);
-                })
+            $.get('{{ route('user_details') }}?id=' + id, function(data) {
+                // alert('hhgf');
+                $('#idUser').val(data.id);
+                $('#emailDetail').val(data.email);
+                $('#nameDetail').val(data.name);
+            })
         });
 
         $("#profileUpdate").on('submit', async function(e) {
             e.preventDefault();
             $('.preloader').show();
-
             const serializedData = $("#profileUpdate").serializeArray();
             try {
-                const postRequest = await request("/update-profile", processFormInputs(serializedData), 'post');
-                new swal("Good Job", postRequest.message, "success");
-                $('.preloader').hide();
+                    const postRequest = await request("/member/update-profile",
+                    processFormInputs(
+                        serializedData), 'post');
+                    new swal("Good Job", postRequest.message, "success");
+                    $('.preloader').hide();
             } catch (e) {
-
                 $('.preloader').hide();
                 if ('message' in e) {
                     new swal("Opss", e.message, "error");
@@ -475,12 +455,12 @@
             $('.preloader').show();
             const serializedData = $("#passwordChange").serializeArray();
             try {
-                const postRequest = await request("/change-password",
+                    const postRequest = await request("/change-password",
                     processFormInputs(
                         serializedData), 'post');
-                new swal("Good Job", postRequest.message, "success");
-                $('#passwordChange').trigger("reset");
-                $('.preloader').hide();
+                    new swal("Good Job", postRequest.message, "success");
+                    $('#passwordChange').trigger("reset");
+                    $('.preloader').hide();
             } catch (e) {
                 $('.preloader').hide();
                 if ('message' in e) {
@@ -494,13 +474,13 @@
             $('.preloader').show();
             const serializedData = $("#verifyAccount").serializeArray();
             try {
-                const postRequest = await request("/verify-account",
+                    const postRequest = await request("/verify-account",
                     processFormInputs(
                         serializedData), 'post');
-                new swal("Good Job", postRequest.message, "success");
-                $('#accountDiv').show();
-                $('#accountName').val(postRequest.data);
-                $('.preloader').hide();
+                    new swal("Good Job", postRequest.message, "success");
+                    $('#accountDiv').show();
+                    $('#accountName').val(postRequest.data);
+                    $('.preloader').hide();
             } catch (e) {
                 $('.preloader').hide();
                 if ('message' in e) {
@@ -576,4 +556,4 @@
     })
 </script>
 
-@endsection
+ @endsection
