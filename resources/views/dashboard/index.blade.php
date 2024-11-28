@@ -141,7 +141,7 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                              <div>
                                                   <h4 class="card-title mb-2">Loan Applications</h4>
-                                                  <h3 class="mb-0 fw-bold mt-3 mb-1">30</h3>
+                                                  <h3 class="mb-0 fw-bold mt-3 mb-1">{{ $loans->count() }}</h3>
                                              </div>
                                              <div>
                                                   <div class="avatar-md bg-primary bg-opacity-10 rounded">
@@ -223,7 +223,7 @@
                                         <div class="col-xl-12">
                                              <div class="card">
                                                   <div class="card-header d-flex align-items-center">
-                                                       <h4 class="card-title flex-grow-1 mb-0">Recent Transactions</h4>
+                                                       <h4 class="card-title flex-grow-1 mb-0">Current Month Transactions</h4>
                                                        <div class="flex-shrink-0">
                                                             <a href="javascript:void(0);" class="btn btn-soft-info btn-sm">Export Report</a>
                                                        </div>
