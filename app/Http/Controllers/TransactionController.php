@@ -221,6 +221,7 @@ class TransactionController extends Controller
         $input['transaction_id'] = $transaction_id = intval($tag) + rand(0, 30) * 50;
         $input['balance'] = $amount;
         $input['original'] = $amount;
+        $input['company_id'] = auth()->user()->company_id;
         $transaction = Transaction::create($input);
 
         // $transaction->update(["transaction_id" => $transaction_id]);

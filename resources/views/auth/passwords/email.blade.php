@@ -22,7 +22,10 @@
 @endsection
 
 @section('content')
+{{-- <div class="page-banner-area position-relative overflow-hidden" style="background-image: {{ url('frontend_assets/images/hero/hero-image-1.svg') }}"> --}}
+{{-- <div class="page-banner-area position-relative overflow-hidden" style='background-color: #e5f7b3;' class="card-body p-4 bg-color-e5f7b3"> --}}
 <div class="page-banner-area position-relative overflow-hidden" style="background-image: url(frontend_assets/images/hero/hero-image-1.svg)">
+    {{-- <div style='background-color: #e5f7b3;' class="card-body p-4 bg-color-e5f7b3"> --}}
     <div class="container">
         <div class="page-banner-content">
             <h1>Reset Password</h1>
@@ -33,8 +36,8 @@
         </div>
     </div>
     <div class="shape-image">
-        <img class="page-banner-shape-1 moveHorizontal_reverse" src="frontend_assets/images/shape/feature-shape-1.png" alt="shape">
-        <img class="page-banner-shape-2 moveVertical" src="frontend_assets/images/shape/feature-shape-1.png" alt="shape">
+        <img class="page-banner-shape-1 moveHorizontal_reverse" src="{{ url('frontend_assets/images/shape/feature-shape-1.png') }}" alt="shape">
+        <img class="page-banner-shape-2 moveVertical" src="{{ url('frontend_assets/images/shape/feature-shape-1.png') }}" alt="shape">
     </div>
 </div>
 

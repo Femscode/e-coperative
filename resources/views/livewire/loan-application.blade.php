@@ -74,8 +74,7 @@
                                             <td class="text-muted">
                                            
                                                 @if($transaction->approval_status == 1 && $transaction->status == "Awaiting" && $transaction->payment_status == 0)
-                                                <button class="btn rounded-pill btn-sm btn-soft-info" onclick="processPayment(this)" data-amount="{{$transaction->monthly_return  }}" data-id="{{ $transaction->uuid }}">Pay</button>
-                                                <!-- <button class="btn rounded-pill btn-sm btn-soft-info" onclick="processPayment(this)" data-amount="{{auth()->user()->plan()->form_amount  }}" data-id="{{ $transaction->uuid }}">Pay</button> -->
+                                                <button class="btn rounded-pill btn-sm btn-soft-info" onclick="processPayment(this)" data-amount="{{auth()->user()->plan()->form_amount  }}" data-id="{{ $transaction->uuid }}">Pay</button>
                                                 @endif
                                                 {{-- <span class="badge bg-{{ $transaction->color() }}">{{ $transaction->status }}</span> --}}
                                             </td>
