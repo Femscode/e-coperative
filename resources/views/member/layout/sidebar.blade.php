@@ -3,13 +3,13 @@
     <li class="nav-item">
         <a class="nav-link {{ Route::is('member_home') ? 'active' : '' }}" href="/member" role="button"
             aria-expanded="false" aria-controls="sidebarDashboards">
-            <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboard</span>
+            <i class="ri-apps-2-line"></i> <span data-key="t-dashboards">Dashboard</span>
         </a>
     </li>
     <li class="nav-item">
         <a class="nav-link menu-link {{ Route::is('loan.home','loan.ongoing','loan.completed') ? 'active' : '' }}" href="#sidebarDashboards" data-bs-toggle="collapse" role="button"
         @if(Route::is('loan.home','loan.ongoing','loan.completed')) aria-expanded='true' @else aria-expanded='false' @endif aria-controls="sidebarDashboards">
-            <i class="ri-dashboard-2-line"></i> <span data-key="t-apps">Loan Applications</span>
+            <i class="ri-layout-3-line"></i> <span data-key="t-apps">Loan Applications</span>
         </a>
         <div class="collapse menu-dropdown {{ Route::is('loan.home','loan.ongoing','loan.completed') ? 'show' : '' }}" id="sidebarDashboards">
             <ul class="nav nav-sm flex-column">
@@ -36,7 +36,7 @@
     <li class="nav-item">
         <a class="nav-link {{ Route::is('member-manual-payment') ? 'active' : '' }}" href="{{ route('member-manual-payment') }}" role="button"
             aria-expanded="false" aria-controls="sidebarAuth">
-            <i class="ri-account-circle-line"></i> <span data-key="t-authentication">Pay Dues</span>
+            <i class="ri-dashboard-2-line"></i> <span data-key="t-authentication">Pay Dues</span>
         </a>
     </li>
     <li class="nav-item">
