@@ -49,8 +49,9 @@
                                         <td class="text-muted">
                                             @if($transaction->approval_status == 0)
                                             <button class="btn approveButton rounded-pill btn-sm btn-soft-info" data-id="{{ $transaction->id }}">Approve</button>
+                                            @else
+                                            <span class="badge bg-info }}">Processing</span>
                                             @endif
-                                            {{-- <span class="badge bg-{{ $transaction->color() }}">{{ $transaction->status }}</span> --}}
                                         </td>
                                     </tr>
                                     @endforeach
