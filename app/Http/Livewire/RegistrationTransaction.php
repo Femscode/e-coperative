@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Livewire;
-use App\Models\Transaction;
+use App\Models\Company;
 use Livewire\Component;
+use App\Models\Transaction;
 use Livewire\WithPagination;
+
 class RegistrationTransaction extends Component
 {
     use WithPagination;
@@ -17,14 +19,14 @@ class RegistrationTransaction extends Component
     {
         $data['title'] = "Registration Transactions";
         $user = auth()->user();
-        
+        $company = Company::where('uuid', $user->company_id)->first();
         if($this->search == ''){
-            $data['transactions'] = Transaction::where('company_id',$user->company_id)->where([
+            $data['transactions'] = Transaction::where('company_id',$company->id)->where([
                 ['status', 'Success'],
                 ['payment_type', 'Registration'],
             ])->paginate(10);
         }else{
-            $data['transactions'] = Transaction::where('company_id',$user->company_id)->where(function ($query) {
+            $data['transactions'] = Transaction::where('company_id',$company->id)->where(function ($query) {
                 $query->where('status', 'Success')
                       ->where('payment_type', 'Registration');
             })

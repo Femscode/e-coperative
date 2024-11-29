@@ -47,7 +47,7 @@
                                         <td class="fw-medium">{{ $transaction->user->name ?? ""}}</td>
                                         <td class="fw-medium">{{ $transaction->payment_type }}</td>
                                         <td class="fw-medium">{{ $transaction->month }}</td>
-                                        <td class="fw-medium">{{ number_format($transaction->original, 2) }}</td>
+                                        <td class="fw-medium">{{ number_format($transaction->amount, 2) }}</td>
                                         <td class="text-muted">{{ $transaction->updated_at }}</td>
                                     </tr>
                                     @endforeach
