@@ -28,7 +28,7 @@
     {{-- <div style='background-color: #e5f7b3;' class="card-body p-4 bg-color-e5f7b3"> --}}
     <div class="container">
         <div class="page-banner-content">
-            <h1>Reset Password</h1>
+            <h1>OTP VERIFICATION</h1>
             <ul>
                 <li><a href="/">Home</a></li>
                 <li>Sign In</li>
