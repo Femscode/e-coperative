@@ -12,7 +12,10 @@ use function App\Helpers\bad_response_status_code;
 class PlanController extends Controller
 {
     public function index(){
-        $data['plan'] = Company::where('uuid', auth()->user()->company_id)->first();
+        $data['plan'] = $company = Company::where('uuid', auth()->user()->company_id)->first();
+        if(!$company) {
+            $data['plan'] = $company = Company::find(auth()->user()->company_id);
+        }
         // dd($data);
         return view('dashboard.plan', $data);
         return view('admin.plan.index', $data);
@@ -22,6 +25,9 @@ class PlanController extends Controller
         try {
             $input = $request->all();
             $company = Company::where('uuid', auth()->user()->company_id)->first();
+            if(!$company) {
+                $company = Company::find(auth()->user()->company_id);
+            }
             $company->update($input);
             return api_request_response(
                 'ok',

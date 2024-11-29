@@ -12,34 +12,35 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
 <style>
     .field-icon {
-       float: right;
-       left: -10px;
-       margin-top: -23px;
-       position: relative;
-       z-index: 2;
-   }
-   .preloader {
-      align-items: center;
-      background: gray;
-      display: flex;
-      height: 100vh;
-      justify-content: center;
-      left: 0;
-      position: fixed;
-      top: 0;
-      transition: opacity 0.3s linear;
-      width: 100%;
-      z-index: 9999;
-      opacity: 0.4;
-  }
+        float: right;
+        left: -10px;
+        margin-top: -23px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .preloader {
+        align-items: center;
+        background: gray;
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        left: 0;
+        position: fixed;
+        top: 0;
+        transition: opacity 0.3s linear;
+        width: 100%;
+        z-index: 9999;
+        opacity: 0.4;
+    }
 </style>
 @endsection
 
 @section('content')
-<div class="page-banner-area position-relative overflow-hidden" 
-     style="background-image: url({{url('frontend_assets/images/hero/hero-image-1.svg')}})">
+<div class="page-banner-area position-relative overflow-hidden"
+    style="background-image: url({{url('frontend_assets/images/hero/hero-image-1.svg')}})">
 
-<!-- <div class="page-banner-area position-relative overflow-hidden" style="background-image: url(frontend_assets/images/hero/hero-image-1.svg)"> -->
+    <!-- <div class="page-banner-area position-relative overflow-hidden" style="background-image: url(frontend_assets/images/hero/hero-image-1.svg)"> -->
     <div class="container">
         <div class="page-banner-content">
             <h1>Create An Account</h1>
@@ -57,47 +58,54 @@
 
 
 <body>
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-center" id="paymentModalLabel">Complete Payment With Payaza</h5>
-               
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="payaza-form">
-                <div class='alert alert-danger'>For testing purpose, kindly use the default prefilled card details</div>
-                <div class='alert alert-success'>Amount to be paid : NGN<span id='amountToBePaid'>0</span></div>
-                    <div class="mb-3">
-                        <label for="card-number" class="form-label">Card Number</label>
-                        <input type='hidden' id='order_id'/>
-                        <input type="text" value='4012000033330026' id="card-number" class="form-control" required placeholder="Enter Card Number">
-                    </div>
-                    <div class="mb-3">
-                        <label for="expiry-date" class="form-label">Expiry Date</label>
-                        <input value='01/39' type="text" id="expiry-date" class="form-control" required placeholder="MM/YY">
-                    </div>
-                    <div class="mb-3">
-                        <label for="cvv" class="form-label">CVV</label>
-                        <input type="text" value='100' id="cvv" class="form-control" required placeholder="Enter CVV">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Pay Now</button>
-                </form>
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- <h5 class="modal-title text-center" id="paymentModalLabel">Complete Payment With Payaza</h5> -->
+                    <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' width='50%' />
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="payaza-form">
+                        <div class='alert alert-danger'>For testing purpose, kindly use the default prefilled card details</div>
+                        <div class='text-center'>Amount To Be Paid</div>
+                        <h1 class='text-center text-red' style='color:#212529;border:0px'>NGN<span id='amountToBePaid'>0</span></h1>
+                        <div class="mb-3">
+                            <label for="card-number" class="form-label">Card Number</label>
+                            <input type='hidden' id='order_id' />
+
+                            <input type="text" value='4012000033330026' id="card-number" class="form-control" required placeholder="Enter Card Number">
+                        </div>
+                        <div class='form-group row'>
+                            <div class="mb-3 col">
+                                <label for="expiry-date" class="form-label">Expiry Date</label>
+                                <input value='01/39' type="text" id="expiry-date" class="form-control" required placeholder="MM/YY">
+                            </div>
+                            <div class="mb-3 col">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <input type="text" value='100' id="cvv" class="form-control" required placeholder="Enter CVV">
+                            </div>
+                        </div>
+                        <div class='justify-content-center d-flex'>
+                            <button type="submit" style='background:#212529;border:0px' class="btn btn-success">Pay Now</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-   
+
     <div class="auth-page-wrapper pt-5">
         <!-- auth page bg -->
-       
+
 
         <!-- auth page content -->
         <div class="auth-page-content">
             <div class="container">
-               
+
                 <!-- end row -->
 
                 <div class="row justify-content-center">
@@ -231,6 +239,7 @@
                         <!-- end card -->
                     </div>
                     <!-- end col -->
+
                     <div class="col-xl-6">
                         <div class="card">
                             <!-- end card header -->
@@ -242,7 +251,7 @@
                                         @if(isset($slug))
                                         <h6> Join {{ $company->name }} today!</h6>
 
-                                        @else  
+                                        @else
                                         <h6> Join a cooperative today!</h6>
 
                                         @endif
@@ -271,7 +280,7 @@
                                     <div class="tab-content">
                                         <div class="tab-pane fade show active" id="steparrow-gen-info" role="tabpanel" aria-labelledby="steparrow-gen-info-tab">
                                             <div>
-                                                <div class="row">                                             
+                                                <div class="row">
                                                     <div class="col-lg-12">
                                                         <div class="mb-3">
                                                             <label class="form-label" for="Full Name">Full Name</label>
@@ -465,189 +474,188 @@
     <script src="assets/js/app.js"></script>
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-           
-            $('#process-order-form').submit(function(e) {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    <script>
+        $('#process-order-form').submit(function(e) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            // $('.preloader').show();
+            e.preventDefault();
+            // alert("ere")
+            var form_details = $(this).serializeArray();
+
+            processPayment(form_details);
+        })
+
+        function processPayment(data) {
+            data = data;
+            $('.preloader').show();
+            $.ajax({
+                type: 'POST',
+                url: 'pay-for-plan',
+                dataType: 'json',
+                data: data,
+                success: function(e) {
+                    $('.preloader').hide();
+                    $('.preloader').hide();
+                    if (e.status == 0) {
+                        new swal("Congratulations!", "Registration Succesful", "success");
+                        window.location.reload();
+                    } else {
+                        $("#order_id").val(e.order_id)
+                        $('#paymentModal').modal('show');
+
                     }
-                });
-                // $('.preloader').show();
-                e.preventDefault();
-                // alert("ere")
-                var form_details = $(this).serializeArray();
-               
-                processPayment(form_details);
+                },
+                error: function(e) {
+                    $('.preloader').hide();
+                    // var errorList = '';
+                    // Object.keys(e.responseJSON.message).forEach(function(key) {
+                    // errorList += '<li>' + e.responseJSON.message[key][0] + '</li>';
+                    // });
+                    new swal("Opss", e.responseJSON.message, "error");
+                }
             })
 
-            function processPayment(data) {
-                data = data;
-                $('.preloader').show();
-                $.ajax({
-                    type: 'POST',
-                    url: 'pay-for-plan',
-                    dataType: 'json',
-                    data: data,
-                    success: function(e) {
-                        $('.preloader').hide();
-                        $('.preloader').hide();
-                        if(e.status == 0){
-                            new swal("Congratulations!","Registration Succesful","success");
-                            window.location.reload();
-                        }else{
-                            $("#order_id").val(e.order_id)
-                            $('#paymentModal').modal('show');
-                            
-                        }
-                    },
-                    error: function(e) {
-                        $('.preloader').hide();
-                        // var errorList = '';
-                        // Object.keys(e.responseJSON.message).forEach(function(key) {
-                        // errorList += '<li>' + e.responseJSON.message[key][0] + '</li>';
-                        // });
-                        new swal("Opss",e.responseJSON.message,"error");
-                    }
-                })
+        }
 
-            }
-        
-            $('#payaza-form').submit(function(e) {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Processing payment, please wait...',
-                    icon: 'info',
-                    allowOutsideClick: false,
-                    didOpen: () => {
+        $('#payaza-form').submit(function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Processing payment, please wait...',
+                icon: 'info',
+                allowOutsideClick: false,
+                didOpen: () => {
                     Swal.showLoading()
                 }
-                })
+            })
 
-                // Collect card details
-                var cardDetails = {
-                    number: $('#card-number').val(),
-                    expiryMonth: $('#expiry-date').val().split('/')[0],  // Extract month from MM/YY
-                    expiryYear: $('#expiry-date').val().split('/')[1],   // Extract year from MM/YY
-                    cvv: $('#cvv').val()
-                };
+            // Collect card details
+            var cardDetails = {
+                number: $('#card-number').val(),
+                expiryMonth: $('#expiry-date').val().split('/')[0], // Extract month from MM/YY
+                expiryYear: $('#expiry-date').val().split('/')[1], // Extract year from MM/YY
+                cvv: $('#cvv').val()
+            };
 
-                // Prepare the data for the Payaza API request
-                console.log($("#payer_name").val(), $("#payer_email").val(), $("#amountToBePaid").html())
-                var payload = {
-                    "service_payload": {
-                        "first_name": $("#payer_name").val(), 
-                        "last_name": $("#payer_name").val(),
-                        "email_address": $("#payer_email").val(),
-                        "phone_number": $("#payer_phone").val(),
-                        "amount": $("#amountToBePaid").html(), // The amount to charge (adjust as needed)
-                        "transaction_reference": "PL-1KBPSCJCRD" + Math.floor((Math.random() * 10000000) + 1), // Unique transaction reference
-                        "currency": "NGN", // Currency code (adjust as needed)
-                        "description": "E-coop Registration Payment", // Payment description
-                        "card": {
-                            "expiryMonth": cardDetails.expiryMonth,
-                            "expiryYear": cardDetails.expiryYear,
-                            "securityCode": cardDetails.cvv,
-                            "cardNumber": cardDetails.number
-                        },
-                        "callback_url": "https://e-coop.cthostel.com/api/payment/webhook" // Your callback URL for payment updates
-                    }
-                };
+            // Prepare the data for the Payaza API request
+            console.log($("#payer_name").val(), $("#payer_email").val(), $("#amountToBePaid").html())
+            var payload = {
+                "service_payload": {
+                    "first_name": $("#payer_name").val(),
+                    "last_name": $("#payer_name").val(),
+                    "email_address": $("#payer_email").val(),
+                    "phone_number": $("#payer_phone").val(),
+                    "amount": $("#amountToBePaid").html(), // The amount to charge (adjust as needed)
+                    "transaction_reference": "PL-1KBPSCJCRD" + Math.floor((Math.random() * 10000000) + 1), // Unique transaction reference
+                    "currency": "NGN", // Currency code (adjust as needed)
+                    "description": "E-coop Registration Payment", // Payment description
+                    "card": {
+                        "expiryMonth": cardDetails.expiryMonth,
+                        "expiryYear": cardDetails.expiryYear,
+                        "securityCode": cardDetails.cvv,
+                        "cardNumber": cardDetails.number
+                    },
+                    "callback_url": "https://e-coop.cthostel.com/api/payment/webhook" // Your callback URL for payment updates
+                }
+            };
 
-                // Set up headers for the request
-                var headers = {
-                    "Authorization": "Payaza " + "{{env('PAYAZA_API')}}", // Authorization token from Payaza
-                    "Content-Type": "application/json"
-                };
+            // Set up headers for the request
+            var headers = {
+                "Authorization": "Payaza " + "{{env('PAYAZA_API')}}", // Authorization token from Payaza
+                "Content-Type": "application/json"
+            };
 
-                // Send the AJAX request to Payaza API
-                $.ajax({
-                    url: "https://cards-live.78financials.com/card_charge/", // Payaza endpoint
-                    method: "POST",
-                    headers: headers,
-                    data: JSON.stringify(payload),
-                    contentType: "application/json",
-                    success: function(response) {
-                        console.log("RAW RESULT: ", response);
-                        if (response.statusOk) {
-                            if (response.do3dsAuth) {
-                                if (response.formData && response.threeDsUrl) {
-                                    const creq = document.getElementById("creq");
-                                    creq.value = response.formData;
-                                    const form = document.getElementById("threedsChallengeRedirectForm");
-                                    form.setAttribute("action", response.threeDsUrl);
-                                    form.submit();
-                                } else {
-                                    console.log("Missing 3DS data:", response);
-                                    Swal.fire({
-                                        title: '3DS Authentication data missing. Please try again.',
-                                        icon: 'error'
-                                    })
-
-                                }
+            // Send the AJAX request to Payaza API
+            $.ajax({
+                url: "https://cards-live.78financials.com/card_charge/", // Payaza endpoint
+                method: "POST",
+                headers: headers,
+                data: JSON.stringify(payload),
+                contentType: "application/json",
+                success: function(response) {
+                    console.log("RAW RESULT: ", response);
+                    if (response.statusOk) {
+                        if (response.do3dsAuth) {
+                            if (response.formData && response.threeDsUrl) {
+                                const creq = document.getElementById("creq");
+                                creq.value = response.formData;
+                                const form = document.getElementById("threedsChallengeRedirectForm");
+                                form.setAttribute("action", response.threeDsUrl);
+                                form.submit();
                             } else {
-                                console.log("Payment Process Journey Completed");
-                                // $('#process-order-form').submit();
-                                Swal.fire('Payment Completed','Payment completed successfully!','success')
-                            
-                                location.href = "/payaza/transaction-successful?order_id=" + $("#order_id").val() +
+                                console.log("Missing 3DS data:", response);
+                                Swal.fire({
+                                    title: '3DS Authentication data missing. Please try again.',
+                                    icon: 'error'
+                                })
+
+                            }
+                        } else {
+                            console.log("Payment Process Journey Completed");
+                            // $('#process-order-form').submit();
+                            Swal.fire('Payment Completed', 'Payment completed successfully!', 'success')
+
+                            location.href = "/payaza/transaction-successful?order_id=" + $("#order_id").val() +
                                 '&reference=' + response.transactionReference;
-                            
-                                // Optionally submit your order form here if payment is successful
+
+                            // Optionally submit your order form here if payment is successful
 
                         }
                     } else {
-                    console.log("Error found:", response.debugMessage);
-                    Swal.fire({
-                                title: "Payment Failed: " + response.debugMessage,
-                                icon: 'error'
-                            })
-                }
-            },
-            error: function(xhr, status, error) {
-                console.log("Error:", error);
-                Swal.fire({
-                                title: "Network connection error: " + (error.debugMessage || error.message || "Try again later"),
-                                icon: 'error'
+                        console.log("Error found:", response.debugMessage);
+                        Swal.fire({
+                            title: "Payment Failed: " + response.debugMessage,
+                            icon: 'error'
                         })
-            }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error:", error);
+                    Swal.fire({
+                        title: "Network connection error: " + (error.debugMessage || error.message || "Try again later"),
+                        icon: 'error'
+                    })
+                }
             });
         });
 
 
 
-    function finalizeRegistration(transactionId) {
-        $.ajax({
-            type: 'POST',
-            url: 'confirm-registration',
-            data: { transactionId: transactionId },
-            success: function() {
-                Swal.fire("Success", "Your registration is complete!", "success").then(() => {
-                    window.location.href = "/welcome"; // Redirect on successful registration
-                });
-            },
-            error: function() {
-                Swal.fire("Error", "Could not complete registration. Please contact support.", "error");
-            }
-        });
-    }
-
-        
+        function finalizeRegistration(transactionId) {
+            $.ajax({
+                type: 'POST',
+                url: 'confirm-registration',
+                data: {
+                    transactionId: transactionId
+                },
+                success: function() {
+                    Swal.fire("Success", "Your registration is complete!", "success").then(() => {
+                        window.location.href = "/welcome"; // Redirect on successful registration
+                    });
+                },
+                error: function() {
+                    Swal.fire("Error", "Could not complete registration. Please contact support.", "error");
+                }
+            });
+        }
     </script>
     <!--SWEET ALERT JS -->
     <script src="{{asset('swal.js')}}"></script>
 
     <script>
-        @if ($errors->any())
-            Swal.fire('Oops...', `{!! implode('', $errors->all('<p>:message</p>')) !!}`, 'error')
+        @if($errors->any())
+        Swal.fire('Oops...', `{!! implode('', $errors->all('<p>:message</p>')) !!}`, 'error')
         @endif
 
-        @if (session()->has('message'))
-            Swal.fire(
-                'Success!',
-                `{{ session()->get('message') }}`,
-                'success'
-            )
+        @if(session()->has('message'))
+        Swal.fire(
+            'Success!',
+            `{{ session()->get('message') }}`,
+            'success'
+        )
         @endif
     </script>
     <script>
@@ -657,7 +665,6 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
             $(".toggle-password").click(function() {
                 $(this).toggleClass("fa-eye fa-eye-slash");
                 var input = $($(this).attr("toggle"));
@@ -669,44 +676,44 @@
             });
 
             $(".planId").on("change", function(e) {
-                var id  = $(this).val();//$(this).data('id');
-                if(id == ""){
+                var id = $(this).val(); //$(this).data('id');
+                if (id == "") {
                     $('.displayReg').hide();
                     $('.feeInput').removeAttr('required');
                     $('.feeInput').val("");
                     return;
                 }
-                $.get('{{ route('get_plan_details_by_id') }}?id=' + id, function (data) {
-                    if(data['plan'].reg_fee > 0){
-                        $('.displayReg').show();
-                        $('.feeInput').attr('required', true);
-                        $('.feeInput').val(data['plan'].reg_fee);
-                        $('#amountToBePaid').html(data['plan'].reg_fee);
-                    }else{
-                         $('.displayReg').hide();
-                        $('.feeInput').removeAttr('required');
-                        $('.feeInput').val("");
-                        $('#amountToBePaid').html('');
-                    }
-                })
+                $.get('{{ route('get_plan_details_by_id') }}?id=' + id,
+                    function(data) {
+                        if (data['plan'].reg_fee > 0) {
+                            $('.displayReg').show();
+                            $('.feeInput').attr('required', true);
+                            $('.feeInput').val(data['plan'].reg_fee);
+                            $('#amountToBePaid').html(data['plan'].reg_fee.toLocaleString());
+                        } else {
+                            $('.displayReg').hide();
+                            $('.feeInput').removeAttr('required');
+                            $('.feeInput').val("");
+                            $('#amountToBePaid').html('');
+                        }
+                    })
 
             });
         });
 
         $("#password-fieldx, #password-fieldc").on('input', function() {
-       
+
             var password = $("#password-fieldx").val()
             var confirm = $("#password-fieldc").val()
-            if(password.length > 7) {
-                if(password !== confirm) {
-                $("#danger_password").html("<div class='alert alert-danger'>Password not matched!</div>");
-            } else {
-                $("#danger_password").html("<div class='alert alert-success'>Password matched!</div>")
+            if (password.length > 7) {
+                if (password !== confirm) {
+                    $("#danger_password").html("<div class='alert alert-danger'>Password not matched!</div>");
+                } else {
+                    $("#danger_password").html("<div class='alert alert-success'>Password matched!</div>")
+                }
             }
-            }
-            
-        })
 
+        })
     </script>
 </body>
 @endsection

@@ -132,6 +132,7 @@ class TransactionController extends Controller
         // amount to pay
         // dd($data['checkedData']);
         $fees = $data['checkedData'];
+       
         $amount = preg_replace('/[^\d.]/', '', $data['total_amount']);
         $input['password'] = Hash::make($request->password);
         $input['amount'] = $amount;
@@ -201,6 +202,7 @@ class TransactionController extends Controller
     {
 
         $data = $request->all();
+        // dd($data);
         // dd($formattedNumber);
         $input = $request->all();
         // amount to pay

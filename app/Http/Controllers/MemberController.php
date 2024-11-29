@@ -30,11 +30,12 @@ class MemberController extends Controller
         $startDate = Carbon::parse(Auth::user()->created_at);
         $endDate = Carbon::now();
         $mode = Auth::user()->plan()->mode;
+        $data['user'] = Auth::user();
         //dd($mode);
         switch($mode){
             case 'Anytime':
 
-                return view ('member.payment.anytime');
+                return view ('member.payment.anytime',$data);
                 break;
 
             case 'Monthly':

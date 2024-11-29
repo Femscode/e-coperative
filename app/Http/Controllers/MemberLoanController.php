@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\MemberLoan;
 use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
 use function App\Helpers\success_status_code;
-use App\Models\MemberLoan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MemberLoanController extends Controller
 {
@@ -16,8 +17,9 @@ class MemberLoanController extends Controller
      */
     public function index()
     {
+        $data['user'] = Auth::user();
 
-        return view ('loan.index');
+        return view ('loan.index',$data);
         // dd($data);
     }
 

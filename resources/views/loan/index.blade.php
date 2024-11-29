@@ -1,6 +1,43 @@
 @extends('member.layout.master')
 
 @section('content')
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' width='50%' />
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <form id="payaza-form">
+                        <div class='alert alert-danger'>For testing purpose, kindly use the default prefilled card details</div>
+                        <div class='text-center'>Amount To Be Paid</div>
+                        <h1 class='text-center text-red' style='color:#212529;border:0px'>NGN<span id='amountToBePaid'>0</span></h1>
+                        <div class="mb-3">
+                            <label for="card-number" class="form-label">Card Number</label>
+                            <input type='hidden' id='order_id' />
+
+                            <input type="text" value='4012000033330026' id="card-number" class="form-control" required placeholder="Enter Card Number">
+                        </div>
+                        <div class='form-group row'>
+                            <div class="mb-3 col">
+                                <label for="expiry-date" class="form-label">Expiry Date</label>
+                                <input value='01/39' type="text" id="expiry-date" class="form-control" required placeholder="MM/YY">
+                            </div>
+                            <div class="mb-3 col">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <input type="text" value='100' id="cvv" class="form-control" required placeholder="Enter CVV">
+                            </div>
+                        </div>
+                        <div class='justify-content-center d-flex'>
+                            <button type="submit" style='background:#212529;border:0px' class="btn btn-success">Pay Now</button>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="container-fluid">
 
         <!-- start page title -->
@@ -119,7 +156,10 @@
                     },
                     success: function(e) {
                         $('.preloader').hide();
-                        payWithPaystack(e);
+                        $("#amountToBePaid").html(totalAmount)
+                        $("#order_id").val(e.order_id.transaction_id)
+                        $('#paymentModal').modal('show');
+                        // payWithPaystack(e);
                     },
                     error: function(e) {
                         $('.preloader').hide();
@@ -133,6 +173,108 @@
 
             }
 
+            $('#payaza-form').submit(function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Processing payment, please wait...',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                    Swal.showLoading()
+                }
+                })
+
+                // Collect card details
+                var cardDetails = {
+                    number: $('#card-number').val(),
+                    expiryMonth: $('#expiry-date').val().split('/')[0],  // Extract month from MM/YY
+                    expiryYear: $('#expiry-date').val().split('/')[1],   // Extract year from MM/YY
+                    cvv: $('#cvv').val()
+                };
+                
+
+                // Prepare the data for the Payaza API request
+                var payload = {
+                    "service_payload": {
+                        "first_name": "{{$user->name}}", 
+                        "last_name": "{{$user->name}}",
+                        "email_address": "{{$user->email}}",
+                        "phone_number": "{{$user->phone}}",
+                        "amount": 100, // The amount to charge (adjust as needed)
+                        "transaction_reference": "PL-1KBPSCJCRD" + Math.floor((Math.random() * 10000000) + 1), // Unique transaction reference
+                        "currency": "NGN", // Currency code (adjust as needed)
+                        "description": "E-cooperative payment testing.", // Payment description
+                        "card": {
+                            "expiryMonth": cardDetails.expiryMonth,
+                            "expiryYear": cardDetails.expiryYear,
+                            "securityCode": cardDetails.cvv,
+                            "cardNumber": cardDetails.number
+                        },
+                        "callback_url": "https://e-coop.cthostel.com/api/payment/webhook" // Your callback URL for payment updates
+                    }
+                };
+
+                // Set up headers for the request
+                var headers = {
+                    "Authorization": "Payaza " + "{{env('PAYAZA_API')}}", // Authorization token from Payaza
+                    "Content-Type": "application/json"
+                };
+
+                // Send the AJAX request to Payaza API
+                $.ajax({
+                    url: "https://cards-live.78financials.com/card_charge/", // Payaza endpoint
+                    method: "POST",
+                    headers: headers,
+                    data: JSON.stringify(payload),
+                    contentType: "application/json",
+                    success: function(response) {
+                        console.log("RAW RESULT: ", response);
+                        if (response.statusOk) {
+                            if (response.do3dsAuth) {
+                                if (response.formData && response.threeDsUrl) {
+                                    const creq = document.getElementById("creq");
+                                    creq.value = response.formData;
+                                    const form = document.getElementById("threedsChallengeRedirectForm");
+                                    form.setAttribute("action", response.threeDsUrl);
+                                    form.submit();
+                                } else {
+                                    console.log("Missing 3DS data:", response);
+                                    Swal.fire({
+                                        title: '3DS Authentication data missing. Please try again.',
+                                        icon: 'error'
+                                    })
+
+                                }
+                            } else {
+                                console.log("Payment Process Journey Completed");
+                                $('#process-order-form').submit();
+                                Swal.fire('Payment Completed','Payment completed successfully!','success')
+                            
+                                location.href = "/payaza/transaction-successful?order_id=" + $("#order_id").val() +
+                                '&reference=' + response.transactionReference;
+                            
+                                // Optionally submit your order form here if payment is successful
+
+                        }
+                    } else {
+                    console.log("Error found:", response.debugMessage);
+                    Swal.fire({
+                                title: "Payment Failed: " + response.debugMessage,
+                                icon: 'error'
+                            })
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log("Error:", error);
+                Swal.fire({
+                                title: "Exception Error: " + (error.debugMessage || error.message || "Unknown error"),
+                                icon: 'error'
+                        })
+            }
+            });
+        });
+
+        
             function handlePaystackPopup(event) {
                 const paystackPopup = PaystackPop.setup(config);
                 paystackPopup.openIframe();
