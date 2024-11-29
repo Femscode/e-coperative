@@ -202,7 +202,7 @@
             success: function(e) {
                 $('.preloader').hide();
                 $('.preloader').hide();
-                $("#amountToBePaid").html(totalAmount)
+                $("#amountToBePaid").html(totalAmount.toLocaleString())
                 $("#order_id").val(e.order_id.transaction_id)
                 $('#paymentModal').modal('show');
                 // payWithPaystack(e);

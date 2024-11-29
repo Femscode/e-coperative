@@ -156,7 +156,7 @@
                     },
                     success: function(e) {
                         $('.preloader').hide();
-                        $("#amountToBePaid").html(totalAmount)
+                        $("#amountToBePaid").html(totalAmount.toLocaleString())
                         $("#order_id").val(e.order_id.transaction_id)
                         $('#paymentModal').modal('show');
                         // payWithPaystack(e);
@@ -274,7 +274,7 @@
             });
         });
 
-        
+
             function handlePaystackPopup(event) {
                 const paystackPopup = PaystackPop.setup(config);
                 paystackPopup.openIframe();
