@@ -70,7 +70,7 @@
                                         <div class="card-body overflow-hidden position-relative">
                                              <iconify-icon icon="solar:bill-list-bold-duotone" class="fs-32 text-primary avatar-title"></iconify-icon>
                                              <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format($transactions->sum('balance'),2) }}</h3>
-                                             <a href='/transactions' class="text-muted">Total Revenue</a>
+                                             <a href='/admin/transaction/all' class="text-muted">Total Revenue</a>
                                              <!-- <span class="badge fs-12 badge-soft-success"><i class="ti ti-arrow-badge-up"></i> 10.58%</span> -->
                                              <i class="bx bx-building-house widget-icon"></i>
                                         </div> <!-- end card-body -->
@@ -81,7 +81,7 @@
                                         <div class="card-body overflow-hidden position-relative">
                                              <iconify-icon icon="iconamoon:3d-duotone" class="fs-36 text-info"></iconify-icon>
                                              <h3 class="mb-0 fw-bold mt-3 mb-1">{{count($users)}}</h3>
-                                             <a href='/food' class="text-muted">Total Members</a>
+                                             <a href='/admin/member' class="text-muted">Total Members</a>
                                              <!-- <span class="badge fs-12 badge-soft-success"><i class="ti ti-arrow-badge-up"></i> 8.72%</span> -->
                                              <i class="bx bx-user widget-icon"></i>
 

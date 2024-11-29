@@ -18,6 +18,9 @@ class CompletedLoan extends Component
         $data['title'] = "Completed Applications";
         $user = auth()->user();
         $company = Company::where('uuid', $user->company_id)->first();
+        if(!$company) {
+            $company = Company::find($user->company_id);
+        }
         if($this->search == ''){
             $data['loans'] = MemberLoan::where('company_id',$company->id)->where('status', "Completed")->paginate(10);
         }else{

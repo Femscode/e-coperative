@@ -36,8 +36,13 @@ class ProfileController extends Controller
         }
         $data['banks'] = Bank::orderBy('name','asc')->get();
         // dd($plan);
-        return view('dashboard.profile', $data);
-        return view('member.profile', $data);
+        if($user->user_type == "Admin") {
+            return view('dashboard.profile', $data);
+
+        } else {
+            return view('member.profile', $data);
+
+        }
     }
 
     public function otp(){
@@ -98,14 +103,16 @@ class ProfileController extends Controller
             $input = $request->except('user_type','password','email','phone','plan_id','coop_id');
            
             $user = Auth::user();
+            
             $user->update($input);
                 return api_request_response(
                     'ok',
-                    'Record updated successfully!',
+                    'Profile updated successfully!',
                     success_status_code(),
                 );
 
         } catch (\Exception $exception) {
+            
             return api_request_response(
                 'error',
                 $exception->getMessage(),

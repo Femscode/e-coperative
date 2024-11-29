@@ -340,6 +340,7 @@ class TransactionController extends Controller
 
         curl_close($curl);
         $real_response = json_decode($response, true);
+        
         // dd($response, $real_response, $real_response['response_code']);
         //dd("here");
         if ($real_response['response_code'] == 200 ) {
@@ -348,8 +349,10 @@ class TransactionController extends Controller
                 $content = $real_response['response_content'];
                
                 $check  = Transaction::where('transaction_id', $request->order_id)->get();
+                
                 $checks  = Transaction::where('transaction_id', $request->order_id)->update(['status' => "Success"]);
                 $checkUser = User::where('email', $check[0]["email"])->first();
+                
                 foreach ($check as $apply) {
                     $checkForm = MemberLoan::where('uuid', $apply->uuid)->first();
                     if ($checkForm) {

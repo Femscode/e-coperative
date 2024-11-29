@@ -42,25 +42,11 @@
                             </div>
                         </div>
                         <h5 class="fs-16 mb-1">{{ $user->name }}</h5>
-                        {{-- <p class="text-muted mb-0">Lead Designer / Developer</p> --}}
+                        <p class="text-muted mb-0">Referral ID : {{ $user->coop_id }} </p>
                     </div>
                 </div>
             </div><!--end card-->
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-5">
-                        <div class="flex-grow-1">
-                            <h5 class="card-title mb-0">Complete Your Profile</h5>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <a href="javascript:void(0);" class="badge bg-light text-primary fs-12"><i class="ri-edit-box-line align-bottom me-1"></i> Edit</a>
-                        </div>
-                    </div>
-                    <div class="progress animated-progess custom-progress progress-label">
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><div class="label">30%</div></div>
-                    </div>
-                </div>
-            </div>
+         
         </div><!--end col-->
         <div class="col-xxl-9">
             <div class="card mt-xxl-n5">
@@ -467,7 +453,7 @@
             $('.preloader').show();
             const serializedData = $("#profileUpdate").serializeArray();
             try {
-                    const postRequest = await request("/member/update-profile",
+                    const postRequest = await request("/update-profile",
                     processFormInputs(
                         serializedData), 'post');
                     new swal("Good Job", postRequest.message, "success");

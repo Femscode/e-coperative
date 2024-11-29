@@ -1,17 +1,19 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Models\MemberLoan;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
-use Illuminate\Http\Request;
+use App\Models\MemberLoan;
 use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
 use function App\Helpers\success_status_code;
-use Illuminate\Support\Str;
-use Unicodeveloper\Paystack\Paystack;
-use Unicodeveloper\Paystack\Facades\Paystack as PaystackFacade;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Unicodeveloper\Paystack\Facades\Paystack as PaystackFacade;
+use Unicodeveloper\Paystack\Paystack;
+
 class LoanController extends Controller
 {
     public function index(){
@@ -36,12 +38,16 @@ class LoanController extends Controller
     }
 
     public function approve(Request $request){
+      
         try {
             $input = $request->all();
             $application = MemberLoan::find($request->id);
             $uuid = Str::random(8);
             //check if coop has payment for bond form
             $company = Company::where('uuid',auth()->user()->company_id)->first();
+            if(!$company) {
+                $company = Company::find(Auth::user()->company_id);
+            }
             $loanBond = $company->loan_form_amount;
             if($loanBond > 0){
                 $application->update(['approval_status' => 1, 'uuid' => $uuid]);
