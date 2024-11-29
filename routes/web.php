@@ -123,6 +123,8 @@ Route::group(['middleware' => ['auth']], function () {
 
                 Route::group(['prefix' => 'loan'], function () {
                     Route::get('/', [App\Http\Controllers\MemberLoanController::class, 'index'])->name('loan.home');
+                    Route::get('/ongoing', [App\Http\Controllers\MemberLoanController::class, 'ongoing'])->name('loan.ongoing');
+                    Route::get('/completed', [App\Http\Controllers\MemberLoanController::class, 'completed'])->name('loan.completed');
                     Route::post('/apply', [App\Http\Controllers\MemberLoanController::class, 'apply'])->name('apply-loan');
                 });
             });
