@@ -149,11 +149,11 @@
 
 
             $("#member_login").on('click', function() {
-                $("#email").val('member2@gmail.com')
+                $("#email").val('fasanyafemi@gmail.com')
                 $("#password").val('Password123')
             });
             $("#admin_login").on('click', function() {
-                $("#email").val('payazacooperative@gmail.com')
+                $("#email").val('radiatingcooperative@gmail.com')
                 $("#password").val('Password123')
             });
             $(".toggle-password").click(function() {
