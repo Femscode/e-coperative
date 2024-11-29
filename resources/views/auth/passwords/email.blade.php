@@ -22,10 +22,8 @@
 @endsection
 
 @section('content')
-{{-- <div class="page-banner-area position-relative overflow-hidden" style="background-image: {{ url('frontend_assets/images/hero/hero-image-1.svg') }}"> --}}
-{{-- <div class="page-banner-area position-relative overflow-hidden" style='background-color: #e5f7b3;' class="card-body p-4 bg-color-e5f7b3"> --}}
-<div class="page-banner-area position-relative overflow-hidden" style="background-image: url(frontend_assets/images/hero/hero-image-1.svg)">
-    {{-- <div style='background-color: #e5f7b3;' class="card-body p-4 bg-color-e5f7b3"> --}}
+<div class="page-banner-area position-relative overflow-hidden" style="background-image: url('https://e-coop.cthostel.com/frontend_assets/images/hero/hero-image-1.svg')">
+ 
     <div class="container">
         <div class="page-banner-content">
             <h1>Reset Password</h1>

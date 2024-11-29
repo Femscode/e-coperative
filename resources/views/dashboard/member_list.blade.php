@@ -72,7 +72,10 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header bg-light p-3">
+                        
                         <h5 class="modal-title" id="exampleModalLabel">Import Member(s)</h5>
+                       
+                       
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                             id="close-modal"></button>
                     </div>
@@ -85,6 +88,7 @@
                                 <input type="text" id="id-field" class="form-control" placeholder="ID" readonly />
                             </div>
 
+                           
                             <div class="mb-3">
                                 <label for="name" class="form-label">Plan</label>
                                 <select class="form-select " required name="plan_id" id="planId">
@@ -96,7 +100,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="name" class="form-label">File</label>
-                                <input type="file" id="file" class="form-control" placeholder="Enter Name" name="name" required />
+                                <input type="file" id="file" class="form-control" accept=".xls,.xlsx" placeholder="Enter Name" name="name" required />
                             </div>
 
 

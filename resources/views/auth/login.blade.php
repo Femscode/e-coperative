@@ -40,7 +40,7 @@
 
 <body>
 
-    <div class="auth-page-wrapper pt-5">
+    <div class="auth-page-wrapper pt-2">
 
 
         <!-- auth page content -->

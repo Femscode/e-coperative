@@ -74,10 +74,10 @@
                                    <a type="button" class="topbar-button" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="d-flex align-items-center">
                                              @if($user->image ?? auth()->user()->image !== null)
-                                             <img src="{{ config('app.env') === 'local' ? url('profilePic/' . $user->image ??  auth()->user()->image) : 'https://cttaste.com/cttaste_files/public/profilePic/' . $user->image ??  auth()->user()->name }}"
+                                             <img src='{{ asset("$member->cover_image") }}'
                                                   alt="" class="rounded-circle" width="32">
                                              @else
-                                             <img src="https://dnasoundstudio.com/producers/assets/images/music-dashboard/feature-album/05.png"
+                                             <img src="{{url('assets/images/avatar.png')}}"
                                                   alt="" class="rounded-circle" width="32">
                                              @endif
                                         </span>
@@ -103,12 +103,12 @@
                               </div>
 
                               <!-- App Search-->
-                              <form class="app-search d-none d-md-block ms-2">
+                              <!-- <form class="app-search d-none d-md-block ms-2">
                                    <div class="position-relative">
                                         <input type="search" class="form-control" placeholder="Search..." autocomplete="off" value="">
                                         <iconify-icon icon="solar:magnifer-linear" class="search-widget-icon"></iconify-icon>
                                    </div>
-                              </form>
+                              </form> -->
                          </div>
                     </div>
                </div>
