@@ -10,8 +10,6 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Settings</h4>
-
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
@@ -40,7 +38,7 @@
                         </div><!--end col-->
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <label for="" class="form-label">Coop Operation Mode (Payment)</label>
+                                <label for="" class="form-label">Operation Mode (Payment)</label>
                                 <select class="form-select rounded-pill mb-3 changeMode" required name="mode" aria-label="Default select example">
                                     <option value="" >Choose Mode</option>
                                     <option value="Anytime"  {{ $plan->mode == "Anytime" ? 'selected' : '' }}>Anytime</option>
@@ -57,7 +55,7 @@
                         </div><!--end col-->
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <label for="phonenumberInput" class="form-label">Member Month For Loan</label>
+                                <label for="phonenumberInput" class="form-label">Minimum Month For Loan Request</label>
                                 <input type="number" class="form-control rounded-pill mb-3" value="{{ $plan->month }}" required name="month" placeholder="Enter number of month(s) a member must have joined before loan application">
                             </div>
                         </div><!--end col-->
@@ -69,19 +67,19 @@
                         </div><!--end col-->
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <label for="contactnumberInput" class="form-label">Min Loan Application</label>
+                                <label for="contactnumberInput" class="form-label">Min Loan Request</label>
                                 <input type="number"  class="form-control rounded-pill mb-3" value="{{ $plan->min_loan_range }}" required name="min_loan_range" placeholder="member savings times inputed value">
                             </div>
                         </div><!--end col-->
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <label for="phonenumberInput" class="form-label">Max Loan Application</label>
+                                <label for="phonenumberInput" class="form-label">Max Loan Request</label>
                                 <input type="number" class="form-control rounded-pill mb-3" value="{{ $plan->max_loan_range }}" required name="max_loan_range" placeholder="member savings times inputed value">
                             </div>
                         </div><!--end col-->
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <label for="lastnameInput" class="form-label">Loan Repayment Month</label>
+                                <label for="lastnameInput" class="form-label">Loan Repayment Duration (Months)</label>
                                 <input type="number" name="loan_month_repayment" required value="{{ $plan->loan_month_repayment }}" class="form-control rounded-pill mb-3" id="lastnameInput" placeholder="Enter number of month(s) for repayment">
                             </div>
                         </div><!--end col-->            

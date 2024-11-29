@@ -50,7 +50,7 @@ class MemberController extends Controller
         $highestRow = $spreadsheet->getActiveSheet()->getHighestDataRow();
         $sheetData = $spreadsheet->getActiveSheet()->toArray(null,true,true,true);
         $countdata =  count($sheetData) - 1;
-        // dd($countdata,$request->all());
+       
         if($countdata < 1){
             return api_request_response(
                 "error",

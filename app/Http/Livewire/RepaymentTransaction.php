@@ -20,6 +20,9 @@ class RepaymentTransaction extends Component
         $data['title'] = "Loan Repayment Transactions";
         $user = auth()->user();
         $company = Company::where('uuid', $user->company_id)->first();
+        if(!$company) {
+            $company = Company::find($user->company_id);
+        }
         if($this->search == ''){
             $data['transactions'] = Transaction::where('company_id',$company->id)->where([
                 ['status', 'Success'],

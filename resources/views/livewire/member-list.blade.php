@@ -58,6 +58,7 @@
                 </div><!--end col-->
                 <div class="col-sm-auto ms-auto">
                     <div class="list-grid-nav hstack gap-1">
+                    <a class='btn btn-secondary' href='download_member_template'>Download Template</a>
 
                         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#showModal"><i class="ri-add-fill me-1 align-bottom"></i> Upload Members</button>
                     </div>
@@ -75,7 +76,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="position-relative bg-light p-2 rounded text-center">
-                                    <img @if($member->cover_image) src="{{ asset("$member->cover_image") }}" @else src="{{ asset('assets/images/profile-bg.jpg') }}" @endif alt="" class="avatar-xxl">
+                                    <img @if($member->cover_image) src="{{ asset("$member->cover_image") }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif alt="" class="avatar-xxl">
 
                                 </div>
                                 <div class="d-flex flex-wrap justify-content-between my-3">

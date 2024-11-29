@@ -9,7 +9,9 @@ use function App\Helpers\bad_response_status_code;
 use function App\Helpers\success_status_code;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Response;
 
 class UserController extends Controller
 {
@@ -24,8 +26,12 @@ class UserController extends Controller
     public function add(Request $request){
         try {
             $input = $request->all();
-            $admin = Auth::user();
-            $coopD = Company::find($admin->company_id);
+            $admin = $user = Auth::user();
+            $company = $coopD = Company::where('uuid', $user->company_id)->first();
+            if (!$company) {
+                $company = $coopD =Company::find($user->company_id);
+            }
+            
             $checkNumber =  NumberCount::where('coop_id', $admin->company_id)->first();
             
             // attempt to give new member coop id
@@ -126,5 +132,16 @@ class UserController extends Controller
 
         return redirect()->back()->with('message', 'User removed successfully');
     }
+    public function download_member_template() {
+        // dd('here');
+        $path = public_path("assets/member_import.xlsx");
     
+    if (File::exists($path)) {
+        return Response::download($path, 'member_import.xlsx', [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ]);
+    } else {
+        return redirect()->back()->with('error', 'File not found.');
+    }
+    }
 }

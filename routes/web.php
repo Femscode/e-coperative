@@ -59,6 +59,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::group(['middleware' => 'admin'], function () {
             Route::group(['prefix' => 'admin'], function () {
                 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('admin-home');
+                Route::get('/download_member_template', [App\Http\Controllers\UserController::class, 'download_member_template'])->name('download_member_template');
+               
                 Route::group(['prefix' => 'user'], function () {
                     Route::get('/', [App\Http\Controllers\UserController::class, 'index'])->name('user_home');
                     Route::get('/delete', [App\Http\Controllers\UserController::class, 'delete'])->name('delete_users');
@@ -68,7 +70,7 @@ Route::group(['middleware' => ['auth']], function () {
                     Route::post('/create_user', [App\Http\Controllers\UserController::class, 'add'])->name('create_user');
                     Route::post('/make_admin', [App\Http\Controllers\UserController::class, 'make_admin'])->name('make_admin');
                     Route::post('/edit_user', [App\Http\Controllers\UserController::class, 'edit'])->name('edit_user');
-                });
+                 });
 
                 Route::group(['prefix' => 'member'], function () {
                     Route::get('/', [App\Http\Controllers\Admin\MemberController::class, 'index'])->name('admin_member_home');

@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Awaiting Disbursement Applications</h4>
+                   
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
@@ -101,7 +101,7 @@
         async function resetAccount(el,id) {
             const willUpdate = await new swal({
                 title: "Confirm User Action",
-                text: `Are you sure you want to approve this Application?`,
+                text: `Are you sure you want to approve this Loan?`,
                 icon: "warning",
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Yes!",
@@ -112,7 +112,7 @@
                 //performReset()
                 performDelete(el,id);
             } else {
-                new swal("Opss","Application will not be approved","error");
+                new swal("Opss","Loan will not be approved","error");
             }
         }
         function performDelete(el,id)
@@ -142,8 +142,8 @@
         });
         async function notifyUser(el,id) {
             const willUpdate = await new swal({
-                title: "Confirm User Action",
-                text: `Are you sure you want to disburse to this Application?`,
+                title: "Confirm Loan Disbursement",
+                text: `Are you sure you want to disburse this Loan?`,
                 icon: "warning",
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Yes!",
