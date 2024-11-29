@@ -47,7 +47,9 @@
                                         <td class="fw-medium" style="text-align: center">{{ number_format($transaction->monthly_return, 2) }}</td>
                                         <td class="fw-medium">{{ $transaction->applied_date }}</td>
                                         <td class="text-muted">
+                                            @if($transaction->approval_status == 0)
                                             <button class="btn approveButton rounded-pill btn-sm btn-soft-info" data-id="{{ $transaction->id }}">Approve</button>
+                                            @endif
                                             {{-- <span class="badge bg-{{ $transaction->color() }}">{{ $transaction->status }}</span> --}}
                                         </td>
                                     </tr>
