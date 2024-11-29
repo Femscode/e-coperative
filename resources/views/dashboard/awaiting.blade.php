@@ -10,12 +10,12 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Loan</h4>
+                    <h4 class="mb-sm-0">Awaiting Disbursement Applications</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">Application</a></li>
-                            <li class="breadcrumb-item active">Loan</li>
+                            <li class="breadcrumb-item active">Awaiting Disbursement</li>
                         </ol>
                     </div>
 
@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        @livewire('loan')
+        @livewire('approved-loan')
 
 
         <!-- Modal -->
@@ -168,7 +168,7 @@
                             return new swal("Oops",data.message,"error");
                         }
                         if( status === "success") {
-                            let alert =  new swal("Good Job","Disbursement Successfully!","success");
+                            let alert =  new swal("Good Job","Loan Successfully Disbursed!","success");
                             window.location.reload()
                         }
                     }

@@ -1,3 +1,4 @@
+<div>
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
@@ -47,7 +48,7 @@
                                         <td class="fw-medium" style="text-align: center">{{ number_format($transaction->monthly_return, 2) }}</td>
                                         <td class="fw-medium">{{ $transaction->applied_date }}</td>
                                         <td class="text-muted">
-                                            <button class="btn approveButton rounded-pill btn-sm btn-soft-info" data-id="{{ $transaction->id }}">Approve</button>
+                                            <button class="btn disburseButton rounded-pill btn-sm btn-soft-info" data-id="{{ $transaction->id }}">Disburse</button>
                                             {{-- <span class="badge bg-{{ $transaction->color() }}">{{ $transaction->status }}</span> --}}
                                         </td>
                                     </tr>
@@ -79,5 +80,6 @@
         <!-- end col -->
     </div>
     <!-- end col -->
+</div>
 </div>
 <!-- end row -->

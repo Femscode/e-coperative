@@ -91,6 +91,9 @@ Route::group(['middleware' => ['auth']], function () {
 
                 Route::group(['prefix' => 'application'], function () {
                     Route::get('/', [App\Http\Controllers\Admin\LoanController::class, 'index'])->name('admin.loan.applications');
+                    Route::get('/awaiting-disbursement', [App\Http\Controllers\Admin\LoanController::class, 'awaiting'])->name('admin.awaiting.applications');
+                    Route::get('/ongoing', [App\Http\Controllers\Admin\LoanController::class, 'ongoing'])->name('admin.loan.ongoing');
+                    Route::get('/completed', [App\Http\Controllers\Admin\LoanController::class, 'completed'])->name('admin.loan.completed');
                     Route::get('/approve', [App\Http\Controllers\Admin\LoanController::class, 'approve'])->name('admin.approve.loan.application');
                     Route::get('/disburse', [App\Http\Controllers\Admin\LoanController::class, 'disburse'])->name('admin.disburse.loan.application');
                 });
@@ -114,6 +117,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/', [App\Http\Controllers\MemberController::class, 'index'])->name('member_home');
                 Route::get('/automatic-payment', [App\Http\Controllers\MemberController::class, 'automaticPayment'])->name('member-automatic-payment');
                 Route::get('/manual-payment', [App\Http\Controllers\MemberController::class, 'manualPayment'])->name('member-manual-payment');
+                Route::get('/loan-repayment', [App\Http\Controllers\MemberController::class, 'loanPayment'])->name('member-loan-payment');
 
                 Route::group(['prefix' => 'loan'], function () {
                     Route::get('/', [App\Http\Controllers\MemberLoanController::class, 'index'])->name('loan.home');

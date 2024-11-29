@@ -208,18 +208,21 @@
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:streets-map-point-bold-duotone"></iconify-icon>
                                    </span>
-                                   <span class="nav-text"> Manage Loan  </span>
+                                   <span class="nav-text"> Manage Loan</span>
                               </a>
                               <div class="collapse" id="sidebarMaps">
                                    <ul class="nav sub-navbar-nav">
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="/admin/application">Pending Loan Application(s)</a>
+                                             <a class="sub-nav-link" href="/admin/application">Pending Loan Application</a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="/admin/transaction/registration">Ongoing Loan Application(s)</a>
+                                             <a class="sub-nav-link" href="/admin/application/awaiting-disbursement">Awaiting Disbursement </a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="/admin/transaction/monthly_dues">Completed Loan Application(s)</a>
+                                             <a class="sub-nav-link" href="/admin/application/ongoing">Ongoing Loan Application</a>
+                                        </li>
+                                        <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="/admin/application/completed">Completed Loan Application</a>
                                         </li>
                                         {{--  <li class="sub-nav-item">
                                              <a class="sub-nav-link" href="/admin/transaction/all">All</a>

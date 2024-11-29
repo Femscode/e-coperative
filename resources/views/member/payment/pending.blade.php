@@ -6,12 +6,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Pending Dues</h4>
+                <h4 class="mb-sm-0">Pending Loan Repayment</h4>
 
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Dues</a></li>
-                        <li class="breadcrumb-item active">Pending</li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Loan</a></li>
+                        <li class="breadcrumb-item active">Repayment</li>
                     </ol>
                 </div>
 
@@ -23,7 +23,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header align-items-center d-flex">
-                    <h4 class="card-title mb-0 flex-grow-1">Available Payable Dues</h4>
+                    <h4 class="card-title mb-0 flex-grow-1">Available Payable Repayment</h4>
                 </div><!-- end card header -->
 
                 <div class="card-body">

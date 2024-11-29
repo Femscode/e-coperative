@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 use App\Models\MemberLoan;
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
@@ -18,18 +19,42 @@ class LoanController extends Controller
         return view('dashboard.loan', $data);
         return view('admin.loan.index', $data);
     }
+    public function awaiting(){
+        $data['title'] = "Awaiting Disbursement Applications";
+        return view('dashboard.awaiting', $data);
+        return view('admin.loan.index', $data);
+    }
+    public function ongoing(){
+        $data['title'] = "Ongoing Loan Applications";
+        return view('dashboard.ongoing', $data);
+        return view('admin.loan.index', $data);
+    }
+    public function completed(){
+        $data['title'] = "Completed Loan Applications";
+        return view('dashboard.completed', $data);
+        return view('admin.loan.index', $data);
+    }
 
     public function approve(Request $request){
         try {
             $input = $request->all();
             $application = MemberLoan::find($request->id);
             $uuid = Str::random(8);
-            $application->update(['approval_status' => 1, 'uuid' => $uuid]);
-                return api_request_response(
-                    'ok',
-                    'Application approved successfully!',
-                    success_status_code(),
-                );
+            //check if coop has payment for bond form
+            $company = Company::where('uuid',auth()->user()->company_id)->first();
+            $loanBond = $company->loan_form_amount;
+            if($loanBond > 0){
+                $application->update(['approval_status' => 1, 'uuid' => $uuid]);
+                $message = "Application Approved And Awaiting Member Payment For Loan Form";
+            }else{
+                $application->update(['approval_status' => 1, 'payment_status' => 1 , 'uuid' => $uuid]);
+                $message = "Application approved successfully! Kindly Proceed To Disburse!";
+            }
+            return api_request_response(
+                'ok',
+                $message,
+                success_status_code(),
+            );
 
         } catch (\Exception $exception) {
             return api_request_response(
@@ -50,6 +75,13 @@ class LoanController extends Controller
             $name = $user->account_name;
             $code = $user->bank_code;
             $number = $user->account_number;
+            if(!$code){
+                return api_request_response(
+                    'error',
+                    "Member hasn't completed bank info to receive loan!",
+                    success_status_code(),
+                );
+            }
             $response = $client->post('https://api.paystack.co/transferrecipient', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $apiSecret,

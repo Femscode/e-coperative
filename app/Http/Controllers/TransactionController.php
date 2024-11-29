@@ -178,7 +178,7 @@ class TransactionController extends Controller
         $input['password'] = Hash::make($request->password);
         $input['amount'] = $amount;
         $input['balance'] = $amount;
-        $input['payment_type'] = "Monthly Dues";
+        $input['payment_type'] = "Funding";
         $input['user_id'] = Auth::user()->id;
         $input['company_id'] = Auth::user()->company_id;
         // $tag = date("dY");

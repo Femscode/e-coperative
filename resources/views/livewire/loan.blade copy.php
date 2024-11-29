@@ -31,10 +31,16 @@
                         <table class="table align-middle table-nowrap" >
                             <thead class="table-light">
                                 <tr>
+                                    <th scope="col">S/N</th>
                                     <th scope="col">Member</th>
                                     <th scope="col">Amount</th>
-                                    <th scope="col">Monthly Refund</th>
-                                    <th scope="col">Application Date</th>
+                                    <th scope="col">Refund</th>
+                                    <th scope="col">Monthly Return</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Balance</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Approval Status</th>
+                                    <th scope="col">Payment Status</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -42,12 +48,23 @@
                                 <tbody class="list form-check-all">
                                     @foreach ($loans as $transaction)
                                     <tr>
+                                        <td class="fw-medium">{{ $loop->iteration }}</td>
                                         <td class="fw-medium">{{ $transaction->member->name }}</td>
-                                        <td class="fw-medium" style="text-align: center">{{ number_format($transaction->total_applied, 2) }}</td>
-                                        <td class="fw-medium" style="text-align: center">{{ number_format($transaction->monthly_return, 2) }}</td>
+                                        <td class="fw-medium">{{ number_format($transaction->total_applied, 2) }}</td>
+                                        <td class="fw-medium">{{ number_format($transaction->total_refund, 2) }}</td>
+                                        <td class="fw-medium">{{ number_format($transaction->monthly_return, 2) }}</td>
                                         <td class="fw-medium">{{ $transaction->applied_date }}</td>
+                                        <td class="fw-medium">{{ number_format($transaction->total_left, 2) }}</td>
+                                        <td class="text-muted"><span class="badge bg-{{ $transaction->color() }}">{{ $transaction->status }}</span></td>
+                                        <td class="text-muted"><span class="badge bg-{{ $transaction->approval() }}">{{ $transaction->approvalText() }}</span></td>
+                                        <td class="text-muted"><span class="badge bg-{{ $transaction->payment() }}">{{ $transaction->paymentText() }}</span></td>
                                         <td class="text-muted">
+                                            @if($transaction->approval_status == 0)
                                             <button class="btn approveButton rounded-pill btn-sm btn-soft-info" data-id="{{ $transaction->id }}">Approve</button>
+                                            @endif
+                                            @if($transaction->payment_status == 1 && $transaction->status == "Awaiting")
+                                            <button class="btn disburseButton rounded-pill btn-sm btn-soft-info" data-id="{{ $transaction->id }}">Disburse</button>
+                                            @endif
                                             {{-- <span class="badge bg-{{ $transaction->color() }}">{{ $transaction->status }}</span> --}}
                                         </td>
                                     </tr>

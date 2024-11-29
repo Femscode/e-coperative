@@ -17,7 +17,7 @@
 
                          <h6> Registration Link
                               <p class="d-flex align-items-center border p-2 rounded-2 border-dashed alert alert-primary text-start mb-0">
-                                   <span id="cttaste-link">https://e-coop.cthostel.com/{{ $user->company->slug }}</span>
+                                   <span id="cttaste-link">https://e-coop.cthostel.com/{{ $plan->slug }}</span>
                                    <a href="#!" class="ms-auto fs-4 copy-link"><i class="ti ti-copy"></i></a>
                               </p>
                          </h6>
@@ -160,7 +160,7 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                              <div>
                                                   <h4 class="card-title mb-2">Total Loan Repayment</h4>
-                                                  <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Loan Payment')->sum('balance'), 2)}}</h3>
+                                                  <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Repayment')->sum('balance'), 2)}}</h3>
                                              </div>
                                              <div>
                                                   <div class="avatar-md bg-primary bg-opacity-10 rounded">
@@ -179,8 +179,8 @@
                                    <div class="card-body">
                                         <div class="d-flex align-items-center justify-content-between">
                                              <div>
-                                                  <h4 class="card-title mb-2">Total Monthly Dues Paid</h4>
-                                                  <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Weekly Dues')->sum('balance'), 2)}}</h3>
+                                                  <h4 class="card-title mb-2">Savings</h4>
+                                                  <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->whereIn('payment_type', ['Weekly Dues','Monthly Dues','Funding','Anytime'])->sum('balance'), 2)}}</h3>
                                              </div>
                                              <div>
                                                   <div class="avatar-md bg-primary bg-opacity-10 rounded">

@@ -25,5 +25,11 @@
             <i class="ri-account-circle-line"></i> <span data-key="t-authentication">Pay Dues</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link {{ Route::is('member-loan-payment') ? 'active' : '' }}" href="{{ route('member-loan-payment') }}" role="button"
+            aria-expanded="false" aria-controls="sidebarAuth">
+            <i class="ri-account-circle-line"></i> <span data-key="t-authentication">Loan Repayment</span>
+        </a>
+    </li>
 
 </ul>
