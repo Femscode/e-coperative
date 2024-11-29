@@ -60,43 +60,135 @@
                          </div>
 
                     </div> -->
-                    <div class="col-xl-12">
 
                          <!-- end row -->
+                         <div class='col-md-8'>
 
-                         <div class="row">
-                              <div class="col">
-                                   <div class="card">
-                                        <div class="card-body overflow-hidden position-relative">
-                                             <iconify-icon icon="solar:bill-list-bold-duotone" class="fs-32 text-primary avatar-title"></iconify-icon>
-                                             <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format($transactions->sum('balance'),2) }}</h3>
-                                             <a href='/admin/transaction/all' class="text-muted">Total Revenue</a>
-                                             <!-- <span class="badge fs-12 badge-soft-success"><i class="ti ti-arrow-badge-up"></i> 10.58%</span> -->
-                                             <i class="bx bx-building-house widget-icon"></i>
-                                        </div> <!-- end card-body -->
-                                   </div> <!-- end card -->
-                              </div> <!-- end col -->
-                              <div class="col">
-                                   <div class="card">
-                                        <div class="card-body overflow-hidden position-relative">
-                                             <iconify-icon icon="iconamoon:3d-duotone" class="fs-36 text-info"></iconify-icon>
-                                             <h3 class="mb-0 fw-bold mt-3 mb-1">{{count($users)}}</h3>
-                                             <a href='/admin/member' class="text-muted">Total Members</a>
-                                             <!-- <span class="badge fs-12 badge-soft-success"><i class="ti ti-arrow-badge-up"></i> 8.72%</span> -->
-                                             <i class="bx bx-user widget-icon"></i>
+                              <div class="row">
+                                   <div class="col">
+                                        <div class="card">
+                                             <div class="card-body overflow-hidden position-relative">
+                                                  <iconify-icon icon="solar:bill-list-bold-duotone" class="fs-32 text-primary"></iconify-icon>
+                                                  <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format($transactions->sum('balance'),2) }}</h3>
+                                                  <a href='/admin/transaction/all' class="text-muted">Total Revenue</a>
+                                                  <!-- <span class="badge fs-12 badge-soft-success"><i class="ti ti-arrow-badge-up"></i> 10.58%</span> -->
+                                                  <i class="bx bx-building-house widget-icon"></i>
+                                             </div> <!-- end card-body -->
+                                        </div> <!-- end card -->
+                                   </div> <!-- end col -->
+                                   <div class="col">
+                                        <div class="card">
+                                             <div class="card-body overflow-hidden position-relative">
+                                                  <iconify-icon icon="iconamoon:3d-duotone" class="fs-36 text-info"></iconify-icon>
+                                                  <h3 class="mb-0 fw-bold mt-3 mb-1">{{count($users)}}</h3>
+                                                  <a href='/admin/member' class="text-muted">Total Members</a>
+                                                  <!-- <span class="badge fs-12 badge-soft-success"><i class="ti ti-arrow-badge-up"></i> 8.72%</span> -->
+                                                  <i class="bx bx-user widget-icon"></i>
 
-                                        </div> <!-- end card-body -->
-                                   </div> <!-- end card -->
-                              </div> <!-- end col -->
+                                             </div> <!-- end card-body -->
+                                        </div> <!-- end card -->
+                                   </div> <!-- end col -->
+                              </div>
+                                   <div class="row">
+
+
+                                        <div class="col-md-6 col-xl-4">
+                                             <a href='/admin/application'>
+                                                  <div class="card">
+                                                       <div class="card-body">
+                                                            <div>
+                                                                 <div class="avatar-sm bg-primary bg-opacity-10 rounded">
+                                                                      <i class="bx bx-layer avatar-title fs-24 text-dark"></i>
+                                                                 </div>
+                                                            </div>
+                                                            <div class="d-flex align-items-center justify-content-between">
+
+                                                                 <div>
+                                                                      <h4 class="card-title">Loan Applications</h4>
+                                                                      <h3 class="mb-0 fw-bold mt-1">{{ $loans->count() }}</h3>
+                                                                 </div>
+
+                                                            </div>
+                                                       </div>
+                                                  </div>
+                                             </a>
+                                        </div>
+                                        <div class="col-md-6 col-xl-4">
+                                             <a href='/admin/transaction/repayment'>
+                                                  <div class="card">
+                                                       <div class="card-body">
+                                                            <div>
+                                                                 <div class="avatar-sm bg-primary bg-opacity-10 rounded">
+
+                                                                      <iconify-icon icon="solar:clock-circle-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
+                                                                 </div>
+                                                            </div>
+                                                            <div class="d-flex align-items-center justify-content-between">
+                                                                 <div>
+                                                                      <h4 class="card-title">Loan Repayments</h4>
+                                                                      <h3 class="mb-0 fw-bold mt-1">₦ {{ number_format( $transactions->where('payment_type', 'Repayment')->sum('balance'), 2)}}</h3>
+                                                                 </div>
+
+                                                            </div>
+                                                       </div>
+                                                  </div>
+                                             </a>
+                                        </div>
+                                        <div class="col-md-6 col-xl-4">
+                                             <a href='/admin/transaction/monthly_dues'>
+                                                  <div class="card">
+                                                       <div class="card-body">
+                                                            <div>
+                                                                 <div class="avatar-sm bg-primary bg-opacity-10 rounded">
+                                                                      <iconify-icon icon="solar:clipboard-check-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
+                                                                 </div>
+                                                            </div>
+                                                            <div class="d-flex align-items-center justify-content-between">
+
+                                                                 <div>
+                                                                      <h4 class="card-title">Savings</h4>
+                                                                      <h3 class="mb-0 fw-bold mt-1">₦ {{ number_format( $transactions->whereIn('payment_type', ['Weekly Dues','Monthly Dues','Funding','Anytime'])->sum('balance'), 2)}}</h3>
+                                                                 </div>
+
+                                                            </div>
+                                                       </div>
+                                                  </div>
+                                             </a>
+                                        </div>
+                                        <!-- <div class="col-md-6 col-xl-3">
+                                             <a href='/admin/transaction/registration'>
+                                                  <div class="card">
+                                                       <div class="card-body">
+                                                            <div class="d-flex align-items-center justify-content-between">
+                                                                 <div>
+                                                                      <h4 class="card-title mb-2">Registration Revenue</h4>
+                                                                      <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Registration')->sum('balance'), 2)}}</h3>
+                                                                 </div>
+                                                                 <div>
+                                                                      <div class="avatar-md bg-primary bg-opacity-10 rounded">
+                                                                           <iconify-icon icon="solar:inbox-line-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
+                                                                      </div>
+                                                                 </div>
+                                                            </div>
+                                                       </div>
+                                                  </div>
+                                             </a>
+                                        </div> -->
+                                   </div>
+                             
+                         </div>
+                         <div class='col-md-4'>
 
                               <div class="col">
                                    <div class="card">
                                         <div class="card-body overflow-hidden position-relative">
                                              <iconify-icon icon="iconamoon:category-duotone" class="fs-36 text-success"></iconify-icon>
                                              <ul>
-                                                  <li>Registration Fee : ₦{{$plan->reg_fee}}</li>
-                                                  <li>Payment Mode : {{$plan->mode}}</li>
-                                                  <li>Loan Application Fee : ₦{{$plan->loan_form_amount}}</li>
+                                                  <li class='mb-2'>Registration Fee : <b>₦{{$plan->reg_fee}}</b></li>
+                                                  <li class='mb-2'>Payment Mode : <b>{{$plan->mode}}</b></li>
+                                                  <li class='mb-2'>Loan Application Fee : <b>₦{{number_format($plan->loan_form_amount)}}</b></li>
+                                                  <li class='mb-2'>Min. Loan Request : <b>₦{{number_format($plan->min_loan_range)}}</b></li>
+                                                  <li class='mb-2'>Max Loan Request : <b>₦{{number_format($plan->max_loan_range)}}</b></li>
                                                   <li><strong>...</strong></li>
                                              </ul>
                                              <!-- <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Registration')->sum('balance'), 2)}}</h3> -->
@@ -126,92 +218,10 @@
 
 
 
-
-                    </div>
                </div>
 
 
-               <div class="row">
 
-
-                    <div class="col-md-6 col-xl-3">
-                         <a href='/admin/application'>
-                              <div class="card">
-                                   <div class="card-body">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                             <div>
-                                                  <h4 class="card-title mb-2">Loan Applications</h4>
-                                                  <h3 class="mb-0 fw-bold mt-3 mb-1">{{ $loans->count() }}</h3>
-                                             </div>
-                                             <div>
-                                                  <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                                                       <i class="bx bx-layer avatar-title fs-24 text-dark"></i>
-                                                  </div>
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div>
-                         </a>
-                    </div>
-                    <div class="col-md-6 col-xl-3">
-                         <a href='/admin/transaction/repayment'>
-                              <div class="card">
-                                   <div class="card-body">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                             <div>
-                                                  <h4 class="card-title mb-2">Total Loan Repayment</h4>
-                                                  <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Repayment')->sum('balance'), 2)}}</h3>
-                                             </div>
-                                             <div>
-                                                  <div class="avatar-md bg-primary bg-opacity-10 rounded">
-
-                                                       <iconify-icon icon="solar:clock-circle-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                                                  </div>
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div>
-                         </a>
-                    </div>
-                    <div class="col-md-6 col-xl-3">
-                         <a href='/admin/transaction/monthly_dues'>
-                              <div class="card">
-                                   <div class="card-body">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                             <div>
-                                                  <h4 class="card-title mb-2">Savings</h4>
-                                                  <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->whereIn('payment_type', ['Weekly Dues','Monthly Dues','Funding','Anytime'])->sum('balance'), 2)}}</h3>
-                                             </div>
-                                             <div>
-                                                  <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                                                       <iconify-icon icon="solar:clipboard-check-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                                                  </div>
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div>
-                         </a>
-                    </div>
-                    <div class="col-md-6 col-xl-3">
-                    <a href='/admin/transaction/registration'>
-                         <div class="card">
-                              <div class="card-body">
-                                   <div class="d-flex align-items-center justify-content-between">
-                                        <div>
-                                             <h4 class="card-title mb-2">Registration Revenue</h4>
-                                             <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Registration')->sum('balance'), 2)}}</h3>
-                                        </div>
-                                        <div>
-                                             <div class="avatar-md bg-primary bg-opacity-10 rounded">
-                                                  <iconify-icon icon="solar:inbox-line-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div>
-                         </div>
-                    </a>
-                    </div>
-               </div>
 
                <div class='row'>
                     <div class='col-md-12'>
