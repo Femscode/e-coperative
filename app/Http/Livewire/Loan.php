@@ -19,7 +19,7 @@ class Loan extends Component
     {
         $data['title'] = "Loan Applications";
         $user = auth()->user();
-        $company = Company::where('uuid', $user->company_id)->first();
+        $company = Company::find( $user->company_id);
         if($this->search == ''){
             $data['loans'] = MemberLoan::where('company_id',$company->id)->where('approval_status', 0)->paginate(10);
         }else{
