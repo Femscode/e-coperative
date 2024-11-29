@@ -204,13 +204,13 @@
 
 
                          <li class="nav-item">
-                              <a class="nav-link menu-arrow" href="#sidebarMaps" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMaps">
+                              <a class="nav-link menu-arrow" href="#sidebarMapss" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarMaps">
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:streets-map-point-bold-duotone"></iconify-icon>
                                    </span>
                                    <span class="nav-text"> Manage Loan</span>
                               </a>
-                              <div class="collapse" id="sidebarMaps">
+                              <div class="collapse" id="sidebarMapss">
                                    <ul class="nav sub-navbar-nav">
                                         <li class="sub-nav-item">
                                              <a class="sub-nav-link" href="/admin/application">Pending Loan Application</a>
@@ -252,7 +252,7 @@
                                              <a class="sub-nav-link" href="/admin/transaction/registration">Registration</a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="/admin/transaction/monthly_dues">Monthly Dues</a>
+                                             <a class="sub-nav-link" href="/admin/transaction/monthly_dues">Savings</a>
                                         </li>
                                         <li class="sub-nav-item">
                                              <a class="sub-nav-link" href="/admin/transaction/all">All</a>
