@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Http\Livewire;
-use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Component;
 use App\Models\MemberLoan;
-use Auth;
 
-class LoanApplication extends Component
+class MemberOngoingLoan extends Component
 {
     use WithPagination;
 
@@ -17,29 +16,26 @@ class LoanApplication extends Component
     }
     public function render()
     {
-        $data['title'] = "Applications";
+        $data['title'] = "Ongoing Applications";
         $user = auth()->user();
         if($this->filter == ''){
             $data['loans'] = MemberLoan::where('user_id', auth()->user()->id)
             ->where(function ($query) {
-                $query->where('approval_status', 0)
-                ->OrWhere('payment_status', 0);
+                $query->where('status', "Ongoing");
             })
             ->paginate(10);
         }else{
             $data['loans'] = MemberLoan::where('user_id', auth()->user()->id)->where(function ($query) {
-                $query->where('approval_status', 0)
-                ->OrWhere('payment_status', 0);
+                $query->where('status', "Ongoing");
             })
             ->where(function ($query) {
                 $query->where('applied_date', 'LIKE', '%' . $this->filter . '%')
                       ->orWhere('total_applied', 'LIKE', '%' . $this->filter . '%')
-                      ->orWhere('monthly_return', 'LIKE', '%' . $this->filter . '%')
-                      ->orWhere('status', 'LIKE', '%' . $this->filter . '%');
+                      ->orWhere('monthly_return', 'LIKE', '%' . $this->filter . '%');
             })
             ->paginate(10);
             // dd($data);
         }
-        return view('livewire.loan-application', $data);
+        return view('livewire.member-ongoing-loan', $data);
     }
 }

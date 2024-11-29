@@ -22,6 +22,20 @@ class MemberLoanController extends Controller
         return view ('loan.index',$data);
         // dd($data);
     }
+    public function ongoing()
+    {
+        $data['user'] = Auth::user();
+
+        return view ('loan.ongoing',$data);
+        // dd($data);
+    }
+    public function completed()
+    {
+        $data['user'] = Auth::user();
+
+        return view ('loan.completed',$data);
+        // dd($data);
+    }
 
     /**
      * Show the form for creating a new resource.
