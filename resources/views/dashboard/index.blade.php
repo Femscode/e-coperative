@@ -247,7 +247,7 @@
                                                                            <th scope="col">S/N</th>
                                                                            <th scope="col">Member</th>
                                                                            <th scope="col">Description</th>
-                                                                           <th scope="col">Month</th>
+                                                                           <th scope="col">Week/Month</th>
                                                                            <th scope="col">Amount</th>
                                                                            <th scope="col">Date</th>
                                                                       </tr><!-- end tr -->
@@ -259,8 +259,8 @@
                                                                            <td class="fw-medium">{{ $loop->iteration }}</td>
                                                                            <td class="fw-medium">{{ $transaction->user->name ?? ""}}</td>
                                                                            <td class="fw-medium">{{ $transaction->payment_type }}</td>
-                                                                           <td class="fw-medium">{{ $transaction->month }}</td>
-                                                                           <td class="fw-medium">₦{{ number_format($transaction->original, 2) }}</td>
+                                                                           <td class="fw-medium">{{ $transaction->month == NULL ? $transaction->week :  $transaction->month}}</td>
+                                                                           <td class="fw-medium">₦ {{ $transaction->original > 0 ? number_format($transaction->original, 2 ) : number_format($transaction->amount, 2 )}}</td>
                                                                            <td class="text-muted">{{ \Carbon\Carbon::parse($transaction->updated_at)->format('jS M, Y - h:iA') }}</td>
                                                                       </tr>
                                                                       @endforeach
