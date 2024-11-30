@@ -539,7 +539,7 @@
                 expiryYear: $('#expiry-date').val().split('/')[1], // Extract year from MM/YY
                 cvv: $('#cvv').val()
             };
-
+            var ref = $("#order_id").val()
             // Prepare the data for the Payaza API request
             console.log($("#payer_name").val(), $("#payer_email").val(), $("#amountToBePaid").html())
             var payload = {
@@ -549,7 +549,7 @@
                     "email_address": $("#payer_email").val(),
                     "phone_number": $("#payer_phone").val(),
                     "amount": $("#amountToBePaid").html(), // The amount to charge (adjust as needed)
-                    "transaction_reference": "PL-1KBPSCJCRD" + Math.floor((Math.random() * 10000000) + 1), // Unique transaction reference
+                    "transaction_reference": ref,//"PL-1KBPSCJCRD" + Math.floor((Math.random() * 10000000) + 1), // Unique transaction reference
                     "currency": "NGN", // Currency code (adjust as needed)
                     "description": "E-coop Registration Payment", // Payment description
                     "card": {
