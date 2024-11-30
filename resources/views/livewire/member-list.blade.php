@@ -83,7 +83,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="position-relative bg-light p-2 rounded text-center">
-                                    <img @if($member->cover_image) src="https://e-coop.cthostel.com/ecoop_files/public/file/{{ $member->cover_image }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif alt="" class="avatar-xxl">
+                                    <img @if($member->cover_image) src="https://e-coop.cthostel.com/ecoop_files/public/{{ $member->cover_image }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif alt="" class="avatar-xxl">
 
                                 </div>
                                 <div class="d-flex flex-wrap justify-content-between my-3">
