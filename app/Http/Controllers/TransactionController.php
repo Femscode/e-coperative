@@ -352,7 +352,7 @@ class TransactionController extends Controller
           
                 $content = $real_response['response_content'];
                
-                $check  = Transaction::where('transaction_id', $request->order_id)->get();
+                $check  = Transaction::where('transaction_id', $request->order_id)->orderBy('created_at', 'desc')->get();
                 
                 $checks  = Transaction::where('transaction_id', $request->order_id)->update(['status' => "Success"]);
                 $checkUser = User::where('email', $check[0]["email"])->first();
