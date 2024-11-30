@@ -16,12 +16,11 @@
             <div>
                 <div class="team-list grid-view-filter row">
                     @foreach ($members as $member)
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="position-relative bg-light p-2 rounded text-center">
-                                        <img @if ($member->cover_image) src="{{ asset("$member->cover_image") }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif
-                                            alt="" class="avatar-xxl">
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="position-relative bg-light p-2 rounded text-center">
+                                    <img @if($member->cover_image) src="https://e-coop.cthostel.com/ecoop_files/public/{{ $member->profile_image }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif alt="" class="avatar-xxl">
 
                                     </div>
                                     <div class="d-flex flex-wrap justify-content-between my-3">
