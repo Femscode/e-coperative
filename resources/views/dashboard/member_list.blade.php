@@ -23,7 +23,26 @@
                 </div>
             </div>
         </div>
-
+        <div class="card">
+            <div class="card-body">
+                <div class="row g-2">
+                    <div class="col-sm-4">
+                        <div>
+                            <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
+                                data-bs-target="#addUser"><i class="ri-add-line align-bottom me-1"></i> Add Member</button>
+                        </div>
+                    </div><!--end col-->
+                    <div class="col-sm-auto ms-auto">
+                        <div class="list-grid-nav hstack gap-1">
+                            <a class='btn btn-secondary' href='download_member_template'>Download Template</a>
+    
+                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#showModal"><i
+                                    class="ri-add-fill me-1 align-bottom"></i> Upload Members</button>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+        </div>
         <!-- end page title -->
         @livewire('member-list')
         <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -60,6 +79,55 @@
                             <div class="hstack gap-2 justify-content-end">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-success" id="edit-btn">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-light p-3">
+                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            id="close-modal"></button>
+                    </div>
+        
+                    <form method="Post" action="{{ route('create_user') }}">
+                        @csrf
+                        <div class="modal-body">
+        
+                            <div class="mb-3" id="modal-id" style="display: none;">
+                                <label for="id-field" class="form-label">ID</label>
+                                <input type="text" id="id-field" class="form-control" placeholder="ID" readonly />
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" id="name" class="form-control" placeholder="Enter Name"
+                                    name="name" required />
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" class="form-control" placeholder="Enter Email"
+                                    name="email" required />
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" id="password" class="form-control" placeholder="Enter Password"
+                                    name="password" required />
+                            </div>
+        
+        
+                        </div>
+                        <div class="modal-footer">
+                            <div class="hstack gap-2 justify-content-end">
+                                <button type="button" class="btn btn-light close" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-success" id="update-btn">Save</button>
                             </div>
                         </div>
                     </form>

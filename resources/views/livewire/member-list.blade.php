@@ -1,121 +1,67 @@
 
 
-<div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-light p-3">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    id="close-modal"></button>
-            </div>
-            
-            <form method="Post" action="{{route('create_user')}}">
-                @csrf
-                <div class="modal-body">
-
-                    <div class="mb-3" id="modal-id" style="display: none;">
-                        <label for="id-field" class="form-label">ID</label>
-                        <input type="text" id="id-field" class="form-control" placeholder="ID" readonly />
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" id="name" class="form-control" placeholder="Enter Name" name="name" required />
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" id="email" class="form-control" placeholder="Enter Email" name="email" required />
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" id="password" class="form-control"  placeholder="Enter Password" name="password" required />
-                    </div>
-
-                
-                </div>
-                <div class="modal-footer">
-                    <div class="hstack gap-2 justify-content-end">
-                        <button type="button" class="btn btn-light close" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success" id="update-btn">Save</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 <div>
-    <div class="card">
-        <div class="card-body">
-            <div class="row g-2">
-                <div class="col-sm-4">
-                    <div>
-                        <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#addUser"><i class="ri-add-line align-bottom me-1"></i> Add Member</button>
-                    </div>
-                </div><!--end col-->
-                <div class="col-sm-auto ms-auto">
-                    <div class="list-grid-nav hstack gap-1">
-                    <a class='btn btn-secondary' href='download_member_template'>Download Template</a>
-
-                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#showModal"><i class="ri-add-fill me-1 align-bottom"></i> Upload Members</button>
-                    </div>
-                </div><!--end col-->
-            </div><!--end row-->
-        </div>
-    </div>
+    
     <div class="row">
         <div class="col-lg-12">
-           
-        <div class="col-md-6 mb-2 form-group">
-    <div class="input-group">
-        <input class="form-control" type="text" placeholder="Search for members by name, email or coopID"/>
-        <button type="submit" class="btn btn-success">Search</button>
-    </div>
-</div>
+
+            <div class="col-md-6 mb-2 form-group">
+                <div class="input-group">
+                    <input class="form-control" type="text" wire:model="search"
+                        placeholder="Search for members by name, email or coopID" />
+                    <button type="submit" class="btn btn-success">Search</button>
+                </div>
+            </div>
 
             <div>
                 <div class="team-list grid-view-filter row">
                     @foreach ($members as $member)
-                    <div class="col-xl-3 col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="position-relative bg-light p-2 rounded text-center">
-                                    <img @if($member->cover_image) src="{{ asset("$member->cover_image") }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif alt="" class="avatar-xxl">
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="position-relative bg-light p-2 rounded text-center">
+                                        <img @if ($member->cover_image) src="{{ asset("$member->cover_image") }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif
+                                            alt="" class="avatar-xxl">
 
-                                </div>
-                                <div class="d-flex flex-wrap justify-content-between my-3">
-                                    <div>
-                                        <h4 class="mb-1">{{ $member->name }}<span class="text-muted fs-13 ms-1">{{ strtoupper(Str::of($member->name)->explode(' ')->map(fn($word) => substr($word, 0, 1))->implode('')) }} </span></h4>
+                                    </div>
+                                    <div class="d-flex flex-wrap justify-content-between my-3">
                                         <div>
-                                            <a href="#!" class="link-primary fs-16 fw-medium">{{ $member->email }}</a>
+                                            <h4 class="mb-1">{{ $member->name }}<span
+                                                    class="text-muted fs-13 ms-1">{{ strtoupper(Str::of($member->name)->explode(' ')->map(fn($word) => substr($word, 0, 1))->implode('')) }}
+                                                </span></h4>
+                                            <div>
+                                                <a href="#!"
+                                                    class="link-primary fs-16 fw-medium">{{ $member->email }}</a>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="mb-0"><span class="badge bg-light text-dark fs-12 me-1"><i
+                                                        class="bx bxs-star align-text-top fs-14 text-warning me-1"></i>
+                                                    Coop ID: {{ $member->coop_id }}</span></p>
                                         </div>
                                     </div>
-                                    <div>
-                                        <p class="mb-0"><span class="badge bg-light text-dark fs-12 me-1"><i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i> Coop ID: {{ $member->coop_id }}</span></p>
+
+                                    <div class="d-flex align-items-center justify-content-between mt-3 mb-1">
+                                        <p class="mb-0 fs-15 fw-medium text-dark">Referrals</p>
+                                        <div>
+                                            <p class="mb-0 fs-15 fw-medium text-dark">{{ $member->refers()->count() }}
+                                                <span class="ms-1"><iconify-icon icon="solar:course-up-outline"
+                                                        class="text-success"></iconify-icon></span></p>
+                                        </div>
                                     </div>
+
+
                                 </div>
-
-                                <div class="d-flex align-items-center justify-content-between mt-3 mb-1">
-                                    <p class="mb-0 fs-15 fw-medium text-dark">Referrals</p>
-                                    <div>
-                                        <p class="mb-0 fs-15 fw-medium text-dark">{{ $member->refers()->count() }} <span class="ms-1"><iconify-icon icon="solar:course-up-outline" class="text-success"></iconify-icon></span></p>
-                                    </div>
+                                <div class="card-footer border-top gap-1 hstack">
+                                    <a href="{{ route('admin-member-details', $member->id) }}"
+                                        class="btn btn-primary w-100">View Profile</a>
                                 </div>
-
-
-                            </div>
-                            <div class="card-footer border-top gap-1 hstack">
-                                <a href="{{ route('admin-member-details', $member->id) }}" class="btn btn-primary w-100">View Profile</a>
                             </div>
                         </div>
-                    </div>
-                    <!-- <div class="col">
+                        <!-- <div class="col">
                         <div class="card team-box">
                             <div class="team-cover">
-                                <img @if($member->cover_image) src="{{ asset("$member->cover_image") }}" @else src="{{ asset('assets/images/profile-bg.jpg') }}" @endif alt="" class="img-fluid" />
+                                <img @if ($member->cover_image) src="{{ asset("$member->cover_image") }}" @else src="{{ asset('assets/images/profile-bg.jpg') }}" @endif alt="" class="img-fluid" />
                             </div>
                             <div class="card-body p-4">
                                 <div class="row align-items-center team-row">
@@ -180,7 +126,7 @@
                             </div>
                         </div>
                     </div> -->
-                    <!--end col-->
+                        <!--end col-->
                     @endforeach
                     <div class="col-lg-12">
                         <div class="text-center mb-3">
@@ -196,7 +142,8 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="myModalLabel">Add New Members</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form>
@@ -204,25 +151,29 @@
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label for="teammembersName" class="form-label">Name</label>
-                                                <input type="text" class="form-control" id="teammembersName" placeholder="Enter name">
+                                                <input type="text" class="form-control" id="teammembersName"
+                                                    placeholder="Enter name">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label for="designation" class="form-label">Designation</label>
-                                                <input type="text" class="form-control" id="designation" placeholder="Enter designation">
+                                                <input type="text" class="form-control" id="designation"
+                                                    placeholder="Enter designation">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="mb-3">
                                                 <label for="totalProjects" class="form-label">Projects</label>
-                                                <input type="number" class="form-control" id="totalProjects" placeholder="Total projects">
+                                                <input type="number" class="form-control" id="totalProjects"
+                                                    placeholder="Total projects">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="mb-3">
                                                 <label for="totalTasks" class="form-label">Tasks</label>
-                                                <input type="number" class="form-control" id="totalTasks" placeholder="Total tasks">
+                                                <input type="number" class="form-control" id="totalTasks"
+                                                    placeholder="Total tasks">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -233,7 +184,8 @@
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="hstack gap-2 justify-content-end">
-                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-light"
+                                                    data-bs-dismiss="modal">Close</button>
                                                 <button type="submit" class="btn btn-success">Add Member</button>
                                             </div>
                                         </div>
@@ -255,7 +207,8 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="bookmark-icon flex-shrink-0 me-2">
-                                            <input type="checkbox" id="favourite13" class="bookmark-input bookmark-hide">
+                                            <input type="checkbox" id="favourite13"
+                                                class="bookmark-input bookmark-hide">
                                             <label for="favourite13" class="btn-star">
                                                 <svg width="20" height="20">
                                                     <use xlink:href="#icon-star" />
@@ -264,42 +217,54 @@
                                         </div>
                                     </div>
                                     <div class="col text-end dropdown">
-                                        <a href="javascript:void(0);" id="dropdownMenuLink14" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <a href="javascript:void(0);" id="dropdownMenuLink14"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="ri-more-fill fs-17"></i>
                                         </a>
-                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink14">
-                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-line me-2 align-middle"></i>View</a></li>
-                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-star-line me-2 align-middle"></i>Favorites</a></li>
-                                            <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-line me-2 align-middle"></i>Delete</a></li>
+                                        <ul class="dropdown-menu dropdown-menu-end"
+                                            aria-labelledby="dropdownMenuLink14">
+                                            <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                                        class="ri-eye-line me-2 align-middle"></i>View</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                                        class="ri-star-line me-2 align-middle"></i>Favorites</a></li>
+                                            <li><a class="dropdown-item" href="javascript:void(0);"><i
+                                                        class="ri-delete-bin-5-line me-2 align-middle"></i>Delete</a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
                             </div><!--end col-->
                         </div>
                         <div class="p-3 text-center">
-                            <img src="assets/images/users/avatar-2.jpg" alt="" class="avatar-lg img-thumbnail rounded-circle mx-auto">
+                            <img src="assets/images/users/avatar-2.jpg" alt=""
+                                class="avatar-lg img-thumbnail rounded-circle mx-auto">
                             <div class="mt-3">
-                                <h5 class="fs-15"><a href="javascript:void(0);" class="link-primary">Nancy Martino</a></h5>
+                                <h5 class="fs-15"><a href="javascript:void(0);" class="link-primary">Nancy
+                                        Martino</a></h5>
                                 <p class="text-muted">Team Leader & HR</p>
                             </div>
                             <div class="hstack gap-2 justify-content-center mt-4">
                                 <div class="avatar-xs">
-                                    <a href="javascript:void(0);" class="avatar-title bg-soft-secondary text-secondary rounded fs-16">
+                                    <a href="javascript:void(0);"
+                                        class="avatar-title bg-soft-secondary text-secondary rounded fs-16">
                                         <i class="ri-facebook-fill"></i>
                                     </a>
                                 </div>
                                 <div class="avatar-xs">
-                                    <a href="javascript:void(0);" class="avatar-title bg-soft-success text-success rounded fs-16">
+                                    <a href="javascript:void(0);"
+                                        class="avatar-title bg-soft-success text-success rounded fs-16">
                                         <i class="ri-slack-fill"></i>
                                     </a>
                                 </div>
                                 <div class="avatar-xs">
-                                    <a href="javascript:void(0);" class="avatar-title bg-soft-info text-info rounded fs-16">
+                                    <a href="javascript:void(0);"
+                                        class="avatar-title bg-soft-info text-info rounded fs-16">
                                         <i class="ri-linkedin-fill"></i>
                                     </a>
                                 </div>
                                 <div class="avatar-xs">
-                                    <a href="javascript:void(0);" class="avatar-title bg-soft-danger text-danger rounded fs-16">
+                                    <a href="javascript:void(0);"
+                                        class="avatar-title bg-soft-danger text-danger rounded fs-16">
                                         <i class="ri-dribbble-fill"></i>
                                     </a>
                                 </div>
@@ -395,8 +360,10 @@
                         </div>
                     </div><!--end offcanvas-body-->
                     <div class="offcanvas-foorter border p-3 hstack gap-3 text-center position-relative">
-                        <button class="btn btn-light w-100"><i class="ri-question-answer-fill align-bottom ms-1"></i> Send Message</button>
-                        <a href="pages-profile.html" class="btn btn-primary w-100"><i class="ri-user-3-fill align-bottom ms-1"></i> View Profile</a>
+                        <button class="btn btn-light w-100"><i class="ri-question-answer-fill align-bottom ms-1"></i>
+                            Send Message</button>
+                        <a href="pages-profile.html" class="btn btn-primary w-100"><i
+                                class="ri-user-3-fill align-bottom ms-1"></i> View Profile</a>
                     </div>
                 </div><!--end offcanvas-->
             </div>

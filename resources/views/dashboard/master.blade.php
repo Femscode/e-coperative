@@ -335,7 +335,7 @@
 
      </div>
      <!-- END Wrapper -->
-
+     @livewireScripts
      <!-- Vendor Javascript (Require in all Page) -->
      <script src="{{url('vendorsdashboard/js/vendor.js')}}"></script>
 
