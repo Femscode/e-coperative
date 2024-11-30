@@ -93,6 +93,7 @@ class TransactionController extends Controller
             // dd("here");
             $status = 1;
             $input['amount'] = $input['balance'] = $amount;
+            $input['original'] = $input['balance'] = $amount;
             $input['company_id'] = $coop->id;
             $input['month'] = now()->format('F Y');
 
