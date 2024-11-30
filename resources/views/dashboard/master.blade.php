@@ -74,7 +74,7 @@
                                    <a type="button" class="topbar-button" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="d-flex align-items-center">
                                              @if($user->image ?? auth()->user()->image !== null)
-                                             <img src="https://e-coop.cthostel.com/ecoop_files/public/{{ $user->profile_image }}"
+                                             <img src="https://e-coop.cthostel.com/ecoop_files/public/{{ Auth::user()->profile_image }}"
                                                   alt="" class="rounded-circle" width="32">
                                              @else
                                              <img src="{{url('assets/images/avatar.png')}}"
