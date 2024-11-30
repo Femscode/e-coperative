@@ -31,7 +31,7 @@
                 <div class="card-body p-4">
                     <div class="text-center">
                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                            <img @if($user->profile_image) src="{{ asset("$user->profile_image") }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif data-id="profile" id="userProfileImage" class="rounded-circle avatar-xl img-thumbnail user-profile-image previews" alt="user-profile-image">
+                            <img @if($user->profile_image) src="https://e-coop.cthostel.com/ecoop_files/public/{{ $user->cover_image }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif data-id="profile" id="userProfileImage" class="rounded-circle avatar-xl img-thumbnail user-profile-image previews" alt="user-profile-image">
                             <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
                                 <input id="profile-img-file-input" accept=".jpg, .png, image/jpeg, image/png" type="file" data-id="profile" class="profile-img-file-input fileInput">
                                 <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
