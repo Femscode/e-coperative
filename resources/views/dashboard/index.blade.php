@@ -79,7 +79,7 @@
                                    <div class="col">
                                         <div class="card">
                                              <div class="card-body overflow-hidden position-relative">
-                                                  <iconify-icon icon="iconamoon:3d-duotone" class="fs-36 text-info"></iconify-icon>
+                                                  <iconify-icon icon="iconamoon:3d-duotone" class="fs-32 text-info"></iconify-icon>
                                                   <h3 class="mb-0 fw-bold mt-3 mb-1">{{count($users)}}</h3>
                                                   <a href='/admin/member' class="text-muted">Total Members</a>
                                                   <!-- <span class="badge fs-12 badge-soft-success"><i class="ti ti-arrow-badge-up"></i> 8.72%</span> -->
