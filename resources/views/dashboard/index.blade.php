@@ -104,7 +104,7 @@
                                                             <div class="d-flex align-items-center justify-content-between">
 
                                                                  <div>
-                                                                      <h4 class="card-title">Loan Applications</h4>
+                                                                      <h4 class="card-title mt-2">Loan Applications</h4>
                                                                       <h3 class="mb-0 fw-bold mt-1">{{ $loans->count() }}</h3>
                                                                  </div>
 
@@ -125,7 +125,7 @@
                                                             </div>
                                                             <div class="d-flex align-items-center justify-content-between">
                                                                  <div>
-                                                                      <h4 class="card-title">Loan Repayments</h4>
+                                                                      <h4 class="card-title mt-2">Loan Repayments</h4>
                                                                       <h3 class="mb-0 fw-bold mt-1">₦ {{ number_format( $transactions->where('payment_type', 'Repayment')->sum('balance'), 2)}}</h3>
                                                                  </div>
 
@@ -146,7 +146,7 @@
                                                             <div class="d-flex align-items-center justify-content-between">
 
                                                                  <div>
-                                                                      <h4 class="card-title">Savings</h4>
+                                                                      <h4 class="card-title mt-2">Savings</h4>
                                                                       <h3 class="mb-0 fw-bold mt-1">₦ {{ number_format( $transactions->whereIn('payment_type', ['Weekly Dues','Monthly Dues','Funding','Anytime'])->sum('balance'), 2)}}</h3>
                                                                  </div>
 
@@ -235,7 +235,7 @@
                                                   <div class="card-header d-flex align-items-center">
                                                        <h4 class="card-title flex-grow-1 mb-0">Current Month Transactions</h4>
                                                        <div class="flex-shrink-0">
-                                                            <a href="javascript:void(0);" class="btn btn-soft-info btn-sm">Export Report</a>
+                                                            <a href="javascript:void(0);" class="btn btn-soft-dark btn-sm">Export Report</a>
                                                        </div>
                                                   </div><!-- end cardheader -->
                                                   <div class="card-body">
