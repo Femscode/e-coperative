@@ -118,6 +118,7 @@ class MemberController extends Controller
             ->toArray();
 
         $weeks = [];
+        // dd()
         foreach ($weeksToView as $thisWeek) {
             $check = in_array($thisWeek, $myWeeks);
             if (!$check) {

@@ -77,7 +77,7 @@
                                 <tr>
                                     <td class="fw-medium">{{ $loop->iteration }}</td>
                                     <td class="fw-medium">{{ $transaction->payment_type }}</td>
-                                    <td class="fw-medium">{{ number_format($transaction->amount, 2 )}}</td>
+                                    <td class="fw-medium">{{ number_format($transaction->original, 2 )}}</td>
                                     <td class="fw-medium"><i class="ri-check-double-line me-3 align-middle fs-16"></i></td>
                                     <td class="text-muted">{{ $transaction->updated_at }}</td>
                                 </tr><!-- end tr -->
