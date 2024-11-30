@@ -16,7 +16,7 @@
             <div>
                 <div class="team-list grid-view-filter row">
                     @foreach ($members as $member)
-                    <div class="col-xl-3 col-md-6">
+                    <div class="col-xl-4 col-md-6">
                         <div class="card">
                             <div class="card-body">
                                 <div class="position-relative bg-light p-2 rounded text-center">
