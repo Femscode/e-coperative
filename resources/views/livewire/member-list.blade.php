@@ -68,7 +68,14 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            {{-- {{ dd($members)  }} --}}
+           
+        <div class="col-md-6 mb-2 form-group">
+    <div class="input-group">
+        <input class="form-control" type="text" placeholder="Search for members by name, email or coopID"/>
+        <button type="submit" class="btn btn-success">Search</button>
+    </div>
+</div>
+
             <div>
                 <div class="team-list grid-view-filter row">
                     @foreach ($members as $member)

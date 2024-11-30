@@ -25,10 +25,10 @@ class MemberList extends Component
         }
         
         if($this->search == ''){
-            $data['members'] = User::where('company_id',$company->id)->where('user_type', "Member")->orderBy('created_at', 'desc')->paginate(21);
+            $data['members'] = User::where('company_id',$company->id)->where('user_type', "Member")->orderBy('created_at', 'desc')->paginate(10);
         }else{
             // dd($this->search);
-            $data['members'] = User::where('company_id',$company->id)->where('user_type', "Member")->where('name', 'LIKE', '%' . $this->search . '%')->Orwhere('coop_id', 'LIKE', '%' . $this->search . '%')->Orwhere('email', 'LIKE', '%' . $this->search . '%')->orderBy('created_at', 'desc')->paginate(21);
+            $data['members'] = User::where('company_id',$company->id)->where('user_type', "Member")->where('name', 'LIKE', '%' . $this->search . '%')->Orwhere('coop_id', 'LIKE', '%' . $this->search . '%')->Orwhere('email', 'LIKE', '%' . $this->search . '%')->orderBy('created_at', 'desc')->paginate(10);
         }
         // dd($data);
         return view('livewire.member-list',$data);

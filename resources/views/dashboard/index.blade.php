@@ -192,7 +192,7 @@
                                                   <li><strong>...</strong></li>
                                              </ul>
                                              <!-- <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Registration')->sum('balance'), 2)}}</h3> -->
-                                             <a href='/admin/plan' class="btn btn-sm btn-primary">Set Rule</a>
+                                             <a href='/admin/plan' class="btn btn-sm btn-primary mb-2">Manage Settings</a>
                                              <i class="bx bx-bar-chart-alt-2 widget-icon"></i>
                                         </div>
                                    </div>

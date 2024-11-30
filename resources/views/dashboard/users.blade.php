@@ -141,7 +141,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light p-3">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <h5 class="modal-title" id="exampleModalLabel">Give Admin Access</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     id="close-modal"></button>
             </div>
@@ -172,7 +172,7 @@
                 <div class="modal-footer">
                     <div class="hstack gap-2 justify-content-end">
                         <button type="button" class="btn btn-light close" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success" id="update-btn">Save</button>
+                        <button type="submit" class="btn btn-success" id="update-btn">Make Admin</button>
                     </div>
                 </div>
             </form>
@@ -271,7 +271,7 @@
 
         async function resetAccount(el, user_id) {
             const willUpdate = await new swal({
-                title: "Confirm Delete",
+                title: "Confirm Admin Removal",
                 text: `Are you sure you want to remove this user from an admin?`,
                 icon: "warning",
                 confirmButtonColor: "#DD6B55",
