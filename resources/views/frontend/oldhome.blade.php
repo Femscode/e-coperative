@@ -20,7 +20,7 @@
                         <h4>Manage your cooperative effortlessly with our all-in-one digital platform</h4>
                         <p>Access savings, make payments, track loans, and engage with members anytime, anywhere.
                         Bringing the power of financial communities right to your fingertips.</p>
-                        <div class="row align-items-center g-4">
+                        <!-- <div class="row align-items-center g-4">
                             <div class="col-lg-5 col-md-5">
                                 <ul class="user bg-color-ffffff radius">
                                     <li>
@@ -56,7 +56,7 @@
                                     </ul>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -896,7 +896,7 @@
                                 </button>
                                 <div id="collapseBang" class="accordion-collapse collapse show" data-bs-parent="#accordionFAQ">
                                     <div class="accordion-body">
-                                        <p>An e-cooperative is a digital platform that enables local cooperatives to manage their operations, finances, and member interactions online..</p>
+                                        <p>An e-cooperative is a digital platform that enables local cooperatives to manage their operations, finances, and member interactions online.</p>
                                     </div>
                                 </div>
                             </div>

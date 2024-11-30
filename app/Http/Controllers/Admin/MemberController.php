@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use App\Imports\MemberImport;
 use App\Models\Bank;
 use App\Models\Company;
 use App\Models\Member;
+use App\Models\Transaction;
 use App\Models\User;
 use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
@@ -22,21 +24,38 @@ class MemberController extends Controller
      */
     public function index()
     {
-      
-       
+
+
         return view('dashboard.member_list');
         return view('admin.member.list');
     }
-    
-    public function details($id){
+
+    public function details($id)
+    {
         $data['user'] = $user = User::find($id);
         $data['plan'] = $user->plan();
-        $data['banks'] = Bank::orderBy('name','asc')->get();
-       $data['coop'] = Company::find($user->company_id);
+        $data['banks'] = Bank::orderBy('name', 'asc')->get();
+        $data['coop'] = Company::find($user->company_id);
         // dd($plan);
         // return view('member.profile', $data);
-        return view('dashboard.member_details',$data);
+        return view('dashboard.member_details', $data);
         return view('admin.member.detail', $data);
+    }
+
+    public function transactions($id)
+    {
+        $data['user'] = $user = User::find($id);
+        $data['plan'] = $user->plan();
+        $data['banks'] = Bank::orderBy('name', 'asc')->get();
+        $data['coop'] = $company = Company::where('uuid',$user->company_id)->first();
+        $data['transactions'] = Transaction::where('user_id', $user->id)->latest()->paginate(20);
+        if(!$company) {
+            $data['coop'] = Company::find($user->company_id);
+        }
+       
+        // dd($plan);
+        // return view('member.profile', $data);
+        return view('dashboard.member_transactions', $data);
     }
 
     /**
@@ -48,10 +67,10 @@ class MemberController extends Controller
     {
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load(request()->file('file'));
         $highestRow = $spreadsheet->getActiveSheet()->getHighestDataRow();
-        $sheetData = $spreadsheet->getActiveSheet()->toArray(null,true,true,true);
+        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
         $countdata =  count($sheetData) - 1;
-       
-        if($countdata < 1){
+
+        if ($countdata < 1) {
             return api_request_response(
                 "error",
                 "Excel File Is Empty! Populate And Upload! ",
@@ -61,16 +80,16 @@ class MemberController extends Controller
         }
 
         try {
-                // dd($request->all());
-                $plan = $request->plan_id;
-                \Excel::import(new MemberImport($plan), request()->file('file'));
+            // dd($request->all());
+            $plan = $request->plan_id;
+            \Excel::import(new MemberImport($plan), request()->file('file'));
 
-                return api_request_response(
-                    "ok",
-                    "Transaction successful!!",
-                    success_status_code(),
-                    $countdata
-                );
+            return api_request_response(
+                "ok",
+                "Transaction successful!!",
+                success_status_code(),
+                $countdata
+            );
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             // DB::rollback();
             $failures = $e->failures();

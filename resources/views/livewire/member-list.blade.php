@@ -1,7 +1,5 @@
-
-
 <div>
-    
+
     <div class="row">
         <div class="col-lg-12">
 
@@ -22,42 +20,54 @@
                                 <div class="position-relative bg-light p-2 rounded text-center">
                                     <img @if($member->cover_image) src="https://e-coop.cthostel.com/ecoop_files/public/{{ $member->profile_image }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif alt="" class="avatar-xxl">
 
-                                    </div>
-                                    <div class="d-flex flex-wrap justify-content-between my-3">
-                                        <div>
-                                            <h4 class="mb-1">{{ $member->name }}<span
-                                                    class="text-muted fs-13 ms-1">{{ strtoupper(Str::of($member->name)->explode(' ')->map(fn($word) => substr($word, 0, 1))->implode('')) }}
-                                                </span></h4>
-                                            <div>
-                                                <a href="#!"
-                                                    class="link-primary fs-16 fw-medium">{{ $member->email }}</a>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <p class="mb-0"><span class="badge bg-light text-dark fs-12 me-1"><i
-                                                        class="bx bxs-star align-text-top fs-14 text-warning me-1"></i>
-                                                    Coop ID: {{ $member->coop_id }}</span></p>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex align-items-center justify-content-between mt-3 mb-1">
-                                        <p class="mb-0 fs-15 fw-medium text-dark">Referrals</p>
-                                        <div>
-                                            <p class="mb-0 fs-15 fw-medium text-dark">{{ $member->refers()->count() }}
-                                                <span class="ms-1"><iconify-icon icon="solar:course-up-outline"
-                                                        class="text-success"></iconify-icon></span></p>
-                                        </div>
-                                    </div>
-
-
                                 </div>
-                                <div class="card-footer border-top gap-1 hstack">
-                                    <a href="{{ route('admin-member-details', $member->id) }}"
-                                        class="btn btn-primary w-100">View Profile</a>
+                                <div class="d-flex flex-wrap justify-content-between my-3">
+                                    <div>
+                                        <h4 class="mb-1">{{ $member->name }}<span
+                                                class="text-muted fs-13 ms-1">{{ strtoupper(Str::of($member->name)->explode(' ')->map(fn($word) => substr($word, 0, 1))->implode('')) }}
+                                            </span></h4>
+                                        <div>
+                                            <a href="#!"
+                                                class="link-primary fs-16 fw-medium">{{ $member->email }}</a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0"><span class="badge bg-light text-dark fs-12 me-1">
+                                                @if($member->refers()->count() > 10)
+                                                <i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i>
+                                                <i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i>
+                                                <i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i>
+                                                @elseif ($member->refers()->count() > 5)
+                                                <i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i>
+                                                <i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i>
+                                                @else
+                                                <i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i>
+                                                @endif
+                                                Coop ID: {{ $member->coop_id }}</span></p>
+                                    </div>
                                 </div>
+
+                                <div class="d-flex align-items-center justify-content-between mt-3 mb-1">
+                                    <p class="mb-0 fs-15 fw-medium text-dark">Referrals</p>
+                                    <div>
+                                        <p class="mb-0 fs-15 fw-medium text-dark">{{ $member->refers()->count() }}
+                                            <span class="ms-1"><iconify-icon icon="solar:course-up-outline"
+                                                    class="text-success"></iconify-icon></span>
+                                        </p>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="card-footer border-top gap-1 hstack">
+                                <a href="{{ route('admin-member-details', $member->id) }}"
+                                    class="btn btn-primary w-100">View Profile</a>
+                                <a href="{{ route('admin-member-transactions', $member->id) }}"
+                                    class="btn btn-info w-100"> Transactions</a>
                             </div>
                         </div>
-                        <!-- <div class="col">
+                    </div>
+                    <!-- <div class="col">
                         <div class="card team-box">
                             <div class="team-cover">
                                 <img @if ($member->cover_image) src="{{ asset("$member->cover_image") }}" @else src="{{ asset('assets/images/profile-bg.jpg') }}" @endif alt="" class="img-fluid" />
@@ -125,7 +135,7 @@
                             </div>
                         </div>
                     </div> -->
-                        <!--end col-->
+                    <!--end col-->
                     @endforeach
                     <div class="col-lg-12">
                         <div class="text-center mb-3">
