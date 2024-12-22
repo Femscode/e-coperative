@@ -62,7 +62,7 @@ class TransactionController extends Controller
         $amount = $coopD->reg_fee;
         // $tag = date("dY");
         $tag = uniqid(). date("dYHis").rand(100, 999);
-        $input['transaction_id'] = $transaction_id = intval($tag) + rand(0, 30) * 50;
+        $input['transaction_id'] = $transaction_id = intval($tag) + rand(0, 30) * 50 ."". rand();
         if ($fee < 1) {
             $status = 0;
             $checkNumber =  NumberCount::where('coop_id', $coop->id)->first();
