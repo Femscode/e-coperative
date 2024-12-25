@@ -113,11 +113,13 @@ Route::group(['middleware' => ['auth']], function () {
                 });
             });
         });
-        Route::get('/my-profile', [App\Http\Controllers\ProfileController::class, 'profile'])->name('member-profile');
-        Route::post('/update-profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('member-profile-update');
         Route::group(['middleware' => 'member'], function () {
             Route::group(['prefix' => 'member'], function () {
                 Route::get('/', [App\Http\Controllers\MemberController::class, 'index'])->name('member_home');
+                Route::get('/transactions', [App\Http\Controllers\MemberController::class, 'transactions'])->name('transactions');
+                Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'profile'])->name('member-profile');
+                Route::post('/update-profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('member-profile-update');
+               
                 Route::get('/automatic-payment', [App\Http\Controllers\MemberController::class, 'automaticPayment'])->name('member-automatic-payment');
                 Route::get('/manual-payment', [App\Http\Controllers\MemberController::class, 'manualPayment'])->name('member-manual-payment');
                 Route::get('/loan-repayment', [App\Http\Controllers\MemberController::class, 'loanPayment'])->name('member-loan-payment');

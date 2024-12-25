@@ -40,6 +40,7 @@ class ProfileController extends Controller
             return view('dashboard.profile', $data);
 
         } else {
+            return view('member_dashboard.profile', $data);
             return view('member.profile', $data);
 
         }

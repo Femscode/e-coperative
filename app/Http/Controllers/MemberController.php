@@ -22,19 +22,32 @@ class MemberController extends Controller
         //              ->where('user_id', Auth::user()->id);
         //      })
         //      ->get();
-        $data['transactions'] = Transaction::where('user_id',  auth()->user()->id)->orWhere('email', auth()->user()->email)->where('status', 'Success')->get();
+        $data['user'] = $user = Auth::user();
+        $data['member_loan'] = MemberLoan::where('user_id',$user->id)->where('approval_status',1)->get();
+        $data['transactions'] = Transaction::where('user_id', $user->id)->orWhere('email',$user->email)->where('status', 'Success')->latest()->paginate(10);
+        return view('member_dashboard.index', $data);
         return view('member.index', $data);
+    }
+
+    public function transactions() {
+        $data['user'] = $user =  Auth::user();
+        $data['transactions'] = Transaction::where('user_id',  $user->id)->orWhere('email', $user->email)->where('status', 'Success')->latest()->paginate(10);
+        return view('member_dashboard.transactions', $data);
+       
     }
 
     public function manualPayment(){
         $startDate = Carbon::parse(Auth::user()->created_at);
         $endDate = Carbon::now();
         $mode = Auth::user()->plan()->mode;
-        $data['user'] = Auth::user();
+        $data['user'] = $user =  Auth::user();
+        $data['transactions'] = Transaction::where('user_id',  $user->id)->orWhere('email', $user->email)->where('status', 'Success')->latest()->paginate(10);
+        
         //dd($mode);
         switch($mode){
             case 'Anytime':
-
+               
+                return view ('member_dashboard.payment.anytime',$data);
                 return view ('member.payment.anytime',$data);
                 break;
 
@@ -87,6 +100,7 @@ class MemberController extends Controller
                 $data['months'] = array_merge($months, $dateArray);
                 // $data['months'] = $months + $dateArray;
                 // dd($check, $data);
+                return view ('member_dashboard.payment.monthly', $data);
                 return view ('member.payment.monthly', $data);
                 break;
             case 'Weekly':
@@ -132,6 +146,7 @@ class MemberController extends Controller
         $data['user'] = Auth::user();
         // $data['months'] = $months + $dateArray;
         // dd($check, $data);
+        return view ('member_dashboard.payment.weekly', $data);
         return view ('member.payment.weekly', $data);
     }
     public function loanPayment(){

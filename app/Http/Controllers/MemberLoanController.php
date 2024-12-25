@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\MemberLoan;
+use App\Models\Transaction;
 use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
 use function App\Helpers\success_status_code;
@@ -17,8 +18,10 @@ class MemberLoanController extends Controller
      */
     public function index()
     {
-        $data['user'] = Auth::user();
-
+        $data['user'] = $user =  Auth::user();
+        $data['transactions'] = Transaction::where('user_id',  $user->id)->orWhere('email', $user->email)->where('status', 'Success')->latest()->get();
+      
+        return view ('member_dashboard.loan.index',$data);
         return view ('loan.index',$data);
         // dd($data);
     }

@@ -114,4 +114,6 @@ class User extends Authenticatable implements Auditable
             $user->uuid = $user->uuid ?? Str::uuid();
         });
     }
+
+   
 }
