@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\DB;
 use App\Models\WemaVirtualAccount;
 use GuzzleHttp\Client;
+use Carbon\Carbon;
+use App\Models\MemberLoan;
+use App\Models\User;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Jenssegers\Agent\Agent;
 
@@ -38,6 +42,92 @@ use Jenssegers\Agent\Agent;
     //         'created_at' => now(),
     //     ]);
     // }
+
+    function getTotalDues($userId)
+    {
+        $data['user'] = $user =  User::find($userId);
+            $startDate = Carbon::parse($user->created_at);
+            $endDate = Carbon::now();
+            $mode = $user->plan()->mode;
+            $data['plan'] = $plan =  $user->plan();
+            //dd($mode);
+            switch($mode){
+                case 'Anytime':
+                   return 0;
+                    break;
+    
+                case 'Monthly':
+    
+                    $currentDate = $startDate->copy()->startOfMonth();
+                    while ($currentDate->lte($endDate) && $currentDate->month <= $endDate->month) {
+                        $monthsToView[] = $currentDate->format('F Y');
+                        $currentDate->addMonth();
+                    }
+                    // dd($monthsToView);
+                    $myMonths = Transaction::where('user_id',  $userId)->where([['status', 'Success'],['payment_type','Monthly Dues']])->pluck('month')->toArray();
+                    // dd($monthsToView, $myMonths);
+                    $months = [];
+                    foreach ($monthsToView as $thisMonth) {
+                        $check =  in_array($thisMonth, $myMonths);
+                        if ($check == false) {
+                            $months[] = ['source' => '1', 'month' => $thisMonth, 'amount' => $plan->dues];
+                        }
+                    }
+                    // $data['months'] = $months ;
+                    
+                    // dd($dateArray);
+                   // $data['months'] = array_merge($months, $dateArray);
+                    $totalAmount = array_sum(array_column($months, 'amount')) ?? 0;
+
+                   return $totalAmount;
+                    // $data['months'] = $months + $dateArray;
+                    // dd($check, $data);
+                   // return view ('member_dashboard.payment.monthly', $data);
+                    //return view ('member.payment.monthly', $data);
+                    break;
+                case 'Weekly':
+    
+                    //     $this->redirectTo = '/member';
+    
+                    // return $this->redirectTo;
+                    break;
+    
+    
+            }
+            $currentDate = $startDate->copy()->startOfWeek();  // Start at the beginning of the week
+            $weeksToView = [];
+    
+            while ($currentDate->lte($endDate)) {
+                $weekStart = $currentDate->format('M d');
+                $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
+                $weeksToView[] = "$weekStart - $weekEnd";
+                $currentDate->addWeek();  // Move to the next week
+            }
+            // dd("here");
+            // Assuming your `Transaction` records store weeks in a similar format as above (or adjust the format as needed)
+            $myWeeks = Transaction::where('user_id', $userId)
+                ->where([
+                    ['status', 'Success'],
+                    ['payment_type', 'Weekly Dues']
+                ])
+                ->pluck('week')  // Change 'month' to 'week' if you have a week field
+                ->toArray();
+    
+            $weeks = [];
+            // dd()
+            foreach ($weeksToView as $thisWeek) {
+                $check = in_array($thisWeek, $myWeeks);
+                if (!$check) {
+                    $weeks[] = ['source' => '1', 'week' => $thisWeek, 'amount' => $plan->dues];
+                }
+            }
+            // Calculate the total amount from the $weeks array
+            $totalAmount = array_sum(array_column($weeks, 'amount')) ?? 0;
+
+            return $totalAmount;
+            //return array_sum($check['amount']) ?? 0 ;
+            // dd($weeks);
+    }
 
     function uploadImage($file, $path)
     {
