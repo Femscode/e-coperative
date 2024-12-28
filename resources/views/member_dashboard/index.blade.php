@@ -11,7 +11,7 @@
         <div class="row align-items-center">
             <div class="col-12 col-lg mb-4">
                 <h3 class="fw-normal mb-0 text-secondary">Hi, {{ $user->name }}.</h3>
-                <h2>{{ $user->company->name }} Member {{$user->id}}</h2>
+                <h2>{{ $user->company->name }} Member {{$user->coop_id}}</h2>
 
             </div>
             <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mb-4">
@@ -36,19 +36,25 @@
             </div>
             <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mb-4">
                 <div class="card adminuiux-card">
+                    <?php $variable = getTotalDues($user->id); ?>
                     <div class="card-body">
                         <p class="text-secondary small mb-2">Pending Due</p>
                         <h4 class="mb-3">₦
                            
-                            @if($user->company->dues >= 1000000)
-                            {{ number_format($user->company->dues / 1000000, 1) }}M
-                            @elseif($user->company->dues >= 1000)
-                            {{ number_format($user->company->dues / 1000, 1) }}K
+                            @if($variable >= 1000000)
+                            {{ number_format($variable / 1000000, 1) }}M
+                            @elseif($variable >= 1000)
+                            {{ number_format($variable / 1000, 1) }}K
                             @else
-                            {{ number_format($user->company->dues) }}
+                            {{ number_format($variable) }}
                             @endif
 
-                        </h4><a href='/member/manual-payment' style='cursor:pointer' class="badge badge-light text-bg-success">Pay Now</a>
+                        </h4>
+                        @if($variable > 0)
+                        <a href='/member/manual-payment' style='cursor:pointer' class="badge badge-light text-bg-warning">Pay Now</a>
+                        @else
+                        <span href='#'  class="badge badge-light text-bg-success">Paid</span>
+                        @endif
                     </div>
                 </div>
             </div>
