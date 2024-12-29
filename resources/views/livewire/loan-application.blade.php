@@ -10,8 +10,11 @@
         </nav>
 
     </div>
-
+    @if($company->month == NULL || $difference >= $company->month)
     <div class="col-auto col-sm-auto"><a data-bs-toggle="modal" data-bs-target="#addSeller" class="btn btn-theme">Loan Request <i class="bi bi-arrow-right"></i></a></div>
+    @else
+    <span href='#'  class="badge badge-light text-bg-success">You need to have joined the cooperation for {{$company->month  }} months to apply loan</span>
+    @endif
 </div>
 
 <!-- <div class="alert alert-info alert-dismissible fade show" role="alert"><strong>Complete pending form!</strong> Please <a href="investment-loan-request.html">complete</a> your loan request form and submit for proceeding. <button type=" button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div> -->
@@ -44,7 +47,7 @@
                     </div>
                     <div class="col-5 mb-3">
                         <p class="opacity-75 small mb-2">Tenure (Yrs):</p>
-                        <h3>2 Month</h3>
+                        <h3>{{ $company->loan_month_repayment }} Month</h3>
                     </div>
                 </div>
                 <div class="text-center">

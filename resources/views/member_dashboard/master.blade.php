@@ -312,4 +312,6 @@
     </div>
 </div>
 <script src="{{url('memberdashboard/js/investment/investment-dashboard.js')}}"></script>
+<script src="{{ asset('js\requestController.js') }}"></script>
+<script src="{{ asset('js\formController.js') }}"></script>
 @yield('script')
