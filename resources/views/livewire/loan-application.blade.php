@@ -13,7 +13,7 @@
     @if($company->month == NULL || $difference >= $company->month)
     <div class="col-auto col-sm-auto"><a data-bs-toggle="modal" data-bs-target="#addSeller" class="btn btn-theme">Loan Request <i class="bi bi-arrow-right"></i></a></div>
     @else
-    <span href='#'  class="badge badge-light text-bg-success">You need to have joined the cooperation for {{$company->month  }} months to apply loan</span>
+    <span href='#'  class="badge badge-light text-bg-success">You need to have joined the cooperation for {{$company->month  }} month(s) to apply loan</span>
     @endif
 </div>
 

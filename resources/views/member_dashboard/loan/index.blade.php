@@ -385,6 +385,16 @@
             if (value == "") {
                 $('.refund').val('');
             } else {
+                if (newValue < minApplication) {
+                    $('#passwordHelpBlock').html('Minimum amount to apply for is ' + minApplication
+                        .toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }))
+                    $("#passwordHelpBlock").css("color", "red");
+                    return $('.submitBtn').hide()
+                    // new swal("Opss", 'Maximum amount to apply for is ' + max, "error");
+                }
                 if (newValue > maxApplication) {
                     $('#passwordHelpBlock').html('Maximum amount to apply for is ' + maxApplication
                         .toLocaleString(undefined, {
@@ -396,7 +406,7 @@
                     // new swal("Opss", 'Maximum amount to apply for is ' + max, "error");
                 } else {
                     var totalRefund = newValue / refund;
-                    console.log(totalRefund,newValue,refund)
+                    // console.log(totalRefund,newValue,refund)
                     // if (Number.isInteger(totalRefund)) {
                         $('.refund').val(totalRefund.toLocaleString(undefined, {
                             minimumFractionDigits: 2,

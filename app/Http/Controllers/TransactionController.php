@@ -89,6 +89,7 @@ class TransactionController extends Controller
                 'coop_id' => convertToUppercase($coopD->name) . '' . $code,
                 'company_id' => $coopD->id,
             ]);
+            Auth::login($transaction);
         } else {
             // dd("here");
             $status = 1;
