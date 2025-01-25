@@ -106,6 +106,7 @@ class RegisterController extends Controller
             'description' => $request->description,
             'address' => $request->address,
             'uuid' => $uuid,
+            'type' => $request->type,
         ]);
 
         $user = User::create([
