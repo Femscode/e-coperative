@@ -14,8 +14,8 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $data['groups'] = Group::where("company_id", auth()->user()->id)->get();
-        return view('admin.ajo.group', $data);
+        //$data['groups'] = Group::where("company_id", auth()->user()->id)->get();
+        return view('admin.ajo.group');
     }
 
     /**

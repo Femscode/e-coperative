@@ -59,7 +59,8 @@ use Jenssegers\Agent\Agent;
                 case 'Monthly':
     
                     $currentDate = $startDate->copy()->startOfMonth();
-                    while ($currentDate->lte($endDate) && $currentDate->month <= $endDate->month) {
+                    // dd($currentDate->lte($endDate),$currentDate->month,$endDate->month);
+                    while ($currentDate->lte($endDate) &&($currentDate->year < $endDate->year || ($currentDate->year == $endDate->year && $currentDate->month <= $endDate->month))) {
                         $monthsToView[] = $currentDate->format('F Y');
                         $currentDate->addMonth();
                     }
