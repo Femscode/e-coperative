@@ -63,7 +63,7 @@ Route::group(['middleware' => ['auth']], function () {
 
                 Route::group(['prefix' => 'group'], function(){
                     Route::get('/', [App\Http\Controllers\GroupController::class, 'index'])->name('admin_group_home');
-                    Route::get('/create', [App\Http\Controllers\GroupController::class, 'create'])->name('admin_create_group');
+                    Route::post('/create', [App\Http\Controllers\GroupController::class, 'create'])->name('admin_create_group');
                     Route::get('/members/{uuid}', [App\Http\Controllers\GroupController::class, 'view'])->name('admin_group_members');
 
                 });

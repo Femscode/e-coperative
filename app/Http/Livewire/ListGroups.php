@@ -17,16 +17,11 @@ class ListGroups extends Component
     {
         $data['title'] = "Groups";
         $user = auth()->user();
-        $company = Company::where('uuid',$user->company_id)->first();
-        if(!$company) {
-            $company = Company::find($user->company_id);
-        }
-      
         if($this->search == ''){
-            $data['loans'] = Group::where('company_id',$company->id)
+            $data['loans'] = Group::where('company_id',$user->id)
             ->paginate(10);
         }else{
-            $data['loans'] = Group::where('company_id',$company->id)->where(function ($query) {
+            $data['loans'] = Group::where('company_id',$user->id)->where(function ($query) {
                 $query->where('applied_date', 'LIKE', '%' . $this->search . '%')
                 ->orWhere('total_applied', 'LIKE', '%' . $this->search . '%')
                 ->orWhere('monthly_return', 'LIKE', '%' . $this->search . '%')

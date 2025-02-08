@@ -33,8 +33,10 @@
                                 <tr>
                                     <th scope="col">Title</th>
                                     <th scope="col">Amount</th>
-                                    <th scope="col">Monthly Refund</th>
-                                    <th scope="col">Application Date</th>
+                                    <th scope="col">Min</th>
+                                    <th scope="col">Max</th>
+                                    <th scope="col">Link</th>
+                                    <th scope="col">Joined</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -42,15 +44,20 @@
                                 <tbody class="list form-check-all">
                                     @foreach ($loans as $transaction)
                                     <tr>
-                                        <td class="fw-medium">{{ $transaction->member->name }}</td>
-                                        <td class="fw-medium" style="text-align: center">{{ number_format($transaction->total_applied, 2) }}</td>
-                                        <td class="fw-medium" style="text-align: center">{{ number_format($transaction->monthly_return, 2) }}</td>
-                                        <td class="fw-medium">{{ $transaction->applied_date }}</td>
+                                        <td class="fw-medium">{{ $transaction->title }}</td>
+                                        <td class="fw-medium" style="text-align: center">{{ number_format($transaction->amount, 2) }}</td>
+                                        <td class="fw-medium" style="text-align: center">{{ $transaction->min }}</td>
+                                        <td class="fw-medium" style="text-align: center">{{ $transaction->max }}</td>
+                                        <td class="fw-medium">                                            
+                                            <button class="btn copy-btn rounded-pill btn-sm btn-soft-info" data-link="{{ $transaction->link }}">Copy Link</button>
+                                        </td>
+                                        <td class="fw-medium">{{ $transaction->members->count() }}</td>
                                         <td class="text-muted">
-                                            @if($transaction->approval_status == 0)
-                                            <button class="btn approveButton rounded-pill btn-sm btn-soft-info" data-id="{{ $transaction->id }}">Approve</button>
+                                            @if($transaction->status == 0)
+                                            <button class="btn rounded-pill btn-sm btn-soft-info" data-id="{{ $transaction->id }}">Start</button>
+                                            <span class="badge bg-warning">Processing</span>
                                             @else
-                                            <span class="badge bg-info }}">Processing</span>
+                                            <span class="badge bg-info ">Ongoing</span>
                                             @endif
                                         </td>
                                     </tr>

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\WemaVirtualAccount;
 use GuzzleHttp\Client;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use App\Models\MemberLoan;
 use App\Models\User;
 use App\Models\Transaction;
@@ -140,6 +141,11 @@ use Jenssegers\Agent\Agent;
         $uploadedFile = $file->move(public_path($path), $file_name_extension);
         return $path . '/' . $file_name_extension;
     }
+
+    function generate_slug_with_uuid_suffix($subject, $uuid)
+        {
+            return Str::slug($subject)."-".str_replace(["-", "-"], "", $uuid);
+        }
 
     function convertToUppercase($word)
 {

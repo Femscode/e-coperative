@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use function App\Helpers\success_status_code;
+use function App\Helpers\api_request_response;
+use function App\Helpers\bad_response_status_code;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -23,9 +26,29 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        try {
+            $input = $request->all();
+            $input['uuid'] = $uuid = rand();
+            $gen = generate_slug_with_uuid_suffix($request->title,$uuid);
+            $input['link'] = url('/'). '/' ."join"."-".$gen;
+            // dd($input,);
+            $input['amount'] = str_replace(',', '', $input['amount']);
+            Group::create($input);
+            return api_request_response(
+                'ok',
+                'Group saved successfully!',
+                success_status_code(),
+            );
+
+        } catch (\Exception $exception) {
+            return api_request_response(
+                'error',
+                $exception->getMessage(),
+                bad_response_status_code()
+            );
+        }
     }
 
     /**

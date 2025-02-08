@@ -85,9 +85,9 @@
                 </div>
             </div>
         </div>
-
+        {{-- add contribution group --}}
         <div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header bg-light p-3">
                         <h5 class="modal-title" id="exampleModalLabel"></h5>
@@ -95,83 +95,60 @@
                             id="close-modal"></button>
                     </div>
         
-                    <form method="Post" action="{{ route('create_user') }}">
+                    <form method="Post" id="importMemberForm">
                         @csrf
                         <div class="modal-body">
-        
-                            <div class="mb-3" id="modal-id" style="display: none;">
-                                <label for="id-field" class="form-label">ID</label>
-                                <input type="text" id="id-field" class="form-control" placeholder="ID" readonly />
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="mb-3" >
+                                        <label for="id-field" class="form-label">Title</label>
+                                        <input type="text" id="id-field" class="form-control" placeholder="title" name="title" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Mode</label>
+                                        <select class="form-select rounded-pill mb-3 changeMode" required name="mode" aria-label="Default select example">
+                                            <option value="" >Choose Mode</option>
+                                            <option value="Daily">Daily</option>
+                                            <option value="Weekly">Weekly</option>
+                                            <option value="Monthly">Monthly</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Amount</label>
+                                        <input type="text" required name="amount"
+                                            class="form-control loanAmount amount" id=""
+                                            placeholder="Enter amount">
+                                        <div id="passwordHelpBlock" class="form-text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Minimum Number Of Participant(s)</label>
+                                        <input type="number" name="min" required name="amount"
+                                            class="form-control " id=""
+                                            placeholder="enter minimum number of participant">
+                                        <div id="passwordHelpBlock" class="form-text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Maximum Number Of Participants</label>
+                                        <input type="number" name="max" required name="amount"
+                                            class="form-control " id=""
+                                            placeholder="enter minimum number of participant">
+                                        <div id="passwordHelpBlock" class="form-text">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
         
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" id="name" class="form-control" placeholder="Enter Name"
-                                    name="name" required />
-                            </div>
         
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" id="email" class="form-control" placeholder="Enter Email"
-                                    name="email" required />
-                            </div>
-        
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" id="password" class="form-control" placeholder="Enter Password"
-                                    name="password" required />
-                            </div>
-        
-        
-                        </div>
-                        <div class="modal-footer">
-                            <div class="hstack gap-2 justify-content-end">
-                                <button type="button" class="btn btn-light close" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-success" id="update-btn">Save</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        {{-- import Member --}}
-        <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header bg-light p-3">
-                        
-                        <h5 class="modal-title" id="exampleModalLabel">Import Member(s)</h5>
-                       
-                       
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                            id="close-modal"></button>
-                    </div>
-                    <form method="Post" action="" id="importMemberForm" enctype="multipart/form-data">
-                        @csrf
-                        <div class="modal-body">
-
-                            <div class="mb-3" id="modal-id" style="display: none;">
-                                <label for="id-field" class="form-label">ID</label>
-                                <input type="text" id="id-field" class="form-control" placeholder="ID" readonly />
-                            </div>
-
-                           
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Plan</label>
-                                <select class="form-select " required name="plan_id" id="planId">
-                                    <option value="">Choose Plan</option>
-                                    @foreach ($plans as $plan)
-                                    <option value="{{$plan->id}}">{{$plan->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="name" class="form-label">File</label>
-                                <input type="file" id="file" class="form-control" accept=".xls,.xlsx" placeholder="Enter Name" name="name" required />
-                            </div>
-
-
                         </div>
                         <div class="modal-footer">
                             <div class="hstack gap-2 justify-content-end">
@@ -260,39 +237,58 @@
         });
     @endif
         var preLoader = $(".preloader")
-        // import member file
-        $("#importMemberForm").on('submit',async function(e) {
-            e.preventDefault();
-            preLoader.show();
-            var file = $('#file')[0].files;
-            var plan = $('#planId').val();
-            var fd = new FormData;
-            if(file !== undefined) {
-                fd.append('file', file[0]);
-            }
-            fd.append('plan_id', plan);
-            $.ajax({
-                type: 'POST',
-                url: "{{route('import_member_data')}}",
-                data: fd,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function($data) {
-                    new swal("Good Job","Data Import Succesful!.","success");
-                    preLoader.hide();
-                    $('#importMemberForm').trigger("reset");
-                    window.location.reload()
-                },
-                error: function(data) {
-                    console.log(data)
-                    // new swal(data.responseJSON.message);
-                    preLoader.hide();
-                    new swal("Opss",data.responseJSON.message,"error");
-                }
-            })
-        });
+        //copy link
+        $(".copy-btn").click(function() {
+            // Get the link from the data attribute of the clicked button
+            var link = $(this).data("link");
 
+            // Copy the link to the clipboard
+            navigator.clipboard.writeText(link).then(() => {
+                alert("Link copied: " + link);
+            }).catch(err => {
+                console.error("Failed to copy: ", err);
+            });
+        });
+        // save contribution group
+        $("#importMemberForm").on('submit', async function(e) {
+            e.preventDefault();
+            $(".preloader").show()
+            const serializedData = $("#importMemberForm").serializeArray();
+            try {
+                    const postRequest = await request("/admin/group/create",
+                    processFormInputs(
+                        serializedData), 'post');
+                    // console.log('postRequest.message', postRequest.message);
+                    new swal("Good Job", postRequest.message, "success");
+                    $('#importMemberForm').trigger("reset");
+                    $("#importMemberForm .close").click();
+                    window.location.reload();
+            } catch (e) {
+                $(".preloader").hide()
+                if ('message' in e) {
+                    // console.log('e.message', e.message);
+                    new swal("Opss", e.message, "error");
+                    
+                }
+            }
+        })
+        //on input amount
+        $(".loanAmount").keypress(function(e) {
+            var charCode = (e.which) ? e.which : e.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            $(".loanAmount").on('keyup', function() {
+                // event.preventDefault();
+                var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+                $(this).val(n.toLocaleString());
+                if (isNaN(n)) {
+                    $(".loanAmount").val("");
+                    // $(this).val();
+                }
+
+            });
+        });
         $('body').on('click', '.edit-user', function() {
             var id = $(this).data('id');
             $.get('{{ route('user_details') }}?id=' + id, function(data) {
