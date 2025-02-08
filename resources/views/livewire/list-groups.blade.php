@@ -33,6 +33,7 @@
                                 <tr>
                                     <th scope="col">Title</th>
                                     <th scope="col">Amount</th>
+                                    <th scope="col">Mode</th>
                                     <th scope="col">Min</th>
                                     <th scope="col">Max</th>
                                     <th scope="col">Link</th>
@@ -46,6 +47,7 @@
                                     <tr>
                                         <td class="fw-medium">{{ $transaction->title }}</td>
                                         <td class="fw-medium" style="text-align: center">{{ number_format($transaction->amount, 2) }}</td>
+                                        <td class="fw-medium" style="text-align: center">{{ $transaction->mode }}</td>
                                         <td class="fw-medium" style="text-align: center">{{ $transaction->min }}</td>
                                         <td class="fw-medium" style="text-align: center">{{ $transaction->max }}</td>
                                         <td class="fw-medium">                                            
