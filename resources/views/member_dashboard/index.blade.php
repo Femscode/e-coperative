@@ -99,7 +99,7 @@
                                 <h6>Transactions</h6>
                             </div>
                             <div class="card-body pb-0">
-                                <div class="card adminuiux-card bg-theme-2-subtle mb-3">
+                                <div class="card adminuiux-card bg-theme-1-subtle mb-3">
                                     <div class="card-body">
                                         <p class="text-secondary mb-2">Total Spent</p>
                                         <h4 class="fw-medium">₦{{number_format($transactions->where('payment_type', '!=','disbursed')->sum('amount')) }}
@@ -107,7 +107,7 @@
                                         </h4>
                                     </div>
                                 </div>
-                                <div class="card adminuiux-card bg-theme-1-subtle mb-3">
+                                <div class="card adminuiux-card bg-theme-1-subtle theme-orange mb-3">
                                     <div class="card-body">
                                         <p class="text-secondary mb-2">Total Received</p>
                                         <h4 class="fw-medium">₦{{number_format($transactions->where('payment_type','disbursed')->sum('amount')) }}
