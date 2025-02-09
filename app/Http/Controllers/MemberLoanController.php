@@ -7,6 +7,7 @@ use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
 use function App\Helpers\success_status_code;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class MemberLoanController extends Controller
@@ -20,7 +21,8 @@ class MemberLoanController extends Controller
     {
         $data['user'] = $user =  Auth::user();
         $data['transactions'] = Transaction::where('user_id',  $user->id)->orWhere('email', $user->email)->where('status', 'Success')->latest()->get();
-      
+       
+        // dd($data);
         return view ('member_dashboard.loan.index',$data);
         return view ('loan.index',$data);
         // dd($data);

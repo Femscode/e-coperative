@@ -93,7 +93,7 @@
                         <div class="col-lg-12">
                             <div class="mb-3">
                                 <label for="exampleFormControlTextarea1" class="form-label">Note</label>
-                                <textarea class="form-control" name="note" required rows="3" placeholder="Enter plan description">{{ $plan->note }}</textarea>
+                                <textarea class="form-control" name="note" required rows="3" placeholder="Enter plan description">{{ $plan->description }}</textarea>
                             </div>
                         </div><!--end col-->
                         <div class="col-lg-12">

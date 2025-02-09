@@ -386,7 +386,17 @@
                                             <div>
 
                                                 <div class="row">
-                                                    <div class="col-lg-12">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="gen-info-password-input">Specification</label>
+                                                            <select class='form-control' required name='type'>
+                                                                <option value="">--Select Specification--</option>
+                                                                <option value='1'>Cooperative</option>
+                                                                <option value='2'>Contribution</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
                                                         <div class="mb-3">
                                                             <input type="radio" /> I Agree to the <a href='#'>terms & conditions.</a>
 

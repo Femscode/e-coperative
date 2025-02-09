@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Company;
 use App\Models\MemberLoan;
+use Carbon\Carbon;
 use Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -44,13 +45,15 @@ class LoanApplication extends Component
             // dd($data);
         }
         // this is the data for ongoing loan
-        $company = Company::where('uuid', $user->company_id)->first();
+        $data['company'] = $company = Company::where('uuid', $user->company_id)->first();
         if (!$company) {
-            $company = Company::find($user->company_id);
+            $data['company'] = $company = Company::find($user->company_id);
         }
-
+        // dd($data);
         $data['ongoing_loans'] = MemberLoan::where('user_id', auth()->user()->id)->where('company_id', $company->id)->where('status', "Ongoing")->paginate(10);
-
+        $createdAt = auth()->user()->created_at;
+        // Calculate the number of months between created_at and now
+        $data['difference'] = $createdAt->diffInMonths(Carbon::now());
         return view('livewire.loan-application', $data);
     }
 }

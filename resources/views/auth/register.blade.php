@@ -502,7 +502,8 @@
                     $('.preloader').hide();
                     if (e.status == 0) {
                         new swal("Congratulations!", "Registration Succesful", "success");
-                        window.location.reload();
+                        window.location.href = "{{ route('dashboard') }}";
+                        // window.location.reload();
                     } else {
                         $("#order_id").val(e.order_id)
                         $('#paymentModal').modal('show');

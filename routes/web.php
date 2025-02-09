@@ -60,6 +60,13 @@ Route::group(['middleware' => ['auth']], function () {
             Route::group(['prefix' => 'admin'], function () {
                 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('admin-home');
                 Route::get('/download_member_template', [App\Http\Controllers\UserController::class, 'download_member_template'])->name('download_member_template');
+
+                Route::group(['prefix' => 'group'], function(){
+                    Route::get('/', [App\Http\Controllers\GroupController::class, 'index'])->name('admin_group_home');
+                    Route::post('/create', [App\Http\Controllers\GroupController::class, 'create'])->name('admin_create_group');
+                    Route::get('/members/{uuid}', [App\Http\Controllers\GroupController::class, 'view'])->name('admin_group_members');
+
+                });
                
                 Route::group(['prefix' => 'user'], function () {
                     Route::get('/', [App\Http\Controllers\UserController::class, 'index'])->name('user_home');

@@ -82,9 +82,10 @@
                                                     <input type="text" name="total_applied" required
                                                         data-min="{{ auth()->user()->plan()->min_loan_range ?? ""}}"
                                                         data-max="{{ auth()->user()->plan()->max_loan_range ?? "" }}"
-                                                        data-refund="{{ auth()->user()->plan()->month ?? ""}}"
+                                                        data-refund="{{ auth()->user()->plan()->loan_month_repayment ?? ""}}"
                                                         min="{{ auth()->user()->plan()->min_loan_range ?? "" }}"
                                                         max="{{ auth()->user()->plan()->max_loan_range ?? "" }}"
+                                                        data-total="{{ auth()->user()->totalSavings() ?? "" }}"
                                                         class="form-control loanAmount amount" id=""
                                                         placeholder="Enter amount">
                                                     <div id="passwordHelpBlock" class="form-text">
@@ -365,17 +366,37 @@
         })
 
         $('.amount').on('keyup', function() {
+            // alert("here")
             var min = $(this).data('min');
             var max = $(this).data('max');
             var refund = $(this).data('refund');
+            var totalsaved = $(this).data('total');
+            var minApplication = totalsaved * min ;//$(this).data('total');
+            var maxApplication = totalsaved * max ; //$(this).data('total');
             var value = $(this).val().replace(/\D/g, '');
             var newValue = parseFloat(value);
             var newMax = parseFloat(max);
+            //console.log(totalsaved)
+            if(totalsaved < 1){
+                $('#passwordHelpBlock').html('You have no savings yet!')
+                $("#passwordHelpBlock").css("color", "red");
+                return $('.submitBtn').hide() 
+            }
             if (value == "") {
                 $('.refund').val('');
             } else {
-                if (newValue > max) {
-                    $('#passwordHelpBlock').html('Maximum amount to apply for is ' + newMax
+                if (newValue < minApplication) {
+                    $('#passwordHelpBlock').html('Minimum amount to apply for is ' + minApplication
+                        .toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }))
+                    $("#passwordHelpBlock").css("color", "red");
+                    return $('.submitBtn').hide()
+                    // new swal("Opss", 'Maximum amount to apply for is ' + max, "error");
+                }
+                if (newValue > maxApplication) {
+                    $('#passwordHelpBlock').html('Maximum amount to apply for is ' + maxApplication
                         .toLocaleString(undefined, {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2
@@ -384,19 +405,20 @@
                     $('.submitBtn').hide()
                     // new swal("Opss", 'Maximum amount to apply for is ' + max, "error");
                 } else {
-                    var refund = newValue / refund;
-                    if (Number.isInteger(refund)) {
-                        $('.refund').val(refund.toLocaleString(undefined, {
+                    var totalRefund = newValue / refund;
+                    // console.log(totalRefund,newValue,refund)
+                    // if (Number.isInteger(totalRefund)) {
+                        $('.refund').val(totalRefund.toLocaleString(undefined, {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2
                         }))
-                    } else {
-                        var roundedValue = Math.round(refund / 100) * 100 + 100;
-                        $('.refund').val(roundedValue.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        }))
-                    }
+                    // } else {
+                    //     var roundedValue = Math.round(totalRefund / 100) * 100 + 100;
+                    //     $('.refund').val(roundedValue.toLocaleString(undefined, {
+                    //         minimumFractionDigits: 2,
+                    //         maximumFractionDigits: 2
+                    //     }))
+                    // }
                     $('.submitBtn').show()
                     // var refundRound = Math.round(refund/100) * 100 + 100;
                     $('#passwordHelpBlock').html('')
