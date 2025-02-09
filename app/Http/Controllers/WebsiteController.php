@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\User;
+use App\Models\Group;
 use Illuminate\Http\Request;
 
 class WebsiteController extends Controller
@@ -15,6 +16,16 @@ class WebsiteController extends Controller
         return view('frontend.home', $data);
         return view('website.index');
 
+    }
+
+    public function joinCont($id){
+        $lastDashPos = strrpos($id, '-');
+        $lastPart = substr($id, $lastDashPos + 1);
+        $group = Group::where('uuid', $lastPart)->first();
+        $numAlreadyJoined = $group->members->count();
+        dd($numAlreadyJoined);
+        dd($lastPart);
+        dd($id);
     }
     public function about()
     {

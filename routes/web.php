@@ -41,6 +41,7 @@ Route::post('/pay-for-form', [App\Http\Controllers\TransactionController::class,
 // routes/web.php
 Route::get('/cooperatives-list', [App\Http\Controllers\WebsiteController::class, 'list'])->name('cooperatives.list');
 Route::get('//cooperatives/{id}', [App\Http\Controllers\WebsiteController::class, 'show'])->name('cooperatives.details');
+Route::get('/{id}', [App\Http\Controllers\WebsiteController::class, 'joinCont']);
 
 
 
