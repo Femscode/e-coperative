@@ -23,6 +23,12 @@ class GroupController extends Controller
         return view('admin.ajo.group');
     }
 
+    public function view($id){
+        // dd($id);
+        $data['id'] =$id;
+        return view('admin.ajo.group_view',$data);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
