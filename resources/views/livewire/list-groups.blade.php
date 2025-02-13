@@ -56,7 +56,7 @@
                                         <td class="fw-medium"><a href="{{ route('admin_group_members', $transaction->uuid) }}"> {{ $transaction->members->count() }} </a></td>
                                         <td class="text-muted">
                                             @if($transaction->status == 0)
-                                            <button class="btn rounded-pill btn-sm btn-soft-info" data-id="{{ $transaction->id }}">Start</button>
+                                            <button class="btn rounded-pill btn-sm btn-soft-info approveButton" data-id="{{ $transaction->id }}">Start</button>
                                             <span class="badge bg-warning">Processing</span>
                                             @else
                                             <span class="badge bg-info ">Ongoing</span>

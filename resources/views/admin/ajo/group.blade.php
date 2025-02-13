@@ -339,6 +339,57 @@
         })
 
 
+         /* When click approve button */
+         $('body').on('click', '.approveButton', function () {
+            var id = $(this).data('id');
+            var token = $("meta[name='csrf-token']").attr("content");
+            var el = this;
+            // alert("here")
+            startAccount(el,id);
+        });
+        async function startAccount(el,id) {
+            const willUpdate = await new swal({
+                title: "Confirm User Action",
+                text: `Are you sure you want to start this contribution?`,
+                icon: "warning",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes!",
+                showCancelButton: true,
+                buttons: ["Cancel", "Yes, Am In!"]
+            });
+            if (willUpdate.isConfirmed == true) {
+                //performReset()
+                performStart(el,id);
+            } else {
+                new swal("Opss","Operation Terminated","error");
+            }
+        }
+        function performStart(el,id)
+        {
+            $('.approveButton').prop('disabled', true).text('Loading ...');
+            try {
+                // alert(data);
+                    $.get("{{ route("start-contribution") }}?id=" + id,
+                    function (data, status) {
+                        // console.log(data, status);
+                    //    alert(data.message)
+                        if( data.status == "ok") {
+                            let alert =  new swal("Good Job",data.message,"success");
+                            window.location.href = "{{ route('admin_group_home') }}";
+                        }else{
+                            $('.approveButton').prop('disabled', false).text('Start');
+                            new swal("Opss",data.message,"error");
+                        }
+                       
+                    }
+                );
+            } catch (e) {
+                $('.approveButton').prop('disabled', false).text('Start');
+                // alert("here")
+                let alert = new swal("Opss",e.message,"error");
+            }
+        }
+
 
         /* When click delete button */
         $('body').on('click', '#deleteRecord', function() {

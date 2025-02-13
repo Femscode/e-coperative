@@ -67,6 +67,7 @@ Route::group(['middleware' => ['auth']], function () {
                     Route::get('/', [App\Http\Controllers\GroupController::class, 'index'])->name('admin_group_home');
                     Route::post('/create', [App\Http\Controllers\GroupController::class, 'create'])->name('admin_create_group');
                     Route::get('/members/{uuid}', [App\Http\Controllers\GroupController::class, 'view'])->name('admin_group_members');
+                    Route::get('/start-contribution', [App\Http\Controllers\GroupController::class, 'start'])->name('start-contribution');
 
                 });
                
