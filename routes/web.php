@@ -41,7 +41,7 @@ Route::post('/pay-for-form', [App\Http\Controllers\TransactionController::class,
 // routes/web.php
 Route::get('/cooperatives-list', [App\Http\Controllers\WebsiteController::class, 'list'])->name('cooperatives.list');
 Route::get('//cooperatives/{id}', [App\Http\Controllers\WebsiteController::class, 'show'])->name('cooperatives.details');
-Route::get('/{id}', [App\Http\Controllers\WebsiteController::class, 'joinCont']);
+Route::get('/join/contribution/{id}', [App\Http\Controllers\WebsiteController::class, 'joinCont']);
 
 
 
@@ -57,6 +57,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/user/verify-two-factor-authentication', [App\Http\Controllers\ProfileController::class, 'verify'])->name('verify-otp');
     Route::group(['middleware' => ['2fa']], function () {
         Route::post('/toggle-2fa', [App\Http\Controllers\ProfileController::class, 'toggleTwo'])->name('enable-2fa');
+        Route::get('/join-contribution', [App\Http\Controllers\GroupController::class, 'approve'])->name('join-contribution');
         Route::group(['middleware' => 'admin'], function () {
             Route::group(['prefix' => 'admin'], function () {
                 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('admin-home');

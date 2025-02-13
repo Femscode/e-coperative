@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\GroupMember;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use function App\Helpers\success_status_code;
 use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
-use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
@@ -32,13 +34,68 @@ class GroupController extends Controller
             $input = $request->all();
             $input['uuid'] = $uuid = rand();
             $gen = generate_slug_with_uuid_suffix($request->title,$uuid);
-            $input['link'] = url('/'). '/' ."join"."-".$gen;
+            $input['link'] = url('/'). '/join/contribution/' ."join"."-".$gen;
             // dd($input,);
             $input['amount'] = str_replace(',', '', $input['amount']);
             Group::create($input);
             return api_request_response(
                 'ok',
                 'Group saved successfully!',
+                success_status_code(),
+            );
+
+        } catch (\Exception $exception) {
+            return api_request_response(
+                'error',
+                $exception->getMessage(),
+                bad_response_status_code()
+            );
+        }
+    }
+
+    public function approve(Request $request){
+      
+        try {
+            $id = $request->id;
+            $user = Auth::user();
+            $group =Group::find($id);
+            //verify if user is already part of this group
+            $gMember = GroupMember::where('group_id', $group->id)->where('user_id', $user->id)->first();
+            if($gMember){
+                return api_request_response(
+                    'error',
+                    'You are already a member of this group!',
+                    success_status_code()
+                );
+            }
+            $countNumber = $group->members->count();
+            if($countNumber >= $group->max){
+                return api_request_response(
+                    'error',
+                    'Maximum member reached !',
+                    success_status_code()
+                );
+            }
+            if($group->start_date){
+                return api_request_response(
+                    'error',
+                    'Contribution already ongoing !',
+                    success_status_code()
+                );
+            }
+            $number = $countNumber + 1;
+
+            $application = GroupMember::create([
+                "group_id" =>  $group->id, 
+                "user_id" =>  $user->id,
+                "turn" => $number, 
+            ]);
+
+            $message = "Welcome Onboard!";
+
+            return api_request_response(
+                'ok',
+                $message,
                 success_status_code(),
             );
 
