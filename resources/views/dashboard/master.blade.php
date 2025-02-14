@@ -7,7 +7,7 @@
 <head>
      <!-- Title Meta -->
      <meta charset="utf-8" />
-     <title>ECoop | Coop's Dashboard</title>
+     <title>SyncoSave | Dashboard</title>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta name="description" content="No. Ordering Platform" />
      <meta name="author" content="Techzaa" />

@@ -14,11 +14,11 @@
             <div>
                 <div class="team-list grid-view-filter row">
                     @foreach ($members as $member)
-                    <div class="col-xl-4 col-md-6">
+                    <div class="col-6 col-md-6 col-xl-3">
                         <div class="card">
                             <div class="card-body">
                                 <div class="position-relative bg-light p-2 rounded text-center">
-                                    <img @if($member->cover_image) src="https://e-coop.cthostel.com/ecoop_files/public/{{ $member->profile_image }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif alt="" class="avatar-xxl">
+                                    <img @if($member->cover_image) src="https://syncosave.com/synco_files/public/{{ $member->profile_image }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif alt="" class="avatar-xxl">
 
                                 </div>
                                 <div class="d-flex flex-wrap justify-content-between my-3">
@@ -26,10 +26,10 @@
                                         <h4 class="mb-1">{{ $member->name }}<span
                                                 class="text-muted fs-13 ms-1">{{ strtoupper(Str::of($member->name)->explode(' ')->map(fn($word) => substr($word, 0, 1))->implode('')) }}
                                             </span></h4>
-                                        <div>
+                                        <!-- <div>
                                             <a href="#!"
                                                 class="link-primary fs-16 fw-medium">{{ $member->email }}</a>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div>
                                         <p class="mb-0"><span class="badge bg-light text-dark fs-12 me-1">
@@ -67,81 +67,12 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="col">
-                        <div class="card team-box">
-                            <div class="team-cover">
-                                <img @if ($member->cover_image) src="{{ asset("$member->cover_image") }}" @else src="{{ asset('assets/images/profile-bg.jpg') }}" @endif alt="" class="img-fluid" />
-                            </div>
-                            <div class="card-body p-4">
-                                <div class="row align-items-center team-row">
-                                    <div class="col team-settings">
-                                        <div class="row">
-                                            <div class="col">
-                                            <div class="bookmark-icon flex-shrink-0 me-2">
-                                                <input type="checkbox" id="favourite1" class="bookmark-input bookmark-hide">
-                                                <label for="favourite1" class="btn-star">
-                                                    <svg width="20" height="20">
-                                                        <use xlink:href="#icon-star"/>
-                                                    </svg>
-                                                </label>
-                                            </div>
-                                        </div>
-                                            <div class="col text-end dropdown">
-                                                <a href="javascript:void(0);" id="dropdownMenuLink2" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="ri-more-fill fs-17"></i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink2">
-                                                    <li><a class="dropdown-item" href="{{ route('admin-member-details', $member->id) }}"><i class="ri-eye-line me-2 align-middle"></i>View</a></li>
-                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-star-line me-2 align-middle"></i>Favorites</a></li>
-                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-line me-2 align-middle"></i>Delete</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col">
-                                        <div class="team-profile-img">
-                                            <div class="avatar-lg img-thumbnail rounded-circle flex-shrink-0">
-                                                {{-- <img src="assets/images/users/avatar-2.jpg" alt="" class="img-fluid d-block rounded-circle" /> --}}
-                                                <div class="avatar-title bg-soft-danger text-danger rounded-circle">
-                                                    {{ strtoupper(Str::of($member->name)->explode(' ')->map(fn($word) => substr($word, 0, 1))->implode('')) }}
-                                                </div>
-                                            </div>
-                                            <div class="team-content">
-                                                <a data-bs-toggle="offcanvas" href="#offcanvasExample" aria-controls="offcanvasExample">
-                                                    <h5 class="fs-16 mb-1">{{ $member->name }}</h5>
-                                                </a>
-                                                <p class="text-muted mb-0">{{ $member->email }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col">
-                                        <div class="row text-muted text-center">
-                                            <div class="col-6 border-end border-end-dashed">
-                                                <h5 class="mb-1">{{ $member->coop_id }}</h5>
-                                                <p class="text-muted mb-0">Mem No</p>
-                                            </div>
-                                            <div class="col-6">
-                                                <h5 class="mb-1">{{ $member->refers()->count() }}</h5>
-                                                <p class="text-muted mb-0">Referrals</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2 col">
-                                        <div class="text-end">
-                                            <a href="{{ route('admin-member-details', $member->id) }}" class="btn btn-light view-btn">View Profile</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                    <!--end col-->
+                    
                     @endforeach
                     <div class="col-lg-12">
                         <div class="text-center mb-3">
                             {{ $members->links() }}
-                            {{-- <a href="javascript:void(0);" class="text-success"><i class="mdi mdi-loading mdi-spin fs-20 align-middle me-2"></i> Load More </a> --}}
-                        </div>
+                          </div>
                     </div>
                 </div><!--end row-->
 

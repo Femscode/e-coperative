@@ -8,18 +8,14 @@
 
         <!-- start page title -->
         <div class="row">
-            <div class="col-12">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Completed Applications</h4>
-
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Application</a></li>
-                            <li class="breadcrumb-item active">Completed</li>
-                        </ol>
-                    </div>
-
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <div class="btn-group mb-1 me-1">
+                    <a href="/admin/application" class="btn btn-light">Pending</a>
+                    <a href="/admin/application/awaiting-disbursement" class="btn btn-light">Awaiting</a>
+                    <a href="/admin/application/ongoing" class="btn btn-light">Ongoing</a>
+                    <a href="/admin/application/completed" class="btn btn-secondary">Completed</a>
                 </div>
+
             </div>
         </div>
 

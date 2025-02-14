@@ -25,40 +25,23 @@
 
 
     <li class="nav-item">
-         <a class="nav-link menu-arrow" href="#sidebarExtendedUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarExtendedUI">
+         <a class="nav-link" href="/admin/member" role="button" aria-expanded="false">
               <span class="nav-icon">
                    <iconify-icon icon="solar:bag-smile-bold-duotone"></iconify-icon>
               </span>
-              <span class="nav-text"> Manage Users</span>
+              <span class="nav-text"> Members </span>
          </a>
-         <div class="collapse" id="sidebarExtendedUI">
-              <ul class="nav sub-navbar-nav">
-                   <li class="sub-nav-item">
-                        <a class="sub-nav-link" href="/admin/user">Admins</a>
-                   </li>
-                   <li class="sub-nav-item">
-                        <a class="sub-nav-link" href="/admin/member">Members</a>
-                   </li>
-
-              </ul>
-         </div>
+       
     </li>
     <li class="nav-item">
-         <a class="nav-link menu-arrow" href="#sidebarExtendedAN" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarExtendedUI">
+         <a class="nav-link" href="/admin/plan"  role="button">
               <span class="nav-icon">
-                   <iconify-icon icon="solar:document-text-bold-duotone"></iconify-icon>
+               
+              <iconify-icon icon="solar:settings-bold-duotone"></iconify-icon>
               </span>
-              <span class="nav-text"> Manage Settings </span>
+              <span class="nav-text"> Settings </span>
          </a>
-         <div class="collapse" id="sidebarExtendedAN">
-              <ul class="nav sub-navbar-nav">
-                   <li class="sub-nav-item">
-                        <a class="sub-nav-link" href="/admin/plan">Plan / Rules</a>
-                   </li>
-                  
-
-              </ul>
-         </div>
+        
     </li>
 
 

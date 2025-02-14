@@ -10,214 +10,141 @@
      <!-- Start here.... -->
      <div class="row">
           <div class="col-xxl-12">
-               <div class="row">
-                    <div class="col-12">
-
-
-
-                         <h6> Registration Link
-                              <p class="d-flex align-items-center border p-2 rounded-2 border-dashed alert alert-primary text-start mb-0">
-                                   <span id="cttaste-link">https://e-coop.cthostel.com/{{ $plan->slug }}</span>
-                                   <a href="#!" class="ms-auto fs-4 copy-link"><i class="ti ti-copy"></i></a>
-                              </p>
-                         </h6>
-
-
-
-                    </div>
-               </div>
-
-
 
                <div class="row">
-                    <!-- <div class="col-xl-4">
-                         <div class="card overflow-hidden" style='background-image:url("/assets/images/vbg3.jpg");background-repeat:no-repeat;background-size:cover'>
-                              
-                              <div class="card-body pt-0">
-                                   <div class="row">
 
-
-                                        <div class="col-sm-12 pt-4 mt-4">
-                                             <div class="pt-4 mt-4">
-                                                  
-                                                  <div class='alert alert-transparent'>
-                                                       <div style="margin: auto;">
-                                                            <canvas id="ordersChart"></canvas>
-                                                       </div>
-                                                  </div>
-                                                  <div class='card col-md-12 bg-light-success'>
-
-                                                       <a onclick='return confirm("Are you sure you want to enable {{$user->name}}")'
-                                                            href="disable/{{$user->id}}" class="btn btn-dark">Register New Member</a>
-
-                                                      
-
-                                                  </div>
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div>
-                         </div>
-
-                    </div> -->
-
-                    <!-- end row -->
                     <div class='col-md-8'>
-
+                         <h4>Hi, {{ $user->name }}</h4>
                          <div class="row">
                               <div class="col">
                                    <div class="card">
                                         <div class="card-body overflow-hidden position-relative">
-                                             <iconify-icon icon="solar:bill-list-bold-duotone" class="fs-32 text-primary"></iconify-icon>
-                                             <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format($transactions->sum('balance'),2) }}</h3>
+
+                                             <!-- <iconify-icon icon="solar:bill-list-bold-duotone" class="fs-32 text-primary"></iconify-icon> -->
+
+                                             <!-- <iconify-icon icon="solar:inbox-line-broken" class="fs-32 text-primary"></iconify-icon> -->
+
+                                             <div class="d-flex align-items-center gap-2">
+                                                  <h1 class="mb-0 fw-bold mt-3 mb-1" id="amount-display">₦{{ number_format($transactions->sum('balance'),2) }}</h1>
+                                                  <button class="btn btn-link text-muted p-0 mt-3" id="toggle-amount">
+                                                       <i class="ti ti-eye fs-20"></i>
+                                                  </button>
+                                             </div>
                                              <a href='/admin/transaction/all' class="text-muted">Total Revenue</a>
+                                             <!-- <span class="badge fs-12 badge-soft-success"><i class="ti ti-arrow-badge-up"></i> 10.58%</span> -->
                                              <!-- <span class="badge fs-12 badge-soft-success"><i class="ti ti-arrow-badge-up"></i> 10.58%</span> -->
                                              <i class="bx bx-building-house widget-icon"></i>
                                         </div> <!-- end card-body -->
                                    </div> <!-- end card -->
                               </div> <!-- end col -->
-                              <div class="col">
-                                   <div class="card">
-                                        <div class="card-body overflow-hidden position-relative">
-                                             <iconify-icon icon="iconamoon:3d-duotone" class="fs-32 text-info"></iconify-icon>
-                                             <h3 class="mb-0 fw-bold mt-3 mb-1">{{count($users)}}</h3>
-                                             <a href='/admin/member' class="text-muted">Total Members</a>
-                                             <!-- <span class="badge fs-12 badge-soft-success"><i class="ti ti-arrow-badge-up"></i> 8.72%</span> -->
-                                             <i class="bx bx-user widget-icon"></i>
-
-                                        </div> <!-- end card-body -->
-                                   </div> <!-- end card -->
-                              </div> <!-- end col -->
+                              <!-- end col -->
                          </div>
-                         <div class="row">
 
 
-                              <!-- <div class="col-md-6 col-xl-4">
-                                             <a href='/admin/application'>
-                                                  <div class="card">
-                                                       <div class="card-body">
-                                                            <div>
-                                                                 <div class="avatar-sm bg-primary bg-opacity-10 rounded">
-                                                                      <i class="bx bx-layer avatar-title fs-24 text-dark"></i>
-                                                                 </div>
-                                                            </div>
-                                                            <div class="d-flex align-items-center justify-content-between">
 
-                                                                 <div>
-                                                                      <h4 class="card-title mt-2">Loan Applications</h4>
-                                                                      <h3 class="mb-0 fw-bold mt-1">{{ $loans->count() }}</h3>
-                                                                 </div>
+                         <div class="row mt-4 mb-4">
 
-                                                            </div>
-                                                       </div>
+                              <div class="col-12">
+                                   <div class="d-flex justify-content-center gap-4">
+
+                                        <a href="/admin/transaction/repayment" class="text-decoration-none">
+                                             <div class="circle-box text-center">
+                                                  <div class="circle-icon">
+                                                       <iconify-icon icon="solar:clock-circle-broken" class="fs-32"></iconify-icon>
                                                   </div>
-                                             </a>
-                                        </div> -->
-                              <div class="col-md-6 col-xl-4">
-                                   <a href='/admin/transaction/repayment'>
-                                        <div class="card">
-                                             <div class="card-body">
-                                                  <div>
-                                                       <div class="avatar-sm bg-primary bg-opacity-10 rounded">
-
-                                                            <iconify-icon icon="solar:clock-circle-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                                                       </div>
-                                                  </div>
-                                                  <div class="d-flex align-items-center justify-content-between">
-                                                       <div>
-                                                            <h4 class="card-title mt-2">Loan Repayments</h4>
-                                                            <h3 class="mb-0 fw-bold mt-1">₦{{ number_format( $transactions->where('payment_type', 'Repayment')->sum('balance'), 2)}}</h3>
-                                                       </div>
-
-                                                  </div>
+                                                  <h6 class="mt-2 mb-0">Repayments</h6>
                                              </div>
-                                        </div>
-                                   </a>
-                              </div>
-                              <div class="col-md-6 col-xl-4">
-                                   <a href='/admin/transaction/monthly_dues'>
-                                        <div class="card">
-                                             <div class="card-body">
-                                                  <div>
-                                                       <div class="avatar-sm bg-primary bg-opacity-10 rounded">
-                                                            <iconify-icon icon="solar:clipboard-check-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                                                       </div>
-                                                  </div>
-                                                  <div class="d-flex align-items-center justify-content-between">
+                                        </a>
 
-                                                       <div>
-                                                            <h4 class="card-title mt-2">Savings</h4>
-                                                            <h3 class="mb-0 fw-bold mt-1">₦{{ number_format( $transactions->whereIn('payment_type', ['Weekly Dues','Monthly Dues','Funding','Anytime'])->sum('balance'), 2)}}</h3>
-                                                       </div>
+                                        <a href="/admin/member" class="text-decoration-none">
+                                             <div class="circle-box text-center">
+                                                  <div class="circle-icon">
+                                                       <iconify-icon icon="solar:inbox-line-broken" class="fs-32"></iconify-icon>
 
                                                   </div>
+                                                  <h6 class="mt-2 mb-0">Members</h6>
                                              </div>
-                                        </div>
-                                   </a>
-                              </div>
-                              <div class="col-md-6 col-xl-4">
-                                   <a href='/admin/transaction/registration'>
-                                        <div class="card">
-                                             <div class="card-body">
-                                                  <div>
-                                                       <div class="avatar-sm bg-primary bg-opacity-10 rounded">
-                                                            <iconify-icon icon="solar:inbox-line-broken" class="fs-32 text-primary avatar-title"></iconify-icon>
-                                                       </div>
-                                                  </div>
-                                                  <div class="d-flex align-items-center justify-content-between">
-                                                       <div>
-                                                            <h4 class="card-title mt-2">Sign-up Revenue</h4>
-                                                            <h3 class="mb-0 fw-bold mt-1">₦{{ number_format( $transactions->where('payment_type', 'Registration')->sum('balance'))}}</h3>
-                                                       </div>
+                                        </a>
 
+                                        <a href="/admin/transaction/monthly_dues" class="text-decoration-none">
+                                             <div class="circle-box text-center">
+                                                  <div class="circle-icon">
+                                                       <iconify-icon icon="solar:clipboard-check-broken" class="fs-32"></iconify-icon>
                                                   </div>
+                                                  <h6 class="mt-2 mb-0">Member Dues</h6>
                                              </div>
-                                        </div>
-                                   </a>
+                                        </a>
+
+                                        <a href="/admin/plan" class="text-decoration-none">
+                                             <div class="circle-box text-center">
+                                                  <div class="circle-icon">
+                                                       <iconify-icon icon="solar:settings-bold" class="fs-32"></iconify-icon>
+                                                  </div>
+                                                  <h6 class="mt-2 mb-0">Settings</h6>
+                                             </div>
+                                        </a>
+                                   </div>
                               </div>
+
                          </div>
+
 
                     </div>
                     <div class='col-md-4'>
 
                          <div class="col">
                               <div class="card">
-                                   <div class="card-body overflow-hidden position-relative">
-                                        <iconify-icon icon="iconamoon:category-duotone" class="fs-36 text-success"></iconify-icon>
-                                        <ul>
-                                             <li class='mb-2'>Registration Fee : <b>₦{{$plan->reg_fee}}</b></li>
-                                             <li class='mb-2'>Payment Mode : <b>{{$plan->mode}}</b></li>
-                                             <li class='mb-2'>Loan Application Fee : <b>₦{{number_format($plan->loan_form_amount)}}</b></li>
-                                             <li class='mb-2'>Min. Loan Request : <b>₦{{number_format($plan->min_loan_range)}}</b></li>
-                                             <li class='mb-2'>Max Loan Request : <b>₦{{number_format($plan->max_loan_range)}}</b></li>
-                                             <li><strong>...</strong></li>
+                                   <div class="card-body text-center">
+                                        <h4 class="card-title mb-2">Share your Synco Link</h4>
+                                        <ul class="list-inline d-flex gap-1 my-3 align-items-center justify-content-center">
+                                             <li class="list-inline-item">
+                                                  <a href="https://www.facebook.com/sharer/sharer.php?u=https://syncosave.com/{{ $plan->slug }}&quote=Dear members, kindly join our synco group via this link"
+                                                       target="_blank"
+                                                       class="btn btn-soft-primary avatar-sm d-flex align-items-center justify-content-center fs-20">
+                                                       <i class="bx bxl-facebook"></i>
+                                                  </a>
+                                             </li>
+
+                                             <li class="list-inline-item">
+                                                  <a href="https://www.instagram.com/share?url=https://syncosave.com/{{ $plan->slug }}"
+                                                       target="_blank"
+                                                       class="btn btn-soft-danger avatar-sm d-flex align-items-center justify-content-center fs-20">
+                                                       <i class="bx bxl-instagram"></i>
+                                                  </a>
+                                             </li>
+
+                                             <li class="list-inline-item">
+                                                  <a href="https://twitter.com/intent/tweet?url=https://syncosave.com/{{ $plan->slug }}&text=Dear members, kindly join our synco group via this link"
+                                                       target="_blank"
+                                                       class="btn btn-soft-info avatar-sm d-flex align-items-center justify-content-center fs-20">
+                                                       <i class="bx bxl-twitter"></i>
+                                                  </a>
+                                             </li>
+
+                                             <li class="list-inline-item">
+                                                  <a href="https://api.whatsapp.com/send?text=Dear members, kindly join our synco group via this link: https://syncosave.com/{{ $plan->slug }}"
+                                                       target="_blank"
+                                                       class="btn btn-soft-success avatar-sm d-flex align-items-center justify-content-center fs-20">
+                                                       <i class="bx bxl-whatsapp"></i>
+                                                  </a>
+                                             </li>
+
+                                             <li class="list-inline-item">
+                                                  <a href="mailto:?subject=Join Our Synco Group&body=Dear members, kindly join our synco group via this link: https://syncosave.com/{{ $plan->slug }}"
+                                                       class="btn btn-soft-warning avatar-sm d-flex align-items-center justify-content-center fs-20">
+                                                       <i class="bx bx-envelope"></i>
+                                                  </a>
+                                             </li>
                                         </ul>
-                                        <!-- <h3 class="mb-0 fw-bold mt-3 mb-1">₦ {{ number_format( $transactions->where('payment_type', 'Registration')->sum('balance'), 2)}}</h3> -->
-                                        <a href='/admin/plan' class="btn btn-sm btn-primary mb-2">Manage Settings</a>
-                                        <i class="bx bx-bar-chart-alt-2 widget-icon"></i>
+                                        <p class="text-muted">Copy the URL below and share it with your members:</p>
+                                        <p class="d-flex align-items-center border p-2 rounded-2 border-dashed bg-body text-start mb-0" id="cttaste-link">
+                                             https://syncosave.com/{{ $plan->slug }}<a href="#!" class="ms-auto fs-4"><i class="copy-link ti ti-copy"></i></a>
+                                        </p>
                                    </div>
                               </div>
                          </div>
 
-                         <!-- <div class="col">
-                                   <div class="card">
-                                        <div class="card-body overflow-hidden position-relative">
-                                             <iconify-icon icon="iconamoon:store-duotone" class="fs-36 text-purple"></iconify-icon>
-                                             <h3 class="mb-0 fw-bold mt-3 mb-1"> count($last_week_orders) </h3>
-                                             <a href='/orders' class="text-muted">Last Week Orders</a>
-                                              <i class="bx bx-doughnut-chart widget-icon"></i>
-
-
-                                        </div> 
-                                   </div>
-                              </div>  -->
-
-
-
-
                     </div>
-
-
 
                </div>
 
@@ -449,6 +376,30 @@
                          }
                     }
                }
+          });
+     });
+</script>
+
+<script>
+     document.addEventListener('DOMContentLoaded', function() {
+          const toggleBtn = document.getElementById('toggle-amount');
+          const amountDisplay = document.getElementById('amount-display');
+          const originalAmount = amountDisplay.textContent;
+          let isHidden = true; // Changed to true for default hidden state
+
+          // Hide amount immediately when page loads
+          amountDisplay.textContent = '₦*****';
+          toggleBtn.innerHTML = '<i class="ti ti-eye-off fs-20"></i>';
+
+          toggleBtn.addEventListener('click', function() {
+               if (isHidden) {
+                    amountDisplay.textContent = originalAmount;
+                    toggleBtn.innerHTML = '<i class="ti ti-eye fs-20"></i>';
+               } else {
+                    amountDisplay.textContent = '₦*****';
+                    toggleBtn.innerHTML = '<i class="ti ti-eye-off fs-20"></i>';
+               }
+               isHidden = !isHidden;
           });
      });
 </script>
