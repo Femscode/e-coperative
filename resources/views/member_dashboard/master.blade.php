@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-<!-- Mirrored from www.adminuiux.com/adminuiux/investment-uiux/investment-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 23 Dec 2024 11:51:50 GMT -->
 
 <head>
     <meta charset="utf-8">
@@ -34,7 +33,6 @@
 </head>
 
 <body class="main-bg main-bg-opac main-bg-blur adminuiux-sidebar-fill-white adminuiux-sidebar-boxed theme-blue roundedui" data-theme="theme-blue" data-sidebarfill="adminuiux-sidebar-fill-white" data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" tabindex="0"></body>
-<!-- Mirrored from www.adminuiux.com/adminuiux/investment-uiux/investment-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 23 Dec 2024 11:51:53 GMT -->
 
 </html>
 <div class="pageloader">
@@ -169,6 +167,7 @@
                 <li class="nav-item"><a href="/member/loan" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Pending Loan Applications</span></a></li>
                 <li class="nav-item"><a href="/member/loan/ongoing" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Ongoing Loan Applications</span></a></li>
                 <li class="nav-item"><a href="/member/loan/completed" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Completed Loan Applications</span></a></li>
+                <li class="nav-item"><a href="{{ route('my-contribution') }}" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">My Circle(s)</span></a></li>
                 <li class="nav-item"><a href="/logout" onclick='return confirm("Are you sure you want to log this user out?");' class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Logout</span></a></li>
             </ul>
         </div>

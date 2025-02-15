@@ -187,6 +187,10 @@ class GroupController extends Controller
         }
     }
 
+    public function contribution(){
+        return view('ajo.my_group');
+    }
+
     /**
      * Store a newly created resource in storage.
      *

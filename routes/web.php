@@ -58,6 +58,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['2fa']], function () {
         Route::post('/toggle-2fa', [App\Http\Controllers\ProfileController::class, 'toggleTwo'])->name('enable-2fa');
         Route::get('/join-contribution', [App\Http\Controllers\GroupController::class, 'approve'])->name('join-contribution');
+        Route::get('/my-contribution', [App\Http\Controllers\GroupController::class, 'contribution'])->name('my-contribution');
+
         Route::group(['middleware' => 'admin'], function () {
             Route::group(['prefix' => 'admin'], function () {
                 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('admin-home');
