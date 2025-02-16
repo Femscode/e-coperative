@@ -24,6 +24,15 @@ class GroupController extends Controller
         return view('admin.ajo.group');
     }
 
+    public function circleMembers($uuid){
+        $data['group'] = $group = Group::where('uuid', $uuid)->first();
+        $data['id'] = $uuid;
+        if(!$group){
+            return redirect()->back();
+        }
+        return view('ajo.circle_members', $data);
+    }
+
     public function view($id){
         // dd($id);
         $data['id'] =$id;
