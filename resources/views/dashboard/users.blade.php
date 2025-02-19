@@ -8,13 +8,22 @@
 <div class="container-fluid">
 
     <div class="row">
-        <div class="col-12">
-            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <div class="btn-group mb-1 me-1">
-                    <a href="/admin/member" class="btn btn-light">Members</a>
-                    <a href="/admin/user" class="btn btn-secondary">Admin</a>
+        <div class="col-12 mb-4">
+            <div class="nav-tabs-custom">
+                <div class="d-flex w-100 overflow-hidden">
+                    <a href="/admin/member" class="nav-link flex-fill text-center py-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="ri-team-line fs-22 me-2"></i>
+                            <h5 class="mb-0">Members</h5>
+                        </div>
+                    </a>
+                    <a href="/admin/user" class="nav-link flex-fill text-center py-3 active">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="ri-shield-user-line fs-22 me-2"></i>
+                            <h5 class="mb-0">Admin</h5>
+                        </div>
+                    </a>
                 </div>
-
             </div>
         </div>
         <div class="col-lg-12">

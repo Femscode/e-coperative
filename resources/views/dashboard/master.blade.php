@@ -17,7 +17,7 @@
 
      <meta name="csrf-token" content="{{ csrf_token() }}">
 
-     <link rel="shortcut icon" href="{{ asset('assets/images/cooplogo.png') }}">
+     <link rel="shortcut icon" href="{{ asset('assets//images/logo/syncologo1.png') }}">
      <!-- Vendor css (Require in all Page) -->
      <link href="{{url('vendorsdashboard/css/vendor.min.css')}}" rel="stylesheet" type="text/css" />
 
@@ -29,7 +29,46 @@
 
      <!-- Theme Config js (Require in all Page) -->
      <script src="{{url('vendorsdashboard/js/config.js')}}"></script>
+     <style>
+          .nav-tabs-custom {
+               background: #fff;
+               border-radius: 12px;
+               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+               overflow: hidden;
+          }
 
+          .nav-tabs-custom .nav-link {
+               color: #6c757d;
+               border: none;
+               position: relative;
+               transition: all 0.3s ease;
+               text-decoration: none;
+          }
+
+          .nav-tabs-custom .nav-link:after {
+               content: '';
+               position: absolute;
+               bottom: 0;
+               left: 0;
+               width: 100%;
+               height: 3px;
+               background: transparent;
+               transition: all 0.3s ease;
+          }
+
+          .nav-tabs-custom .nav-link.active {
+               color: #094168;
+               background: rgba(13, 110, 253, 0.1);
+          }
+
+          .nav-tabs-custom .nav-link.active:after {
+               background: #094168;
+          }
+
+          .nav-tabs-custom .nav-link:hover {
+               background: rgba(108, 117, 125, 0.1);
+          }
+     </style>
 
      @yield('header')
 </head>
@@ -53,7 +92,7 @@
 
                               <!-- Menu Toggle Button -->
                               <div class="topbar-item">
-                                   <h4 class="fw-bold topbar-button pe-none text-uppercase mb-0">Welcome!</h4>
+                                   <h4 class="fw-bold topbar-button pe-none text-uppercase mb-0">SyncoSave!</h4>
                               </div>
                          </div>
 
@@ -66,7 +105,7 @@
                                    </button>
                               </div>
 
-                          
+
 
 
                               <!-- User -->
@@ -74,7 +113,7 @@
                                    <a type="button" class="topbar-button" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="d-flex align-items-center">
                                              @if($user->image ?? auth()->user()->image !== null)
-                                             <img src="https://e-coop.cthostel.com/ecoop_files/public/{{ Auth::user()->profile_image }}"
+                                             <img src="https://syncosave.com/synco_files/public/{{ Auth::user()->profile_image }}"
                                                   alt="" class="rounded-circle" width="32">
                                              @else
                                              <img src="{{url('assets/images/avatar.png')}}"
@@ -122,13 +161,13 @@
                <div class="logo-box">
                     <a href="/admin" class="logo-dark">
 
-                    <img src="{{ asset('assets/images/cooplogo.png') }}" alt="" height="30"> 
-                    <span class='text-white' style='font-size:large'>E-COOP</span>
+                         <img src="{{ asset('assets//images/logo/syncologo1.png') }}" alt="" width="70%">
+
                     </a>
 
                     <a href="/admin" class="logo-light">
-                    <img src="{{ asset('assets/images/cooplogo.png') }}" alt="" height="30"> 
-                    <span class='text-white' style='font-size:large'>E-COOP</span>
+                         <img src="{{ asset('assets//images/logo/syncologo1.png') }}" alt="" width="70%">
+
                     </a>
                </div>
 
@@ -163,11 +202,8 @@
                               <div class="col-12 text-center">
                                    <script>
                                         document.write(new Date().getFullYear())
-                                   </script> &copy; E-Cooperative. 
-                                   <!-- A product of <a
-                                        href="https://cthostel.com" class="text-green" target="_blank">CTHostel</a> -->
-                                        <!-- href="https://cthostel.com" class="fw-bold footer-text" target="_blank">CTHostel</a> -->
-                              </div>
+                                   </script> &copy; SyncoSave.
+                                  </div>
                          </div>
                     </div>
                </footer>

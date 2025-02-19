@@ -11,18 +11,14 @@
      <div class="row">
           <div class="col-xxl-12">
 
+               <h4>Hi, {{ $user->name }}</h4>
                <div class="row">
 
                     <div class='col-md-8'>
-                         <h4>Hi, {{ $user->name }}</h4>
                          <div class="row">
                               <div class="col">
                                    <div class="card">
                                         <div class="card-body overflow-hidden position-relative">
-
-                                             <!-- <iconify-icon icon="solar:bill-list-bold-duotone" class="fs-32 text-primary"></iconify-icon> -->
-
-                                             <!-- <iconify-icon icon="solar:inbox-line-broken" class="fs-32 text-primary"></iconify-icon> -->
 
                                              <div class="d-flex align-items-center gap-2">
                                                   <h1 class="mb-0 fw-bold mt-3 mb-1" id="amount-display">₦{{ number_format($transactions->sum('balance'),2) }}</h1>
@@ -31,8 +27,6 @@
                                                   </button>
                                              </div>
                                              <a href='/admin/transaction/all' class="text-muted">Total Revenue</a>
-                                             <!-- <span class="badge fs-12 badge-soft-success"><i class="ti ti-arrow-badge-up"></i> 10.58%</span> -->
-                                             <!-- <span class="badge fs-12 badge-soft-success"><i class="ti ti-arrow-badge-up"></i> 10.58%</span> -->
                                              <i class="bx bx-building-house widget-icon"></i>
                                         </div> <!-- end card-body -->
                                    </div> <!-- end card -->
@@ -148,6 +142,8 @@
 
                </div>
 
+               
+
 
 
 
@@ -214,25 +210,7 @@
 
           </div> <!-- end col -->
 
-          <!-- <div class="col-xxl-7">
-               <div class="card">
-                    <div class="card-body">
-                         <div class="d-flex justify-content-between align-items-center">
-                              <h4 class="card-title">Performance</h4>
-                              <div>
-                                   <button type="button" class="btn btn-sm btn-outline-light">ALL</button>
-                                   <button type="button" class="btn btn-sm btn-outline-light">1M</button>
-                                   <button type="button" class="btn btn-sm btn-outline-light">6M</button>
-                                   <button type="button" class="btn btn-sm btn-outline-light active">1Y</button>
-                              </div>
-                         </div> 
 
-                         <div dir="ltr">
-                              <div id="dash-performance-chart" class="apex-charts"></div>
-                         </div>
-                    </div> 
-               </div>
-          </div> -->
      </div>
 
 

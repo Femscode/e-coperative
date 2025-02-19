@@ -1,5 +1,49 @@
 @extends('dashboard.master')
 @section('header')
+<style>
+.action-panel {
+    border: 1px solid rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.action-panel:hover {
+    border-color: rgba(0,0,0,0.12);
+}
+
+.icon-box {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dropdown-menu {
+    min-width: 280px;
+}
+
+.dropdown-item {
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(4px);
+}
+
+.search-box {
+    min-width: 300px;
+}
+
+.search-box .form-control:focus {
+    box-shadow: none;
+    border-color: #dee2e6;
+}
+
+.btn-lg {
+    height: 48px;
+}
+ </style>
 
 @endsection
 
@@ -9,45 +53,64 @@
 <div class="container-fluid">
     <!-- start page title -->
     <div class="row">
-        <div class="col-12">
-            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <div class="btn-group mb-1 me-1">
-                    <a href="/admin/member" class="btn btn-secondary">Members</a>
-                    <a href="/admin/user" class="btn btn-light">Admin</a>
+        <div class="col-12 mb-4">
+            <div class="nav-tabs-custom">
+                <div class="d-flex w-100 overflow-hidden">
+                    <a href="/admin/member" class="nav-link flex-fill text-center py-3 active">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="ri-team-line fs-22 me-2"></i>
+                            <h5 class="mb-0">Members</h5>
+                        </div>
+                    </a>
+                    <a href="/admin/user" class="nav-link flex-fill text-center py-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="ri-shield-user-line fs-22 me-2"></i>
+                            <h5 class="mb-0">Admin</h5>
+                        </div>
+                    </a>
                 </div>
-
             </div>
         </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="row g-2">
-                   
-                        <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn"
-                                data-bs-target="#addUser"><i class="ri-add-line align-bottom me-1"></i> Add Member</button>
-                                <div class="dropdown">
-                            <button class="btn btn-soft-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="ri-file-transfer-line align-bottom me-1"></i> Import Members
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center" href="download_member_template">
-                                        <i class="ri-file-download-line me-2"></i>Download Template
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item d-flex align-items-center" href="#" data-bs-toggle="modal" data-bs-target="#showModal">
-                                        <i class="ri-upload-cloud-line me-2"></i>Upload Members
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        </div>
-                    
-                    <div class="col-sm-auto ms-auto">
+        <div class="action-panel p-3 bg-white rounded-3 shadow-sm mb-4">
+            <div class="d-flex align-items-center gap-2">
+                <button type="button" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" id="create-btn" data-bs-target="#addUser">
+                    <i class="ri-user-add-line fs-18 me-2"></i>
+                    Add Member
+                </button>
+                
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary d-flex align-items-center dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="ri-file-transfer-line fs-18 me-2"></i>
+                        Import
+                    </button>
+                    <ul class="dropdown-menu p-2 border-0 shadow-sm">
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center p-2 rounded-2" href="download_member_template">
+                                <div class="icon-box bg-soft-primary rounded-2 me-3 p-2">
+                                    <i class="ri-file-download-line fs-18 text-primary"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Download Template</h6>
+                                    <small class="text-muted">Get the Excel template</small>
+                                </div>
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider my-2"></li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center p-2 rounded-2" href="#" data-bs-toggle="modal" data-bs-target="#showModal">
+                                <div class="icon-box bg-soft-success rounded-2 me-3 p-2">
+                                    <i class="ri-upload-cloud-line fs-18 text-success"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">Upload Members</h6>
+                                    <small class="text-muted">Import member data</small>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
 
-                    </div><!--end col-->
-                </div><!--end row--><!--end row-->
+                
             </div>
         </div>
         <!-- end page title -->
