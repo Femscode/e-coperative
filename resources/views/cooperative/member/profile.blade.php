@@ -1,4 +1,4 @@
-@extends('member_cooperative.admin.master')
+@extends('cooperative.member.master')
 
 @section('links')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">

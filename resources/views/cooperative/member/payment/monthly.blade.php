@@ -1,4 +1,4 @@
-@extends('member_cooperative.admin.master')
+@extends('cooperative.member.master')
 
 
 @section('header')
@@ -72,11 +72,11 @@
         <div class="row">
             <div class="col-12 mb-4">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Pending Contribution Dues</h4>
+                    <h4 class="mb-sm-0">Pending Monthly Dues</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Contribution Dues</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Monthly Dues</a></li>
                             <li class="breadcrumb-item active">Pending</li>
                         </ol>
                     </div>
@@ -104,7 +104,7 @@
                                                             <input class="form-check-input" type="checkbox" id="masterCheckbox" onchange="toggleAllCheckboxes()" value="option1">
                                                         </div>
                                                     </th>
-                                                    <th scope="col">Mode</th>
+                                                    <th scope="col">Month</th>
                                                     <th scope="col">Type</th>
                                                     <th scope="col">Amount(&#x20A6;)</th>
                                                 </tr>
@@ -113,7 +113,7 @@
                                             <tbody>
                                                 @foreach ($months as $month)
                                                 <tr>
-                                                    <input type="hidden" @isset($month['amount']) value="Contribution" @else value="Contribution" @endisset name="payment_type[]">
+                                                    <input type="hidden" @isset($month['amount']) value="Repayment" @else value="Monthly Dues" @endisset name="payment_type[]">
                                                     <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}" @else value="" @endisset name="uuid[]">
                                                     <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->dues }}" @endisset name="fee[]">
                                                     <th scope="row">
@@ -122,7 +122,7 @@
                                                         </div>
                                                     </th>
                                                     <td> <input type="hidden" name="month[]" value="{{ $month['month'] }}"> {{ $month['month'] }}</td>
-                                                    <td> @isset($month['amount']) Contribution @else Contribution @endisset</td>
+                                                    <td> @isset($month['amount']) Repayment @else Monthly Dues @endisset</td>
                                                     <td> <input type="hidden" name="original[]" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->getMondays($month['month']) * $plan->monthly_dues  }}" @endisset> @isset($month['amount']) {{ number_format($month['amount'] , 2)}} @else {{ number_format($plan->dues, 2)}} @endisset </td>
                                                 </tr>
                                                 @endforeach

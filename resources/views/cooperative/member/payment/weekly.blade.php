@@ -1,5 +1,4 @@
-@extends('member_cooperative.admin.master')
-
+@extends('cooperative.member.master')
 
 @section('header')
 <style>
@@ -28,6 +27,7 @@
 </style>
 
 @endsection
+
 @section('main')
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -66,17 +66,18 @@
         </div>
     </div>
 </div>
+
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container mt-4" id="main-content">
         <!-- start page title -->
         <div class="row">
             <div class="col-12 mb-4">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Pending Monthly Dues</h4>
+                    <h4 class="mb-sm-0">Pending Weekly Dues</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Monthly Dues</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Weekly Dues</a></li>
                             <li class="breadcrumb-item active">Pending</li>
                         </ol>
                     </div>
@@ -88,7 +89,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                  
+
+
                     <div class="card-body">
                         <form id="monthly-dues" method="post">
                             @csrf
@@ -104,8 +106,8 @@
                                                             <input class="form-check-input" type="checkbox" id="masterCheckbox" onchange="toggleAllCheckboxes()" value="option1">
                                                         </div>
                                                     </th>
-                                                    <th scope="col">Month</th>
-                                                    <th scope="col">Type</th>
+                                                    <th scope="col">Week</th>
+                                                    <!-- <th scope="col">Type</th> -->
                                                     <th scope="col">Amount(&#x20A6;)</th>
                                                 </tr>
                                             </thead>
@@ -113,7 +115,7 @@
                                             <tbody>
                                                 @foreach ($months as $month)
                                                 <tr>
-                                                    <input type="hidden" @isset($month['amount']) value="Repayment" @else value="Monthly Dues" @endisset name="payment_type[]">
+                                                    <input type="hidden" @isset($month['amount']) value="Repayment" @else value="Weekly Dues" @endisset name="payment_type[]">
                                                     <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}" @else value="" @endisset name="uuid[]">
                                                     <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->dues }}" @endisset name="fee[]">
                                                     <th scope="row">
@@ -121,9 +123,9 @@
                                                             <input class="form-check-input controlledCheckbox" @isset($month['amount']) data-id="{{ $month['amount'] }}" @else data-id="{{ $plan->dues }}" @endisset name="check[]" type="checkbox" id="inlineCheckbox2">
                                                         </div>
                                                     </th>
-                                                    <td> <input type="hidden" name="month[]" value="{{ $month['month'] }}"> {{ $month['month'] }}</td>
-                                                    <td> @isset($month['amount']) Repayment @else Monthly Dues @endisset</td>
-                                                    <td> <input type="hidden" name="original[]" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->getMondays($month['month']) * $plan->monthly_dues  }}" @endisset> @isset($month['amount']) {{ number_format($month['amount'] , 2)}} @else {{ number_format($plan->dues, 2)}} @endisset </td>
+                                                    <td> <input type="hidden" name="week[]" value="{{ $month['week'] }}"><i class='bi bi-calender'></i> {{ $month['week'] }}</td>
+                                                    <!-- <td> @isset($month['amount']) Repayment @else Weekly Dues @endisset</td> -->
+                                                    <td> <input type="hidden" name="original[]" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->dues  }}" @endisset><b> @isset($month['amount']) {{ number_format($month['amount'] , 2)}} @else {{ number_format($plan->dues, 2)}} @endisset </b></td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>
@@ -149,7 +151,8 @@
                         <div class="row gy-4">
                             <div class="col-xxl-3 col-md-3">
                                 <div>
-                                <div class="grand-total-container text-center mt-3">
+
+                                    <div class="grand-total-container text-center mt-3">
                                         <label for="total" class="form-label text-uppercase fw-bold" style="font-size: 1.2rem; color: #333;">Grand Total</label>
                                         <input
                                             type="text"
@@ -159,6 +162,8 @@
                                             readonly
                                             id="total">
                                     </div>
+
+
                                     <!-- <input type="text" class="form-control mt-2" name="total_amount" value="0" readonly id="total"> -->
                                 </div>
                             </div><!--end col-->
@@ -203,14 +208,14 @@
             var $row = $(this).closest('tr'); // Find the closest row
             var paymentType = $row.find('[name="payment_type[]"]').val();
             var fee = $row.find('[name="fee[]"]').val();
-            var month = $row.find('[name="month[]"]').val();
+            var week = $row.find('[name="week[]"]').val();
             var original = $row.find('[name="original[]"]').val();
             var uuid = $row.find('[name="uuid[]"]').val();
 
             checkedData.push({
                 payment_type: paymentType,
                 fee: fee,
-                month: month,
+                week: week,
                 original: original,
                 uuid: uuid
             });
@@ -218,6 +223,7 @@
 
         return checkedData;
     }
+
 
     function processPayment(data) {
         data = data;
@@ -242,6 +248,8 @@
                 $("#amountToBePaid").html(totalAmount.toLocaleString())
                 $("#order_id").val(e.order_id.transaction_id)
                 $('#paymentModal').modal('show');
+                console.log(e);
+
                 // payWithPaystack(e);
             },
             error: function(e) {
@@ -255,7 +263,6 @@
         })
 
     }
-
 
     $('#payaza-form').submit(function(e) {
         e.preventDefault();

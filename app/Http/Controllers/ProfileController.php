@@ -41,7 +41,7 @@ class ProfileController extends Controller
             return view('cooperative.admin.profile', $data);
 
         } else {
-            return view('member_cooperative.admin.profile', $data);
+            return view('cooperative.member.profile', $data);
             return view('member.profile', $data);
 
         }

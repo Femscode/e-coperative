@@ -84,7 +84,7 @@ use Jenssegers\Agent\Agent;
                    return $totalAmount;
                     // $data['months'] = $months + $dateArray;
                     // dd($check, $data);
-                   // return view ('member_cooperative.admin.payment.monthly', $data);
+                   // return view ('cooperative.member.admin.payment.monthly', $data);
                     //return view ('member.payment.monthly', $data);
                     break;
                 case 'Weekly':

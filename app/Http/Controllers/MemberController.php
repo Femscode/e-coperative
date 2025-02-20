@@ -27,14 +27,14 @@ class MemberController extends Controller
         $data['user'] = $user = Auth::user();
         $data['member_loan'] = MemberLoan::where('user_id',$user->id)->where('approval_status',1)->get();
         $data['transactions'] = Transaction::where('user_id', $user->id)->orWhere('email',$user->email)->where('status', 'Success')->latest()->paginate(10);
-        return view('member_cooperative.admin.index', $data);
+        return view('cooperative.member.index', $data);
         return view('member.index', $data);
     }
 
     public function transactions() {
         $data['user'] = $user =  Auth::user();
         $data['transactions'] = Transaction::where('user_id',  $user->id)->orWhere('email', $user->email)->where('status', 'Success')->latest()->paginate(10);
-        return view('member_cooperative.admin.transactions', $data);
+        return view('cooperative.member.transactions', $data);
        
     }
 
@@ -49,7 +49,7 @@ class MemberController extends Controller
         switch($mode){
             case 'Anytime':
                
-                return view ('member_cooperative.admin.payment.anytime',$data);
+                return view ('cooperative.member.payment.anytime',$data);
                 return view ('member.payment.anytime',$data);
                 break;
 
@@ -102,7 +102,7 @@ class MemberController extends Controller
                 $data['months'] = array_merge($months, $dateArray);
                 // $data['months'] = $months + $dateArray;
                 // dd($check, $data);
-                return view ('member_cooperative.admin.payment.monthly', $data);
+                return view ('cooperative.member.payment.monthly', $data);
                 return view ('member.payment.monthly', $data);
                 break;
             case 'Weekly':
@@ -148,7 +148,7 @@ class MemberController extends Controller
         $data['user'] = Auth::user();
         // $data['months'] = $months + $dateArray;
         // dd($check, $data);
-        return view ('member_cooperative.admin.payment.weekly', $data);
+        return view ('cooperative.member.payment.weekly', $data);
         return view ('member.payment.weekly', $data);
     }
     public function contributionPayment(){
@@ -229,7 +229,7 @@ class MemberController extends Controller
         }
         $data['months'] = $months;
         $data['user'] = Auth::user();
-        return view ('member_cooperative.admin.payment.contribution', $data);  
+        return view ('cooperative.member.payment.contribution', $data);  
     }
     public function loanPayment(){
         $startDate = Carbon::parse(Auth::user()->created_at);

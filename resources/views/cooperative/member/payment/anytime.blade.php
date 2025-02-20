@@ -1,32 +1,4 @@
-@extends('member_cooperative.admin.master')
-
-@section('header')
-<style>
-    .grand-total-container {
-        max-width: 300px;
-        margin: auto;
-    }
-
-    .grand-total-input {
-        font-size: 1.5rem;
-        font-weight: bold;
-        text-align: center;
-        background-color: #f8f9fa;
-        border: 2px solid #28a745;
-        color: #28a745;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        transition: box-shadow 0.3s ease, transform 0.3s ease;
-    }
-
-    .grand-total-input:focus {
-        box-shadow: 0 6px 15px rgba(0, 128, 0, 0.3);
-        transform: scale(1.02);
-        outline: none;
-    }
-</style>
-
-@endsection
+@extends('cooperative.member.master')
 
 @section('main')
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
@@ -66,19 +38,18 @@
         </div>
     </div>
 </div>
-
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container mt-4" id="main-content">
         <!-- start page title -->
         <div class="row">
             <div class="col-12 mb-4">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Pending Weekly Dues</h4>
+                    <h4 class="mb-sm-0">Manual Payment</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Weekly Dues</a></li>
-                            <li class="breadcrumb-item active">Pending</li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Manual</a></li>
+                            <li class="breadcrumb-item active">Payment</li>
                         </ol>
                     </div>
 
@@ -87,99 +58,101 @@
         </div>
         <!-- end page title -->
         <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
+            <div class="col-md-4 mb-4">
 
 
-                    <div class="card-body">
-                        <form id="monthly-dues" method="post">
-                            @csrf
-                            <div class="live-preview">
-                                <div class="row">
-                                    <div class="table-responsive">
-                                        @if(count($months) > 0)
-                                        <table class="table table-hover align-middle table-nowrap mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col" style="width: 25px;">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" id="masterCheckbox" onchange="toggleAllCheckboxes()" value="option1">
-                                                        </div>
-                                                    </th>
-                                                    <th scope="col">Week</th>
-                                                    <!-- <th scope="col">Type</th> -->
-                                                    <th scope="col">Amount(&#x20A6;)</th>
-                                                </tr>
-                                            </thead>
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <div class="card">
 
-                                            <tbody>
-                                                @foreach ($months as $month)
-                                                <tr>
-                                                    <input type="hidden" @isset($month['amount']) value="Repayment" @else value="Weekly Dues" @endisset name="payment_type[]">
-                                                    <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}" @else value="" @endisset name="uuid[]">
-                                                    <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->dues }}" @endisset name="fee[]">
-                                                    <th scope="row">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input controlledCheckbox" @isset($month['amount']) data-id="{{ $month['amount'] }}" @else data-id="{{ $plan->dues }}" @endisset name="check[]" type="checkbox" id="inlineCheckbox2">
-                                                        </div>
-                                                    </th>
-                                                    <td> <input type="hidden" name="week[]" value="{{ $month['week'] }}"><i class='bi bi-calender'></i> {{ $month['week'] }}</td>
-                                                    <!-- <td> @isset($month['amount']) Repayment @else Weekly Dues @endisset</td> -->
-                                                    <td> <input type="hidden" name="original[]" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->dues  }}" @endisset><b> @isset($month['amount']) {{ number_format($month['amount'] , 2)}} @else {{ number_format($plan->dues, 2)}} @endisset </b></td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                        @endif
-                                        @if(count($months) < 1)
-                                            <div class="noresult">
-                                            <div class="text-center">
-                                                <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                                                    colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
-                                                </lord-icon>
-                                                <h5 class="mt-2"> No Pending Dues!</h5>
+                                <div class="card-body p-4">
+                                    <div class="text-center mt-2">
+                                        <h5 class="text-primary">Fund Savings</h5>
+                                    </div>
+                                    <div class="p-2 mt-4">
+                                        <form method="POST" id="monthly-dues">
+                                            @csrf
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">{{ __('Amount To Pay ') }} <span class="text-danger">*</span></label>
+                                                <input type="number" name="amount" class="form-control " id="total" placeholder="Enter amount to pay " required>
                                             </div>
+                                            <input type="hidden" id="userEmail" name="email" value="{{Auth::user()->email}}">
+                                            <input type="hidden" id="userPhone" name="phone" value="{{Auth::user()->phone}}">
+                                            <div class="mt-4">
+                                                <button class="btn btn-success w-100" type="submit">
+                                                    {{ __('Pay Now') }}
+                                                </button>
+                                            </div>
+
+                                        </form>
+
                                     </div>
-                                    @endif
                                 </div>
-                            </div><!--end row-->
-                    </div>
-                    @if(count($months) > 0)
-                    <div class="live-preview submit-btn">
-                        <input type="hidden" id="userEmail" name="email" value="{{Auth::user()->email}}">
-                        <input type="hidden" id="userPhone" name="phone" value="{{Auth::user()->phone}}">
-                        <div class="row gy-4">
-                            <div class="col-xxl-3 col-md-3">
-                                <div>
+                                <!-- end card body -->
+                            </div>
 
-                                    <div class="grand-total-container text-center mt-3">
-                                        <label for="total" class="form-label text-uppercase fw-bold" style="font-size: 1.2rem; color: #333;">Grand Total</label>
-                                        <input
-                                            type="text"
-                                            class="form-control grand-total-input"
-                                            name="total_amount"
-                                            value="0"
-                                            readonly
-                                            id="total">
-                                    </div>
-
-
-                                    <!-- <input type="text" class="form-control mt-2" name="total_amount" value="0" readonly id="total"> -->
-                                </div>
-                            </div><!--end col-->
                         </div>
                     </div>
-                    <hr>
-                    <div class="hstack gap-2 ">
-                        <button type="submit" id="submit-btn" class="btn btn-success submit-btn">Make Payment</button>
-                    </div>
-                    @endif
-                    </form>
                 </div><!-- end card-body -->
-            </div><!-- end card -->
-        </div>
-        <!-- end col -->
-    </div><!--end row-->
+
+            </div>
+
+            <div class="col-md-8">
+            <div class="card-body px-1">
+                                <div class="card adminuiux-card">
+                                    <div class="card-header">
+                                        <div class="row align-items-center">
+                                            <div class="col">
+                                                <h6>Recent Transaction</h6>
+                                            </div>
+                                            <div class="col-auto px-0"><a class="btn btn-sm btn btn-link">See All</a></div>
+                                            <div class="col-auto"><button class="btn btn-sm btn-outline-theme"><i class="bi bi-arrow-up-right me-1"></i> Export </button></div>
+                                        </div>
+                                    </div>
+
+                                    <ul class="list-group list-group-flush border-top bg-none">
+                                        @foreach($transactions as $tranx)
+                                        @if($tranx->type !== 'funded')
+                                        <li class="list-group-item">
+                                            <div class="row gx-3 align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="avatar avatar-40 rounded-circle border"><i class="bi bi-arrow-up-right h5"></i></div>
+                                                </div>
+                                                <div class="col">
+                                                    <p class="mb-1 fw-medium">{{$tranx->payment_type}}</p>
+                                                    <p class="text-secondary small">{{Date('d-m-y', strtotime($tranx->created_at))}}</p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <h6>- N{{number_format($tranx->amount)}}</h6>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        @else
+                                        <li class="list-group-item theme-green">
+                                            <div class="row gx-3 align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="avatar avatar-40 rounded-circle border border-theme-1 bg-theme-1-subtle text-theme-1"><i class="bi bi-arrow-down-left h5"></i></div>
+                                                </div>
+                                                <div class="col">
+                                                    <p class="mb-1 fw-medium">{{$tranx->payment_type}}</p>
+                                                    <p class="text-secondary small">{{Date('d-m-y', strtotime($tranx->created_at))}}</p>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <h6 class="text-theme-1">+ N{{number_format($tranx->amount)}}</h6>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        @endif
+
+                                        @endforeach
+
+                                    </ul>
+                                </div>
+                            </div>
+            </div>
+            <!-- end col -->
+        </div><!--end row-->
     </div>
 </main>
 @endsection
@@ -196,33 +169,9 @@
         // $('.preloader').show();
         e.preventDefault();
         // alert("ere")
-        var checkedData = filterCheckedData();
+        var checkedData = $(this).serializeArray(); //filterCheckedData();
         processPayment(checkedData);
     })
-
-    function filterCheckedData() {
-        var checkedData = [];
-
-        // Iterate through the checked checkboxes and collect data from the same row
-        $('.controlledCheckbox:checked').each(function() {
-            var $row = $(this).closest('tr'); // Find the closest row
-            var paymentType = $row.find('[name="payment_type[]"]').val();
-            var fee = $row.find('[name="fee[]"]').val();
-            var week = $row.find('[name="week[]"]').val();
-            var original = $row.find('[name="original[]"]').val();
-            var uuid = $row.find('[name="uuid[]"]').val();
-
-            checkedData.push({
-                payment_type: paymentType,
-                fee: fee,
-                week: week,
-                original: original,
-                uuid: uuid
-            });
-        });
-
-        return checkedData;
-    }
 
 
     function processPayment(data) {
@@ -231,7 +180,7 @@
         var phone = $('#userPhone').val();
         var totalAmount = $('#total').val();
         $('.preloader').show();
-        var ajaxUrl = "{{ route('pay-dues') }}";
+        var ajaxUrl = "{{ route('pay-anytime') }}";
         $.ajax({
             type: 'POST',
             url: ajaxUrl,
@@ -243,13 +192,12 @@
                 total_amount: totalAmount,
             },
             success: function(e) {
+
                 $('.preloader').hide();
                 $('.preloader').hide();
-                $("#amountToBePaid").html(totalAmount.toLocaleString())
+                $("#amountToBePaid").html(totalAmount)
                 $("#order_id").val(e.order_id.transaction_id)
                 $('#paymentModal').modal('show');
-                console.log(e);
-
                 // payWithPaystack(e);
             },
             error: function(e) {
@@ -258,11 +206,12 @@
                 // Object.keys(e.responseJSON.message).forEach(function(key) {
                 // errorList += '<li>' + e.responseJSON.message[key][0] + '</li>';
                 // });
-                new swal("Opss", e.responseJSON.message, "error");
+                new Swal.fire("Opss", e.responseJSON.message, "error");
             }
         })
 
     }
+
 
     $('#payaza-form').submit(function(e) {
         e.preventDefault();
