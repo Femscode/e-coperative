@@ -17,18 +17,18 @@
 
      <meta name="csrf-token" content="{{ csrf_token() }}">
 
-     <link rel="shortcut icon" href="{{ asset('assets//images/logo/syncologo1.png') }}">
+     <link rel="shortcut icon" href="{{ asset('admindashboard/images/logo/syncologo1.png') }}">
      <!-- Vendor css (Require in all Page) -->
-     <link href="{{url('vendorsdashboard/css/vendor.min.css')}}" rel="stylesheet" type="text/css" />
+     <link href="{{url('admindashboard/css/vendor.min.css')}}" rel="stylesheet" type="text/css" />
 
      <!-- Icons css (Require in all Page) -->
-     <link href="{{url('vendorsdashboard/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+     <link href="{{url('admindashboard/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
 
      <!-- App css (Require in all Page) -->
-     <link href="{{url('vendorsdashboard/css/app.min.css')}}" rel="stylesheet" type="text/css" />
+     <link href="{{url('admindashboard/css/app.min.css')}}" rel="stylesheet" type="text/css" />
 
      <!-- Theme Config js (Require in all Page) -->
-     <script src="{{url('vendorsdashboard/js/config.js')}}"></script>
+     <script src="{{url('admindashboard/js/config.js')}}"></script>
      <style>
           .nav-tabs-custom {
                background: #fff;
@@ -161,12 +161,12 @@
                <div class="logo-box">
                     <a href="/admin" class="logo-dark">
 
-                         <img src="{{ asset('assets//images/logo/syncologo1.png') }}" alt="" width="70%">
+                         <img src="{{ asset('admindashboard/images/logo/syncologo1.png') }}" alt="" width="70%">
 
                     </a>
 
                     <a href="/admin" class="logo-light">
-                         <img src="{{ asset('assets//images/logo/syncologo1.png') }}" alt="" width="70%">
+                         <img src="{{ asset('admindashboard/images/logo/syncologo1.png') }}" alt="" width="70%">
 
                     </a>
                </div>
@@ -178,9 +178,9 @@
 
                <div class="scrollbar" data-simplebar>
                     @if(auth()->user()->plan()->type == 1)
-                    @include('admin-coop-sidebar')
+                    @include('ajo.admin-coop-sidebar')
                     @else
-                    @include('admin-ajo-sidebar')
+                    @include('ajo.admin-ajo-sidebar')
                     @endif
                </div>
           </div>
@@ -216,29 +216,22 @@
      <!-- END Wrapper -->
      @livewireScripts
      <!-- Vendor Javascript (Require in all Page) -->
-     <script src="{{url('vendorsdashboard/js/vendor.js')}}"></script>
+     <script src="{{url('admindashboard/js/vendor.js')}}"></script>
 
      <!-- App Javascript (Require in all Page) -->
-     <script src="{{url('vendorsdashboard/js/app.js')}}"></script>
+     <script src="{{url('admindashboard/js/app.js')}}"></script>
 
      <!-- Vector Map Js -->
-     <script src="{{url('vendorsdashboard/vendor/jsvectormap/js/jsvectormap.min.js')}}"></script>
-     <script src="{{url('vendorsdashboard/vendor/jsvectormap/maps/world-merc.js')}}"></script>
-     <script src="{{url('vendorsdashboard/vendor/jsvectormap/maps/world.js')}}"></script>
+     <script src="{{url('admindashboard/vendor/jsvectormap/js/jsvectormap.min.js')}}"></script>
+     <script src="{{url('admindashboard/vendor/jsvectormap/maps/world-merc.js')}}"></script>
+     <script src="{{url('admindashboard/vendor/jsvectormap/maps/world.js')}}"></script>
 
      <!-- Dashboard Js -->
-     <script src="{{url('vendorsdashboard/js/pages/cooperative.admin.js')}}"></script>
+     <script src="{{url('admindashboard/js/pages/cooperative.admin.js')}}"></script>
      <script src="{{url('cdn/sweetalert.min.js')}}" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-     <script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
+     <script src="{{ asset('admindashboard/js/jquery/jquery.min.js') }}"></script>
      <script src="{{ asset('js\requestController.js') }}"></script>
      <script src="{{ asset('js\formController.js') }}"></script>
-     <script src="{{ url('api_user/assets/libs/datatables.net/js/jquery.dataTables.min.js')}}"></script>
-     <script src="{{ url('api_user/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
-     <script src="{{ url('api_user/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js')}}"></script>
-     <script src="{{ url('api_user/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js')}}"></script>
-
-
-     <script src="{{ url('api_user/assets/js/pages/datatables.init.js')}}"></script>
 
      <script src="{{url('assets/js/professionallocker.js')}}"></script>
      <script>

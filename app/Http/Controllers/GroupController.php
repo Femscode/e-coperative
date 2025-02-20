@@ -22,7 +22,7 @@ class GroupController extends Controller
     public function index()
     {
         //$data['groups'] = Group::where("company_id", auth()->user()->id)->get();
-        return view('admin.ajo.group');
+        return view('ajo.admin.ajo.group');
     }
 
     public function contributionPayment(){
@@ -103,7 +103,7 @@ class GroupController extends Controller
         }
         $data['months'] = $months;
         $data['user'] = Auth::user();
-        return view ('admin.ajo.dues', $data);  
+        return view ('ajo.admin.ajodues', $data);  
     }
 
     public function circleMembers($uuid){
@@ -118,12 +118,12 @@ class GroupController extends Controller
     public function view($id){
         // dd($id);
         $data['id'] =$id;
-        return view('admin.ajo.group_view',$data);
+        return view('ajo.admin.ajo.group_view',$data);
     }
     public function cDues($id){
         // dd($id);
         $data['id'] =$id;
-        return view('admin.ajo.pending',$data);
+        return view('ajo.admin.ajopending',$data);
     }
 
     /**
@@ -133,6 +133,7 @@ class GroupController extends Controller
      */
     public function create(Request $request)
     {
+        
         try {
             $input = $request->all();
             $input['uuid'] = $uuid = rand();
@@ -286,7 +287,8 @@ class GroupController extends Controller
     }
 
     public function contribution(){
-        return view('ajo.my_group');
+        $data['user'] = Auth::user();
+        return view('ajo.my_group', $data);
     }
 
     /**

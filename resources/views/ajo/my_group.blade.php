@@ -1,43 +1,44 @@
-@extends('member.layout.master')
+@extends('cooperative.member.master')
 
-@section('content')
+@section('main')
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-            <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' width='50%' />
+                <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' width='50%' />
 
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            <form id="payaza-form">
-                        <div class='alert alert-danger'>For testing purpose, kindly use the default prefilled card details</div>
-                        <div class='text-center'>Amount To Be Paid</div>
-                        <h1 class='text-center text-red' style='color:#212529;border:0px'>NGN<span id='amountToBePaid'>0</span></h1>
-                        <div class="mb-3">
-                            <label for="card-number" class="form-label">Card Number</label>
-                            <input type='hidden' id='order_id' />
+                <form id="payaza-form">
+                    <div class='alert alert-danger'>For testing purpose, kindly use the default prefilled card details</div>
+                    <div class='text-center'>Amount To Be Paid</div>
+                    <h1 class='text-center text-red' style='color:#212529;border:0px'>NGN<span id='amountToBePaid'>0</span></h1>
+                    <div class="mb-3">
+                        <label for="card-number" class="form-label">Card Number</label>
+                        <input type='hidden' id='order_id' />
 
-                            <input type="text" value='4012000033330026' id="card-number" class="form-control" required placeholder="Enter Card Number">
+                        <input type="text" value='4012000033330026' id="card-number" class="form-control" required placeholder="Enter Card Number">
+                    </div>
+                    <div class='form-group row'>
+                        <div class="mb-3 col">
+                            <label for="expiry-date" class="form-label">Expiry Date</label>
+                            <input value='01/39' type="text" id="expiry-date" class="form-control" required placeholder="MM/YY">
                         </div>
-                        <div class='form-group row'>
-                            <div class="mb-3 col">
-                                <label for="expiry-date" class="form-label">Expiry Date</label>
-                                <input value='01/39' type="text" id="expiry-date" class="form-control" required placeholder="MM/YY">
-                            </div>
-                            <div class="mb-3 col">
-                                <label for="cvv" class="form-label">CVV</label>
-                                <input type="text" value='100' id="cvv" class="form-control" required placeholder="Enter CVV">
-                            </div>
+                        <div class="mb-3 col">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" value='100' id="cvv" class="form-control" required placeholder="Enter CVV">
                         </div>
-                        <div class='justify-content-center d-flex'>
-                            <button type="submit" style='background:#212529;border:0px' class="btn btn-success">Pay Now</button>
-                        </div>
-                    </form>
+                    </div>
+                    <div class='justify-content-center d-flex'>
+                        <button type="submit" style='background:#212529;border:0px' class="btn btn-success">Pay Now</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+<main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container-fluid">
 
         <!-- start page title -->
@@ -60,7 +61,8 @@
         @livewire('member-contribution-livewire')
 
     </div>
-    <!-- container-fluid -->
+</main>
+<!-- container-fluid -->
 @endsection
 
 @section('script')
@@ -76,16 +78,18 @@
         Swal.fire({
             icon: 'success',
             title: 'Success',
-            text: '{{ Session::get('message') }}'
+            text: '{{ Session::get('
+            message ') }}'
         });
-    @endif
-    @if(Session::has('error'))
+        @endif
+        @if(Session::has('error'))
         Swal.fire({
             icon: 'success',
             title: 'Success',
-            text: '{{ Session::get('error') }}'
+            text: '{{ Session::get('
+            error ') }}'
         });
-    @endif
+        @endif
         var preLoader = $(".preloader")
         //copy link
         $(".copy-btn").click(function() {
@@ -105,20 +109,20 @@
             $(".preloader").show()
             const serializedData = $("#importMemberForm").serializeArray();
             try {
-                    const postRequest = await request("/admin/group/create",
+                const postRequest = await request("/admin/group/create",
                     processFormInputs(
                         serializedData), 'post');
-                    // console.log('postRequest.message', postRequest.message);
-                    new swal("Good Job", postRequest.message, "success");
-                    $('#importMemberForm').trigger("reset");
-                    $("#importMemberForm .close").click();
-                    window.location.reload();
+                // console.log('postRequest.message', postRequest.message);
+                new swal("Good Job", postRequest.message, "success");
+                $('#importMemberForm').trigger("reset");
+                $("#importMemberForm .close").click();
+                window.location.reload();
             } catch (e) {
                 $(".preloader").hide()
                 if ('message' in e) {
                     // console.log('e.message', e.message);
                     new swal("Opss", e.message, "error");
-                    
+
                 }
             }
         })
@@ -141,12 +145,13 @@
         });
         $('body').on('click', '.edit-user', function() {
             var id = $(this).data('id');
-            $.get('{{ route('user_details') }}?id=' + id, function(data) {
-                // alert('hhgf');
-                $('#idUser').val(data.id);
-                $('#emailDetail').val(data.email);
-                $('#nameDetail').val(data.name);
-            })
+            $.get("{{ route('user_details') }}?id=' + id,
+                function(data) {
+                    // alert('hhgf');
+                    $('#idUser').val(data.id);
+                    $('#emailDetail').val(data.email);
+                    $('#nameDetail').val(data.name);
+                })
         });
 
         $("#frm_main").on('submit', async function(e) {
@@ -189,15 +194,15 @@
         })
 
 
-         /* When click approve button */
-         $('body').on('click', '.approveButton', function () {
+        /* When click approve button */
+        $('body').on('click', '.approveButton', function() {
             var id = $(this).data('id');
             var token = $("meta[name='csrf-token']").attr("content");
             var el = this;
             // alert("here")
-            startAccount(el,id);
+            startAccount(el, id);
         });
-        async function startAccount(el,id) {
+        async function startAccount(el, id) {
             const willUpdate = await new swal({
                 title: "Confirm User Action",
                 text: `Are you sure you want to start this contribution?`,
@@ -209,34 +214,34 @@
             });
             if (willUpdate.isConfirmed == true) {
                 //performReset()
-                performStart(el,id);
+                performStart(el, id);
             } else {
-                new swal("Opss","Operation Terminated","error");
+                new swal("Opss", "Operation Terminated", "error");
             }
         }
-        function performStart(el,id)
-        {
+
+        function performStart(el, id) {
             $('.approveButton').prop('disabled', true).text('Loading ...');
             try {
                 // alert(data);
-                    $.get("{{ route("start-contribution") }}?id=" + id,
-                    function (data, status) {
+                $.get("{{ route('start-contribution') }}?id=" + id,
+                    function(data, status) {
                         // console.log(data, status);
-                    //    alert(data.message)
-                        if( data.status == "ok") {
-                            let alert =  new swal("Good Job",data.message,"success");
+                        //    alert(data.message)
+                        if (data.status == "ok") {
+                            let alert = new swal("Good Job", data.message, "success");
                             window.location.href = "{{ route('admin_group_home') }}";
-                        }else{
+                        } else {
                             $('.approveButton').prop('disabled', false).text('Start');
-                            new swal("Opss",data.message,"error");
+                            new swal("Opss", data.message, "error");
                         }
-                       
+
                     }
                 );
             } catch (e) {
                 $('.approveButton').prop('disabled', false).text('Start');
                 // alert("here")
-                let alert = new swal("Opss",e.message,"error");
+                let alert = new swal("Opss", e.message, "error");
             }
         }
 
@@ -273,7 +278,7 @@
         function performDelete(el, user_id) {
             //alert(user_id);
             try {
-                $.get('{{ route('delete_users') }}?id=' + user_id,
+                $.get("{{ route('delete_users') }}?id=" + user_id,
                     function(data, status) {
                         if (data.status === "error") {
                             new swal("Opss", data.message, "error");
@@ -297,4 +302,3 @@
     })
 </script>
 @endsection
-

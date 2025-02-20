@@ -6,7 +6,7 @@ use App\Models\Group;
 use Livewire\Component;
 use App\Models\GroupMember;
 
-class AjoGroupMember extends Component
+class ajo.groupMember extends Component
 {
     public $memberId;
     public function mount($memberId)

@@ -23,8 +23,8 @@
     <link href="{{url('memberdashboard/css/appb174.css?ff1e8ee7ca91d18f44ea')}}" rel="stylesheet">
 
 
-    <script src="{{ url('assets/js/jquery/jquery.min.js') }}"></script>
-    <script src="{{ url('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('admindashboard/js/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url('admindashboard/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

@@ -23,7 +23,7 @@
                         @endif
                     </div>
                     <div class="position-absolute top-0 end-0 translate-middle-y me-3">
-                        <img src="{{url('vendorsdashboard/images/double.png')}}" alt="" class="avatar-md">
+                        <img src="{{url('admindashboard/images/double.png')}}" alt="" class="avatar-md">
                     </div>
                     <div class="mt-4">
                         <h4 class="text-white mb-1">{{$review->phone}}</h4>

@@ -139,7 +139,7 @@ class UserController extends Controller
     }
     public function download_member_template() {
         // dd('here');
-        $path = public_path("assets/member_import.xlsx");
+        $path = public_path("member_import.xlsx");
     
     if (File::exists($path)) {
         return Response::download($path, 'member_import.xlsx', [

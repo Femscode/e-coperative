@@ -45,7 +45,7 @@ class WebsiteController extends Controller
         // dd($group);
         if($group){
             $data['numAlreadyJoined'] = $group->members->count();
-            return view('join', $data);
+            return view('ajo.join', $data);
         }else{
             return redirect()->back();
         }
