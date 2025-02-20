@@ -70,7 +70,9 @@ Route::group(['middleware' => ['auth']], function () {
                     Route::get('/', [App\Http\Controllers\GroupController::class, 'index'])->name('admin_group_home');
                     Route::post('/create', [App\Http\Controllers\GroupController::class, 'create'])->name('admin_create_group');
                     Route::get('/members/{uuid}', [App\Http\Controllers\GroupController::class, 'view'])->name('admin_group_members');
+                    Route::get('/dues/{uuid}', [App\Http\Controllers\GroupController::class, 'cDues'])->name('contribution-dues');
                     Route::get('/start-contribution', [App\Http\Controllers\GroupController::class, 'start'])->name('start-contribution');
+                    Route::get('/contribution-dues', [App\Http\Controllers\GroupController::class, 'contributionPayment'])->name('admin-contribution-payment');
 
                 });
                
@@ -135,6 +137,7 @@ Route::group(['middleware' => ['auth']], function () {
                
                 Route::get('/automatic-payment', [App\Http\Controllers\MemberController::class, 'automaticPayment'])->name('member-automatic-payment');
                 Route::get('/manual-payment', [App\Http\Controllers\MemberController::class, 'manualPayment'])->name('member-manual-payment');
+                Route::get('/contribution-dues', [App\Http\Controllers\MemberController::class, 'contributionPayment'])->name('member-contribution-payment');
                 Route::get('/loan-repayment', [App\Http\Controllers\MemberController::class, 'loanPayment'])->name('member-loan-payment');
 
                 Route::group(['prefix' => 'loan'], function () {

@@ -60,6 +60,7 @@
                                             <span class="badge bg-warning">Processing</span>
                                             @else
                                             <span class="badge bg-info ">Ongoing</span>
+                                            <a href="{{ route('contribution-dues', $transaction->uuid) }}">View Dues</a>
                                             @endif
                                         </td>
                                     </tr>

@@ -27,6 +27,14 @@
               <span class="nav-text"> Contribution Group(s) </span>
          </a>
     </li>
+    <li class="nav-item">
+         <a class="nav-link " href="/admin/group/contribution-dues">
+              <span class="nav-icon">
+                   <iconify-icon icon="solar:user-bold-duotone"></iconify-icon>
+              </span>
+              <span class="nav-text"> My Dues </span>
+         </a>
+    </li>
 
     <li class="menu-title mt-2">Support</li>
 

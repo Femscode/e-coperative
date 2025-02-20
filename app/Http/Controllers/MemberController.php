@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
-use App\Models\MemberLoan;
-use App\Models\Transaction;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Group;
 use Carbon\CarbonPeriod;
+use App\Models\MemberLoan;
+use App\Models\GroupMember;
+use App\Models\Transaction;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MemberController extends Controller
 {
@@ -148,6 +150,86 @@ class MemberController extends Controller
         // dd($check, $data);
         return view ('member_dashboard.payment.weekly', $data);
         return view ('member.payment.weekly', $data);
+    }
+    public function contributionPayment(){
+        $groups = GroupMember::where('user_id', Auth::user()->id)->select('group_id')->distinct()->pluck('group_id')->toArray();
+        $participation = Group::whereIn('id', $groups)->where('status', 1)->get();
+        $months = [];
+        foreach($participation as $single){
+            $startDate = Carbon::parse($single->start_date);
+            $endDate = Carbon::now();
+            // dd($startDate);
+            $mode = $single->mode;
+            if($mode == "Weekly"){
+                $currentDate = $startDate->copy()->startOfWeek();  // Start at the beginning of the week
+                $weeksToView = [];
+        
+                while ($currentDate->lte($endDate)) {
+                    $weekStart = $currentDate->format('M d');
+                    $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
+                    $weeksToView[] = "$weekStart - $weekEnd";
+                    $currentDate->addWeek();  // Move to the next week
+                }
+                // dd("here");
+                // Assuming your `Transaction` records store weeks in a similar format as above (or adjust the format as needed)
+                $myWeeks = Transaction::where('user_id', auth()->user()->id)
+                    ->where([
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution']
+                    ])
+                    ->pluck('month')  // Change 'month' to 'week' if you have a week field
+                    ->toArray();
+        
+                $weeks = [];
+                // dd()
+                foreach ($weeksToView as $thisWeek) {
+                    $check = in_array($thisWeek, $myWeeks);
+                    if (!$check) {
+                        $months[] = ['source' => '1', 'week' => $thisWeek, "amount" => $single->amount, 'uuid' => $single->uuid];
+                    }
+                }
+            }elseif ($mode == "Monthly") {
+                $monthsToView = [];
+                $currentDate = $startDate->copy()->startOfMonth();
+                // dd($currentDate);
+                while ($currentDate->lte($endDate) && ($currentDate->year < $endDate->year || ($currentDate->year == $endDate->year && $currentDate->month <= $endDate->month))) {
+                    $monthsToView[] = $currentDate->format('F Y');
+                    $currentDate->addMonth();
+                }
+                // dd($monthsToView);
+                $myMonths = Transaction::where('user_id',  auth()->user()->id)->where([['status', 'Success'],['payment_type','Contribution']])->pluck('month')->toArray();
+                // dd($monthsToView, $myMonths);
+                $months = [];
+                foreach ($monthsToView as $thisMonth) {
+                    $check =  in_array($thisMonth, $myMonths);
+                    if ($check == false) {
+                        $months[] = ['source' => '1', 'month' => $thisMonth, "amount" => $single->amount, 'uuid' => $single->uuid];
+                    }
+                }
+            }else{
+                $monthsToView = [];
+                $currentDate = $startDate->copy()->startOfDay();
+                // dd($currentDate);
+                while ($currentDate->lte($endDate) && ($currentDate->year < $endDate->year || ($currentDate->year == $endDate->year && $currentDate->month <= $endDate->month))) {
+                    $monthsToView[] = $currentDate->format('F Y');
+                    $currentDate->addDay();
+                }
+                // dd($monthsToView);
+                $myMonths = Transaction::where('user_id',  auth()->user()->id)->where([['status', 'Success'],['payment_type','Contribution']])->pluck('month')->toArray();
+                // dd($monthsToView, $myMonths);
+                $months = [];
+                foreach ($monthsToView as $thisMonth) {
+                    $check =  in_array($thisMonth, $myMonths);
+                    if ($check == false) {
+                        $months[] = ['source' => '1', 'month' => $thisMonth, "amount" => $single->amount, 'uuid' => $single->uuid];
+                    }
+                }
+            }
+
+        }
+        $data['months'] = $months;
+        $data['user'] = Auth::user();
+        return view ('member_dashboard.payment.contribution', $data);  
     }
     public function loanPayment(){
         $startDate = Carbon::parse(Auth::user()->created_at);
