@@ -1,4 +1,4 @@
-@extends('member_dashboard.master')
+@extends('member_cooperative.admin.master')
 
 @section('header')
 <style>

@@ -23,7 +23,7 @@ class MemberLoanController extends Controller
         $data['transactions'] = Transaction::where('user_id',  $user->id)->orWhere('email', $user->email)->where('status', 'Success')->latest()->get();
        
         // dd($data);
-        return view ('member_dashboard.loan.index',$data);
+        return view ('member_cooperative.admin.loan.index',$data);
         return view ('loan.index',$data);
         // dd($data);
     }

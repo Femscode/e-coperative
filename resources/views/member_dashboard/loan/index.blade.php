@@ -1,4 +1,4 @@
-@extends('member_dashboard.master')
+@extends('member_cooperative.admin.master')
 
 @section('main')
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">

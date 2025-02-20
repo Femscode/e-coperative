@@ -17,7 +17,7 @@ class PlanController extends Controller
             $data['plan'] = $company = Company::find(auth()->user()->company_id);
         }
         // dd($data);
-        return view('dashboard.plan', $data);
+        return view('cooperative.admin.plan', $data);
         return view('admin.plan.index', $data);
     }
 

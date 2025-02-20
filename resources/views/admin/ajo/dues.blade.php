@@ -1,4 +1,4 @@
-@extends('dashboard.master')
+@extends('cooperative.admin.master')
 @section('header')
 <style>
     .grand-total-container {

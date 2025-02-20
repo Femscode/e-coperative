@@ -20,6 +20,7 @@ class ProfileController extends Controller
     public function dashboard(){
         if(auth()->check()) {
             if(auth()->user()->user_type == "Admin"){
+               
                 return redirect()->route('admin-home');
             }else{
                 return redirect()->route('member_home');
@@ -37,10 +38,10 @@ class ProfileController extends Controller
         $data['banks'] = Bank::orderBy('name','asc')->get();
         // dd($plan);
         if($user->user_type == "Admin") {
-            return view('dashboard.profile', $data);
+            return view('cooperative.admin.profile', $data);
 
         } else {
-            return view('member_dashboard.profile', $data);
+            return view('member_cooperative.admin.profile', $data);
             return view('member.profile', $data);
 
         }

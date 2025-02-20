@@ -24,7 +24,7 @@ class UserController extends Controller
         $data['users'] = User::where('company_id',$company->id)->where('user_type', 'Admin')->get();
         $data['members'] = User::where('company_id',$company->id)->where('user_type','!=' ,'Admin')->get();
        
-        return view('dashboard.users', $data);
+        return view('cooperative.admin.users', $data);
         return view('user_home', $data);
     }
 

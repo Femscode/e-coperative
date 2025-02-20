@@ -45,7 +45,7 @@
                 <div class="loader10 mb-2 mx-auto"></div>
             </div>
             <div class="col-12 mt-auto pb-4">
-                <p class="text-secondary">Loading your cooperative dashboard...</p>
+                <p class="text-secondary">Loading your cooperative cooperative.admin...</p>
             </div>
         </div>
     </div>
@@ -311,7 +311,7 @@
         <div class="text-center mb-4"><a href="investment-personalization.html" class="btn btn-sm btn-outline-theme">More options <i class="bi bi-arrow-right-short"></i></a></div>
     </div>
 </div>
-<script src="{{url('memberdashboard/js/investment/investment-dashboard.js')}}"></script>
+<script src="{{url('memberdashboard/js/investment/investment-cooperative.admin.js')}}"></script>
 <script src="{{ asset('js\requestController.js') }}"></script>
 <script src="{{ asset('js\formController.js') }}"></script>
 @yield('script')
