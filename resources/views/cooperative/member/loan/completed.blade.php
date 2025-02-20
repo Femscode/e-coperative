@@ -1,6 +1,7 @@
-@extends('member.layout.master')
+@extends('cooperative.member.master')
+@section('main')
 
-@section('content')
+<main class="adminuiux-content has-sidebar" onclick="contentClick()">
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -60,6 +61,7 @@
         @livewire('member-completed-loan')
 
     </div>
+    </main>
     <!-- container-fluid -->
 @endsection
 

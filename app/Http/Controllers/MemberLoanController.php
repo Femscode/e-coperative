@@ -30,15 +30,16 @@ class MemberLoanController extends Controller
     public function ongoing()
     {
         $data['user'] = Auth::user();
+        return view ('cooperative.member.loan.ongoing', $data);
 
-        return view ('loan.ongoing',$data);
         // dd($data);
     }
     public function completed()
     {
         $data['user'] = Auth::user();
 
-        return view ('loan.completed',$data);
+        return view ('cooperative.member.loan.completed', $data);
+       
         // dd($data);
     }
 

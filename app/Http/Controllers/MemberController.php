@@ -269,7 +269,8 @@ class MemberController extends Controller
         $data['user'] = Auth::user();
         // $data['months'] = $months + $dateArray;
         // dd($check, $data);
-        return view ('member.payment.pending', $data);
+        return view ('cooperative.member.payment.pending', $data);
+       
     }
 
     public function automaticPayment(){
