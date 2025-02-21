@@ -133,7 +133,6 @@ class GroupController extends Controller
      */
     public function create(Request $request)
     {
-        
         try {
             $input = $request->all();
             $input['uuid'] = $uuid = rand();
