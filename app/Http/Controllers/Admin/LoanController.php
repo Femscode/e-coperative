@@ -19,23 +19,19 @@ class LoanController extends Controller
     public function index(){
         $data['title'] = "Loan Applications";
         return view('cooperative.admin.loan', $data);
-        return view('admin.loan.index', $data);
-    }
+      }
     public function awaiting(){
         $data['title'] = "Awaiting Disbursement Applications";
         return view('cooperative.admin.awaiting', $data);
-        return view('admin.loan.index', $data);
-    }
+     }
     public function ongoing(){
         $data['title'] = "Ongoing Loan Applications";
         return view('cooperative.admin.ongoing', $data);
-        return view('admin.loan.index', $data);
-    }
+     }
     public function completed(){
         $data['title'] = "Completed Loan Applications";
         return view('cooperative.admin.completed', $data);
-        return view('admin.loan.index', $data);
-    }
+     }
 
     public function approve(Request $request){
       

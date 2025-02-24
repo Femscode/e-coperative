@@ -1,312 +1,138 @@
-<div>
-
-    <div class="row">
+<div class="member-dashboard">
+    <div class="row g-3">
         <div class="col-lg-12">
-
-            <div class="col-md-6 mb-2 form-group">
-                <div class="input-group">
-                    <input class="form-control" type="text" wire:model="search"
-                        placeholder="Search for members by name, email or coopID" />
-                    <button type="submit" class="btn btn-success">Search</button>
+            <!-- Search and Filter Section -->
+            <div class="search-filter-wrapper mb-4">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="search-box-lg">
+                            <i class="ri-search-2-line search-icon"></i>
+                            <input type="text" class="form-control form-control-lg" wire:model="search"
+                                placeholder="Search members by name, email or Coop ID">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-end">
+                        <div class="view-options">
+                            <button class="btn btn-soft-primary active" data-view="grid">
+                                <i class="ri-grid-fill"></i>
+                            </button>
+                            <button class="btn btn-soft-primary" data-view="list">
+                                <i class="ri-list-check"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div>
-                <div class="team-list grid-view-filter row">
-                    @foreach ($members as $member)
-                    <div class="col-6 col-md-6 col-xl-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="position-relative bg-light p-2 rounded text-center">
-                                    <img @if($member->cover_image) src="https://syncosave.com/synco_files/public/{{ $member->profile_image }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif alt="" class="avatar-xxl">
+            <!-- Members Grid -->
+            <!-- ... existing search section remains the same ... -->
 
-                                </div>
-                                <div class="d-flex flex-wrap justify-content-between my-3">
-                                    <div>
-                                        <h4 class="mb-1">{{ $member->name }}<span
-                                                class="text-muted fs-13 ms-1">{{ strtoupper(Str::of($member->name)->explode(' ')->map(fn($word) => substr($word, 0, 1))->implode('')) }}
-                                            </span></h4>
-                                        <!-- <div>
-                                            <a href="#!"
-                                                class="link-primary fs-16 fw-medium">{{ $member->email }}</a>
-                                        </div> -->
-                                    </div>
-                                    <div>
-                                        <p class="mb-0"><span class="badge bg-light text-dark fs-12 me-1">
-                                                @if($member->refers()->count() > 10)
-                                                <i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i>
-                                                <i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i>
-                                                <i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i>
-                                                @elseif ($member->refers()->count() > 5)
-                                                <i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i>
-                                                <i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i>
-                                                @else
-                                                <i class="bx bxs-star align-text-top fs-14 text-warning me-1"></i>
-                                                @endif
-                                                Coop ID: {{ $member->coop_id }}</span></p>
+            <!-- Members Grid -->
+            <div class="row g-2">
+                @foreach ($members as $member)
+                <div class="col-xl-4 col-lg-6">
+                    <div class="card member-card">
+                        <div class="card-body p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="member-avatar-wrapper me-3">
+                                    <div class="member-avatar">
+                                        <img @if($member->cover_image)
+                                        src="https://syncosave.com/synco_files/public/{{ $member->profile_image }}"
+                                        @else
+                                        src="{{ asset('admindashboard/images/avatar.png') }}"
+                                        @endif
+                                        alt="{{ $member->name }}"
+                                        class="img-fluid rounded-circle">
+                                        <div class="member-status {{ $member->refers()->count() > 10 ? 'status-gold' : ($member->refers()->count() > 5 ? 'status-silver' : 'status-bronze') }}">
+                                            <i class="ri-verified-badge-fill"></i>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="d-flex align-items-center justify-content-between mt-3 mb-1">
-                                    <p class="mb-0 fs-15 fw-medium text-dark">Referrals</p>
-                                    <div>
-                                        <p class="mb-0 fs-15 fw-medium text-dark">{{ $member->refers()->count() }}
-                                            <span class="ms-1"><iconify-icon icon="solar:course-up-outline"
-                                                    class="text-success"></iconify-icon></span>
-                                        </p>
+                                <div class="member-info flex-grow-1">
+                                    <h6 class="member-name mb-1">{{ $member->name }}</h6>
+                                    <span class="badge bg-soft-primary text-primary mb-2">
+                                        <i class="ri-profile-line me-1"></i>{{ $member->coop_id }}
+                                    </span>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="stat-item">
+                                            <small class="text-muted d-block">Referrals</small>
+                                            <span class="fw-medium">{{ $member->refers()->count() }}</span>
+                                        </div>
+                                       
                                     </div>
                                 </div>
 
-
-                            </div>
-                            <div class="card-footer border-top gap-1 hstack">
-                                <a href="{{ route('admin-member-details', $member->id) }}"
-                                    class="btn btn-primary w-100">View Profile</a>
-                                <a href="{{ route('admin-member-transactions', $member->id) }}"
-                                    class="btn btn-info w-100"> Transactions</a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    @endforeach
-                    <div class="col-lg-12">
-                        <div class="text-center mb-3">
-                            {{ $members->links() }}
-                          </div>
-                    </div>
-                </div><!--end row-->
-
-                <!-- Modal -->
-                <div class="modal fade" id="addmembers" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="myModalLabel">Add New Members</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label for="teammembersName" class="form-label">Name</label>
-                                                <input type="text" class="form-control" id="teammembersName"
-                                                    placeholder="Enter name">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label for="designation" class="form-label">Designation</label>
-                                                <input type="text" class="form-control" id="designation"
-                                                    placeholder="Enter designation">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label for="totalProjects" class="form-label">Projects</label>
-                                                <input type="number" class="form-control" id="totalProjects"
-                                                    placeholder="Total projects">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label for="totalTasks" class="form-label">Tasks</label>
-                                                <input type="number" class="form-control" id="totalTasks"
-                                                    placeholder="Total tasks">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-4">
-                                                <label for="formFile" class="form-label">Profile Images</label>
-                                                <input class="form-control" type="file" id="formFile">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="hstack gap-2 justify-content-end">
-                                                <button type="button" class="btn btn-light"
-                                                    data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-success">Add Member</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div><!--end modal-content-->
-                    </div><!--end modal-dialog-->
-                </div><!--end modal-->
-
-                <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="offcanvasExample">
-                    <!--end offcanvas-header-->
-                    <div class="offcanvas-body profile-offcanvas p-0">
-                        <div class="team-cover">
-                            <img src="assets/images/small/img-9.jpg" alt="" class="img-fluid" />
-                        </div>
-                        <div class="p-3">
-                            <div class="team-settings">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="bookmark-icon flex-shrink-0 me-2">
-                                            <input type="checkbox" id="favourite13"
-                                                class="bookmark-input bookmark-hide">
-                                            <label for="favourite13" class="btn-star">
-                                                <svg width="20" height="20">
-                                                    <use xlink:href="#icon-star" />
-                                                </svg>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col text-end dropdown">
-                                        <a href="javascript:void(0);" id="dropdownMenuLink14"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="ri-more-fill fs-17"></i>
+                                <div class="member-actions">
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ route('admin-member-details', $member->id) }}"
+                                            class="btn btn-soft-primary">
+                                            <i class="ri-user-line"></i>
                                         </a>
-                                        <ul class="dropdown-menu dropdown-menu-end"
-                                            aria-labelledby="dropdownMenuLink14">
-                                            <li><a class="dropdown-item" href="javascript:void(0);"><i
-                                                        class="ri-eye-line me-2 align-middle"></i>View</a></li>
-                                            <li><a class="dropdown-item" href="javascript:void(0);"><i
-                                                        class="ri-star-line me-2 align-middle"></i>Favorites</a></li>
-                                            <li><a class="dropdown-item" href="javascript:void(0);"><i
-                                                        class="ri-delete-bin-5-line me-2 align-middle"></i>Delete</a>
-                                            </li>
-                                        </ul>
+                                        <a href="{{ route('admin-member-transactions', $member->id) }}"
+                                            class="btn btn-soft-info">
+                                            <i class="ri-exchange-dollar-line"></i>
+                                        </a>
                                     </div>
-                                </div>
-                            </div><!--end col-->
-                        </div>
-                        <div class="p-3 text-center">
-                            <img src="assets/images/users/avatar-2.jpg" alt=""
-                                class="avatar-lg img-thumbnail rounded-circle mx-auto">
-                            <div class="mt-3">
-                                <h5 class="fs-15"><a href="javascript:void(0);" class="link-primary">Nancy
-                                        Martino</a></h5>
-                                <p class="text-muted">Team Leader & HR</p>
-                            </div>
-                            <div class="hstack gap-2 justify-content-center mt-4">
-                                <div class="avatar-xs">
-                                    <a href="javascript:void(0);"
-                                        class="avatar-title bg-soft-secondary text-secondary rounded fs-16">
-                                        <i class="ri-facebook-fill"></i>
-                                    </a>
-                                </div>
-                                <div class="avatar-xs">
-                                    <a href="javascript:void(0);"
-                                        class="avatar-title bg-soft-success text-success rounded fs-16">
-                                        <i class="ri-slack-fill"></i>
-                                    </a>
-                                </div>
-                                <div class="avatar-xs">
-                                    <a href="javascript:void(0);"
-                                        class="avatar-title bg-soft-info text-info rounded fs-16">
-                                        <i class="ri-linkedin-fill"></i>
-                                    </a>
-                                </div>
-                                <div class="avatar-xs">
-                                    <a href="javascript:void(0);"
-                                        class="avatar-title bg-soft-danger text-danger rounded fs-16">
-                                        <i class="ri-dribbble-fill"></i>
-                                    </a>
                                 </div>
                             </div>
                         </div>
-                        <div class="row g-0 text-center">
-                            <div class="col-6">
-                                <div class="p-3 border border-dashed border-start-0">
-                                    <h5 class="mb-1">124</h5>
-                                    <p class="text-muted mb-0">Projects</p>
-                                </div>
-                            </div><!--end col-->
-                            <div class="col-6">
-                                <div class="p-3 border border-dashed border-start-0">
-                                    <h5 class="mb-1">81</h5>
-                                    <p class="text-muted mb-0">Tasks</p>
-                                </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
-                        <div class="p-3">
-                            <h5 class="fs-15 mb-3">Personal Details</h5>
-                            <div class="mb-3">
-                                <p class="text-muted text-uppercase fw-semibold fs-12 mb-2">Number</p>
-                                <h6>+(256) 2451 8974</h6>
-                            </div>
-                            <div class="mb-3">
-                                <p class="text-muted text-uppercase fw-semibold fs-12 mb-2">Email</p>
-                                <h6>nancymartino@email.com</h6>
-                            </div>
-                            <div>
-                                <p class="text-muted text-uppercase fw-semibold fs-12 mb-2">Location</p>
-                                <h6 class="mb-0">Carson City - USA</h6>
-                            </div>
-                        </div>
-                        <div class="p-3 border-top">
-                            <h5 class="fs-15 mb-4">File Manager</h5>
-                            <div class="d-flex mb-3">
-                                <div class="flex-shrink-0 avatar-xs">
-                                    <div class="avatar-title bg-soft-danger text-danger rounded fs-16">
-                                        <i class="ri-image-2-line"></i>
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h6 class="mb-1"><a href="javascript:void(0);">Images</a></h6>
-                                    <p class="text-muted mb-0">4469 Files</p>
-                                </div>
-                                <div class="text-muted">
-                                    12 GB
-                                </div>
-                            </div>
-                            <div class="d-flex mb-3">
-                                <div class="flex-shrink-0 avatar-xs">
-                                    <div class="avatar-title bg-soft-secondary text-secondary rounded fs-16">
-                                        <i class="ri-file-zip-line"></i>
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h6 class="mb-1"><a href="javascript:void(0);">Documents</a></h6>
-                                    <p class="text-muted mb-0">46 Files</p>
-                                </div>
-                                <div class="text-muted">
-                                    3.46 GB
-                                </div>
-                            </div>
-                            <div class="d-flex mb-3">
-                                <div class="flex-shrink-0 avatar-xs">
-                                    <div class="avatar-title bg-soft-success text-success rounded fs-16">
-                                        <i class="ri-live-line"></i>
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h6 class="mb-1"><a href="javascript:void(0);">Media</a></h6>
-                                    <p class="text-muted mb-0">124 Files</p>
-                                </div>
-                                <div class="text-muted">
-                                    4.3 GB
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="flex-shrink-0 avatar-xs">
-                                    <div class="avatar-title bg-soft-primary text-primary rounded fs-16">
-                                        <i class="ri-error-warning-line"></i>
-                                    </div>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h6 class="mb-1"><a href="javascript:void(0);">Others</a></h6>
-                                    <p class="text-muted mb-0">18 Files</p>
-                                </div>
-                                <div class="text-muted">
-                                    846 MB
-                                </div>
-                            </div>
-                        </div>
-                    </div><!--end offcanvas-body-->
-                    <div class="offcanvas-foorter border p-3 hstack gap-3 text-center position-relative">
-                        <button class="btn btn-light w-100"><i class="ri-question-answer-fill align-bottom ms-1"></i>
-                            Send Message</button>
-                        <a href="pages-profile.html" class="btn btn-primary w-100"><i
-                                class="ri-user-3-fill align-bottom ms-1"></i> View Profile</a>
                     </div>
-                </div><!--end offcanvas-->
+                </div>
+                @endforeach
             </div>
-        </div><!-- end col -->
-    </div><!--end row-->
+
+            <!-- ... pagination remains the same ... -->
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-center mt-4">
+                {{ $members->links() }}
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+/* ... existing styles remain the same ... */
+
+/* Updated and new styles */
+.member-avatar-wrapper {
+    width: 60px;
+    height: 60px;
+}
+
+.member-status {
+    width: 20px;
+    height: 20px;
+}
+
+.member-card {
+    margin-bottom: 0.5rem;
+}
+
+.member-card .card-body {
+    padding: 1rem;
+}
+
+.member-name {
+    font-size: 0.95rem;
+    line-height: 1.2;
+}
+
+.stat-item {
+    font-size: 0.85rem;
+}
+
+.rating-stars {
+    font-size: 0.85rem;
+}
+
+.member-actions .btn {
+    padding: 0.25rem 0.5rem;
+}
+
+.btn-group-sm>.btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+</style>

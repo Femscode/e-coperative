@@ -1,5 +1,4 @@
 <!-- end page title -->
-
 <div class="row gx-3 align-items-center">
     <div class="col col-sm">
         <nav aria-label="breadcrumb" class="mb-2">

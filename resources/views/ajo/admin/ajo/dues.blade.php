@@ -24,156 +24,239 @@
         outline: none;
     }
 </style>
+<style>
+    .due-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 1.5rem;
+        position: relative;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(9, 65, 104, 0.1);
+        overflow: hidden;
+    }
+
+    .due-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #094168, #FF821A);
+    }
+
+    .due-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(9, 65, 104, 0.1);
+    }
+
+    .due-card .form-check {
+        top: 1rem;
+        right: 1rem;
+        z-index: 1;
+    }
+
+    .due-card-body {
+        text-align: center;
+    }
+
+    .due-month {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #094168;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .due-type {
+        margin-bottom: 1.5rem;
+    }
+
+    .due-amount {
+        padding-top: 1rem;
+        border-top: 1px dashed rgba(9, 65, 104, 0.1);
+    }
+
+    .amount-label {
+        display: block;
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+    }
+
+    .due-amount h3 {
+        color: #FF821A;
+        font-weight: 700;
+    }
+
+    .form-check-input:checked~.due-card-body {
+        opacity: 0.8;
+    }
+
+    .form-check-input:checked+.due-card {
+        border-color: #094168;
+    }
+</style>
+
+<style>
+    .page-title-box {
+        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+        border-left: 4px solid #094168;
+    }
+
+    .search-box .form-control {
+        padding-left: 2.8rem;
+        padding-right: 1.2rem;
+        height: 48px;
+        background: #ffffff;
+        border: 1px solid #e9ecef;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    .search-box .search-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #094168;
+        font-size: 1.2rem;
+    }
+
+    .table> :not(caption)>*>* {
+        padding: 1rem;
+    }
+
+    .fs-12 {
+        font-size: 12px;
+        letter-spacing: 0.5px;
+    }
+
+    .bg-soft-primary {
+        background-color: rgba(9, 65, 104, 0.1) !important;
+    }
+
+    .text-primary {
+        color: #094168 !important;
+    }
+
+    .form-check-input:checked {
+        background-color: #094168;
+        border-color: #094168;
+    }
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(9, 65, 104, 0.02);
+    }
+
+    .avatar-lg {
+        height: 80px;
+        width: 80px;
+    }
+
+    .avatar-title {
+        align-items: center;
+        display: flex;
+        font-weight: 500;
+        height: 100%;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .bg-soft-primary {
+        background-color: rgba(9, 65, 104, 0.1) !important;
+    }
+</style>
 
 @endsection
 
 @section('content')
 
 
-    <div class="container-fluid">
-        <!-- start page title -->
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Groups</h4>
-
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                            <li class="breadcrumb-item active">My Dues</li>
-                        </ol>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="page-title-box bg-light rounded-3 p-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h4 class="mb-1">My Dues</h4>
+                        
                     </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- end page title -->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title mb-0">My Dues</h4>
-                    </div><!-- end card header -->
-        
-                    <div class="card-body">
-                        <div id="customerList">
-                            <div class="row g-4 mb-3">
-                                <div class="col-sm-auto">
-                                    <div>
-                                        <div class="search-box ms-2">
-                                            <input type="text" class="form-control " wire:model="search" placeholder="Search...">
-                                            <i class="ri-search-line search-icon"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{-- <div class="col-sm">
-                                    <div class="d-flex justify-content-sm-end">
-                                        <div class="search-box ms-2">
-                                            <input type="text" class="form-control " wire:model="search" placeholder="Search...">
-                                            <i class="ri-search-line search-icon"></i>
-                                        </div>
-                                    </div>
-                                </div> --}}
-                            </div>
-                            
-                            <div class="table-responsive  mt-3 mb-1">
-                                
-                                <table class="table align-middle table-nowrap" >
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th scope="col" style="width: 25px;">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="masterCheckbox" onchange="toggleAllCheckboxes()" value="option1">
-                                                </div>
-                                            </th>
-                                            <th scope="col">Mode</th>
-                                            <th scope="col">Type</th>
-                                            <th scope="col">Amount(&#x20A6;)</th>
-                                        </tr>
-                                    </thead>
-                                    @if(count($months) > 0)
-                                        <tbody class="list form-check-all">
-                                            @foreach ($months as $month)
-                                            <tr>
-                                                <input type="hidden" @isset($month['amount']) value="Contribution" @else value="Contribution" @endisset name="payment_type[]">
-                                                <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}" @else value="" @endisset name="uuid[]">
-                                                <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->dues }}" @endisset name="fee[]">
-                                                <th scope="row">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input controlledCheckbox" @isset($month['amount']) data-id="{{ $month['amount'] }}" @else data-id="{{ $plan->dues }}" @endisset name="check[]" type="checkbox" id="inlineCheckbox2">
-                                                    </div>
-                                                </th>
-                                                <td> <input type="hidden" name="month[]" value="{{ $month['month'] }}"> {{ $month['month'] }}</td>
-                                                <td> @isset($month['amount']) Contribution @else Contribution @endisset</td>
-                                                <td> <input type="hidden" name="original[]" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->getMondays($month['month']) * $plan->monthly_dues  }}" @endisset> @isset($month['amount']) {{ number_format($month['amount'] , 2)}} @else {{ number_format($plan->dues, 2)}} @endisset </td>
-                                            </tr>
-                                            @endforeach                                            
-                                        </tbody>
-                                    @endif
-                                </table>
-                                @if(count($months) < 1)
-                                    <div class="noresult" >
-                                        <div class="text-center">
-                                            <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                                                colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
-                                            </lord-icon>
-                                            <h5 class="mt-2">Sorry! No Result Found</h5>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                            
-               
+                    <div class="search-box">
+                        <div class="position-relative">
+                            <input type="text" class="form-control form-control-lg rounded-pill" wire:model="search"
+                                placeholder="Search dues...">
+                            <i class="ri-search-line search-icon"></i>
                         </div>
-                    </div><!-- end card -->
-                </div>
-                <!-- end col -->
-            </div>
-            <!-- end col -->
-        </div>
-
-        <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' width='50%' />
-        
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="payaza-form">
-                            <div class='alert alert-danger'>For testing purpose, kindly use the default prefilled card details</div>
-                            <div class='text-center'>Amount To Be Paid</div>
-                            <h1 class='text-center text-red' style='color:#212529;border:0px'>NGN<span id='amountToBePaid'>0</span></h1>
-                            <div class="mb-3">
-                                <label for="card-number" class="form-label">Card Number</label>
-                                <input type='hidden' id='order_id' />
-        
-                                <input type="text" value='4012000033330026' id="card-number" class="form-control" required placeholder="Enter Card Number">
-                            </div>
-                            <div class='form-group row'>
-                                <div class="mb-3 col">
-                                    <label for="expiry-date" class="form-label">Expiry Date</label>
-                                    <input value='01/39' type="text" id="expiry-date" class="form-control" required placeholder="MM/YY">
-                                </div>
-                                <div class="mb-3 col">
-                                    <label for="cvv" class="form-label">CVV</label>
-                                    <input type="text" value='100' id="cvv" class="form-control" required placeholder="Enter CVV">
-                                </div>
-                            </div>
-                            <div class='justify-content-center d-flex'>
-                                <button type="submit" style='background:#212529;border:0px' class="btn btn-success">Pay Now</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    @if(count($months) > 0)
+                    <div class="row g-4">
+                        @foreach ($months as $month)
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <div class="due-card">
+                                <div class="form-check position-absolute">
+                                    <input class="form-check-input controlledCheckbox"
+                                        @isset($month['amount']) data-id="{{ $month['amount'] }}"
+                                        @else data-id="{{ $plan->dues }}" @endisset
+                                        name="check[]" type="checkbox">
+                                </div>
 
-</div> --}}
+                                <input type="hidden" @isset($month['amount']) value="Contribution" @else value="Contribution" @endisset name="payment_type[]">
+                                <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}" @else value="" @endisset name="uuid[]">
+                                <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->dues }}" @endisset name="fee[]">
+
+                                <div class="due-card-body">
+                                    <div class="due-month">{{ $month['month'] ?? 0 }}</div>
+                                    <div class="due-type">
+                                        <span class="badge bg-soft-primary text-primary rounded-pill px-3">
+                                            Contribution
+                                        </span>
+                                    </div>
+                                    <div class="due-amount">
+                                        <span class="amount-label">Amount Due</span>
+                                        <h3 class="mb-0">₦{{ number_format($month['amount'] ?? $plan->dues, 2) }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    @else
+                    <div class="text-center py-5">
+                        <div class="avatar-lg mx-auto mb-4">
+                            <div class="avatar-title bg-soft-primary text-primary fs-1 rounded-circle">
+                                <i class="ri-calendar-todo-line"></i>
+                            </div>
+                        </div>
+                        <h5>No Dues Found</h5>
+                        <p class="text-muted">There are no dues to display at the moment.</p>
+                    </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
 @endsection
 
 @section('script')
