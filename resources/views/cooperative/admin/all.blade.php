@@ -11,7 +11,7 @@
                 <div class="d-flex w-100 overflow-hidden">
                     <a href="/admin/transaction/all" class="nav-link flex-fill text-center py-3 active">
                         <div class="d-flex align-items-center justify-content-center">
-                            <i class="ri-exchange-dollar-line fs-22 me-2"></i>
+                        <i class="ri-wallet-3-line fs-22 me-2"></i>
                             <h5 class="mb-0">All</h5>
                         </div>
                     </a>
@@ -29,7 +29,8 @@
                     </a>
                     <a href="/admin/transaction/repayment" class="nav-link flex-fill text-center py-3">
                         <div class="d-flex align-items-center justify-content-center">
-                            <i class="ri-refund-2-line fs-22 me-2"></i>
+                        <i class="ri-repeat-line fs-22 me-2"></i>
+                           
                             <h5 class="mb-0">Repayments</h5>
                         </div>
                     </a>

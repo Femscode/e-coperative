@@ -70,6 +70,157 @@
           }
      </style>
 
+     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+     <style>
+          .transaction-list {
+               display: flex;
+               flex-direction: column;
+               gap: 0.5rem;
+          }
+
+          .transaction-item {
+               display: grid;
+               grid-template-columns: auto 2fr 2fr 1fr;
+               align-items: center;
+               gap: 1rem;
+               padding: 0.75rem;
+               background: #fff;
+               border-radius: 8px;
+               transition: all 0.2s ease;
+               border: 1px solid #eee;
+          }
+
+          .transaction-item:hover {
+               background: #f8f9fa;
+               transform: translateX(4px);
+          }
+
+          .t-icon {
+               width: 36px;
+               height: 36px;
+               border-radius: 8px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               font-size: 18px;
+          }
+
+          .transaction-item[data-type="Registration"] .t-icon {
+               background: rgba(67, 24, 255, 0.1);
+               color: #4318FF;
+          }
+
+          .transaction-item[data-type="Monthly Dues"] .t-icon {
+               background: rgba(27, 231, 255, 0.1);
+               color: #1BE7FF;
+          }
+
+          .transaction-item[data-type="Repayment"] .t-icon {
+               background: rgba(52, 202, 165, 0.1);
+               color: #34CAA5;
+          }
+
+          .t-info {
+               line-height: 1.2;
+          }
+
+          .t-user {
+               font-weight: 600;
+               color: #2c3345;
+          }
+
+          .t-type {
+               font-size: 0.813rem;
+               color: #6c757d;
+          }
+
+          .t-details {
+               line-height: 1.2;
+          }
+
+          .t-month {
+               font-size: 0.875rem;
+               color: #2c3345;
+          }
+
+          .t-date {
+               font-size: 0.813rem;
+               color: #6c757d;
+          }
+
+          .t-amount {
+               font-weight: 600;
+               color: #2c3345;
+               text-align: right;
+          }
+
+          .search-box {
+               position: relative;
+               width: 250px;
+          }
+
+          .search-input {
+               padding: 0.5rem 1rem 0.5rem 2.5rem;
+               border-radius: 6px;
+               border: 1px solid #e0e0e0;
+               font-size: 0.875rem;
+          }
+
+          .search-icon {
+               position: absolute;
+               left: 1rem;
+               top: 50%;
+               transform: translateY(-50%);
+               color: #6c757d;
+          }
+
+          /* Update icon styles */
+          .t-icon {
+               width: 36px;
+               height: 36px;
+               border-radius: 8px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               font-size: 16px;
+          }
+
+          /* Update transaction status colors */
+          .t-amount[data-status="pending"] {
+               color: #F59E0B;
+          }
+
+          .t-amount[data-status="success"] {
+               color: #10B981;
+          }
+
+          .t-amount[data-status="failed"] {
+               color: #EF4444;
+          }
+
+          /* Update icon backgrounds */
+          .transaction-item[data-type="Registration"] .t-icon {
+               background: #EEF2FF;
+               color: #4F46E5;
+          }
+
+          .transaction-item[data-type="Monthly Dues"] .t-icon {
+               background: #ECFDF5;
+               color: #059669;
+          }
+
+          .transaction-item[data-type="Repayment"] .t-icon {
+               background: #FEF3C7;
+               color: #D97706;
+          }
+
+          /* Simplify date display */
+          .t-date {
+               font-size: 0.875rem;
+               color: #6B7280;
+          }
+     </style>
+
      @yield('header')
 </head>
 
@@ -203,7 +354,7 @@
                                    <script>
                                         document.write(new Date().getFullYear())
                                    </script> &copy; SyncoSave.
-                                  </div>
+                              </div>
                          </div>
                     </div>
                </footer>

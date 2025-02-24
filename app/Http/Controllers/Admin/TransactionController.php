@@ -17,14 +17,14 @@ class TransactionController extends Controller
 
         $data['title'] = "Registration Transactions";
         return view('cooperative.admin.registration', $data);
-        return view('admin.transaction.registration', $data);
+      
     }
     public function repayment()
     {
 
         $data['title'] = "Loan Repayment Transactions";
         return view('cooperative.admin.repayment', $data);
-        return view('admin.transaction.repayment', $data);
+       
     }
 
     /**
@@ -36,19 +36,19 @@ class TransactionController extends Controller
     {
         $data['title'] = "Monthly Dues Transactions";
         return view('cooperative.admin.dues', $data);
-        return view('admin.transaction.dues', $data);
+       
     }
     public function all()
     {
         $data['title'] = "All Transactions";
         return view('cooperative.admin.all', $data);
-        return view('admin.transaction.all', $data);
+      
     }
     public function form()
     {
         $data['title'] = "Form Transactions";
         return view('cooperative.admin.form', $data);
-        return view('admin.transaction.form', $data);
+     
     }
 
     /**

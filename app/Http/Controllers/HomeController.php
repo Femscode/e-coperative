@@ -43,7 +43,12 @@ class HomeController extends Controller
         $data['plan'] = $company;//Company::find(auth()->user()->company_id);
         $data['loans'] = MemberLoan::where('company_id', $company->id)->get();
        
-        return view('cooperative.admin.index', $data);
-        return view('admin.home', $data);
+        if($company->type == 1) {
+
+            return view('cooperative.admin.index', $data);
+        } else {
+            return view('cooperative.admin.ajo-index', $data);
+
+        }
     }
 }

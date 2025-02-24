@@ -103,7 +103,7 @@ class GroupController extends Controller
         }
         $data['months'] = $months;
         $data['user'] = Auth::user();
-        return view ('ajo.admin.ajodues', $data);  
+        return view ('ajo.admin.ajo.dues', $data);  
     }
 
     public function circleMembers($uuid){
