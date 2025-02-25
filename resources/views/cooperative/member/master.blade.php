@@ -29,6 +29,123 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
+    <style>
+          .grand-total-container {
+        max-width: 300px;
+        margin: auto;
+    }
+
+    .grand-total-input {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        background-color: #f8f9fa;
+        border: 2px solid #28a745;
+        color: #28a745;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .grand-total-input:focus {
+        box-shadow: 0 6px 15px rgba(0, 128, 0, 0.3);
+        transform: scale(1.02);
+        outline: none;
+    }
+    .payment-logo {
+        height: 40px;
+        width: auto;
+    }
+
+    .amount-display {
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 1rem;
+    }
+
+    .amount-text {
+        color: #094168;
+        font-size: 2rem;
+    }
+
+    .custom-table {
+        border-collapse: separate;
+        border-spacing: 0 0.5rem;
+    }
+
+    .custom-table thead th {
+        border: none;
+        font-weight: 600;
+        color: #6c757d;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .dues-row {
+        background: #fff;
+        transition: transform 0.2s ease;
+    }
+
+    .dues-row:hover {
+        transform: translateX(5px);
+    }
+
+    .week-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(9, 65, 104, 0.1);
+        color: #094168;
+        border-radius: 8px;
+    }
+
+    .amount-badge {
+        font-weight: 600;
+        color: #094168;
+        background: rgba(9, 65, 104, 0.1);
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+    }
+
+    .grand-total-input {
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-align: center;
+        background: #fff;
+        border: 2px solid #094168;
+        color: #094168;
+        border-radius: 0.75rem;
+    }
+
+    .form-check-input:checked {
+        background-color: #094168;
+        border-color: #094168;
+    }
+
+    .btn-primary {
+        background-color: #094168;
+        border-color: #094168;
+    }
+
+    .btn-primary:hover {
+        background-color: #073251;
+        border-color: #073251;
+    }
+
+    .empty-state-icon {
+        background: rgba(9, 65, 104, 0.1);
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+</style>
     @yield('header')
 </head>
 

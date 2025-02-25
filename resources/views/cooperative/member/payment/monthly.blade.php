@@ -2,179 +2,198 @@
 
 
 @section('header')
-<style>
-    .grand-total-container {
-        max-width: 300px;
-        margin: auto;
-    }
-
-    .grand-total-input {
-        font-size: 1.5rem;
-        font-weight: bold;
-        text-align: center;
-        background-color: #f8f9fa;
-        border: 2px solid #28a745;
-        color: #28a745;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        transition: box-shadow 0.3s ease, transform 0.3s ease;
-    }
-
-    .grand-total-input:focus {
-        box-shadow: 0 6px 15px rgba(0, 128, 0, 0.3);
-        transform: scale(1.02);
-        outline: none;
-    }
-</style>
 
 @endsection
 @section('main')
+<!-- Payment Modal -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' width='50%' />
-
+            <div class="modal-header border-0">
+                <div class="d-flex align-items-center">
+                    <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' height="40" />
+                </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4">
                 <form id="payaza-form">
-                    <div class='alert alert-danger'>For testing purpose, kindly use the default prefilled card details</div>
-                    <div class='text-center'>Amount To Be Paid</div>
-                    <h1 class='text-center text-red' style='color:#212529;border:0px'>NGN<span id='amountToBePaid'>0</span></h1>
+                    <div class="alert alert-warning border-0">
+                        <i class="bi bi-info-circle me-2"></i>
+                        For testing purpose, kindly use the default prefilled card details
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <span class="text-muted d-block mb-1">Amount To Be Paid</span>
+                        <h2 class="mb-0">₦<span id="amountToBePaid">0</span></h2>
+                    </div>
+
                     <div class="mb-3">
                         <label for="card-number" class="form-label">Card Number</label>
-                        <input type='hidden' id='order_id' />
+                        <input type="hidden" id="order_id" />
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-credit-card"></i></span>
+                            <input type="text" value="4012000033330026" id="card-number" 
+                                class="form-control" required placeholder="Enter Card Number">
+                        </div>
+                    </div>
 
-                        <input type="text" value='4012000033330026' id="card-number" class="form-control" required placeholder="Enter Card Number">
-                    </div>
-                    <div class='form-group row'>
-                        <div class="mb-3 col">
+                    <div class="row g-3 mb-4">
+                        <div class="col">
                             <label for="expiry-date" class="form-label">Expiry Date</label>
-                            <input value='01/39' type="text" id="expiry-date" class="form-control" required placeholder="MM/YY">
+                            <input value="01/39" type="text" id="expiry-date" 
+                                class="form-control" required placeholder="MM/YY">
                         </div>
-                        <div class="mb-3 col">
+                        <div class="col">
                             <label for="cvv" class="form-label">CVV</label>
-                            <input type="text" value='100' id="cvv" class="form-control" required placeholder="Enter CVV">
+                            <input type="text" value="100" id="cvv" 
+                                class="form-control" required placeholder="Enter CVV">
                         </div>
                     </div>
-                    <div class='justify-content-center d-flex'>
-                        <button type="submit" style='background:#212529;border:0px' class="btn btn-success">Pay Now</button>
-                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-lock me-2"></i>Pay Now
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Main Content -->
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container mt-4" id="main-content">
-        <!-- start page title -->
         <div class="row">
             <div class="col-12 mb-4">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Pending Monthly Dues</h4>
-
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Monthly Dues</a></li>
-                            <li class="breadcrumb-item active">Pending</li>
-                        </ol>
+                <div class="page-header d-flex align-items-center justify-content-between bg-light rounded-4 p-4">
+                    <div>
+                        <h4 class="mb-1">Pending Monthly Dues</h4>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Monthly Dues</a></li>
+                                <li class="breadcrumb-item active">Pending</li>
+                            </ol>
+                        </nav>
                     </div>
-
+                    <div>
+                        <button class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-download me-2"></i>Export
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- end page title -->
+
         <div class="row">
             <div class="col-lg-12">
-                <div class="card">
-                  
-                    <div class="card-body">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
                         <form id="monthly-dues" method="post">
                             @csrf
-                            <div class="live-preview">
-                                <div class="row">
-                                    <div class="table-responsive">
-                                        @if(count($months) > 0)
-                                        <table class="table table-hover align-middle table-nowrap mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col" style="width: 25px;">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" id="masterCheckbox" onchange="toggleAllCheckboxes()" value="option1">
-                                                        </div>
-                                                    </th>
-                                                    <th scope="col">Month</th>
-                                                    <th scope="col">Type</th>
-                                                    <th scope="col">Amount(&#x20A6;)</th>
-                                                </tr>
-                                            </thead>
+                            <div class="table-responsive">
+                                @if(count($months) > 0)
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th width="50">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" 
+                                                        id="masterCheckbox" onchange="toggleAllCheckboxes()" 
+                                                        value="option1">
+                                                </div>
+                                            </th>
+                                            <th>Month</th>
+                                            <th>Type</th>
+                                            <th class="text-end">Amount(₦)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($months as $month)
+                                        <tr>
+                                            <input type="hidden" @isset($month['amount']) value="Repayment" 
+                                                @else value="Monthly Dues" @endisset name="payment_type[]">
+                                            <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}" 
+                                                @else value="" @endisset name="uuid[]">
+                                            <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}" 
+                                                @else value="{{ $plan->dues }}" @endisset name="fee[]">
+                                            
+                                            <td>
+                                                <div class="form-check">
+                                                    <input class="form-check-input controlledCheckbox" 
+                                                        @isset($month['amount']) data-id="{{ $month['amount'] }}" 
+                                                        @else data-id="{{ $plan->dues }}" @endisset 
+                                                        name="check[]" type="checkbox" id="inlineCheckbox2">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" name="month[]" value="{{ $month['month'] }}">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="bi bi-calendar-month me-2"></i>
+                                                    <span>{{ $month['month'] }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-light text-dark">
+                                                    @isset($month['amount']) Repayment @else Monthly Dues @endisset
+                                                </span>
+                                            </td>
+                                            <td class="text-end">
+                                                <input type="hidden" name="original[]" 
+                                                    @isset($month['amount']) value="{{ $month['amount'] }}" 
+                                                    @else value="{{ $plan->getMondays($month['month']) * $plan->monthly_dues }}" 
+                                                    @endisset>
+                                                @isset($month['amount']) 
+                                                    {{ number_format($month['amount'], 2) }} 
+                                                @else 
+                                                    {{ number_format($plan->dues, 2) }} 
+                                                @endisset
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                @else
+                                <div class="text-center py-5">
+                                    <div class="mb-3">
+                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" 
+                                            trigger="loop" colors="primary:#094168,secondary:#22c55e" 
+                                            style="width:80px;height:80px">
+                                        </lord-icon>
+                                    </div>
+                                    <h5>No Pending Dues!</h5>
+                                    <p class="text-muted">You're all caught up with your payments.</p>
+                                </div>
+                                @endif
+                            </div>
 
-                                            <tbody>
-                                                @foreach ($months as $month)
-                                                <tr>
-                                                    <input type="hidden" @isset($month['amount']) value="Repayment" @else value="Monthly Dues" @endisset name="payment_type[]">
-                                                    <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}" @else value="" @endisset name="uuid[]">
-                                                    <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->dues }}" @endisset name="fee[]">
-                                                    <th scope="row">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input controlledCheckbox" @isset($month['amount']) data-id="{{ $month['amount'] }}" @else data-id="{{ $plan->dues }}" @endisset name="check[]" type="checkbox" id="inlineCheckbox2">
-                                                        </div>
-                                                    </th>
-                                                    <td> <input type="hidden" name="month[]" value="{{ $month['month'] }}"> {{ $month['month'] }}</td>
-                                                    <td> @isset($month['amount']) Repayment @else Monthly Dues @endisset</td>
-                                                    <td> <input type="hidden" name="original[]" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->getMondays($month['month']) * $plan->monthly_dues  }}" @endisset> @isset($month['amount']) {{ number_format($month['amount'] , 2)}} @else {{ number_format($plan->dues, 2)}} @endisset </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                        @endif
-                                        @if(count($months) < 1)
-                                            <div class="noresult">
-                                            <div class="text-center">
-                                                <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                                                    colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
-                                                </lord-icon>
-                                                <h5 class="mt-2"> No Pending Dues!</h5>
-                                            </div>
+                            @if(count($months) > 0)
+                            <div class="mt-4">
+                                <input type="hidden" id="userEmail" name="email" value="{{Auth::user()->email}}">
+                                <input type="hidden" id="userPhone" name="phone" value="{{Auth::user()->phone}}">
+                                
+                                <div class="row justify-content-end">
+                                    <div class="col-md-4">
+                                        <div class="bg-light rounded-4 p-4">
+                                            <label for="total" class="form-label text-uppercase fw-bold mb-3">
+                                                Grand Total
+                                            </label>
+                                            <input type="text" class="form-control form-control-lg text-center"
+                                                name="total_amount" value="0" readonly id="total">
+                                        </div>
                                     </div>
-                                    @endif
                                 </div>
-                            </div><!--end row-->
-                    </div>
-                    @if(count($months) > 0)
-                    <div class="live-preview submit-btn">
-                        <input type="hidden" id="userEmail" name="email" value="{{Auth::user()->email}}">
-                        <input type="hidden" id="userPhone" name="phone" value="{{Auth::user()->phone}}">
-                        <div class="row gy-4">
-                            <div class="col-xxl-3 col-md-3">
-                                <div>
-                                <div class="grand-total-container text-center mt-3">
-                                        <label for="total" class="form-label text-uppercase fw-bold" style="font-size: 1.2rem; color: #333;">Grand Total</label>
-                                        <input
-                                            type="text"
-                                            class="form-control grand-total-input"
-                                            name="total_amount"
-                                            value="0"
-                                            readonly
-                                            id="total">
-                                    </div>
-                                    <!-- <input type="text" class="form-control mt-2" name="total_amount" value="0" readonly id="total"> -->
+
+                                <div class="mt-4 text-end">
+                                    <button type="submit" id="submit-btn" class="btn btn-primary btn-lg px-5">
+                                        <i class="bi bi-credit-card me-2"></i>Make Payment
+                                    </button>
                                 </div>
-                            </div><!--end col-->
-                        </div>
+                            </div>
+                            @endif
+                        </form>
                     </div>
-                    <hr>
-                    <div class="hstack gap-2 ">
-                        <button type="submit" id="submit-btn" class="btn btn-success submit-btn">Make Payment</button>
-                    </div>
-                    @endif
-                    </form>
-                </div><!-- end card-body -->
-            </div><!-- end card -->
+                </div>
+            </div>
         </div>
-        <!-- end col -->
-    </div><!--end row-->
     </div>
 </main>
 @endsection

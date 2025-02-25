@@ -1,160 +1,153 @@
 @extends('cooperative.member.master')
 
 @section('main')
+<!-- Payment Modal -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' width='50%' />
-
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 bg-light">
+                <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' height="40" />
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4">
                 <form id="payaza-form">
-                    <div class='alert alert-danger'>For testing purpose, kindly use the default prefilled card details</div>
-                    <div class='text-center'>Amount To Be Paid</div>
-                    <h1 class='text-center text-red' style='color:#212529;border:0px'>NGN<span id='amountToBePaid'>0</span></h1>
+                    <div class="alert alert-warning border-0 rounded-3">
+                        <i class="bi bi-info-circle me-2"></i>
+                        For testing purpose, kindly use the default prefilled card details
+                    </div>
+                    
+                    <div class="amount-display text-center mb-4">
+                        <span class="text-muted">Amount To Be Paid</span>
+                        <h2 class="amount-text mb-0">₦<span id="amountToBePaid">0</span></h2>
+                    </div>
+
                     <div class="mb-3">
                         <label for="card-number" class="form-label">Card Number</label>
-                        <input type='hidden' id='order_id' />
+                        <input type="hidden" id="order_id" />
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-credit-card"></i></span>
+                            <input type="text" value="4012000033330026" id="card-number" 
+                                class="form-control" required placeholder="Enter Card Number">
+                        </div>
+                    </div>
 
-                        <input type="text" value='4012000033330026' id="card-number" class="form-control" required placeholder="Enter Card Number">
-                    </div>
-                    <div class='form-group row'>
-                        <div class="mb-3 col">
+                    <div class="row g-3 mb-4">
+                        <div class="col">
                             <label for="expiry-date" class="form-label">Expiry Date</label>
-                            <input value='01/39' type="text" id="expiry-date" class="form-control" required placeholder="MM/YY">
+                            <input value="01/39" type="text" id="expiry-date" 
+                                class="form-control" required placeholder="MM/YY">
                         </div>
-                        <div class="mb-3 col">
+                        <div class="col">
                             <label for="cvv" class="form-label">CVV</label>
-                            <input type="text" value='100' id="cvv" class="form-control" required placeholder="Enter CVV">
+                            <input type="text" value="100" id="cvv" 
+                                class="form-control" required placeholder="Enter CVV">
                         </div>
                     </div>
-                    <div class='justify-content-center d-flex'>
-                        <button type="submit" style='background:#212529;border:0px' class="btn btn-success">Pay Now</button>
-                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-lock me-2"></i>Pay Now
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Main Content -->
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container mt-4" id="main-content">
-        <!-- start page title -->
         <div class="row">
             <div class="col-12 mb-4">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Manual Payment</h4>
-
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Manual</a></li>
-                            <li class="breadcrumb-item active">Payment</li>
-                        </ol>
+                <div class="page-header d-flex align-items-center justify-content-between bg-light rounded-4 p-4">
+                    <div>
+                        <h4 class="mb-1">Manual Payment</h4>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="#">Manual</a></li>
+                                <li class="breadcrumb-item active">Payment</li>
+                            </ol>
+                        </nav>
                     </div>
-
                 </div>
             </div>
         </div>
-        <!-- end page title -->
-        <div class="row">
-            <div class="col-md-4 mb-4">
 
-
-                <div class="card-body">
-                    <div class="row justify-content-center">
-                        <div class="col-md-12">
-                            <div class="card">
-
-                                <div class="card-body p-4">
-                                    <div class="text-center mt-2">
-                                        <h5 class="text-primary">Fund Savings</h5>
-                                    </div>
-                                    <div class="p-2 mt-4">
-                                        <form method="POST" id="monthly-dues">
-                                            @csrf
-                                            <div class="mb-3">
-                                                <label for="email" class="form-label">{{ __('Amount To Pay ') }} <span class="text-danger">*</span></label>
-                                                <input type="number" name="amount" class="form-control " id="total" placeholder="Enter amount to pay " required>
-                                            </div>
-                                            <input type="hidden" id="userEmail" name="email" value="{{Auth::user()->email}}">
-                                            <input type="hidden" id="userPhone" name="phone" value="{{Auth::user()->phone}}">
-                                            <div class="mt-4">
-                                                <button class="btn btn-success w-100" type="submit">
-                                                    {{ __('Pay Now') }}
-                                                </button>
-                                            </div>
-
-                                        </form>
-
-                                    </div>
-                                </div>
-                                <!-- end card body -->
-                            </div>
-
-                        </div>
-                    </div>
-                </div><!-- end card-body -->
-
-            </div>
-
+        <div class="row justify-content-center">
             <div class="col-md-8">
-            <div class="card-body px-1">
-                                <div class="card adminuiux-card">
-                                    <div class="card-header">
-                                        <div class="row align-items-center">
-                                            <div class="col">
-                                                <h6>Recent Transaction</h6>
-                                            </div>
-                                            <div class="col-auto px-0"><a class="btn btn-sm btn btn-link">See All</a></div>
-                                            <div class="col-auto"><button class="btn btn-sm btn-outline-theme"><i class="bi bi-arrow-up-right me-1"></i> Export </button></div>
-                                        </div>
-                                    </div>
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <div class="payment-icon mb-3">
+                                <i class="bi bi-wallet2 fs-1 text-primary"></i>
+                            </div>
+                            <h4 class="card-title mb-2">Fund Your Savings</h4>
+                            <p class="text-muted">Enter any amount you'd like to save</p>
+                        </div>
 
-                                    <ul class="list-group list-group-flush border-top bg-none">
-                                        @foreach($transactions as $tranx)
-                                        @if($tranx->type !== 'funded')
-                                        <li class="list-group-item">
-                                            <div class="row gx-3 align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="avatar avatar-40 rounded-circle border"><i class="bi bi-arrow-up-right h5"></i></div>
-                                                </div>
-                                                <div class="col">
-                                                    <p class="mb-1 fw-medium">{{$tranx->payment_type}}</p>
-                                                    <p class="text-secondary small">{{Date('d-m-y', strtotime($tranx->created_at))}}</p>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <h6>- N{{number_format($tranx->amount)}}</h6>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        @else
-                                        <li class="list-group-item theme-green">
-                                            <div class="row gx-3 align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="avatar avatar-40 rounded-circle border border-theme-1 bg-theme-1-subtle text-theme-1"><i class="bi bi-arrow-down-left h5"></i></div>
-                                                </div>
-                                                <div class="col">
-                                                    <p class="mb-1 fw-medium">{{$tranx->payment_type}}</p>
-                                                    <p class="text-secondary small">{{Date('d-m-y', strtotime($tranx->created_at))}}</p>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <h6 class="text-theme-1">+ N{{number_format($tranx->amount)}}</h6>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        @endif
-
-                                        @endforeach
-
-                                    </ul>
+                        <form method="POST" id="monthly-dues" class="payment-form">
+                            @csrf
+                            <div class="mb-4">
+                                <label for="total" class="form-label">Amount to Pay</label>
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text">₦</span>
+                                    <input type="number" name="amount" class="form-control form-control-lg" 
+                                        id="total" placeholder="Enter amount" required>
                                 </div>
                             </div>
+
+                            <input type="hidden" id="userEmail" name="email" value="{{Auth::user()->email}}">
+                            <input type="hidden" id="userPhone" name="phone" value="{{Auth::user()->phone}}">
+
+                            <button class="btn btn-primary btn-lg w-100" type="submit">
+                                <i class="bi bi-credit-card me-2"></i>
+                                {{ __('Proceed to Payment') }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <!-- end col -->
-        </div><!--end row-->
+        </div>
     </div>
 </main>
+
+<style>
+.payment-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(9, 65, 104, 0.1);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.amount-display {
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 1rem;
+}
+
+.amount-text {
+    color: #094168;
+    font-size: 2rem;
+}
+
+.payment-form .form-control:focus {
+    border-color: #094168;
+    box-shadow: 0 0 0 0.25rem rgba(9, 65, 104, 0.1);
+}
+
+.btn-primary {
+    background-color: #094168;
+    border-color: #094168;
+}
+
+.btn-primary:hover {
+    background-color: #073251;
+    border-color: #073251;
+}
+</style>
 @endsection
 
 @section('script')

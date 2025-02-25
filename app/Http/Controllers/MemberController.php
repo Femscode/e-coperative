@@ -103,8 +103,7 @@ class MemberController extends Controller
                 // $data['months'] = $months + $dateArray;
                 // dd($check, $data);
                 return view ('cooperative.member.payment.monthly', $data);
-                return view ('member.payment.monthly', $data);
-                break;
+                 break;
             case 'Weekly':
 
                 //     $this->redirectTo = '/member';
