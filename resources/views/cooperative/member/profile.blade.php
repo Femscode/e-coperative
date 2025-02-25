@@ -1,76 +1,182 @@
 @extends('cooperative.member.master')
 
-@section('links')
+@section('header')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
 <!-- swiper css -->
 <link rel="stylesheet" href="{{ asset('assets/libs/swiper/swiper-bundle.min.css') }}">
+
+<style>
+    .profile-card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .profile-image-wrapper {
+        width: 150px;
+        height: 150px;
+    }
+
+    .profile-image {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        box-shadow: 0 0 20px rgba(9, 65, 104, 0.1);
+    }
+
+    .profile-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .profile-image-edit {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+
+    .profile-image-edit input {
+        display: none;
+    }
+
+    .edit-button {
+        width: 35px;
+        height: 35px;
+        background: #094168;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .edit-button:hover {
+        background: #073251;
+        transform: scale(1.1);
+    }
+
+    .nav-tabs-custom .nav-link {
+        color: #6c757d;
+        padding: 0.8rem 1.2rem;
+        transition: all 0.3s ease;
+    }
+
+    .nav-tabs-custom .nav-link.active {
+        color: #094168;
+        background: transparent;
+        border-bottom: 2px solid #094168;
+    }
+
+    .form-floating>.form-control:focus {
+        border-color: #094168;
+        box-shadow: 0 0 0 0.25rem rgba(9, 65, 104, 0.1);
+    }
+
+    .user-id {
+        margin-top: 0.5rem;
+    }
+
+    .badge {
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .profile-image-wrapper {
+            width: 120px;
+            height: 120px;
+        }
+
+        .nav-tabs-custom .nav-link {
+            padding: 0.5rem 0.8rem;
+            font-size: 0.9rem;
+        }
+    }
+</style>
 @endsection
 
 @section('main')
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container mt-4" id="main-content">
 
-       
-<h2>My Profile</h2>
+
+        <h2>My Profile</h2>
         <div class="row">
-            <div class="col-md-4">
-                <div class="card mt-n5">
+            <div class="col-lg-4">
+                <div class="card profile-card border-0 shadow-sm">
                     <div class="card-body p-4">
-                        <div class="text-center">
-                            <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                                <img width="100px" @if($user->profile_image) src="https://e-coop.cthostel.com/ecoop_files/public/{{ $user->profile_image }}" @else src="{{ asset('assets/images/avatar.png') }}" @endif data-id="profile" id="userProfileImage" class="rounded-circle avatar-sm img-thumbnail user-profile-image previews" alt="user-profile-image">
-                                <div class="avatar-sm p-0 rounded-circle profile-photo-edit">
-                                    <input id="profile-img-file-input" accept=".jpg, .png, image/jpeg, image/png" type="file" data-id="profile" class="profile-img-file-input fileInput">
-                                    <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
-                                        <span class="avatar-title rounded-circle bg-light text-body">
-                                            <i class="ri-camera-fill"></i>
-                                        </span>
+                        <div class="profile-header text-center">
+                            <div class="profile-image-wrapper position-relative d-inline-block mb-4">
+                                <div class="profile-image">
+                                    <img @if($user->profile_image)
+                                    src="https://e-coop.cthostel.com/ecoop_files/public/{{ $user->profile_image }}"
+                                    @else src="{{ asset('assets/images/avatar.png') }}"
+                                    @endif
+                                    data-id="profile"
+                                    id="userProfileImage"
+                                    class="rounded-circle img-thumbnail user-profile-image previews"
+                                    alt="{{ $user->name }}'s profile photo">
+                                </div>
+                                <div class="profile-image-edit">
+                                    <input id="profile-img-file-input"
+                                        accept=".jpg, .png, image/jpeg, image/png"
+                                        type="file"
+                                        data-id="profile"
+                                        class="profile-img-file-input fileInput">
+                                    <label for="profile-img-file-input" class="edit-button">
+                                        <i class="bi bi-camera-fill"></i>
                                     </label>
                                 </div>
                             </div>
-                            <h5 class="fs-16 mb-1">{{ $user->name }}</h5>
-                            <p class="text-muted mb-0">Referral ID : {{ $user->coop_id }} </p>
+                            <div class="profile-info">
+                                <h4 class="mb-1">{{ $user->name }}</h4>
+                                <div class="user-id">
+                                    <span class="badge bg-light text-dark">
+                                        <i class="bi bi-person-badge me-1"></i>
+                                        ID: {{ $user->coop_id }}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div><!--end card-->
-
-            </div><!--end col-->
-            <div class="col-md-8">
-                <div class="card mt-xxl-n5">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-transparent border-bottom">
+                        <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails" role="tab">
-                                    <i class="fas fa-user"></i>
-                                    Personal Details
+                                <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails">
+                                    <i class="bi bi-person me-1"></i>Personal Details
                                 </a>
                             </li>
                             @if($user->user_type == "Member")
                             <li class="nav-item">
-                                <a class="nav-link " data-bs-toggle="tab" href="#myBank" role="tab">
-                                    <i class="fas fa-bank"></i>
-                                    Bank
+                                <a class="nav-link" data-bs-toggle="tab" href="#myBank">
+                                    <i class="bi bi-bank me-1"></i>Bank Details
                                 </a>
                             </li>
                             @endif
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#changePassword" role="tab">
-                                    <i class="far fa-user"></i>
-                                    Change Password
+                                <a class="nav-link" data-bs-toggle="tab" href="#changePassword">
+                                    <i class="bi bi-shield-lock me-1"></i>Security
                                 </a>
                             </li>
                             @if($user->user_type == "Member")
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#experience" role="tab">
-                                    <i class="far fa-envelope"></i>
-                                    My Plan
+                                <a class="nav-link" data-bs-toggle="tab" href="#experience">
+                                    <i class="bi bi-star me-1"></i>My Plan
                                 </a>
                             </li>
                             @endif
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#privacy" role="tab">
-                                    <i class="mdi mdi-cog-outline"></i>
-                                    Privacy Policy
+                                <a class="nav-link" data-bs-toggle="tab" href="#privacy">
+                                    <i class="bi bi-shield-check me-1"></i>Privacy
                                 </a>
                             </li>
                         </ul>

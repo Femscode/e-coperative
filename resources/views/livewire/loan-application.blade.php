@@ -23,7 +23,7 @@
                 @else
                     <div class="alert alert-info d-flex align-items-center m-0 px-3 py-2">
                         <i class="bi bi-info-circle me-2"></i>
-                        <small>Join for {{$company->month}} month(s) to apply for a loan</small>
+                        <small>You must have join for {{$company->month}} month(s) to apply for a loan</small>
                     </div>
                 @endif
             </div>
