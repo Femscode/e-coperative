@@ -27,7 +27,7 @@ class MemberController extends Controller
 
 
         return view('cooperative.admin.member_list');
-        return view('admin.member.list');
+       
     }
 
     public function details($id)

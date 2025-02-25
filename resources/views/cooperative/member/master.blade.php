@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Digicoop | Dashboard</title>
+    <title>SyncoSave | Dashboard</title>
     <link rel="icon" type="image/png" href="assets/img/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -39,8 +39,10 @@
     <div class="container h-100">
         <div class="row justify-content-center align-items-center text-center h-100">
             <div class="col-12 mb-auto pt-4"></div>
-            <div class="col-auto"><img src="assets/img/logo.svg" alt="" class="height-60 mb-3">
-                <p class="h6 mb-0">DigiCoop</p>
+            <div class="col-auto">
+                <img src="{{ asset('admindashboard/images/logo/syncologo2.png') }}" alt="" class="height-60 mb-3">
+
+                <p class="h6 mb-0">SyncoSave</p>
                 <p class="h3 mb-4">Cooperative at your fingertip!</p>
                 <div class="loader10 mb-2 mx-auto"></div>
             </div>
@@ -53,19 +55,32 @@
 <header class="adminuiux-header">
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
-            <button class="btn btn-link btn-square sidebar-toggler" type="button" onclick="initSidebar()"><i class="sidebar-svg" data-feather="menu"></i></button> <a class="navbar-brand" href="/"><img data-bs-img="light" src="{{ url('assets/images/cooplogo.png') }}" alt=""> <img data-bs-img="dark" src="assets/img/logo.svg" alt="">
-                <div class=""><span class="h4">Dashboard</span>
-                    <p class="company-tagline">{{$user->email}}</p>
-                </div>
+            <button class="btn btn-link btn-square sidebar-toggler" type="button" onclick="initSidebar()"><i class="sidebar-svg" data-feather="menu"></i></button> 
+            <a class="navbar-brand" href="/">
+                <img src="{{ asset('admindashboard/images/logo/syncologo2.png') }}" alt="" style="width:100px;height:50px">
+
+
             </a>
-          
+
             <div class="ms-auto">
-                
+
                 <div class="dropdown d-inline-block">
-                <button class="btn btn-link btn-square btnsunmoon btn-link-header" id="btn-layout-modes-dark-page"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun sun mx-auto"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon moon mx-auto"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
+                    <button class="btn btn-link btn-square btnsunmoon btn-link-header" id="btn-layout-modes-dark-page"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun sun mx-auto">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon moon mx-auto">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg></button>
                     <button class="btn btn-link btn-square btn-icon btn-link-header dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i data-feather="bell"></i> <span class="position-absolute top-0 end-0 badge rounded-pill bg-danger p-1"><small>9+</small> <span class="visually-hidden">unread messages</span></span></button>
                     <ul class="dropdown-menu dropdown-menu-end notification-dd sm-mi-95px">
-                       
+
                         <li><a class="dropdown-item p-2" href="#">
                                 <div class="row gx-3">
                                     <div class="col-auto">
@@ -76,8 +91,8 @@
                                     </div>
                                 </div>
                             </a></li>
-                        
-                      
+
+
                         <li class="text-center"><button class="btn btn-link text-center" onclick="notifcationAll()">View all <i class="bi bi-arrow-right fs-14"></i></button></li>
                     </ul>
                 </div>
@@ -95,14 +110,14 @@
                                     <figure class="avatar avatar-50 rounded-circle coverimg align-middle"><img src="assets/img/modern-ai-image/user-6.jpg" alt=""></figure>
                                 </div>
                                 <div class="col align-self-center">
-                                    <p class="mb-1"><span>Digicoop</span></p>
+                                    <p class="mb-1"><span>SyncoSave</span></p>
                                     <p><i class="bi bi-wallet2 me-2"></i> N1100.00 <small class="opacity-50">Balance</small></p>
                                 </div>
                             </div>
                         </div>
                         <div class="px-2">
                             <div><a class="dropdown-item" href="/member/profile"><i data-feather="user" class="avatar avatar-18 me-1"></i> My Profile</a></div>
-                             <div><a class="dropdown-item" href="#"><i data-feather="dollar-sign" class="avatar avatar-18 me-1"></i> Referral</a></div>
+                            <div><a class="dropdown-item" href="#"><i data-feather="dollar-sign" class="avatar avatar-18 me-1"></i> Referral</a></div>
                             <div><a class="dropdown-item" href="#">
                                     <div class="row">
                                         <div class="col"><i data-feather="gift" class="avatar avatar-18 me-1"></i> Subscription</div>
@@ -117,10 +132,10 @@
                         </div>
                     </div>
                 </div>
-             </div>
+            </div>
         </div>
     </nav>
-   
+
 </header>
 <div class="adminuiux-wrap">
     <div class="adminuiux-sidebar">
@@ -178,7 +193,7 @@
 <footer class="adminuiux-footer has-adminuiux-sidebar mt-auto">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 col-md col-lg py-2"><span class="small">Copyright @<?php echo Date('Y');?>, <a href="/" target="_blank">Digicoop</a></span></div>
+            <div class="col-12 col-md col-lg py-2"><span class="small">Copyright @<?php echo Date('Y'); ?>, <a href="/" target="_blank">SyncoSave</a></span></div>
             <div class="col-12 col-md-auto col-lg-auto align-self-center">
                 <ul class="nav small">
                     <li class="nav-item"><a class="nav-link" href="#">Help</a></li>

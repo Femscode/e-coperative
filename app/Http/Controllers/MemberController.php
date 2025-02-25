@@ -28,7 +28,7 @@ class MemberController extends Controller
         $data['member_loan'] = MemberLoan::where('user_id',$user->id)->where('approval_status',1)->get();
         $data['transactions'] = Transaction::where('user_id', $user->id)->orWhere('email',$user->email)->where('status', 'Success')->latest()->paginate(10);
         return view('cooperative.member.index', $data);
-        return view('member.index', $data);
+      
     }
 
     public function transactions() {
