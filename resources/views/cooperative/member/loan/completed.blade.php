@@ -2,16 +2,16 @@
 @section('main')
 
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' width='50%' />
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' width='50%' />
 
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-            <form id="payaza-form">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="payaza-form">
                         <div class='alert alert-danger'>For testing purpose, kindly use the default prefilled card details</div>
                         <div class='text-center'>Amount To Be Paid</div>
                         <h1 class='text-center text-red' style='color:#212529;border:0px'>NGN<span id='amountToBePaid'>0</span></h1>
@@ -35,34 +35,18 @@
                             <button type="submit" style='background:#212529;border:0px' class="btn btn-success">Pay Now</button>
                         </div>
                     </form>
-            </div>
-        </div>
-    </div>
-</div>
-    <div class="container-fluid">
-
-        <!-- start page title -->
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Loan</h4>
-
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Application</a></li>
-                            <li class="breadcrumb-item active">Loan</li>
-                        </ol>
-                    </div>
-
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container-fluid">
+
+        <!-- start page title -->
+       
 
         @livewire('member-completed-loan')
 
     </div>
-    </main>
-    <!-- container-fluid -->
+</main>
+<!-- container-fluid -->
 @endsection
-
-

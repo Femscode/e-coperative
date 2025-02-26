@@ -1,68 +1,138 @@
 @extends('cooperative.member.master')
 
 @section('main')
+<!-- Payment Modal -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' width='50%' />
-
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 bg-light">
+                <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' class="img-fluid" style="max-width: 140px" />
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4">
                 <form id="payaza-form">
-                    <div class='alert alert-danger'>For testing purpose, kindly use the default prefilled card details</div>
-                    <div class='text-center'>Amount To Be Paid</div>
-                    <h1 class='text-center text-red' style='color:#212529;border:0px'>NGN<span id='amountToBePaid'>0</span></h1>
+                    <div class='alert alert-danger bg-danger-subtle border-0'>
+                        <i class="bi bi-info-circle me-2"></i>
+                        For testing purpose, kindly use the default prefilled card details
+                    </div>
+                    <div class='text-center mb-2'>Amount To Be Paid</div>
+                    <h2 class='text-center fw-bold mb-4'>₦<span id='amountToBePaid'>0</span></h2>
                     <div class="mb-3">
-                        <label for="card-number" class="form-label">Card Number</label>
+                        <label for="card-number" class="form-label small text-muted">Card Number</label>
                         <input type='hidden' id='order_id' />
-
-                        <input type="text" value='4012000033330026' id="card-number" class="form-control" required placeholder="Enter Card Number">
-                    </div>
-                    <div class='form-group row'>
-                        <div class="mb-3 col">
-                            <label for="expiry-date" class="form-label">Expiry Date</label>
-                            <input value='01/39' type="text" id="expiry-date" class="form-control" required placeholder="MM/YY">
-                        </div>
-                        <div class="mb-3 col">
-                            <label for="cvv" class="form-label">CVV</label>
-                            <input type="text" value='100' id="cvv" class="form-control" required placeholder="Enter CVV">
+                        <div class="input-group">
+                            <input type="text" value='4012000033330026' id="card-number" 
+                                class="form-control form-control-lg" required placeholder="Enter Card Number">
+                            <span class="input-group-text"><i class="bi bi-credit-card"></i></span>
                         </div>
                     </div>
-                    <div class='justify-content-center d-flex'>
-                        <button type="submit" style='background:#212529;border:0px' class="btn btn-success">Pay Now</button>
+                    <div class='row g-3'>
+                        <div class="col-md-6">
+                            <label for="expiry-date" class="form-label small text-muted">Expiry Date</label>
+                            <input value='01/39' type="text" id="expiry-date" 
+                                class="form-control form-control-lg" required placeholder="MM/YY">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="cvv" class="form-label small text-muted">CVV</label>
+                            <input type="text" value='100' id="cvv" 
+                                class="form-control form-control-lg" required placeholder="Enter CVV">
+                        </div>
+                    </div>
+                    <div class='mt-4'>
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-lock me-2"></i>Pay Now
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
-    <div class="container-fluid">
-
-        <!-- start page title -->
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">My Contribution Circle</h4>
-
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Contribution</a></li>
-                            <li class="breadcrumb-item active">Circle</li>
-                        </ol>
-                    </div>
-
-                </div>
+    <div class="container-fluid py-4">
+        <!-- Header -->
+        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4">
+            <div class="mb-3 mb-md-0">
+                <h3 class="fw-bold mb-1">My Contribution Circle</h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="#" class="text-decoration-none">
+                                <i class="bi bi-house-door small"></i>
+                                <span class="ms-2">Contribution</span>
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active">Circle</li>
+                    </ol>
+                </nav>
+            </div>
+            <div>
+                <button class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>
+                    New Contribution
+                </button>
             </div>
         </div>
 
         @livewire('member-contribution-livewire')
-
     </div>
 </main>
-<!-- container-fluid -->
+
+<style>
+.modal-content {
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.form-control {
+    border-radius: 0.5rem;
+    border: 1px solid #e0e0e0;
+    padding: 0.75rem 1rem;
+}
+
+.form-control:focus {
+    border-color: #094168;
+    box-shadow: 0 0 0 0.2rem rgba(9, 65, 104, 0.1);
+}
+
+.input-group-text {
+    background: transparent;
+    border-left: 0;
+}
+
+.btn-primary {
+    background: #094168;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #073251;
+    transform: translateY(-1px);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "•";
+}
+
+.breadcrumb-item a {
+    color: #6c757d;
+}
+
+.breadcrumb-item.active {
+    color: #094168;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 1rem;
+    }
+}
+</style>
 @endsection
 
 @section('script')
