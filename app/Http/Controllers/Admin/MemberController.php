@@ -26,8 +26,8 @@ class MemberController extends Controller
     {
 
 
-        return view('dashboard.member_list');
-        return view('admin.member.list');
+        return view('cooperative.admin.member_list');
+       
     }
 
     public function details($id)
@@ -38,7 +38,7 @@ class MemberController extends Controller
         $data['coop'] = Company::find($user->company_id);
         // dd($plan);
         // return view('member.profile', $data);
-        return view('dashboard.member_details', $data);
+        return view('cooperative.admin.member_details', $data);
         return view('admin.member.detail', $data);
     }
 
@@ -55,7 +55,7 @@ class MemberController extends Controller
        
         // dd($plan);
         // return view('member.profile', $data);
-        return view('dashboard.member_transactions', $data);
+        return view('cooperative.admin.member_transactions', $data);
     }
 
     /**

@@ -79,7 +79,7 @@ class User extends Authenticatable implements Auditable
         return $plan;
     }
     public function plan(){
-        $plan = Company::find($this->company_id);
+        $plan = Company::where('id',$this->company_id)->orwhere('uuid', $this->company_id)->first();
         return $plan;
     }
     public function totalSavings(){
@@ -122,7 +122,7 @@ class User extends Authenticatable implements Auditable
             switch($mode){
                 case 'Anytime':
                    
-                    return view ('member_dashboard.payment.anytime',$data);
+                    return view ('cooperative.member.admin.payment.anytime',$data);
                     return view ('member.payment.anytime',$data);
                     break;
     
@@ -175,7 +175,7 @@ class User extends Authenticatable implements Auditable
                     $data['months'] = array_merge($months, $dateArray);
                     // $data['months'] = $months + $dateArray;
                     // dd($check, $data);
-                    return view ('member_dashboard.payment.monthly', $data);
+                    return view ('cooperative.member.admin.payment.monthly', $data);
                     return view ('member.payment.monthly', $data);
                     break;
                 case 'Weekly':

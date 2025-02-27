@@ -23,7 +23,8 @@ class UserController extends Controller
         }
         $data['users'] = User::where('company_id',$company->id)->where('user_type', 'Admin')->get();
         $data['members'] = User::where('company_id',$company->id)->where('user_type','!=' ,'Admin')->get();
-        return view('dashboard.users', $data);
+       
+        return view('cooperative.admin.users', $data);
         return view('user_home', $data);
     }
 
@@ -138,7 +139,7 @@ class UserController extends Controller
     }
     public function download_member_template() {
         // dd('here');
-        $path = public_path("assets/member_import.xlsx");
+        $path = public_path("member_import.xlsx");
     
     if (File::exists($path)) {
         return Response::download($path, 'member_import.xlsx', [

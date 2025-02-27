@@ -23,7 +23,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the application cooperative.admin.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -42,8 +42,13 @@ class HomeController extends Controller
         $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->where('original','!=',0)->paginate(10);
         $data['plan'] = $company;//Company::find(auth()->user()->company_id);
         $data['loans'] = MemberLoan::where('company_id', $company->id)->get();
-        // dd($data);
-        return view('dashboard.index', $data);
-        return view('admin.home', $data);
+       
+        if($company->type == 1) {
+
+            return view('cooperative.admin.index', $data);
+        } else {
+            return view('cooperative.admin.ajo-index', $data);
+
+        }
     }
 }

@@ -41,6 +41,7 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
+        
         switch(Auth::user()->user_type){
             case 'Admin':
 

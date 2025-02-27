@@ -41,6 +41,7 @@ Route::post('/pay-for-form', [App\Http\Controllers\TransactionController::class,
 // routes/web.php
 Route::get('/cooperatives-list', [App\Http\Controllers\WebsiteController::class, 'list'])->name('cooperatives.list');
 Route::get('//cooperatives/{id}', [App\Http\Controllers\WebsiteController::class, 'show'])->name('cooperatives.details');
+Route::get('/join/contribution/{id}', [App\Http\Controllers\WebsiteController::class, 'joinCont']);
 
 
 
@@ -56,10 +57,24 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/user/verify-two-factor-authentication', [App\Http\Controllers\ProfileController::class, 'verify'])->name('verify-otp');
     Route::group(['middleware' => ['2fa']], function () {
         Route::post('/toggle-2fa', [App\Http\Controllers\ProfileController::class, 'toggleTwo'])->name('enable-2fa');
+        Route::get('/join-contribution', [App\Http\Controllers\GroupController::class, 'approve'])->name('join-contribution');
+        Route::get('/my-contribution', [App\Http\Controllers\GroupController::class, 'contribution'])->name('my-contribution');
+        Route::get('circle-members-{uuid}', [App\Http\Controllers\GroupController::class, 'circleMembers'])->name('circle-members');
+
         Route::group(['middleware' => 'admin'], function () {
             Route::group(['prefix' => 'admin'], function () {
                 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('admin-home');
                 Route::get('/download_member_template', [App\Http\Controllers\UserController::class, 'download_member_template'])->name('download_member_template');
+
+                Route::group(['prefix' => 'group'], function(){
+                    Route::get('/', [App\Http\Controllers\GroupController::class, 'index'])->name('admin_group_home');
+                    Route::post('/create', [App\Http\Controllers\GroupController::class, 'create'])->name('admin_create_group');
+                    Route::get('/members/{uuid}', [App\Http\Controllers\GroupController::class, 'view'])->name('admin_group_members');
+                    Route::get('/dues/{uuid}', [App\Http\Controllers\GroupController::class, 'cDues'])->name('contribution-dues');
+                    Route::get('/start-contribution', [App\Http\Controllers\GroupController::class, 'start'])->name('start-contribution');
+                    Route::get('/contribution-dues', [App\Http\Controllers\GroupController::class, 'contributionPayment'])->name('admin-contribution-payment');
+
+                });
                
                 Route::group(['prefix' => 'user'], function () {
                     Route::get('/', [App\Http\Controllers\UserController::class, 'index'])->name('user_home');
@@ -122,6 +137,7 @@ Route::group(['middleware' => ['auth']], function () {
                
                 Route::get('/automatic-payment', [App\Http\Controllers\MemberController::class, 'automaticPayment'])->name('member-automatic-payment');
                 Route::get('/manual-payment', [App\Http\Controllers\MemberController::class, 'manualPayment'])->name('member-manual-payment');
+                Route::get('/contribution-dues', [App\Http\Controllers\MemberController::class, 'contributionPayment'])->name('member-contribution-payment');
                 Route::get('/loan-repayment', [App\Http\Controllers\MemberController::class, 'loanPayment'])->name('member-loan-payment');
 
                 Route::group(['prefix' => 'loan'], function () {

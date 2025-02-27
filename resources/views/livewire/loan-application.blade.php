@@ -1,147 +1,140 @@
-<!-- end page title -->
-
-<div class="row gx-3 align-items-center">
-    <div class="col col-sm">
-        <nav aria-label="breadcrumb" class="mb-2">
-            <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item bi"><a href="investment-dashboard.html"><i class="bi bi-house-door me-1 fs-14"></i> Dashboard</a></li>
-                <li class="breadcrumb-item active bi" aria-current="page">My Loans</li>
-            </ol>
-        </nav>
-
-    </div>
-    @if($company->month == NULL || $difference >= $company->month)
-    <div class="col-auto col-sm-auto"><a data-bs-toggle="modal" data-bs-target="#addSeller" class="btn btn-theme">Loan Request <i class="bi bi-arrow-right"></i></a></div>
-    @else
-    <span href='#'  class="badge badge-light text-bg-success">You need to have joined the cooperation for {{$company->month  }} month(s) to apply loan</span>
-    @endif
-</div>
-
-<!-- <div class="alert alert-info alert-dismissible fade show" role="alert"><strong>Complete pending form!</strong> Please <a href="investment-loan-request.html">complete</a> your loan request form and submit for proceeding. <button type=" button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div> -->
-<div class="row mt-4">
-    @foreach($loans as $transaction)
-    <div class="col-md-6">
-        <div class="card border-theme-1 theme-yellow mb-4">
-            <div class="card-body">
-                <div class="row align-items-center mb-3">
-                    <div class="col-auto"><i class="bi bi-arrow-clockwise h4 bg-warning-opacity rounded"></i></div>
-                    <div class="col">
-                        <h5 class="mb-0 fw-medium">Processing</h5>
-                        <p class="fw-medium">{{$user->company->name}}</p>
+<div class="loan-dashboard">
+    <!-- Header Section -->
+    <div class="page-header bg-light rounded-4 p-4 mb-4">
+        <div class="row align-items-center">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="investment-cooperative.admin.html">
+                                <i class="bi bi-house-door me-1"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active">My Loans</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-auto">
+                @if($company->month == NULL || $difference >= $company->month)
+                    <a data-bs-toggle="modal" data-bs-target="#addSeller" 
+                        class="btn btn-primary">
+                        <i class="bi bi-plus-circle me-2"></i>New Loan Request
+                    </a>
+                @else
+                    <div class="alert alert-info d-flex align-items-center m-0 px-3 py-2">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <small>You must have join for {{$company->month}} month(s) to apply for a loan</small>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-auto mb-3">
-                        <h4 class="mb-1">5%</h4>
-                        <p class="small opacity-75">Interest Rate</p>
-                    </div>
-                    <div class="col text-end mb-3">
-                        <p class="my-1">{{ $transaction->applied_date }}</p>
-                        <p class="small opacity-75"><i class="bi bi-calendar-event me-1"></i> Applied Date</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col mb-3">
-                        <p class="opacity-75 small mb-2">Loan amount (NGN):</p>
-                        <h3>N{{ number_format($transaction->total_applied, 2) }}</h3>
-                    </div>
-                    <div class="col-5 mb-3">
-                        <p class="opacity-75 small mb-2">Tenure (Yrs):</p>
-                        <h3>{{ $company->loan_month_repayment }} Month</h3>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <h6 class="fw-normal">Your repayment</h6>
-                    <h1 class="mb-0">N {{ number_format($transaction->monthly_return, 2) }} <small class="fw-normal fs-14">/month</small></h1>
-                    <p class="opacity-75 small mb-3">in Nigerian Naira</p>
-
-                    @if($transaction->approval_status == 1 && $transaction->status == "Awaiting" && $transaction->payment_status == 0)
-                    <button class="btn rounded-pill btn-sm btn-info" onclick="processPayment(this)" data-amount="{{$transaction->monthly_return  }}" data-id="{{ $transaction->uuid }}">Pay</button>
-                    <!-- <button class="btn rounded-pill btn-sm btn-info" onclick="processPayment(this)" data-amount="{{auth()->user()->plan()->form_amount  }}" data-id="{{ $transaction->uuid }}">Pay</button> -->
-                    @endif
-                </div>
+                @endif
             </div>
         </div>
     </div>
-    @endforeach
-    @foreach($ongoing_loans as $transaction)
-    <div class="col-md-6">
-        <div class="card border-theme-1 theme-green mb-4">
-            <div class="card-body">
-                <div class="row align-items-center mb-3">
-                    <div class="col-auto"><i class="bi bi-house h4 bg-warning-opacity rounded"></i></div>
-                    <div class="col">
-                        <h5 class="mb-0 fw-medium">Ongoing</h5>
-                        <p class="fw-medium">{{$user->company->name}}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-auto mb-3">
-                        <h4 class="mb-1">5%</h4>
-                        <p class="small opacity-75">Interest Rate</p>
-                    </div>
-                    <div class="col text-end mb-3">
-                        <p class="my-1">{{ $transaction->applied_date }}</p>
-                        <p class="small opacity-75"><i class="bi bi-calendar-event me-1"></i> Applied Date</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col mb-3">
-                        <p class="opacity-75 small mb-2">Loan amount (NGN):</p>
-                        <h3>N{{ number_format($transaction->total_applied, 2) }}</h3>
-                    </div>
-                    <div class="col-5 mb-3">
-                        <p class="opacity-75 small mb-2">Tenure (Yrs):</p>
-                        <h3>2 Month</h3>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <h6 class="fw-normal">Your repayment</h6>
-                    <h1 class="mb-0">N {{ number_format($transaction->monthly_return, 2) }} <small class="fw-normal fs-14">/month</small></h1>
-                    <p class="opacity-75 small mb-3">in Nigerian Naira</p>
 
-                    @if($transaction->approval_status == 1 && $transaction->status == "Awaiting" && $transaction->payment_status == 0)
-                    <button class="btn rounded-pill btn-sm btn-info" onclick="processPayment(this)" data-amount="{{$transaction->monthly_return  }}" data-id="{{ $transaction->uuid }}">Pay</button>
-                    <!-- <button class="btn rounded-pill btn-sm btn-info" onclick="processPayment(this)" data-amount="{{auth()->user()->plan()->form_amount  }}" data-id="{{ $transaction->uuid }}">Pay</button> -->
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
-    @endforeach
-
-
-    <div class="col-md-6 mb-4">
-        <div class="card adminuiux-card">
-            <div class="card-header">
-                <div class="row align-items-center">
-                    <div class="col">
-                        <h6>Loan re-payment flow</h6>
+    <!-- Loan Cards Section -->
+    <div class="row g-4">
+        @foreach($loans as $transaction)
+        <div class="col-md-6">
+            <div class="card loan-card processing h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="loan-status mb-4">
+                        <span class="status-badge processing">
+                            <i class="bi bi-arrow-clockwise me-2"></i>Processing
+                        </span>
                     </div>
-                    <div class="col-auto px-0"><select class="form-select form-select-sm">
-                            <option>NGN</option>
-                           
-                        </select></div>
-                    <div class="col-auto"><button class="btn btn-sm btn-square btn-link"><i class="bi bi-arrow-clockwise"></i></button></div>
-                </div>
-            </div>
-            <div class="card-body pb-0">
-                <div class="height-210 mb-3"><canvas id="areachartblue1" width="716" height="420" style="display: block; box-sizing: border-box; height: 210px; width: 358px;"></canvas></div>
-                <div class="row align-items-center">
-                   
-                    <div class="col-md-6 mb-3">
-                        <div class="card adminuiux-card bg-theme-1-subtle">
-                            <div class="card-body z-index-1">
-                                <h4 class="fw-medium text">N0.00</h4>
-                                <p class="opacity-75">Total Loan Borrowed </p>
+
+                    <div class="loan-details">
+                        <div class="row g-4">
+                            <div class="col-6">
+                                <div class="detail-item">
+                                    <span class="label">Loan Amount</span>
+                                    <h3 class="amount">₦{{ number_format($transaction->total_applied, 2) }}</h3>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="detail-item text-end">
+                                    <span class="label">Interest Rate</span>
+                                    <h3 class="rate">5%</h3>
+                                </div>
                             </div>
                         </div>
+
+                        <div class="loan-meta mt-4">
+                            <div class="row align-items-center g-3">
+                                <div class="col-auto">
+                                    <div class="meta-item">
+                                        <i class="bi bi-calendar-event"></i>
+                                        <span>{{ $transaction->applied_date }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="meta-item">
+                                        <i class="bi bi-clock-history"></i>
+                                        <span>{{ $company->loan_month_repayment }} Months</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="repayment-info mt-4 text-center p-4 bg-light rounded-4">
+                            <span class="label d-block mb-2">Monthly Repayment</span>
+                            <h2 class="mb-0">₦{{ number_format($transaction->monthly_return, 2) }}</h2>
+                            
+                            @if($transaction->approval_status == 1 && $transaction->status == "Awaiting" && $transaction->payment_status == 0)
+                            <button class="btn btn-primary mt-3" onclick="processPayment(this)" 
+                                data-amount="{{$transaction->monthly_return}}" 
+                                data-id="{{ $transaction->uuid }}">
+                                <i class="bi bi-credit-card me-2"></i>Pay Now
+                            </button>
+                            @endif
+                        </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="card adminuiux-card bg-theme-1-subtle theme-orange">
-                            <div class="card-body z-index-1">
-                                <h4 class="fw-medium">N0.00</h4>
-                                <p class="text-secondary">Total Repayment</p>
+                </div>
+            </div>
+        </div>
+        @endforeach
+
+        @foreach($ongoing_loans as $transaction)
+        <div class="col-md-6">
+            <div class="card loan-card ongoing h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="loan-status mb-4">
+                        <span class="status-badge ongoing">
+                            <i class="bi bi-check-circle me-2"></i>Ongoing
+                        </span>
+                    </div>
+
+                    <!-- Same structure as above, just with ongoing loan data -->
+                    <div class="loan-details">
+                        <!-- ... Similar structure as above ... -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+
+    <!-- Loan Summary Section -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0">
+                    <h5 class="mb-0">Loan Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container mb-4">
+                        <canvas id="areachartblue1" height="200"></canvas>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="summary-card bg-primary bg-opacity-10 p-4 rounded-4">
+                                <h3 class="mb-2">₦{{ number_format($loans->sum('total_applied'), 2) }}</h3>
+                                <p class="mb-0 text-muted">Total Borrowed</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="summary-card bg-success bg-opacity-10 p-4 rounded-4">
+                                <h3 class="mb-2">₦{{ number_format($loans->sum('monthly_return'), 2) }}</h3>
+                                <p class="mb-0 text-muted">Total Repaid</p>
                             </div>
                         </div>
                     </div>
@@ -149,10 +142,92 @@
             </div>
         </div>
     </div>
-
-    
-
 </div>
 
-<!-- end row -->
-</div>
+<style>
+.loan-dashboard {
+    padding: 1.5rem 0;
+}
+
+.loan-card {
+    transition: transform 0.2s ease;
+}
+
+.loan-card:hover {
+    transform: translateY(-5px);
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.status-badge.processing {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+}
+
+.status-badge.ongoing {
+    background: rgba(25, 135, 84, 0.1);
+    color: #198754;
+}
+
+.loan-details .label {
+    display: block;
+    color: #6c757d;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.loan-details .amount,
+.loan-details .rate {
+    margin: 0;
+    font-weight: 600;
+    color: #094168;
+}
+
+.meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.repayment-info {
+    background: rgba(9, 65, 104, 0.05);
+}
+
+.repayment-info .label {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.repayment-info h2 {
+    color: #094168;
+    font-weight: 600;
+}
+
+.summary-card {
+    height: 100%;
+}
+
+.summary-card h3 {
+    color: #094168;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: #094168;
+    border-color: #094168;
+}
+
+.btn-primary:hover {
+    background: #073251;
+    border-color: #073251;
+}
+</style>

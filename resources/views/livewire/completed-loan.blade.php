@@ -2,80 +2,55 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">{{ $title }}</h4>
-                </div><!-- end card header -->
-    
+                    <div class="search-box">
+                        <input type="text" class="form-control search-input" wire:model="search" placeholder="Search loans...">
+                        <i class="ri-search-line search-icon"></i>
+                    </div>
+                </div>
+
                 <div class="card-body">
                     <div id="customerList">
-                        <div class="row g-4 mb-3">
-                            <div class="col-sm-auto">
-                                <div>
-                                    <div class="search-box ms-2">
-                                        <input type="text" class="form-control " wire:model="search" placeholder="Search...">
-                                        <i class="ri-search-line search-icon"></i>
+                        @if($loans->count() > 0)
+                            <div class="transaction-list">
+                                @foreach ($loans as $transaction)
+                                <div class="transaction-item" data-type="Loan" data-status="completed">
+                                    <div class="t-icon">
+                                        <i class="ri-checkbox-circle-line"></i>
                                     </div>
+                                    <div class="t-info">
+                                        <div class="t-user">{{ $transaction->member->name }}</div>
+                                        <div class="t-type">Monthly Return: ₦{{ number_format($transaction->monthly_return, 2) }}</div>
+                                    </div>
+                                    <div class="t-details">
+                                        <div class="t-date">{{ $transaction->applied_date }}</div>
+                                    </div>
+                                    <div class="t-amount" data-status="completed">
+                                        ₦{{ number_format($transaction->total_applied, 2) }}
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="noresult">
+                                <div class="text-center">
+                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
+                                        colors="primary:#4318FF,secondary:#1BE7FF" style="width:75px;height:75px">
+                                    </lord-icon>
+                                    <h5 class="mt-2">No Completed Loans Found</h5>
                                 </div>
                             </div>
-                            {{-- <div class="col-sm">
-                                <div class="d-flex justify-content-sm-end">
-                                    <div class="search-box ms-2">
-                                        <input type="text" class="form-control " wire:model="search" placeholder="Search...">
-                                        <i class="ri-search-line search-icon"></i>
-                                    </div>
-                                </div>
-                            </div> --}}
-                        </div>
+                        @endif
                         
-                        <div class="table-responsive  mt-3 mb-1">
-                            
-                            <table class="table align-middle table-nowrap" >
-                                <thead class="table-light">
-                                    <tr>
-                                        <th scope="col">S/N</th>
-                                        <th scope="col">Member</th>
-                                        <th scope="col">Amount</th>
-                                        <th scope="col">Monthly Return</th>
-                                        <th scope="col">Date</th>
-                                    </tr>
-                                </thead>
-                                @if($loans->count() > 0)
-                                    <tbody class="list form-check-all">
-                                        @foreach ($loans as $transaction)
-                                        <tr>
-                                            <td class="fw-medium">{{ $loop->iteration }}</td>
-                                            <td class="fw-medium">{{ $transaction->member->name }}</td>
-                                            <td class="fw-medium">{{ number_format($transaction->total_applied, 2) }}</td>
-                                            <td class="fw-medium">{{ number_format($transaction->monthly_return, 2) }}</td>
-                                            <td class="fw-medium">{{ $transaction->applied_date }}</td>
-                                        </tr>
-                                        @endforeach
-                                        
-                                    </tbody>
-                                @endif
-                            </table>
-                            @if($loans->count() < 1)
-                                <div class="noresult" >
-                                    <div class="text-center">
-                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop"
-                                            colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
-                                        </lord-icon>
-                                        <h5 class="mt-2">Sorry! No Result Found</h5>
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                        
-                        <div class="d-flex justify-content-end">
-                            <div class="pagination-wrap hstack gap-2">
+                        <div class="d-flex justify-content-end mt-3">
+                            <div class="pagination-wrap">
                                 {{ $loans->links() }}
                             </div>
                         </div>
                     </div>
-                </div><!-- end card -->
+                </div>
             </div>
-            <!-- end col -->
         </div>
-        <!-- end col -->
     </div>
 </div>

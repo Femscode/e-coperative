@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Company;
 use App\Models\User;
+use App\Models\Group;
+use App\Models\Company;
+use App\Models\GroupMember;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class WebsiteController extends Controller
 {
@@ -15,6 +19,39 @@ class WebsiteController extends Controller
         return view('frontend.home', $data);
         return view('website.index');
 
+    }
+
+    public function joinCont($id){
+        $lastDashPos = strrpos($id, '-');
+        $lastPart = substr($id, $lastDashPos + 1);
+        // dd($lastPart);
+        $key = 'intended_route';
+        if(Auth::user()){
+            if (Session::has($key)) {
+                Session::forget($key);
+            }
+        }else{
+            if (!Session::has($key)) {
+                // Store the current route (or the previous route) in the session
+                Session::put($key, request()->url()); // Use url()->previous() to get the previous URL
+            }
+            return redirect()->route("login");
+        }
+        $data['group']=  $group = Group::where('uuid', $lastPart)->first();
+        $member = GroupMember::where('user_id', auth()->user()->id)->where('group_id', $group->id)->first();
+        if($member){
+            return redirect()->route('dashboard');
+        }
+        // dd($group);
+        if($group){
+            $data['numAlreadyJoined'] = $group->members->count();
+            return view('ajo.join', $data);
+        }else{
+            return redirect()->back();
+        }
+        // dd($numAlreadyJoined);
+        // dd($lastPart);
+        // dd($id);
     }
     public function about()
     {
