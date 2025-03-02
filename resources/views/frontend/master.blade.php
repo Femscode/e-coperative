@@ -18,6 +18,10 @@
 
     <title>E-Cooperative</title>
     <link rel="shortcut icon" href="{{ url('assets/images/cooplogo.png') }}">
+    <link href="{{ url('admindashboard/css/sweetalert-custom.css') }}" rel="stylesheet">
+
+<script src="{{ asset('admindashboard/js/sweetalert-custom.js') }}"></script>
+
     @yield('header')
 </head>
 

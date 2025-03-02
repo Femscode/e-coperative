@@ -17,7 +17,7 @@
                 <div class="card-footer bg-primary position-relative mt-3">
                     <div class="position-absolute top-0 start-0 translate-middle-y ms-3">
                         @if($review->phone == null)
-                        <a onclick='return Swal.fire("This user does not include his/her phone number while making the review")' class='btn btn-dark btn-sm'>Message User</a>
+                        <a onclick='return showCustomAlert("This user does not include his/her phone number while making the review")' class='btn btn-dark btn-sm'>Message User</a>
                         @else
                         <a href='https://wa.me/234{{ substr($review->phone,1) }}?text=Hi,%20from%20{{ $user->name }},we%20received%20your%20complain%20in%20regards...' class='btn btn-dark btn-sm'>Message User</a>
                         @endif

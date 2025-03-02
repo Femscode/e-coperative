@@ -586,11 +586,11 @@
 
     <script>
         @if ($errors->any())
-            Swal.fire('Oops...', `{!! implode('', $errors->all('<p>:message</p>')) !!}`, 'error')
+            showCustomAlert('Oops...', `{!! implode('', $errors->all('<p>:message</p>')) !!}`, 'error')
         @endif
 
         @if (session()->has('message'))
-            Swal.fire(
+            showCustomAlert(
                 'Success!',
                 `{{ session()->get('message') }}`,
                 'success'

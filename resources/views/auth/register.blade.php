@@ -524,7 +524,7 @@
 
         $('#payaza-form').submit(function(e) {
             e.preventDefault();
-            Swal.fire({
+            showCustomAlert({
                 title: 'Processing payment, please wait...',
                 icon: 'info',
                 allowOutsideClick: false,
@@ -588,7 +588,7 @@
                                 form.submit();
                             } else {
                                 console.log("Missing 3DS data:", response);
-                                Swal.fire({
+                                showCustomAlert({
                                     title: '3DS Authentication data missing. Please try again.',
                                     icon: 'error'
                                 })
@@ -597,7 +597,7 @@
                         } else {
                             console.log("Payment Process Journey Completed");
                             // $('#process-order-form').submit();
-                            Swal.fire('Payment Completed', 'Payment completed successfully!', 'success')
+                            showCustomAlert('Payment Completed', 'Payment completed successfully!', 'success')
 
                             location.href = "/payaza/transaction-successful?order_id=" + $("#order_id").val() +
                                 '&reference=' + response.transactionReference;
@@ -607,7 +607,7 @@
                         }
                     } else {
                         console.log("Error found:", response.debugMessage);
-                        Swal.fire({
+                        showCustomAlert({
                             title: "Payment Failed: " + response.debugMessage,
                             icon: 'error'
                         })
@@ -615,7 +615,7 @@
                 },
                 error: function(xhr, status, error) {
                     console.log("Error:", error);
-                    Swal.fire({
+                    showCustomAlert({
                         title: "Network connection error: " + (error.debugMessage || error.message || "Try again later"),
                         icon: 'error'
                     })
@@ -633,12 +633,12 @@
                     transactionId: transactionId
                 },
                 success: function() {
-                    Swal.fire("Success", "Your registration is complete!", "success").then(() => {
+                    showCustomAlert("Success", "Your registration is complete!", "success").then(() => {
                         window.location.href = "/welcome"; // Redirect on successful registration
                     });
                 },
                 error: function() {
-                    Swal.fire("Error", "Could not complete registration. Please contact support.", "error");
+                    showCustomAlert("Error", "Could not complete registration. Please contact support.", "error");
                 }
             });
         }
@@ -648,11 +648,11 @@
 
     <script>
         @if($errors->any())
-        Swal.fire('Oops...', `{!! implode('', $errors->all('<p>:message</p>')) !!}`, 'error')
+        showCustomAlert('Oops...', `{!! implode('', $errors->all('<p>:message</p>')) !!}`, 'error')
         @endif
 
         @if(session()->has('message'))
-        Swal.fire(
+        showCustomAlert(
             'Success!',
             `{{ session()->get('message') }}`,
             'success'

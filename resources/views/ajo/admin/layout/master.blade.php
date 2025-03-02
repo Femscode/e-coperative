@@ -38,6 +38,10 @@
             opacity: 0.4;
         }
     </style>
+     <link href="{{ url('admindashboard/css/sweetalert-custom.css') }}" rel="stylesheet">
+
+<script src="{{ asset('admindashboard/js/sweetalert-custom.js') }}"></script>
+
     @yield('links')
 
 
@@ -655,18 +659,18 @@
         <script src="{{ asset('swal.js') }}"></script>
         <script>
             @if ($errors->any())
-                Swal.fire('Oops...', "{!! implode('', $errors->all('<p>:message</p>')) !!}", 'error')
+                showCustomAlert('Oops...', "{!! implode('', $errors->all('<p>:message</p>')) !!}", 'error')
             @endif
 
             @if (session()->has('message'))
-                Swal.fire(
+                showCustomAlert(
                     'Success!',
                     "{{ session()->get('message') }}",
                     'success'
                 )
             @endif
             @if (session()->has('success'))
-                Swal.fire(
+                showCustomAlert(
                     'Success!',
                     "{{ session()->get('success') }}",
                     'success'

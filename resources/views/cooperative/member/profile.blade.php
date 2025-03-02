@@ -547,12 +547,12 @@
                 const postRequest = await request("/update-profile",
                     processFormInputs(
                         serializedData), 'post');
-                new swal("Good Job", postRequest.message, "success");
+                new showCustomAlert("Good Job", postRequest.message, "success");
                 $('.preloader').hide();
             } catch (e) {
                 $('.preloader').hide();
                 if ('message' in e) {
-                    new swal("Opss", e.message, "error");
+                    new showCustomAlert("Opss", e.message, "error");
 
                 }
             }
@@ -565,13 +565,13 @@
                 const postRequest = await request("/change-password",
                     processFormInputs(
                         serializedData), 'post');
-                new swal("Good Job", postRequest.message, "success");
+                new showCustomAlert("Good Job", postRequest.message, "success");
                 $('#passwordChange').trigger("reset");
                 $('.preloader').hide();
             } catch (e) {
                 $('.preloader').hide();
                 if ('message' in e) {
-                    new swal("Opss", e.message, "error");
+                    new showCustomAlert("Opss", e.message, "error");
 
                 }
             }
@@ -584,14 +584,14 @@
                 const postRequest = await request("/verify-account",
                     processFormInputs(
                         serializedData), 'post');
-                new swal("Good Job", postRequest.message, "success");
+                new showCustomAlert("Good Job", postRequest.message, "success");
                 $('#accountDiv').show();
                 $('#accountName').val(postRequest.data);
                 $('.preloader').hide();
             } catch (e) {
                 $('.preloader').hide();
                 if ('message' in e) {
-                    new swal("Opss", e.message, "error");
+                    new showCustomAlert("Opss", e.message, "error");
 
                 }
             }
@@ -618,7 +618,7 @@
         });
 
         async function resetAccount(el, user_id) {
-            const willUpdate = await new swal({
+            const willUpdate = await new showCustomAlert({
                 title: "Confirm Delete",
                 text: `Are you sure you want to delete this record?`,
                 icon: "warning",
@@ -632,7 +632,7 @@
                 //performReset()
                 performDelete(el, user_id);
             } else {
-                new swal("User record will not be deleted  :)");
+                new showCustomAlert("User record will not be deleted  :)");
             }
         }
 
@@ -642,10 +642,10 @@
                 $.get("{{ route('delete_users') }}?id=" + user_id,
                     function(data, status) {
                         if (data.status === "error") {
-                            new swal("Opss", data.message, "error");
+                            new showCustomAlert("Opss", data.message, "error");
                         } else {
                             if (status === "success") {
-                                let alert = new swal(" record successfully deleted!.");
+                                let alert = new showCustomAlert(" record successfully deleted!.");
                                 $(el).closest("tr").remove();
                                 window.location.reload();
                                 // alert.then(() => {
@@ -656,7 +656,7 @@
                     }
                 );
             } catch (e) {
-                let alert = new swal(e.message);
+                let alert = new showCustomAlert(e.message);
             }
         }
 
