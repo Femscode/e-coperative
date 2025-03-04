@@ -219,7 +219,7 @@
             e.preventDefault();
 
             // Display loading alert
-            Swal.fire({
+            showCustomAlert({
                 title: 'Logging in...',
                 text: 'Please wait',
                 allowOutsideClick: false,
@@ -242,7 +242,7 @@
                     
                     // Check if login was successful
                     if (response.success) {
-                        Swal.fire({
+                        showCustomAlert({
                             icon: 'success',
                             title: 'Login Successful!',
                             text: 'Redirecting...',
@@ -253,7 +253,7 @@
                         });
                     } else {
                         
-                        Swal.fire({
+                        showCustomAlert({
                             icon: 'error',
                             title: 'Login Failed',
                             text:  'Invalid email or password.'
@@ -263,7 +263,7 @@
                 },
                 error: function(xhr) {
                     Swal.close();
-                    Swal.fire({
+                    showCustomAlert({
                         icon: 'error',
                         title: 'Login Error',
                         text: 'An error occurred. Please try again.'

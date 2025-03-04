@@ -283,7 +283,7 @@
 
     $('#payaza-form').submit(function(e) {
         e.preventDefault();
-        Swal.fire({
+        showCustomAlert({
             title: 'Processing payment, please wait...',
             icon: 'info',
             allowOutsideClick: false,
@@ -347,7 +347,7 @@
                             form.submit();
                         } else {
                             console.log("Missing 3DS data:", response);
-                            Swal.fire({
+                            showCustomAlert({
                                 title: '3DS Authentication data missing. Please try again.',
                                 icon: 'error'
                             })
@@ -356,7 +356,7 @@
                     } else {
                         console.log("Payment Process Journey Completed");
                         $('#process-order-form').submit();
-                        Swal.fire('Payment Completed', 'Payment completed successfully!', 'success')
+                        showCustomAlert('Payment Completed', 'Payment completed successfully!', 'success')
 
                         location.href = "/payaza/transaction-successful?order_id=" + $("#order_id").val() +
                             '&reference=' + response.transactionReference;
@@ -366,7 +366,7 @@
                     }
                 } else {
                     console.log("Error found:", response.debugMessage);
-                    Swal.fire({
+                    showCustomAlert({
                         title: "Payment Failed: " + response.debugMessage,
                         icon: 'error'
                     })
@@ -374,7 +374,7 @@
             },
             error: function(xhr, status, error) {
                 console.log("Error:", error);
-                Swal.fire({
+                showCustomAlert({
                     title: "Exception Error: " + (error.debugMessage || error.message || "Unknown error"),
                     icon: 'error'
                 })

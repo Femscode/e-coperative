@@ -145,7 +145,7 @@
         });
 
         @if(Session::has('message'))
-        Swal.fire({
+        showCustomAlert({
             icon: 'success',
             title: 'Success',
             text: '{{ Session::get('
@@ -153,7 +153,7 @@
         });
         @endif
         @if(Session::has('error'))
-        Swal.fire({
+        showCustomAlert({
             icon: 'success',
             title: 'Success',
             text: '{{ Session::get('

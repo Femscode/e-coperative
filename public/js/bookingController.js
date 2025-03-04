@@ -81,7 +81,7 @@ $form.on('submit', async function (e) {
         toggleLoader();
         $form.trigger('reset');
 
-        swal.fire({
+        showCustomAlert({
             "title": "",
             "text": postRequest.message,
             "type": "success",
@@ -91,7 +91,7 @@ $form.on('submit', async function (e) {
     } catch (e) {
         toggleLoader();
         if ('message' in e) {
-            swal.fire({
+            showCustomAlert({
                 "title": "",
                 "text": e.message || "",
                 "type": "error",
@@ -137,7 +137,7 @@ function deleteBooking(id) {
     // try {
     //     const deleteRequest = await request("/bookings/delete/" + id, null, 'delete');
     //
-    //     swal.fire({
+    //     showCustomAlert({
     //         "title": "Success",
     //         "text": deleteRequest.message,
     //         "type": "success",
@@ -146,7 +146,7 @@ function deleteBooking(id) {
     //
     // } catch (e) {
     //     if ('message' in e) {
-    //         swal.fire({
+    //         showCustomAlert({
     //             "title": "",
     //             "text": e.message || "",
     //             "type": "error",

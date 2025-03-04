@@ -307,7 +307,7 @@
 
             $("#update_profile").on("submit", async function(e) {
                 e.preventDefault();
-                Swal.fire('Updating profile, please wait...')
+                showCustomAlert('Updating profile, please wait...')
                 var image = $('#image')[0].files;
                 var fd = new FormData;
                 fd.append('name', $("#name").val());
@@ -348,7 +348,7 @@
                     error: function(data) {
                         console.log(data)
                         Swal.close()
-                        Swal.fire('Opps!', 'Profile not updated, contact the administrator', 'error')
+                        showCustomAlert('Opps!', 'Profile not updated, contact the administrator', 'error')
                     }
                 })
 

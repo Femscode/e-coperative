@@ -2,7 +2,7 @@
 //Basic
 if (document.getElementById("sweetalert-basic"))
     document.getElementById("sweetalert-basic").addEventListener("click", function () {
-        Swal.fire({
+        showCustomAlert({
             title: 'Any fool can use a computer',
             confirmButtonClass: 'btn btn-primary w-xs mt-2',
             buttonsStyling: false,
@@ -13,7 +13,7 @@ if (document.getElementById("sweetalert-basic"))
 //A title with a text under
 if (document.getElementById("sweetalert-title"))
     document.getElementById("sweetalert-title").addEventListener("click", function () {
-        Swal.fire({
+        showCustomAlert({
             title: "The Internet?",
             text: 'That thing is still around?',
             icon: 'question',
@@ -26,7 +26,7 @@ if (document.getElementById("sweetalert-title"))
 //Success Message
 if (document.getElementById("sweetalert-success"))
     document.getElementById("sweetalert-success").addEventListener("click", function () {
-        Swal.fire({
+        showCustomAlert({
             title: 'Good job!',
             text: 'You clicked the button!',
             icon: 'success',
@@ -41,7 +41,7 @@ if (document.getElementById("sweetalert-success"))
 //error Message
 if (document.getElementById("sweetalert-error"))
     document.getElementById("sweetalert-error").addEventListener("click", function () {
-        Swal.fire({
+        showCustomAlert({
             title: 'Oops...',
             text: 'Something went wrong!',
             icon: 'error',
@@ -56,7 +56,7 @@ if (document.getElementById("sweetalert-error"))
 //info Message
 if (document.getElementById("sweetalert-info"))
     document.getElementById("sweetalert-info").addEventListener("click", function () {
-        Swal.fire({
+        showCustomAlert({
             title: 'Oops...',
             text: 'Something went wrong!',
             icon: 'info',
@@ -70,7 +70,7 @@ if (document.getElementById("sweetalert-info"))
 //Warning Message
 if (document.getElementById("sweetalert-warning"))
     document.getElementById("sweetalert-warning").addEventListener("click", function () {
-        Swal.fire({
+        showCustomAlert({
             title: 'Oops...',
             text: 'Something went wrong!',
             icon: 'warning',
@@ -84,7 +84,7 @@ if (document.getElementById("sweetalert-warning"))
 // long content
 if (document.getElementById("sweetalert-longcontent"))
     document.getElementById("sweetalert-longcontent").addEventListener("click", function () {
-        Swal.fire({
+        showCustomAlert({
             imageUrl: 'https://placeholder.pics/svg/300x1500',
             imageHeight: 1500,
             imageAlt: 'A tall image',
@@ -98,7 +98,7 @@ if (document.getElementById("sweetalert-longcontent"))
 //Parameter
 if (document.getElementById("sweetalert-params"))
     document.getElementById("sweetalert-params").addEventListener("click", function () {
-        Swal.fire({
+        showCustomAlert({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
             icon: 'warning',
@@ -111,7 +111,7 @@ if (document.getElementById("sweetalert-params"))
             showCloseButton: false
         }).then(function (result) {
             if (result.value) {
-                Swal.fire({
+                showCustomAlert({
                     title: 'Deleted!',
                     text: 'Your file has been deleted.',
                     icon: 'success',
@@ -122,7 +122,7 @@ if (document.getElementById("sweetalert-params"))
                 // Read more about handling dismissals
                 result.dismiss === Swal.DismissReason.cancel
             ) {
-                Swal.fire({
+                showCustomAlert({
                     title: 'Cancelled',
                     text: 'Your imaginary file is safe :)',
                     icon: 'error',
@@ -137,7 +137,7 @@ if (document.getElementById("sweetalert-params"))
 //Custom Image
 if (document.getElementById("sweetalert-image"))
     document.getElementById("sweetalert-image").addEventListener("click", function () {
-        Swal.fire({
+        showCustomAlert({
             title: 'Sweet!',
             text: 'Modal with a custom image.',
             imageUrl: 'assets/images/logo-sm.png',

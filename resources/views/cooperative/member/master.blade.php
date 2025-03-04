@@ -25,194 +25,198 @@
 
     <script src="{{ url('admindashboard/js/jquery/jquery.min.js') }}"></script>
     <script src="{{ url('admindashboard/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
     <style>
-          .grand-total-container {
-        max-width: 300px;
-        margin: auto;
-    }
+        .grand-total-container {
+            max-width: 300px;
+            margin: auto;
+        }
 
-    .grand-total-input {
-        font-size: 1.5rem;
-        font-weight: bold;
-        text-align: center;
-        background-color: #f8f9fa;
-        border: 2px solid #28a745;
-        color: #28a745;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        transition: box-shadow 0.3s ease, transform 0.3s ease;
-    }
+        .grand-total-input {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            background-color: #f8f9fa;
+            border: 2px solid #28a745;
+            color: #28a745;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
 
-    .grand-total-input:focus {
-        box-shadow: 0 6px 15px rgba(0, 128, 0, 0.3);
-        transform: scale(1.02);
-        outline: none;
-    }
-    .payment-logo {
-        height: 40px;
-        width: auto;
-    }
+        .grand-total-input:focus {
+            box-shadow: 0 6px 15px rgba(0, 128, 0, 0.3);
+            transform: scale(1.02);
+            outline: none;
+        }
 
-    .amount-display {
-        padding: 1.5rem;
-        background: #f8f9fa;
-        border-radius: 1rem;
-    }
+        .payment-logo {
+            height: 40px;
+            width: auto;
+        }
 
-    .amount-text {
-        color: #094168;
-        font-size: 2rem;
-    }
+        .amount-display {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 1rem;
+        }
 
-    .custom-table {
-        border-collapse: separate;
-        border-spacing: 0 0.5rem;
-    }
+        .amount-text {
+            color: #094168;
+            font-size: 2rem;
+        }
 
-    .custom-table thead th {
-        border: none;
-        font-weight: 600;
-        color: #6c757d;
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
+        .custom-table {
+            border-collapse: separate;
+            border-spacing: 0 0.5rem;
+        }
 
-    .dues-row {
-        background: #fff;
-        transition: transform 0.2s ease;
-    }
+        .custom-table thead th {
+            border: none;
+            font-weight: 600;
+            color: #6c757d;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-    .dues-row:hover {
-        transform: translateX(5px);
-    }
+        .dues-row {
+            background: #fff;
+            transition: transform 0.2s ease;
+        }
 
-    .week-icon {
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(9, 65, 104, 0.1);
-        color: #094168;
-        border-radius: 8px;
-    }
+        .dues-row:hover {
+            transform: translateX(5px);
+        }
 
-    .amount-badge {
-        font-weight: 600;
-        color: #094168;
-        background: rgba(9, 65, 104, 0.1);
-        padding: 0.5rem 1rem;
-        border-radius: 2rem;
-    }
+        .week-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(9, 65, 104, 0.1);
+            color: #094168;
+            border-radius: 8px;
+        }
 
-    .grand-total-input {
-        font-size: 1.5rem;
-        font-weight: 700;
-        text-align: center;
-        background: #fff;
-        border: 2px solid #094168;
-        color: #094168;
-        border-radius: 0.75rem;
-    }
+        .amount-badge {
+            font-weight: 600;
+            color: #094168;
+            background: rgba(9, 65, 104, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+        }
 
-    .form-check-input:checked {
-        background-color: #094168;
-        border-color: #094168;
-    }
+        .grand-total-input {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            background: #fff;
+            border: 2px solid #094168;
+            color: #094168;
+            border-radius: 0.75rem;
+        }
 
-    .btn-primary {
-        background-color: #094168;
-        border-color: #094168;
-    }
+        .form-check-input:checked {
+            background-color: #094168;
+            border-color: #094168;
+        }
 
-    .btn-primary:hover {
-        background-color: #073251;
-        border-color: #073251;
-    }
+        .btn-primary {
+            background-color: #094168;
+            border-color: #094168;
+        }
 
-    .empty-state-icon {
-        background: rgba(9, 65, 104, 0.1);
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-    }
-</style>
-<style>
-            .loan-nav-wrapper {
-                background: #fff;
-                border-radius: 0.5rem;
-                padding: 0.5rem;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            }
+        .btn-primary:hover {
+            background-color: #073251;
+            border-color: #073251;
+        }
 
-            .active2 {
-                color: #094168 !important;
-                background: rgba(9, 65, 104, 0.1) !important;
-                border: none;
-                box-shadow: 0 1px 2px rgba(9, 65, 104, 0.1);
-            }
+        .empty-state-icon {
+            background: rgba(9, 65, 104, 0.1);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+    </style>
+    <style>
+        .loan-nav-wrapper {
+            background: #fff;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
 
+        .active2 {
+            color: #094168 !important;
+            background: rgba(9, 65, 104, 0.1) !important;
+            border: none;
+            box-shadow: 0 1px 2px rgba(9, 65, 104, 0.1);
+        }
+
+        .nav-tabs-custom {
+            border: 0;
+            gap: 0.5rem;
+        }
+
+        .nav-tabs-custom .nav-link {
+            border: 0;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            color: #6c757d;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs-custom .nav-link:hover {
+            color: #094168;
+            background: rgba(9, 65, 104, 0.05);
+        }
+
+        .nav-tabs-custom .nav-link.active {
+            color: #094168;
+            background: rgba(9, 65, 104, 0.1);
+        }
+
+        .nav-tabs-custom .nav-link.active::after {
+            display: none;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge.bg-danger {
+            background-color: #dc3545 !important;
+        }
+
+        .badge.bg-primary {
+            background-color: #094168 !important;
+        }
+
+        @media (max-width: 768px) {
             .nav-tabs-custom {
-                border: 0;
-                gap: 0.5rem;
+                flex-direction: column;
             }
 
             .nav-tabs-custom .nav-link {
-                border: 0;
-                padding: 0.75rem 1.25rem;
-                border-radius: 0.5rem;
-                color: #6c757d;
-                font-weight: 500;
-                transition: all 0.3s ease;
+                width: 100%;
+                text-align: left;
             }
+        }
+    </style>
+   
+    <link href="{{ url('admindashboard/css/sweetalert-custom.css') }}" rel="stylesheet">
 
-            .nav-tabs-custom .nav-link:hover {
-                color: #094168;
-                background: rgba(9, 65, 104, 0.05);
-            }
-
-            .nav-tabs-custom .nav-link.active {
-                color: #094168;
-                background: rgba(9, 65, 104, 0.1);
-            }
-
-            .nav-tabs-custom .nav-link.active::after {
-                display: none;
-            }
-
-            .badge {
-                font-size: 0.75rem;
-                font-weight: 500;
-            }
-
-            .badge.bg-danger {
-                background-color: #dc3545 !important;
-            }
-
-            .badge.bg-primary {
-                background-color: #094168 !important;
-            }
-
-            @media (max-width: 768px) {
-                .nav-tabs-custom {
-                    flex-direction: column;
-                }
-
-                .nav-tabs-custom .nav-link {
-                    width: 100%;
-                    text-align: left;
-                }
-            }
-        </style>
+    <script src="{{ asset('admindashboard/js/sweetalert-custom.js') }}"></script>
     @yield('header')
 </head>
 
@@ -239,7 +243,7 @@
 <header class="adminuiux-header">
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
-            <button class="btn btn-link btn-square sidebar-toggler" type="button" onclick="initSidebar()"><i class="sidebar-svg" data-feather="menu"></i></button> 
+            <button class="btn btn-link btn-square sidebar-toggler" type="button" onclick="initSidebar()"><i class="sidebar-svg" data-feather="menu"></i></button>
             <a class="navbar-brand" href="/">
                 <img src="{{ asset('admindashboard/images/logo/syncologo2.png') }}" alt="" style="width:100px;height:50px">
 

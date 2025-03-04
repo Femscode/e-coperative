@@ -271,7 +271,7 @@
         });
 
         @if(Session::has('message'))
-        Swal.fire({
+        showCustomAlert({
             icon: 'success',
             title: 'Success',
             text: '{{ Session::get('
@@ -279,7 +279,7 @@
         });
         @endif
         @if(Session::has('error'))
-        Swal.fire({
+        showCustomAlert({
             icon: 'success',
             title: 'Success',
             text: '{{ Session::get('
@@ -291,7 +291,7 @@
         $(".copy-btn").click(function() {
     var link = $(this).data("link");
     navigator.clipboard.writeText(link).then(() => {
-        Swal.fire({
+        showCustomAlert({
             toast: true,
             position: 'top',
             icon: 'success',
