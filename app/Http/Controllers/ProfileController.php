@@ -282,5 +282,29 @@ class ProfileController extends Controller
         $user = Auth::user();
         return view('profile.show', compact('user'));
     }
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        // Validate the request data
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'nullable|string|max:255|unique:users,username,' . $user->id,
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:100',
+            'state' => 'nullable|string|max:100',
+            'country' => 'nullable|string|max:100',
+            'bio' => 'nullable|string|max:500',
+        ]);
+
+        // Update the user
+        $user->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Profile updated successfully'
+        ]);
+    }
 
 }

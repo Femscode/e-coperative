@@ -51,8 +51,8 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/my-profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/my-profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/my-profile/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/update', [App\Http\Controllers\ProfileController::class, 'updateProfile'])->name('profile.update');
+
 
     Route::get('/user/two-factor-authentication', [App\Http\Controllers\ProfileController::class, 'otp'])->name('t2fa');
     Route::get('/dashboard', [App\Http\Controllers\ProfileController::class, 'dashboard'])->name('dashboard');
