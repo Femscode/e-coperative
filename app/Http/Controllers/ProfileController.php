@@ -17,27 +17,29 @@ use App\Jobs\OtpNotification;
 use Carbon\Carbon;
 class ProfileController extends Controller
 {
-    public function dashboard(){
-        if(auth()->check()) {
-            if(auth()->user()->user_type == "Admin"){
-               
+    public function dashboard()
+    {
+        if (auth()->check()) {
+            if (auth()->user()->user_type == "Admin") {
+
                 return redirect()->route('admin-home');
-            }else{
+            } else {
                 return redirect()->route('member_home');
             }
-        }else{
+        } else {
             return redirect()->route('logout');
         }
     }
 
-    public function profile(){
+    public function profile()
+    {
         $data['user'] = $user = Auth::user();
-        if(auth()->user()->user_type == "Member"){
+        if (auth()->user()->user_type == "Member") {
             $data['plan'] = $user->plan();
         }
-        $data['banks'] = Bank::orderBy('name','asc')->get();
+        $data['banks'] = Bank::orderBy('name', 'asc')->get();
         // dd($plan);
-        if($user->user_type == "Admin") {
+        if ($user->user_type == "Admin") {
             return view('cooperative.admin.profile', $data);
 
         } else {
@@ -47,12 +49,13 @@ class ProfileController extends Controller
         }
     }
 
-    public function otp(){
+    public function otp()
+    {
         // dd("here");
         if (auth()->user()->tfa != 1 && auth()->user()->active != 0 || auth()->user()->tfa == 1 && auth()->user()->active == 1 || auth()->user()->tfa != 1 && auth()->user()->active == 0) {
-            if(auth()->user()->user_type == "Admin"){
+            if (auth()->user()->user_type == "Admin") {
                 return redirect()->route('admin-home');
-            }else{
+            } else {
                 return redirect()->route('member_home');
             }
         }
@@ -61,17 +64,18 @@ class ProfileController extends Controller
         // Calculate the time difference in seconds
         $timeDifference = $currentTime->diffInSeconds($user->updated_at);
         if ($timeDifference > 180) {
-            $email =$user->email;
+            $email = $user->email;
             $otp = rand(1000, 9999);
-            $user->update(['tfa_code' =>  Hash::make($otp)]);
-            dispatch(new OtpNotification($email,$otp));
+            $user->update(['tfa_code' => Hash::make($otp)]);
+            dispatch(new OtpNotification($email, $otp));
         }
         return view('t2fa');
     }
 
-    public function verify(Request $request){
-        try{
-            $code = $request->a .''. $request->b .''. $request->c .''. $request->d;
+    public function verify(Request $request)
+    {
+        try {
+            $code = $request->a . '' . $request->b . '' . $request->c . '' . $request->d;
             $hashedOTPFromDatabase = auth()->user()->tfa_code;
             $user = User::find(Auth::user()->id);
             // dd($code);
@@ -100,21 +104,22 @@ class ProfileController extends Controller
         }
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         try {
-            $input = $request->except('user_type','password','email','phone','plan_id','coop_id');
-           
+            $input = $request->except('user_type', 'password', 'email', 'phone', 'plan_id', 'coop_id');
+
             $user = Auth::user();
-            
+
             $user->update($input);
-                return api_request_response(
-                    'ok',
-                    'Profile updated successfully!',
-                    success_status_code(),
-                );
+            return api_request_response(
+                'ok',
+                'Profile updated successfully!',
+                success_status_code(),
+            );
 
         } catch (\Exception $exception) {
-            
+
             return api_request_response(
                 'error',
                 $exception->getMessage(),
@@ -123,14 +128,15 @@ class ProfileController extends Controller
         }
     }
 
-    public function changePassword(Request $request){
+    public function changePassword(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'password' => ['required'],
-            'new_password' => ['required', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])/','min:6'],
-            'confirm_password' => ['required', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])/','min:6'],
+            'new_password' => ['required', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])/', 'min:6'],
+            'confirm_password' => ['required', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])/', 'min:6'],
         ]);
 
-        $validator->setAttributeNames(['password' => 'Current Password','new_password' => 'New Password','confirm_password' => 'Confirm Password']);
+        $validator->setAttributeNames(['password' => 'Current Password', 'new_password' => 'New Password', 'confirm_password' => 'Confirm Password']);
 
         $validator->setCustomMessages([
             'password.required' => 'The :attribute field is required.',
@@ -150,7 +156,7 @@ class ProfileController extends Controller
                 bad_response_status_code()
             );
         }
-        $user =Auth::user();
+        $user = Auth::user();
         $old = $request->password;
         $new = $request->new_password;
         $confirm = $request->confirm_password;
@@ -161,7 +167,7 @@ class ProfileController extends Controller
                 bad_response_status_code()
             );
         }
-        if($new != $confirm){
+        if ($new != $confirm) {
             return api_request_response(
                 'error',
                 "Confirm password does not match new password",
@@ -177,7 +183,7 @@ class ProfileController extends Controller
         }
         $value = User::where('id', $user->id)->first();
         $password = Hash::make($new);
-        $value->password =  $password;
+        $value->password = $password;
         $value->save();
         return api_request_response(
             'ok',
@@ -186,18 +192,20 @@ class ProfileController extends Controller
         );
     }
 
-    public function saveFile(Request $request){
+    public function saveFile(Request $request)
+    {
         $user = Auth::user();
-        $file = uploadImage($request->file,"file");
-        if($request->type == "profile"){
-            $user->update(['profile_image'=> $file]);
-        }else{
-            $user->update(['cover_image'=> $file]);
+        $file = uploadImage($request->file, "file");
+        if ($request->type == "profile") {
+            $user->update(['profile_image' => $file]);
+        } else {
+            $user->update(['cover_image' => $file]);
         }
 
     }
 
-    public function toggleTwo(Request $request){
+    public function toggleTwo(Request $request)
+    {
         $user = Auth::user();
         $user->update(['tfa' => $request->type, 'active' => 1]);
     }
@@ -215,8 +223,8 @@ class ProfileController extends Controller
         // Check for a successful response and handle it accordingly
         if ($response->successful()) {
             $data = $response->json(); // JSON response data
-            foreach($data['data'] as $bank){
-                if(!Bank::where('code', $bank['code'])->first()){
+            foreach ($data['data'] as $bank) {
+                if (!Bank::where('code', $bank['code'])->first()) {
                     Bank::create($bank);
                 }
             }
@@ -246,7 +254,7 @@ class ProfileController extends Controller
             $user = Auth::user();
             $data = $response->json(); // JSON response data
             // dd($data)
-            $user->update(['bank_code' => $code,'account_name' => $data['data']['account_name'],'account_number' => $data['data']['account_number']]);
+            $user->update(['bank_code' => $code, 'account_name' => $data['data']['account_name'], 'account_number' => $data['data']['account_number']]);
             return api_request_response(
                 'ok',
                 'Bank Details Verified Successfully!',
@@ -267,6 +275,12 @@ class ProfileController extends Controller
             dd($errorData);
             // Handle the error response accordingly
         }
+    }
+
+    public function show()
+    {
+        $user = Auth::user();
+        return view('profile.show', compact('user'));
     }
 
 }

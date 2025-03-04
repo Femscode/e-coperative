@@ -49,6 +49,11 @@ Route::get('/join/contribution/{id}', [App\Http\Controllers\WebsiteController::c
 Route::get('/home', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('home');
 Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
+
+    Route::get('/my-profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/my-profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/my-profile/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+
     Route::get('/user/two-factor-authentication', [App\Http\Controllers\ProfileController::class, 'otp'])->name('t2fa');
     Route::get('/dashboard', [App\Http\Controllers\ProfileController::class, 'dashboard'])->name('dashboard');
     Route::get('/banks', [App\Http\Controllers\ProfileController::class, 'paystackBanks'])->name('get-paystack-banks');
@@ -66,7 +71,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('admin-home');
                 Route::get('/download_member_template', [App\Http\Controllers\UserController::class, 'download_member_template'])->name('download_member_template');
 
-                Route::group(['prefix' => 'group'], function(){
+                Route::group(['prefix' => 'group'], function () {
                     Route::get('/', [App\Http\Controllers\GroupController::class, 'index'])->name('admin_group_home');
                     Route::post('/create', [App\Http\Controllers\GroupController::class, 'create'])->name('admin_create_group');
                     Route::get('/members/{uuid}', [App\Http\Controllers\GroupController::class, 'view'])->name('admin_group_members');
@@ -75,7 +80,8 @@ Route::group(['middleware' => ['auth']], function () {
                     Route::get('/contribution-dues', [App\Http\Controllers\GroupController::class, 'contributionPayment'])->name('admin-contribution-payment');
 
                 });
-               
+
+
                 Route::group(['prefix' => 'user'], function () {
                     Route::get('/', [App\Http\Controllers\UserController::class, 'index'])->name('user_home');
                     Route::get('/delete', [App\Http\Controllers\UserController::class, 'delete'])->name('delete_users');
@@ -85,7 +91,7 @@ Route::group(['middleware' => ['auth']], function () {
                     Route::post('/create_user', [App\Http\Controllers\UserController::class, 'add'])->name('create_user');
                     Route::post('/make_admin', [App\Http\Controllers\UserController::class, 'make_admin'])->name('make_admin');
                     Route::post('/edit_user', [App\Http\Controllers\UserController::class, 'edit'])->name('edit_user');
-                 });
+                });
 
                 Route::group(['prefix' => 'member'], function () {
                     Route::get('/', [App\Http\Controllers\Admin\MemberController::class, 'index'])->name('admin_member_home');
@@ -134,7 +140,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/transactions', [App\Http\Controllers\MemberController::class, 'transactions'])->name('transactions');
                 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'profile'])->name('member-profile');
                 Route::post('/update-profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('member-profile-update');
-               
+
                 Route::get('/automatic-payment', [App\Http\Controllers\MemberController::class, 'automaticPayment'])->name('member-automatic-payment');
                 Route::get('/manual-payment', [App\Http\Controllers\MemberController::class, 'manualPayment'])->name('member-manual-payment');
                 Route::get('/contribution-dues', [App\Http\Controllers\MemberController::class, 'contributionPayment'])->name('member-contribution-payment');
