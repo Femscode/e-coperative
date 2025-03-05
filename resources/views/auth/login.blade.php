@@ -134,7 +134,7 @@
     <div class="container-fluid">
         <div class="auth-wrapper">
             <div class="row">
-                <div class="col-12 col-md-6 col-xl-4 minvheight-100 d-flex flex-column px-0">
+                <div class="col-12 col-md-6 col-xl-6 minvheight-100 d-flex flex-column px-0">
                     <header class="adminuiux-header">
                         <nav class="navbar">
                             <div class="container-fluid"><a class="navbar-brand" href="investment-dashboard.html">
@@ -183,7 +183,7 @@
                     </div>
 
                 </div>
-                <div class="col-12 col-md-6 col-xl-8 p-4 d-none d-md-block">
+                <div class="col-12 col-md-6 col-xl-6 p-4 d-none d-md-block">
                     <div class="card adminuiux-card bg-theme-1-space position-relative overflow-hidden h-100">
                         <div class="position-absolute start-0 top-0 h-100 w-100 coverimg opacity-75 z-index-0"><img src="assets/img/background-image/background-image-8.html" alt=""></div>
                         <div class="card-body position-relative z-index-1">
