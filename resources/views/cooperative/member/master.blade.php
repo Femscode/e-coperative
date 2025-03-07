@@ -229,13 +229,12 @@
             <div class="col-12 mb-auto pt-4"></div>
             <div class="col-auto">
                 <img src="{{ asset('admindashboard/images/logo/syncologo2.png') }}" alt="" class="height-60 mb-3">
-
-                <p class="h6 mb-0">SyncoSave</p>
-                <p class="h3 mb-4">Cooperative at your fingertip!</p>
+                <p class="h6 mb-0">Welcome to SyncoSave</p>
+                <p class="h3 mb-4">Your Financial Future Starts Here</p>
                 <div class="loader10 mb-2 mx-auto"></div>
             </div>
             <div class="col-12 mt-auto pb-4">
-                <p class="text-secondary">Loading your cooperative cooperative.admin...</p>
+                <p class="text-secondary">Preparing your personalized experience...</p>
             </div>
         </div>
     </div>
