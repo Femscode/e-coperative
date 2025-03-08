@@ -349,12 +349,13 @@
                 uuid: uuid
             });
         });
-
+        console.log(checkedData)
         return checkedData;
     }
 
     function processPayment(data) {
         data = data;
+        // console.log(data)
         var email = $('#userEmail').val();
         var phone = $('#userPhone').val();
         var totalAmount = $('#total').val();

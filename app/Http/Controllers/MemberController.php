@@ -179,12 +179,12 @@ class MemberController extends Controller
                     ->pluck('month')  // Change 'month' to 'week' if you have a week field
                     ->toArray();
         
-                $weeks = [];
-                // dd()
+                $months = [];
+                // dd('here');
                 foreach ($weeksToView as $thisWeek) {
                     $check = in_array($thisWeek, $myWeeks);
                     if (!$check) {
-                        $months[] = ['source' => '1', 'week' => $thisWeek, "amount" => $single->amount, 'uuid' => $single->uuid];
+                        $months[] = ['source' => '1', 'month' => $thisWeek, "amount" => $single->amount, 'uuid' => $single->uuid];
                     }
                 }
             }elseif ($mode == "Monthly") {
@@ -226,6 +226,7 @@ class MemberController extends Controller
             }
 
         }
+        // dd($months);
         $data['months'] = $months;
         $data['user'] = Auth::user();
         return view ('cooperative.member.payment.contribution', $data);  

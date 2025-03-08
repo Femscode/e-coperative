@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\Transaction;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use function App\Helpers\success_status_code;
+use Carbon\Carbon;
 use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
+use function App\Helpers\success_status_code;
+use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
@@ -288,6 +289,97 @@ class GroupController extends Controller
     public function contribution(){
         $data['user'] = Auth::user();
         return view('ajo.my_group', $data);
+    }
+
+    public function disburseContribution(Request $request){
+        try {
+            $apiSecret = env('PAYSTACK_DISBURSE_SECRET_KEY');
+            $client = new Client();
+            // $paystack = new Paystack();
+            $loanDetails = GroupMember::where('id', $request->id)->first();
+            $user = $loanDetails->user;
+            $name = $user->account_name;
+            $code = $user->bank_code;
+            $number = $user->account_number;
+            $group = Group::find($loanDetails->group_id);
+            $totalM = GroupMember::where('group_id', $group->id)->count();
+            if(!$code){
+                return api_request_response(
+                    'error',
+                    "Member hasn't completed bank info to receive loan!",
+                    success_status_code(),
+                );
+            }
+            // $response = $client->post('https://api.paystack.co/transferrecipient', [
+            //     'headers' => [
+            //         'Authorization' => 'Bearer ' . $apiSecret,
+            //         'Content-Type' => 'application/json',
+            //     ],
+            //     'json' => [
+            //         'type' => 'nuban',
+            //         'name' => $name,
+            //         'description' => 'Recipient Description',
+            //         'account_number' => $number,
+            //         'bank_code' => $code,
+            //     ],
+            // ]);
+
+            // $responseData = json_decode($response->getBody());
+
+            // if ($responseData->status) {
+            //     // Recipient created successfully
+            //     $recipientCode = $responseData->data->recipient_code;
+            //     $client = new Client();
+
+            //     $response = $client->post('https://api.paystack.co/transfer', [
+            //         'headers' => [
+            //             'Authorization' => 'Bearer ' . $apiSecret,
+            //             'Content-Type' => 'application/json',
+            //         ],
+            //         'json' => [
+            //             'recipient' => $recipientCode,
+            //             'amount' =>  $group->amount * $totalM * 100, // Amount in kobo (e.g., 10000 for ₦100)
+            //             'source' => 'balance', // Amount in kobo (e.g., 10000 for ₦100)
+            //         ],
+            //     ]);
+            //     $responseData = json_decode($response->getBody());
+            //     if ($responseData->status) {
+                    // Transfer initiated successfully
+                    $loanDetails->update(['packed' => 1]);
+                    // You can save the transfer reference and status in your database for tracking
+                    return api_request_response(
+                        'ok',
+                        'Transfer initiated successfully!',
+                        success_status_code(),
+                    );
+                    // return redirect()->back()->with('success', 'Transfer initiated successfully');
+                // } else {
+                //     // Handle the error
+                //     return api_request_response(
+                //         'error',
+                //         $responseData->message,
+                //         bad_response_status_code()
+                //     );
+                //     // return redirect()->back()->with('error', $transfer->data->message);
+                // }
+
+                // return redirect()->back()->with('success', 'Recipient created successfully');
+            // } else {
+            //     // Handle the error
+            //     return api_request_response(
+            //         'error',
+            //         $responseData->message,
+            //         bad_response_status_code()
+            //     );
+            //     // return redirect()->back()->with('error', $recipient->data->message);
+            // }
+        } catch (\Exception $exception) {
+            return api_request_response(
+                'error',
+                $exception->getMessage(),
+                bad_response_status_code()
+            );
+        }
     }
 
     /**

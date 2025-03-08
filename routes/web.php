@@ -78,7 +78,7 @@ Route::group(['middleware' => ['auth']], function () {
                     Route::get('/dues/{uuid}', [App\Http\Controllers\GroupController::class, 'cDues'])->name('contribution-dues');
                     Route::get('/start-contribution', [App\Http\Controllers\GroupController::class, 'start'])->name('start-contribution');
                     Route::get('/contribution-dues', [App\Http\Controllers\GroupController::class, 'contributionPayment'])->name('admin-contribution-payment');
-
+                    Route::get('/disburse-contribution', [App\Http\Controllers\GroupController::class, 'disburseContribution'])->name('admin-disburse-contribution');
                 });
 
 
