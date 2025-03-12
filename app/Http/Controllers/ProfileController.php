@@ -296,6 +296,7 @@ class ProfileController extends Controller
             'state' => 'nullable|string|max:100',
             'country' => 'nullable|string|max:100',
             'bio' => 'nullable|string|max:500',
+            // 'photo' => 'nullable|mimes:jpeg,png,jpg,svg|max:2048'
         ]);
 
         // Update the user

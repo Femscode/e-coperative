@@ -34,7 +34,7 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Line</th>
                                     <th scope="col">Date Joined</th>
-                                    {{-- <th scope="col">Action</th> --}}
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             @if($members->count() > 0)
@@ -44,14 +44,16 @@
                                         <td class="fw-medium">{{ $transaction->user->name }}</td>
                                         <td class="fw-medium">{{ $transaction->turn }}</td>
                                         <td class="fw-medium">{{ $transaction->created_at }}</td>
-                                        {{-- <td class="text-muted">
-                                            @if($transaction->status == 0)
-                                            <button class="btn rounded-pill btn-sm btn-soft-info" data-id="{{ $transaction->id }}">Start</button>
-                                            <span class="badge bg-warning">Processing</span>
+                                        <td class="text-muted">
+                                            @if($transaction->packed == 0)
+                                                @if($nextMember && $nextMember->id == $transaction->id)
+                                                <button class="btn rounded-pill btn-sm btn-soft-info disburseButton" data-id="{{ $transaction->id }}">Disburse</button>
+                                                @endif
+                                                {{-- <span class="badge bg-warning">Processing</span> --}}
                                             @else
-                                            <span class="badge bg-info ">Ongoing</span>
+                                                <span class="badge bg-info ">PAID</span>
                                             @endif
-                                        </td> --}}
+                                        </td>
                                     </tr>
                                     @endforeach
                                     

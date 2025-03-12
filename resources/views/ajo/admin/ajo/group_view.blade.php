@@ -154,7 +154,52 @@
             }
         })
 
+        /* When click disburse button */
+        $('body').on('click', '.disburseButton', function() {
+            var id = $(this).data('id');
+            var token = $("meta[name='csrf-token']").attr("content");
+            var el = this;
+            // alert("here")
+            notifyUser(el, id);
+        });
+        async function notifyUser(el, id) {
+            const willUpdate = await new swal({
+                title: "Confirm Contribution Disbursement",
+                text: `Are you sure you want to disburse to this member?`,
+                icon: "warning",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes!",
+                showCancelButton: true,
+                buttons: ["Cancel", "Yes, Disburse"]
+            });
+            if (willUpdate.isConfirmed == true) {
+                //performReset()
+                performDisburse(el, id);
+            } else {
+                new swal("Opss", "Disbursement Cancelled", "error");
+            }
+        }
 
+        function performDisburse(el, id) {
+            $('.preloader').show();
+            try {
+                $.get("{{ route('admin-disburse-contribution') }}?id=" + id,
+                    function(data, status) {
+                        // console.log(data)
+                        if (data.status == "error") {
+                            return new swal("Oops", data.message, "error");
+                        }
+                        if (status === "success") {
+                            let alert = new swal("Good Job", "Contribution Successfully Disbursed!", "success");
+                            window.location.reload()
+                        }
+                    }
+                );
+            } catch (e) {
+                $('.preloader').hide();
+                let alert = new swal("Opss", e.message, "error");
+            }
+        }
 
         /* When click delete button */
         $('body').on('click', '#deleteRecord', function() {
