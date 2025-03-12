@@ -137,13 +137,10 @@
                 <div class="col-12 col-md-6 col-xl-6 minvheight-100 d-flex flex-column px-0">
                     <header class="adminuiux-header">
                         <nav class="navbar">
-                            <div class="container-fluid"><a class="navbar-brand" href="investment-dashboard.html">
-                                    <img src="{{ asset('admindashboard/images/logo/syncologo2.png') }}" alt="" style="width:150px" class="height-60 mb-3">
-
-
+                            <div class="container-fluid">
+                                <a class="navbar-brand">
+                                    <img src="{{ asset('admindashboard/images/logo/syncologo2.png') }}" alt="" style="width:150px" class="height-70 mb-3">
                                 </a>
-                                <div class="ms-auto"></div>
-                                <div class="ms-auto"></div>
                             </div>
                         </nav>
                     </header>
@@ -175,7 +172,16 @@
                                             <div class="form-check"><input class="form-check-input" type="checkbox" name="rememberme" id="rememberme"> <label class="form-check-label" for="rememberme">Remember me</label></div>
                                         </div>
                                         <div class="col-auto"><a href="/forgot-password" class="">Forget Password?</a></div>
-                                    </div><button id="loginButton" type="submit" class="btn btn-lg btn-theme w-100 mb-4">Login</button>
+                                    </div>
+                                    <button id="loginButton" type="submit" class="btn btn-lg btn-theme w-100 mb-4">Login</button>
+                                    <div class="d-flex gap-2 mb-4">
+                                        <button type="button" class="btn btn-outline-primary w-50" id="memberLogin">
+                                            <i class="bi bi-person"></i> Login as Member
+                                        </button>
+                                        <button type="button" class="btn btn-outline-success w-50" id="adminLogin">
+                                            <i class="bi bi-shield-lock"></i> Login as Admin
+                                        </button>
+                                    </div>
                                 </form>
                                 <div class="text-center mb-3">Don't have account? <a href="/register" class="">Create Account</a></div>
                             </div>
@@ -214,98 +220,111 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-$(document).ready(function() {
-    // Fade out preloader
-    setTimeout(function() {
-        $('.pageloader').fadeOut(500);
-    }, 1500);
+    $(document).ready(function() {
+        // Fade out preloader
 
-    // Password toggle
-    $('.toggle-password').click(function() {
-        $(this).find('i').toggleClass('bi-eye bi-eye-slash');
-        var input = $('#password');
-        input.attr('type', input.attr('type') === 'password' ? 'text' : 'password');
-    });
+                // Quick login buttons
+                $('#memberLogin').click(function() {
+            $('#email').val('member@gmail.com');
+            $('#password').val('Password123');
+            $('#loginButton').click();
+        });
 
-    // Form validation
-    $('#loginForm').on('submit', function(e) {
-        e.preventDefault();
-        if (!$('#email').val() || !$('#password').val()) {
-            showCustomAlert({
-                icon: 'warning',
-                title: 'Missing Information',
-                text: 'Please fill in all required fields'
-            });
-            return;
-        }
-        // Continue with your existing login logic
-        $('#loginButton').click();
-    });
+        $('#adminLogin').click(function() {
+            $('#email').val('admin@gmail.com');
+            $('#password').val('Password123');
+            $('#loginButton').click();
+        });
+        setTimeout(function() {
+            $('.pageloader').fadeOut(500);
+        }, 1500);
 
-    $('#loginButton').click(function(e) {
-                e.preventDefault();
+        // Password toggle
+        $('.toggle-password').click(function() {
+            $(this).find('i').toggleClass('bi-eye bi-eye-slash');
+            var input = $('#password');
+            input.attr('type', input.attr('type') === 'password' ? 'text' : 'password');
+        });
 
-                // Display loading alert
+        // Form validation
+        $('#loginForm').on('submit', function(e) {
+            e.preventDefault();
+            if (!$('#email').val() || !$('#password').val()) {
                 showCustomAlert({
-                    title: 'Logging in...',
-                    text: 'Please wait',
-                    allowOutsideClick: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
+                    icon: 'warning',
+                    title: 'Missing Information',
+                    text: 'Please fill in all required fields'
                 });
+                return;
+            }
+            // Continue with your existing login logic
+            $('#loginButton').click();
+        });
 
-                // AJAX request for login
-                $.ajax({
-                    url: "{{ route('login') }}",
-                    type: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        email: $('#email').val(),
-                        password: $('#password').val()
-                    },
-                    success: function(response) {
-                        Swal.close(); // Close loading alert
+        $('#loginButton').click(function(e) {
+            e.preventDefault();
 
-                        // Check if login was successful
-                        if (response.success) {
-                            showCustomAlert({
-                                icon: 'success',
-                                title: 'Login Successful!',
-                                text: 'Redirecting...',
-                                timer: 1500,
-                                showConfirmButton: false
-                            }).then(() => {
-                                window.location.href = response.redirect || '/dashboard'; // Redirect after successful login
-                            });
-                        } else {
+            // Display loading alert
+            showCustomAlert({
+                title: 'Logging in...',
+                text: 'Please wait',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
 
-                            showCustomAlert({
-                                icon: 'error',
-                                title: 'Login Failed',
-                                text: 'Invalid email or password.'
-                                // text: response.message || 'Invalid email or password.'
-                            });
-                        }
-                    },
-                    error: function(xhr) {
-                        Swal.close();
+            // AJAX request for login
+            $.ajax({
+                url: "{{ route('login') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    email: $('#email').val(),
+                    password: $('#password').val()
+                },
+                success: function(response) {
+                    Swal.close(); // Close loading alert
+
+                    // Check if login was successful
+                    if (response.success) {
+                        showCustomAlert({
+                            icon: 'success',
+                            title: 'Login Successful!',
+                            text: 'Redirecting...',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = response.redirect || '/dashboard'; // Redirect after successful login
+                        });
+                    } else {
+
                         showCustomAlert({
                             icon: 'error',
-                            title: 'Login Error',
-                            text: 'An error occurred. Please try again.'
+                            title: 'Login Failed',
+                            text: 'Invalid email or password.'
+                            // text: response.message || 'Invalid email or password.'
                         });
                     }
-                });
+                },
+                error: function(xhr) {
+                    Swal.close();
+                    showCustomAlert({
+                        icon: 'error',
+                        title: 'Login Error',
+                        text: 'An error occurred. Please try again.'
+                    });
+                }
             });
+        });
 
-    // Input focus effects
-    $('.form-control').focus(function() {
-        $(this).parent('.form-floating').addClass('focused');
-    }).blur(function() {
-        if (!$(this).val()) {
-            $(this).parent('.form-floating').removeClass('focused');
-        }
+        // Input focus effects
+        $('.form-control').focus(function() {
+            $(this).parent('.form-floating').addClass('focused');
+        }).blur(function() {
+            if (!$(this).val()) {
+                $(this).parent('.form-floating').removeClass('focused');
+            }
+        });
     });
-});
 </script>
