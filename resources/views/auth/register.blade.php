@@ -44,13 +44,13 @@
         }
 
         .step-arrow-nav .nav-pills .nav-link.active {
-            background: #082720;
+            background: #094168;
             color: white;
         }
 
         .step-arrow-nav .nav-pills .nav-link.done {
-            background: #0827204d;
-            color: #082720;
+            background: #0941684d;
+            color: #094168;
         }
 
         .tab-pane {
@@ -70,12 +70,12 @@
         }
 
         .form-control:focus {
-            border-color: #082720;
+            border-color: #094168;
             box-shadow: 0 0 0 0.2rem rgba(8, 39, 32, 0.25);
         }
 
         .btn-theme {
-            background: #082720;
+            background: #094168;
             color: white;
             transition: all 0.3s ease;
         }
@@ -94,7 +94,7 @@
 
         .progress-indicator .progress {
             height: 100%;
-            background: #082720;
+            background: #094168;
             border-radius: 2px;
             transition: width 0.3s ease;
         }
@@ -186,7 +186,7 @@
                                 <form id="process-order-form" method="post">
                                     @csrf
                                     <div class="text-center mt-2">
-                                        <h3 style='color:#082720' class="text-">Create An Account</h3>
+                                        <h3 style='color:#094168' class="text-">Create An Account</h3>
                                         @if(isset($slug))
                                         <h6> Join {{ $company->name }} today!</h6>
 
@@ -248,7 +248,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" data-nexttab="steparrow-description-info-tab">
+                                                <button style='background-color:#094168;border:0px' type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" data-nexttab="steparrow-description-info-tab">
                                                     <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go
                                                     to description
                                                 </button>
@@ -291,7 +291,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-light text-light btn-label previestab" data-previous="steparrow-gen-info-tab">
+                                                <button style='background-color:#094168;border:0px' type="button" class="btn btn-light text-light btn-label previestab" data-previous="steparrow-gen-info-tab">
                                                     <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
                                                     Back to General
                                                 </button>
@@ -315,7 +315,15 @@
                                                                 <select class='form-control planId' required name='company' id="cooperative-select">
                                                                     <option value="">--Select Cooperative--</option>
                                                                     @foreach($coperative ?? App\Models\Company::all() as $coop)
-                                                                        <option value='{{$coop->uuid}}'>{{ $coop->name }}</option>
+                                                                        <option value='{{$coop->uuid}}'>
+                                                                        {{ $coop->name }}
+                                                                    @if($coop->type == 1)
+                                                                    <span class=" bg-success">(Cooperative)</span>
+                                                                    @else 
+                                                                    <span class=" text-warning">(Contribution)</span>
+
+                                                                    @endif
+                                                                    </option>
                                                                     @endforeach
                                                                 </select>
                                                                 <label for="cooperative-select">Select Cooperative</label>
@@ -337,11 +345,11 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-light text-light btn-label previestab" data-previous="steparrow-description-info-tab">
+                                                <button style='background-color:#094168;border:0px' type="button" class="btn btn-light text-light btn-label previestab" data-previous="steparrow-description-info-tab">
                                                     <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
                                                     Back to Description
                                                 </button>
-                                                <button style='background-color:#082720;border:0px' type="submit" class="btn btn-success btn-label right ms-auto">
+                                                <button style='background-color:#094168;border:0px' type="submit" class="btn btn-success btn-label right ms-auto">
                                                     <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Submit
                                                 </button>
                                             </div>

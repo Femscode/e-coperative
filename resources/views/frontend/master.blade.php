@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{url('frontend_assets/css/style.css')}}">
     <link rel="stylesheet" href="{{url('frontend_assets/css/responsive.css')}}">
 
-    <title>E-Cooperative</title>
+    <title>Syncosave</title>
     <link rel="shortcut icon" href="{{ url('assets/images/cooplogo.png') }}">
     <link href="{{ url('admindashboard/css/sweetalert-custom.css') }}" rel="stylesheet">
 
@@ -30,18 +30,15 @@
     <div class="preloader-area text-center position-fixed top-0 bottom-0 start-0 end-0" id="preloader">
         <div class="loader position-absolute start-0 end-0">
             <div class="wavy position-relative fw-light">
+                
                 <!-- <span class="d-inline-block"><img src="{{url('frontend_assets/images/favicon.png')}}" alt="favicon"></span> -->
-                <span class="d-inline-block">E</span>
-                <span class="d-inline-block">-</span>
+                <span class="d-inline-block">S</span>
+                <span class="d-inline-block">Y</span>
+                <span class="d-inline-block">N</span>
                 <span class="d-inline-block">C</span>
                 <span class="d-inline-block">O</span>
-                <span class="d-inline-block">O</span>
-                <span class="d-inline-block">P</span>
-                <span class="d-inline-block">E</span>
-                <span class="d-inline-block">R</span>
+                <span class="d-inline-block">S</span>
                 <span class="d-inline-block">A</span>
-                <span class="d-inline-block">T</span>
-                <span class="d-inline-block">I</span>
                 <span class="d-inline-block">V</span>
                 <span class="d-inline-block">E</span>
             </div>
@@ -50,15 +47,13 @@
 
     <div class="top-header-info">
 
-        <div class="top-header-area bg-color-0c3a30">
+        <!-- <div class="top-header-area bg-color-0c3a30">
             <div class="container-fluid side-padding">
                 <div class="row">
                     <div class="col-lg-8 col-md-12">
                         <ul class="left-side">
                             <li><span>Local Cooperatives to the Digital Era</span></li>
-                            <!-- <li><a href="tel:+2349058744473"><i class="flaticon-phone-call"></i> <b>Call:</b> +234 (905) 8744473</a></li>
-                            <li><a href="#"><i class="flaticon-email-1"></i> <b>Mail:</b> <span class="__cf_email__">support@e-cooperative.com</span></a></li> -->
-                        </ul>
+                           </ul>
                     </div>
                     <div class="col-lg-4 col-md-12">
                         <ul class="right-side">
@@ -69,13 +64,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
 
         <nav class="navbar navbar-expand-lg bg-color-ffffff" id="navbar">
             <div class="container-fluid side-padding position-relative">
                 <a class="navbar-brand logo-brand p-0" href="#">
-                    <img src="{{ asset('assets/images/cooplogo.png') }}" width="70" alt="image">
+                    <img src="{{ asset('admindashboard/images/logo/syncologo2.png') }}" width="150" alt="image">
                 </a>
                 <a class="navbar-toggler" data-bs-toggle="offcanvas" href="#navbarOffcanvas" role="button" aria-controls="navbarOffcanvas">
                     <span class="burger-menu">
@@ -86,15 +81,15 @@
                 </a>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle active" href="/" role="button">
+                        <li class="nav-item ">
+                            <a class="nav-link active" href="/" role="button">
                                 Home
                             </a>
                           
                         </li>
                       
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="/cooperative/signup" role="button">
+                            <a class="nav-link" href="/cooperative/signup" role="button">
                                 Cooperative Registration
                             </a>
                            
@@ -214,7 +209,7 @@
             <div class="row" data-cues="slideInUp" data-duration="800">
                 <div class="col-xl-4 col-lg-9 col-md-6">
                     <div class="footer-weight">
-                        <h2 class="text-white">Follow the organizers of ABK FINHACK</h2>
+                    <img src="{{ asset('admindashboard/images/logo/syncologo1.png') }}" alt="" style="width:100px;height:50px">
                        
                         <ul class="social">
                            
@@ -315,26 +310,9 @@
     <div class="copyright-area bg-color-0c3a30">
         <div class="container">
             <div class="copyright-border">
-                <div class="row g-4 align-items-center">
-                    <div class="col-lg-4 col-md-6">
-                        <p>© <span>E-cooperative</span> <a href="#" target="_blank"><?php echo Date('Y');?></a></p>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="copy-image" data-cues="zoomIn" data-duration="700">
-                            <a href="#" class="d-block">
-                                <!-- <img src="frontend_assets/images/white-logo.png" alt="image"> -->
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12">
-                        <ul>
-                            <li>
-                                <a href="#">Project for the Abk Finhack</a>
-                            </li>
-                            
-                        </ul>
-                    </div>
-                </div>
+               
+                        <p class="text-white" style="text-align:center">© <span>SyncoSave</span> <a href="#" target="_blank"><?php echo Date('Y');?></a></p>
+                    
             </div>
         </div>
     </div>

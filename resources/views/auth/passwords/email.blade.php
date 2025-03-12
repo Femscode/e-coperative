@@ -103,7 +103,7 @@
 
                             <div style='background-color: #e5f7b3;' class="card-body p-4 bg-color-e5f7b3">
                                 <div class="text-center mt-2">
-                                    <h3 class="text-primary" style='color:#082720'>Welcome Back !</h3>
+                                    <h3 class="text-primary" style='color:#094168'>Welcome Back !</h3>
                                     <p class="text-dark">Sign in to access your account.</p>
                                 </div>
                                 <div class="p-2 mt-4">
@@ -126,7 +126,7 @@
                                             @enderror
                                         </div>
                                         <div class="mt-4">
-                                            <button style="background-color: #082720; border: 0px" class="btn btn-success w-100" type="submit" id="loginButtons">{{ __('Login') }}</button>
+                                            <button style="background-color: #094168; border: 0px" class="btn btn-success w-100" type="submit" id="loginButtons">{{ __('Login') }}</button>
                                             <a class="btn btn-link" href="{{ route('password.request') }}">Login with a test account?</a>
                                             <div class="d-flex justify-content-center">
                                                 <a class="btn btn-primary m-2" id="member_login">Login As Member</a>

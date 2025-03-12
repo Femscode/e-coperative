@@ -15,9 +15,8 @@ class WebsiteController extends Controller
     {
 
         $data['companies'] = Company::latest()->get();
-        return view('frontend.oldhome', $data);
         return view('frontend.home', $data);
-        return view('website.index');
+        
 
     }
 
