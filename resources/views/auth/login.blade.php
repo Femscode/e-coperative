@@ -304,14 +304,23 @@
                     } else {
 
                         Swal.fire({
-                            icon: 'error',
-                            title: 'Login Failed',
-                            text: 'Invalid email or password.'
-                            // text: response.message || 'Invalid email or password.'
+                            // icon: 'success',
+                            title: 'Processing Login!',
+                            text: 'Pleae wait...',
+                            timer: 100,
+                            showConfirmButton: false
                         }).then(() => {
                             window.location.href = response.redirect || '/dashboard'; // Redirect after successful login
                         });
-                        
+                        // Swal.fire({
+                        //     icon: 'error',
+                        //     title: 'Login Failed',
+                        //     text: 'Invalid email or password.'
+                        //     // text: response.message || 'Invalid email or password.'
+                        // }).then(() => {
+                        //     window.location.href = response.redirect || '/dashboard'; // Redirect after successful login
+                        // });
+
                     }
                 },
                 error: function(xhr) {
