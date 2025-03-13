@@ -137,10 +137,13 @@
                 <div class="col-12 col-md-6 col-xl-6 minvheight-100 d-flex flex-column px-0">
                     <header class="adminuiux-header">
                         <nav class="navbar">
-                            <div class="container-fluid">
-                                <a class="navbar-brand">
+                            <div class="container-fluid"><a class="navbar-brand">
                                     <img src="{{ asset('admindashboard/images/logo/syncologo2.png') }}" alt="" style="width:150px" class="height-70 mb-3">
+
+
                                 </a>
+                                <div class="ms-auto"></div>
+                                <div class="ms-auto"></div>
                             </div>
                         </nav>
                     </header>
@@ -284,11 +287,12 @@
                     password: $('#password').val()
                 },
                 success: function(response) {
+                    console.log(response);
                     Swal.close(); // Close loading alert
 
                     // Check if login was successful
                     if (response.success) {
-                        showCustomAlert({
+                        Swal.fire({
                             icon: 'success',
                             title: 'Login Successful!',
                             text: 'Redirecting...',
@@ -309,10 +313,18 @@
                 },
                 error: function(xhr) {
                     Swal.close();
+                    let errorMessage = 'An error occurred. Please try again.';
+                    
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    } else if (xhr.responseJSON && xhr.responseJSON.errors) {
+                        errorMessage = Object.values(xhr.responseJSON.errors).flat().join('\n');
+                    }
+                    
                     showCustomAlert({
                         icon: 'error',
                         title: 'Login Error',
-                        text: 'An error occurred. Please try again.'
+                        text: errorMessage
                     });
                 }
             });
