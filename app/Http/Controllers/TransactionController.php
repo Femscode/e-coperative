@@ -36,7 +36,7 @@ class TransactionController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'referred_by' => 'exists:users,coop_id',
-            'company' => 'exists:companies,uuid'
+            'company' => 'exists:companies,id'
         ]);
 
         if ($validator->fails()) {
@@ -53,12 +53,16 @@ class TransactionController extends Controller
         }
         //check if coop has reg fee
         $coop = Company::where('uuid', $request->company)->first();
+        if(!$coop) {
+           
+            $coop = Company::findOrFail($request->company);
+        }
         $fee = $coop->reg_fee;
 
         // dd($formattedNumber);
         $input = $request->except('_token');
         $input['password'] = Hash::make($request->password);
-        $coopD = Company::where('uuid', $request->company)->first();
+        $coopD = Company::where('id', $request->company)->first();
         $amount = $coopD->reg_fee;
         // $tag = date("dY");
         $tag = uniqid(). date("dYHis").rand(100, 999);

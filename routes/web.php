@@ -24,7 +24,7 @@ Route::post('/register_user', [App\Http\Controllers\Auth\RegisterController::cla
 
 Route::get('/payaza/transaction-successful', [App\Http\Controllers\TransactionController::class, 'payazaVerifyPayment'])->name('payazaVerifyPayment');
 Route::get('/paystack/transaction-successful', [App\Http\Controllers\TransactionController::class, 'verifyPayment'])->name('verify-payment');
-Route::get('/get-plan-details', [App\Http\Controllers\PlanController::class, 'planDetails'])->name('get_plan_details_by_id');
+Route::get('/get-plan-details/{id}', [App\Http\Controllers\PlanController::class, 'planDetails'])->name('get_plan_details_by_id');
 Route::get('/test', function () {
     return view('test');
 })->name('test');

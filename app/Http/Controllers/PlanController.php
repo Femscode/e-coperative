@@ -20,10 +20,25 @@ class PlanController extends Controller
     }
 
     
-    public function planDetails(Request $request){
-        $data['plan']  = Company::where('uuid', $request->id)->first();
-        // dd($data);
-        return $data;
+    public function planDetails($id)
+    {
+        try {
+            $company = Company::findOrFail($id);
+            return response()->json([
+                'status' => true,
+                'data' => [
+                    'id' => $company->id,
+                    'name' => $company->name,
+                    'registration_fee' => $company->reg_fee ?? 0,
+                    'description' => $company->description
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to fetch cooperative details'
+            ], 400);
+        }
     }
 
     /**
