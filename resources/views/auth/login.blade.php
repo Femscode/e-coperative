@@ -228,13 +228,13 @@
 
                 // Quick login buttons
                 $('#memberLogin').click(function() {
-            $('#email').val('member@gmail.com');
+            $('#email').val('pelumi333@gmail.com');
             $('#password').val('Password123');
             $('#loginButton').click();
         });
 
         $('#adminLogin').click(function() {
-            $('#email').val('admin@gmail.com');
+            $('#email').val('proxycoop@gmail.com');
             $('#password').val('Password123');
             $('#loginButton').click();
         });
@@ -303,12 +303,15 @@
                         });
                     } else {
 
-                        showCustomAlert({
+                        Swal.fire({
                             icon: 'error',
                             title: 'Login Failed',
                             text: 'Invalid email or password.'
                             // text: response.message || 'Invalid email or password.'
+                        }).then(() => {
+                            window.location.href = response.redirect || '/dashboard'; // Redirect after successful login
                         });
+                        
                     }
                 },
                 error: function(xhr) {
