@@ -345,8 +345,9 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-12">
                                                         <div class="mb-3">
+                                                            <input type="hidden" value="1" name="type"/>
                                                             <input type="radio" /> I Agree to the <a href='#'>terms & conditions.</a>
 
                                                         </div>

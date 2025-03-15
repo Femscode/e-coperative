@@ -14,6 +14,7 @@ class WebsiteController extends Controller
     public function index()
     {
 
+        return redirect('/login');
         $data['companies'] = Company::latest()->get();
         return view('frontend.home', $data);
         
