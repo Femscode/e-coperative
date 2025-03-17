@@ -204,14 +204,19 @@
                     <div class="tab-content">
                         <!-- Step 1: Personal Information -->
                         <div class="tab-pane fade show active" id="step1">
-                            <div class="mb-3">
+                        <div class="mb-3">
                                 <label class="form-label">Select Cooperative</label>
-                                <select class="form-control form-select planId" name="company" required>
-                                    <option value="">Choose a cooperative...</option>
-                                    @foreach(\App\Models\Company::get() as $cooperative)
-                                    <option value="{{ $cooperative->id }}">{{ $cooperative->name }}</option>
-                                    @endforeach
-                                </select>
+                                @if(isset($company) && $company)
+                                    <input type="hidden" name="company" value="{{ $company->id }}">
+                                    <input type="text" class="form-control" value="{{ $company->name }}" readonly>
+                                @else
+                                    <select class="form-control form-select planId" name="company" >
+                                        <option value="">Choose a cooperative</option>
+                                        @foreach(\App\Models\Company::get() as $cooperative)
+                                            <option value="{{ $cooperative->id }}">{{ $cooperative->name }}</option>
+                                        @endforeach
+                                    </select>
+                                @endif
                                 <div class="invalid-feedback">Please select a cooperative</div>
                             </div>
 
@@ -320,7 +325,7 @@
 
             <!-- Right Column - Banner -->
             <div class="col-lg-7 d-none d-lg-block">
-                <div class="position-relative h-100 bg-primary bg-gradient rounded-4 p-5">
+                <div  class="position-relative h-100 bg-primary bg-gradient rounded-4 p-5">
                     <div class="position-absolute top-50 start-50 translate-middle text-center text-white" style="width: 80%;">
                         <h1 class="display-5 fw-bold mb-4">Cooperative Savings Made Simple</h1>
                         <p class="lead">"When we save together, we grow together. Cooperative savings is the foundation of community wealth."</p>
@@ -740,10 +745,10 @@
             });
 
             if (currentStep === 1) {
-                if (!$('.planId').val()) {
-                    isValid = false;
-                    $('.planId').addClass('is-invalid');
-                }
+                // if (!$('.planId').val()) {
+                //     isValid = false;
+                //     $('.planId').addClass('is-invalid');
+                // }
             }
             // Special validation for step 2 (password)
             if (currentStep === 2) {
