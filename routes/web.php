@@ -48,6 +48,11 @@ Route::get('/join/contribution/{id}', [App\Http\Controllers\WebsiteController::c
 
 Route::get('/home', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('home');
 Auth::routes();
+//Payment route 
+
+Route::post('/checkout', [App\Http\Controllers\FundingController::class, 'checkout'])->name('checkout');
+Route::any('/generateBankDetails', [App\Http\Controllers\FundingController::class, 'generateBankDetails'])->name('generateBankDetails');
+
 Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/my-profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');

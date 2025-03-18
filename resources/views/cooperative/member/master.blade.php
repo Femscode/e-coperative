@@ -213,6 +213,41 @@
             }
         }
     </style>
+       <style>
+                                .payment-option-card {
+                                    padding: 1rem;
+                                    border: 1px solid #dee2e6;
+                                    border-radius: 0.75rem;
+                                    transition: all 0.3s ease;
+                                }
+                                .payment-option-card:hover {
+                                    border-color: #6c757d;
+                                    background-color: #f8f9fa;
+                                }
+                                .payment-option-card .form-check-input:checked ~ .form-check-label {
+                                    color: var(--bs-primary);
+                                }
+                                .payment-option-card .form-check-input:checked ~ .form-check-label .payment-icon {
+                                    background-color: var(--bs-primary) !important;
+                                    color: white !important;
+                                }
+                                .payment-icon {
+                                    width: 48px;
+                                    height: 48px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    border-radius: 12px;
+                                }
+                                .bg-soft-primary {
+                                    background-color: rgba(var(--bs-primary-rgb), 0.1);
+                                    color: var(--bs-primary);
+                                }
+                                .bg-soft-success {
+                                    background-color: rgba(var(--bs-success-rgb), 0.1);
+                                    color: var(--bs-success);
+                                }
+                            </style>
    
     <link href="{{ url('admindashboard/css/sweetalert-custom.css') }}" rel="stylesheet">
 
