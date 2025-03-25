@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\User;
+use App\Models\Company;
 use App\Models\Group;
-use Carbon\CarbonPeriod;
-use App\Models\MemberLoan;
 use App\Models\GroupMember;
+use App\Models\MemberLoan;
 use App\Models\Transaction;
+use App\Models\User;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,7 +30,23 @@ class MemberController extends Controller
         $data['user'] = $user = Auth::user();
         $data['member_loan'] = MemberLoan::where('user_id', $user->id)->where('approval_status', 1)->get();
         $data['transactions'] = Transaction::where('user_id', $user->id)->orWhere('email', $user->email)->where('status', 'Success')->latest()->paginate(10);
+        $data['company'] = $company = Company::where('uuid', $user->company_id)->first();
+       
+        
         return view('cooperative.member.index', $data);
+    }
+    public function reg_fee(Request $request)
+    {
+        $date = date('Y-m-d', strtotime(Auth::user()->created_at));
+        $data['now'] = Carbon::now();
+        
+        $data['user'] = $user = Auth::user();
+        $data['member_loan'] = MemberLoan::where('user_id', $user->id)->where('approval_status', 1)->get();
+        $data['transactions'] = Transaction::where('user_id', $user->id)->orWhere('email', $user->email)->where('status', 'Success')->latest()->paginate(10);
+        $data['company'] = $company = Company::where('uuid', $user->company_id)->first();
+       
+        
+        return view('cooperative.member.registration-fee', $data);
     }
 
     public function transactions()

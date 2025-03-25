@@ -14,8 +14,6 @@
             </div>
             <div class="modal-body p-4">
 
-
-
                 <div class="amount-display text-center mb-4">
                     <span class="text-muted">Amount To Be Paid</span>
                     <h2 class="amount-text mb-0">₦<span id="amountToBePaid">0</span></h2>

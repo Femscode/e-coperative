@@ -212,7 +212,7 @@
                                 @else
                                     <select class="form-control form-select planId" name="company" >
                                         <option value="">Choose a cooperative</option>
-                                        @foreach(\App\Models\Company::get() as $cooperative)
+                                        @foreach(\App\Models\Company::where('visibility','public')->get() as $cooperative)
                                             <option value="{{ $cooperative->id }}">{{ $cooperative->name }}</option>
                                         @endforeach
                                     </select>
@@ -412,159 +412,27 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+       
         // $('.preloader').show();
         e.preventDefault();
         // alert("ere")
         var form_details = $(this).serializeArray();
 
-        processPayment(form_details);
+        finalizeRegistration(form_details);
     })
 
-    function processPayment(data) {
-        data = data;
-        $('.preloader').show();
+  
+  
+
+    function finalizeRegistration(form_details) {
         $.ajax({
             type: 'POST',
-            url: 'pay-for-plan',
-            dataType: 'json',
-            data: data,
-            success: function(e) {
-                $('.preloader').hide();
-                $('.preloader').hide();
-                if (e.status == 0) {
-                    new swal("Congratulations!", "Registration Succesful", "success");
-                    window.location.href = "{{ route('dashboard') }}";
-                    // window.location.reload();
-                } else {
-                    $("#order_id").val(e.order_id)
-                    $('#paymentModal').modal('show');
-                }
-            },
-            error: function(e) {
-                $('.preloader').hide();
-                // var errorList = '';
-                // Object.keys(e.responseJSON.message).forEach(function(key) {
-                // errorList += '<li>' + e.responseJSON.message[key][0] + '</li>';
-                // });
-                new swal("Opss", e.responseJSON.message, "error");
-            }
-        })
-
-    }
-
-    $('#payaza-form').submit(function(e) {
-        e.preventDefault();
-        showCustomAlert({
-            title: 'Processing payment, please wait...',
-            icon: 'info',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading()
-            }
-        })
-
-        // Collect card details
-        var cardDetails = {
-            number: $('#card-number').val(),
-            expiryMonth: $('#expiry-date').val().split('/')[0], // Extract month from MM/YY
-            expiryYear: $('#expiry-date').val().split('/')[1], // Extract year from MM/YY
-            cvv: $('#cvv').val()
-        };
-        var ref = $("#order_id").val()
-        // Prepare the data for the Payaza API request
-        console.log($("#payer_name").val(), $("#payer_email").val(), $("#amountToBePaid").html())
-        var payload = {
-            "service_payload": {
-                "first_name": $("#payer_name").val(),
-                "last_name": $("#payer_name").val(),
-                "email_address": $("#payer_email").val(),
-                "phone_number": $("#payer_phone").val(),
-                "amount": $("#amountToBePaid").html(), // The amount to charge (adjust as needed)
-                "transaction_reference": ref, //"PL-1KBPSCJCRD" + Math.floor((Math.random() * 10000000) + 1), // Unique transaction reference
-                "currency": "NGN", // Currency code (adjust as needed)
-                "description": "E-coop Registration Payment", // Payment description
-                "card": {
-                    "expiryMonth": cardDetails.expiryMonth,
-                    "expiryYear": cardDetails.expiryYear,
-                    "securityCode": cardDetails.cvv,
-                    "cardNumber": cardDetails.number
-                },
-                "callback_url": "https://e-coop.cthostel.com/api/payment/webhook" // Your callback URL for payment updates
-            }
-        };
-
-        // Set up headers for the request
-        var headers = {
-            "Authorization": "Payaza " + "{{env('PAYAZA_API')}}", // Authorization token from Payaza
-            "Content-Type": "application/json"
-        };
-
-        // Send the AJAX request to Payaza API
-        $.ajax({
-            url: "https://cards-live.78financials.com/card_charge/", // Payaza endpoint
-            method: "POST",
-            headers: headers,
-            data: JSON.stringify(payload),
-            contentType: "application/json",
-            success: function(response) {
-                console.log("RAW RESULT: ", response);
-                if (response.statusOk) {
-                    if (response.do3dsAuth) {
-                        if (response.formData && response.threeDsUrl) {
-                            const creq = document.getElementById("creq");
-                            creq.value = response.formData;
-                            const form = document.getElementById("threedsChallengeRedirectForm");
-                            form.setAttribute("action", response.threeDsUrl);
-                            form.submit();
-                        } else {
-                            console.log("Missing 3DS data:", response);
-                            showCustomAlert({
-                                title: '3DS Authentication data missing. Please try again.',
-                                icon: 'error'
-                            })
-
-                        }
-                    } else {
-                        console.log("Payment Process Journey Completed");
-                        // $('#process-order-form').submit();
-                        showCustomAlert('Payment Completed', 'Payment completed successfully!', 'success')
-
-                        location.href = "/payaza/transaction-successful?order_id=" + $("#order_id").val() +
-                            '&reference=' + response.transactionReference;
-
-                        // Optionally submit your order form here if payment is successful
-
-                    }
-                } else {
-                    console.log("Error found:", response.debugMessage);
-                    showCustomAlert({
-                        title: "Payment Failed: " + response.debugMessage,
-                        icon: 'error'
-                    })
-                }
-            },
-            error: function(xhr, status, error) {
-                console.log("Error:", error);
-                showCustomAlert({
-                    title: "Network connection error: " + (error.debugMessage || error.message || "Try again later"),
-                    icon: 'error'
-                })
-            }
-        });
-    });
-
-
-
-    function finalizeRegistration(transactionId) {
-        $.ajax({
-            type: 'POST',
-            url: 'confirm-registration',
-            data: {
-                transactionId: transactionId
-            },
+            url: "{{ route('signup_user') }}",
+            data: form_details,
+             
             success: function() {
                 showCustomAlert("Success", "Your registration is complete!", "success").then(() => {
-                    window.location.href = "/welcome"; // Redirect on successful registration
+                    window.location.href = "/dashboard"; // Redirect on successful registration
                 });
             },
             error: function() {

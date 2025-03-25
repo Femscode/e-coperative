@@ -92,6 +92,7 @@ class FundingController extends Controller
         $first_name = $str_name[0];
         $last_name = end($str_name);
         $trx_ref = Str::random(7);
+        // dd($request->amount);
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer ' . env('FLW_SECRET_KEY'),
@@ -108,7 +109,7 @@ class FundingController extends Controller
             ]);
 
         $responseData = $response->json();
-        
+
         return response()->json([
             'bank_name' => $responseData['data']['bank_name'],
             'account_no' => $responseData['data']['account_number'],

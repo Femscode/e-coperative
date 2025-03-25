@@ -21,6 +21,7 @@ Route::get('/signup', [App\Http\Controllers\Auth\RegisterController::class, 'sig
 Route::get('/signup/{slug}', [App\Http\Controllers\Auth\RegisterController::class, 'signup'])->name('signup');
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'signup'])->name('signup');
 Route::post('/register_user', [App\Http\Controllers\Auth\RegisterController::class, 'register_user'])->name('save_coop_reg');
+Route::any('/signup_user', [App\Http\Controllers\Auth\RegisterController::class, 'signup_user'])->name('signup_user');
 
 Route::get('/payaza/transaction-successful', [App\Http\Controllers\TransactionController::class, 'payazaVerifyPayment'])->name('payazaVerifyPayment');
 Route::get('/paystack/transaction-successful', [App\Http\Controllers\TransactionController::class, 'verifyPayment'])->name('verify-payment');
@@ -42,9 +43,6 @@ Route::post('/pay-for-form', [App\Http\Controllers\TransactionController::class,
 Route::get('/cooperatives-list', [App\Http\Controllers\WebsiteController::class, 'list'])->name('cooperatives.list');
 Route::get('//cooperatives/{id}', [App\Http\Controllers\WebsiteController::class, 'show'])->name('cooperatives.details');
 Route::get('/join/contribution/{id}', [App\Http\Controllers\WebsiteController::class, 'joinCont']);
-
-
-
 
 Route::get('/home', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('home');
 Auth::routes();
@@ -139,8 +137,9 @@ Route::group(['middleware' => ['auth']], function () {
                 });
             });
         });
+        Route::get('member/reg_fee', [App\Http\Controllers\MemberController::class, 'reg_fee'])->name('registration.fee');
         Route::group(['middleware' => 'member'], function () {
-            Route::group(['prefix' => 'member'], function () {
+            Route::group(['prefix' => 'member', 'middleware' => 'reg_fee'], function () {
                 Route::get('/', [App\Http\Controllers\MemberController::class, 'index'])->name('member_home');
                 Route::get('/transactions', [App\Http\Controllers\MemberController::class, 'transactions'])->name('transactions');
                 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'profile'])->name('member-profile');

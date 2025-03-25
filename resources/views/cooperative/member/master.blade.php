@@ -404,8 +404,8 @@
                 <li class="nav-item"><a href="/member/loan" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Pending Loan Applications</span></a></li>
                 <li class="nav-item"><a href="/member/loan/ongoing" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Ongoing Loan Applications</span></a></li>
                 <li class="nav-item"><a href="/member/loan/completed" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Completed Loan Applications</span></a></li>
-                <!-- <li class="nav-item"><a href="{{ route('my-contribution') }}" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">My Circle(s)</span></a></li> -->
-                <!-- <li class="nav-item"><a href="{{ route('member-contribution-payment') }}" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Contribution Dues</span></a></li> -->
+                <li class="nav-item"><a href="{{ route('my-contribution') }}" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">My Circle(s)</span></a></li>
+                <li class="nav-item"><a href="{{ route('member-contribution-payment') }}" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Contribution Dues</span></a></li>
                 <li class="nav-item"><a href="/logout" onclick='return confirm("Are you sure you want to log this user out?");' class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Logout</span></a></li>
             </ul>
         </div>

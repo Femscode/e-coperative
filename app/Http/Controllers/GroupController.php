@@ -124,7 +124,7 @@ class GroupController extends Controller
     public function cDues($id){
        
         $data['id'] =$id;
-        return view('ajo.admin.ajopending',$data);
+        return view('ajo.admin.ajo.pending',$data);
     }
 
     /**

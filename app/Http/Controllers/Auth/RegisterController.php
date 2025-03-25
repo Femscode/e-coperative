@@ -84,10 +84,10 @@ class RegisterController extends Controller
     public function save_coop_reg(Request $request)
     {
         $this->validate($request, [
-          'name' => ['required','unique:companies'],
-          'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-          'password' => ['required', 'string', 'min:8', 'confirmed'],
-          'address' => ['required']
+            'name' => ['required', 'unique:companies'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'address' => ['required']
         ]);
         $data = $request->all();
         $randomNumber = rand(1, 1000);
@@ -115,20 +115,22 @@ class RegisterController extends Controller
             'user_type' => 'Admin',
             'password' => Hash::make($data['password']),
             'company_id' => $company->uuid,
-        ]); 
+        ]);
         Auth::login($user);
-        return redirect('/dashboard ')->with('message','Registration Successful! Proceed to login');
+        return redirect('/dashboard ')->with('message', 'Registration Successful! Proceed to login');
         // return redirect(RouteServiceProvider::HOME);
     }
 
-    public function signup($slug = null) {
+    public function signup($slug = null)
+    {
         // return redirect()->route('register');
-        $data['coperative'] = Company::all();
-        if($slug !== null) {
+      
+        $data['coperative'] = Company::where('visibility', 'public')->get();
+        if ($slug !== null) {
             $data['company'] = $company = Company::where('slug', $slug)->first();
         }
         $data['slug'] = $slug;
-        return view('auth.register',$data);
+        return view('auth.register', $data);
     }
 
     public function register_user(Request $request)
@@ -141,9 +143,9 @@ class RegisterController extends Controller
         //     'password' => ['required', 'string', 'min:8', 'confirmed'],
         // ]);
         // dd('here');
-      
-       
-         $user = User::create([
+
+
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'user_type' => 'Member',
@@ -154,6 +156,60 @@ class RegisterController extends Controller
         ]);
         Auth::login($user);
         // return redirect(RouteServiceProvider::HOME);
-        return redirect('/dashboard')->with('message','Registration Successful! Proceed to login');
+        return redirect('/dashboard')->with('message', 'Registration Successful! Proceed to login');
+    }
+    public function signup_user(Request $request)
+    {
+        $data = $request->all();
+
+        $validator = Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'address' => ['required'],
+            'company' => ['required'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $company = Company::find($request->company);
+
+            if (!$company) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Selected cooperative not found'
+                ], 404);
+            }
+
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'user_type' => 'Member',
+                'password' => Hash::make($data['password']),
+                'company_id' => $company->uuid,
+                'address' => $data['address'],
+                'referred_by' => $data['referred_by'] ?? null
+            ]);
+
+            Auth::login($user);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Registration Successful!',
+                'redirect' => '/welcome'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Registration failed. Please try again.'
+            ], 500);
+        }
     }
 }

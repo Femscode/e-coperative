@@ -114,7 +114,7 @@ class User extends Authenticatable implements Auditable
 
     public function company()
     {
-        return $this->belongsTo(Company::class, 'company_id');
+        return $this->belongsTo(Company::class, 'company_id','uuid');
     }
 
     protected static function getTotalDues()

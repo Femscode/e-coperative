@@ -33,10 +33,8 @@ class HomeController extends Controller
        
         $data['now'] = Carbon::now();
         $company = Company::where('uuid',$user->company_id)->first();
-        if(!$company) {
-            $company = Company::find($user->company_id);
-        }
-        $data['users'] = User::where('company_id',$company->id)->get();
+        
+        $data['users'] = User::where('company_id',$company->uuid)->get();
         $transacts = Transaction::where('company_id',$company->id)->where('status','Success');
         $data['transactions'] = $transacts->get();
         $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->where('original','!=',0)->paginate(10);

@@ -18,11 +18,9 @@ class UserController extends Controller
     public function index(Request $request){
         $user = auth()->user();
         $company = Company::where('uuid',$user->company_id)->first();
-        if(!$company) {
-            $company = Company::find($user->company_id);
-        }
-        $data['users'] = User::where('company_id',$company->id)->where('user_type', 'Admin')->get();
-        $data['members'] = User::where('company_id',$company->id)->where('user_type','!=' ,'Admin')->get();
+        
+        $data['users'] = User::where('company_id',$company->uuid)->where('user_type', 'Admin')->get();
+        $data['members'] = User::where('company_id',$company->uuid)->where('user_type','!=' ,'Admin')->get();
        
         return view('cooperative.admin.users', $data);
         return view('user_home', $data);
