@@ -21,8 +21,13 @@
     </div>
 </body>
 
-<script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('swal.js') }}"></script>
+<script src="{{ url('admindashboard/js/jquery/jquery.min.js') }}"></script>
+   
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="{{ url('admindashboard/css/sweetalert-custom.css') }}" rel="stylesheet">
+
+<script src="{{ asset('admindashboard/js/sweetalert-custom.js') }}"></script>
+
 <script>
     @if ($errors->any())
         showCustomAlert('Oops...', "{!! implode('', $errors->all('<p>:message</p>')) !!}", 'error')
@@ -53,6 +58,7 @@
 
         /* When click approve button */
         $('body').on('click', '.approveButton', function () {
+           
             var id = $(this).data('id');
             var token = $("meta[name='csrf-token']").attr("content");
             var el = this;

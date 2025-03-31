@@ -92,7 +92,7 @@
                                         <h4 class="card-title mb-2">Share your Synco Link</h4>
                                         <ul class="list-inline d-flex gap-1 my-3 align-items-center justify-content-center">
                                              <li class="list-inline-item">
-                                                  <a href="https://www.facebook.com/sharer/sharer.php?u=https://syncosave.com/{{ $plan->slug }}&quote=Dear members, kindly join our synco group via this link"
+                                                  <a href="https://www.facebook.com/sharer/sharer.php?u=https://syncosave.com/signup/{{ $plan->slug }}&quote=Dear members, kindly join our synco group via this link"
                                                        target="_blank"
                                                        class="btn btn-soft-primary avatar-sm d-flex align-items-center justify-content-center fs-20">
                                                        <i class="bx bxl-facebook"></i>
@@ -100,7 +100,7 @@
                                              </li>
 
                                              <li class="list-inline-item">
-                                                  <a href="https://www.instagram.com/share?url=https://syncosave.com/{{ $plan->slug }}"
+                                                  <a href="https://www.instagram.com/share?url=https://syncosave.com/signup/{{ $plan->slug }}"
                                                        target="_blank"
                                                        class="btn btn-soft-danger avatar-sm d-flex align-items-center justify-content-center fs-20">
                                                        <i class="bx bxl-instagram"></i>
@@ -108,7 +108,7 @@
                                              </li>
 
                                              <li class="list-inline-item">
-                                                  <a href="https://twitter.com/intent/tweet?url=https://syncosave.com/{{ $plan->slug }}&text=Dear members, kindly join our synco group via this link"
+                                                  <a href="https://twitter.com/intent/tweet?url=https://syncosave.com/signup/{{ $plan->slug }}&text=Dear members, kindly join our synco group via this link"
                                                        target="_blank"
                                                        class="btn btn-soft-info avatar-sm d-flex align-items-center justify-content-center fs-20">
                                                        <i class="bx bxl-twitter"></i>
@@ -116,7 +116,7 @@
                                              </li>
 
                                              <li class="list-inline-item">
-                                                  <a href="https://api.whatsapp.com/send?text=Dear members, kindly join our synco group via this link: https://syncosave.com/{{ $plan->slug }}"
+                                                  <a href="https://api.whatsapp.com/send?text=Dear members, kindly join our synco group via this link: https://syncosave.com/signup/{{ $plan->slug }}"
                                                        target="_blank"
                                                        class="btn btn-soft-success avatar-sm d-flex align-items-center justify-content-center fs-20">
                                                        <i class="bx bxl-whatsapp"></i>
@@ -124,15 +124,16 @@
                                              </li>
 
                                              <li class="list-inline-item">
-                                                  <a href="mailto:?subject=Join Our Synco Group&body=Dear members, kindly join our synco group via this link: https://syncosave.com/{{ $plan->slug }}"
+                                                  <a href="mailto:?subject=Join Our Synco Group&body=Dear members, kindly join our synco group via this link: https://syncosave.com/signup/{{ $plan->slug }}"
                                                        class="btn btn-soft-warning avatar-sm d-flex align-items-center justify-content-center fs-20">
                                                        <i class="bx bx-envelope"></i>
                                                   </a>
                                              </li>
                                         </ul>
                                         <p class="text-muted">Copy the URL below and share it with your members:</p>
-                                        <p class="d-flex align-items-center border p-2 rounded-2 border-dashed bg-body text-start mb-0" id="cttaste-link">
-                                             https://syncosave.com/{{ $plan->slug }}<a href="#!" class="ms-auto fs-4"><i class="copy-link ti ti-copy"></i></a>
+                                        <p class="d-flex align-items-center border p-2 rounded-2 border-dashed bg-body text-start mb-0" id="cttaste-link" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                             <span class="flex-grow-1" style="min-width: 0;">https://syncosave.com/signup/{{ $plan->slug }}</span>
+                                             <a href="#!" class="ms-2 flex-shrink-0"><i class="copy-link ti ti-copy"></i></a>
                                         </p>
                                    </div>
                               </div>
@@ -220,144 +221,49 @@
 @section('script')
 <script>
      $('.copy-link').click(function() {
-          // Get the text of the link
-          var linkText = $('#cttaste-link').text();
-
-          // Create a temporary input element to copy the text
-          var tempInput = $('<input>');
-          $('body').append(tempInput);
-          tempInput.val(linkText).select();
-          document.execCommand('copy');
-          tempInput.remove();
-          const Toast = Swal.mixin({
-               toast: true,
-               position: 'top-end',
-               showConfirmButton: false,
-               timer: 3000,
-               timerProgressBar: true,
-               didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-               }
-          })
-          // Optionally show a notification or alert
-          Toast.fire('Link Copied')
-     });
-
-     document.addEventListener("DOMContentLoaded", function() {
-          const ctx = document.getElementById('ordersChart').getContext('2d');
-          const ordersChart = new Chart(ctx, {
-               type: 'bar', // Bar chart
-               data: {
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                    datasets: [{
-                         label: 'Total Orders',
-                         data: [{
-                                   {
-                                        $january ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $february ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $march ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $april ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $may ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $june ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $july ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $august ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $september ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $october ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $november ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $december ?? 0
-                                   }
-                              }
-                         ],
-
-                         // Correct data array
-                         backgroundColor: [
-                              'rgba(75, 192, 192, 0.2)',
-                              'rgba(153, 102, 255, 0.2)',
-                              'rgba(255, 159, 64, 0.2)',
-                              'rgba(54, 162, 235, 0.2)',
-                              'rgba(255, 206, 86, 0.2)',
-                              'rgba(75, 192, 192, 0.2)',
-                              'rgba(153, 102, 255, 0.2)',
-                              'rgba(255, 159, 64, 0.2)',
-                              'rgba(54, 162, 235, 0.2)',
-                              'rgba(255, 206, 86, 0.2)',
-                              'rgba(75, 192, 192, 0.2)',
-                              'rgba(153, 102, 255, 0.2)'
-                         ],
-                         borderColor: [
-                              'rgba(75, 192, 192, 1)',
-                              'rgba(153, 102, 255, 1)',
-                              'rgba(255, 159, 64, 1)',
-                              'rgba(54, 162, 235, 1)',
-                              'rgba(255, 206, 86, 1)',
-                              'rgba(75, 192, 192, 1)',
-                              'rgba(153, 102, 255, 1)',
-                              'rgba(255, 159, 64, 1)',
-                              'rgba(54, 162, 235, 1)',
-                              'rgba(255, 206, 86, 1)',
-                              'rgba(75, 192, 192, 1)',
-                              'rgba(153, 102, 255, 1)'
-                         ],
-                         borderWidth: 1
-                    }]
-               },
-               options: {
-                    responsive: true,
-                    scales: {
-                         y: {
-                              beginAtZero: true
-                         }
+          const linkText = 'https://syncosave.com/signup/{{ $plan->slug }}';
+          navigator.clipboard.writeText(linkText).then(() => {
+               const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                         toast.addEventListener('mouseenter', Swal.stopTimer)
+                         toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
-               }
+               });
+               Toast.fire({
+                    icon: 'success',
+                    title: 'Link copied to clipboard'
+               });
+          }).catch(() => {
+               // Fallback for older browsers
+               const tempInput = $('<input>');
+               $('body').append(tempInput);
+               tempInput.val(linkText).select();
+               document.execCommand('copy');
+               tempInput.remove();
+               
+               const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                         toast.addEventListener('mouseenter', Swal.stopTimer)
+                         toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+               });
+               Toast.fire({
+                    icon: 'success',
+                    title: 'Link copied to clipboard'
+               });
           });
      });
 </script>
-
 <script>
      document.addEventListener('DOMContentLoaded', function() {
           const toggleBtn = document.getElementById('toggle-amount');

@@ -44,13 +44,13 @@
         }
 
         .step-arrow-nav .nav-pills .nav-link.active {
-            background: #082720;
+            background: #094168;
             color: white;
         }
 
         .step-arrow-nav .nav-pills .nav-link.done {
-            background: #0827204d;
-            color: #082720;
+            background: #0941684d;
+            color: #094168;
         }
 
         .tab-pane {
@@ -70,12 +70,12 @@
         }
 
         .form-control:focus {
-            border-color: #082720;
+            border-color: #094168;
             box-shadow: 0 0 0 0.2rem rgba(8, 39, 32, 0.25);
         }
 
         .btn-theme {
-            background: #082720;
+            background: #094168;
             color: white;
             transition: all 0.3s ease;
         }
@@ -94,7 +94,7 @@
 
         .progress-indicator .progress {
             height: 100%;
-            background: #082720;
+            background: #094168;
             border-radius: 2px;
             transition: width 0.3s ease;
         }
@@ -162,226 +162,246 @@
 </div>
 
 
-<main class="flex-shrink-0 pt-0 h-100">
-    <div class="container-fluid">
-        <div class="auth-wrapper">
-            <div class="row">
-                <div class="col-12 col-md-6 col-xl-6 minvheight-100 d-flex flex-column px-0">
-                    <header class="adminuiux-header">
-                        <nav class="navbar">
-                            <div class="container-fluid"><a class="navbar-brand" href="investment-dashboard.html">
-                                    <img src="{{ asset('admindashboard/images/logo/syncologo2.png') }}" alt="" style="width:150px" class="height-60 mb-3">
+<main class="flex-shrink-0 min-vh-100 d-flex align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- Left Column - Registration Form -->
+            <div class="col-12 col-lg-5 p-4">
+                <div class="text-center mb-4">
+                    <img src="{{ asset('admindashboard/images/logo/syncologo2.png') }}" alt="SyncoSave" class="mb-4" style="width: 160px;">
+                    <h2 class="fw-bold mb-2">Create Your Account</h2>
+                    @if(isset($slug))
+                    <p class="text-muted">Join {{ $company->name }} today!</p>
+                    @else
+                    <p class="text-muted">Join a cooperative today!</p>
+                    @endif
+                </div>
 
-
-                                </a>
-                                <div class="ms-auto"></div>
-                                <div class="ms-auto"></div>
+                <form id="process-order-form" method="post" class="registration-form">
+                    @csrf
+                    <!-- Progress Steps -->
+                    <div class="registration-steps mb-4">
+                        <div class="step-indicators d-flex justify-content-between position-relative">
+                            <div class="progress-line position-absolute">
+                                <div class="progress-line-fill"></div>
                             </div>
-                        </nav>
-                    </header>
-                    <div class="h-100 py-4 px-3">
-                        <div class="row h-100 align-items-center justify-content-center mt-md-4">
-                            <div class="col-11 col-sm-8 col-md-11 col-xl-11 col-xxl-10 login-box">
-                                
-                                <form id="process-order-form" method="post">
-                                    @csrf
-                                    <div class="text-center mt-2">
-                                        <h3 style='color:#082720' class="text-">Create An Account</h3>
-                                        @if(isset($slug))
-                                        <h6> Join {{ $company->name }} today!</h6>
-
-                                        @else
-                                        <h6> Join a cooperative today!</h6>
-
-                                        @endif
-
-                                    </div>
-                                    <div class="step-arrow-nav mb-4">
-                                        <ul class="nav nav-pills custom-nav nav-justified" role="tablist">
-                                            <li class="nav-item" role="presentation">
-                                                <button class="nav-link done active" id="steparrow-gen-info-tab" data-bs-toggle="pill" data-bs-target="#steparrow-gen-info" type="button" role="tab" aria-controls="steparrow-gen-info" aria-selected="true">
-                                                    General
-                                                </button>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <button class="nav-link " id="steparrow-description-info-tab" data-bs-toggle="pill" data-bs-target="#steparrow-description-info" type="button" role="tab" aria-controls="steparrow-description-info" aria-selected="false">
-                                                    Description
-                                                </button>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <button class="nav-link" id="pills-experience-tab" data-bs-toggle="pill" data-bs-target="#pills-experience" type="button" role="tab" aria-controls="pills-experience" aria-selected="false">
-                                                    Finish
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <!-- Add this after the step-arrow-nav div -->
-                                    <div class="progress-indicator">
-                                        <div class="progress" style="width: 33%"></div>
-                                    </div>
-
-                                    
-
-                                    <div class="tab-content">
-                                        <!-- General Info Tab -->
-                                        <div class="tab-pane fade show active" id="steparrow-gen-info" role="tabpanel" aria-labelledby="steparrow-gen-info-tab">
-                                            <div>
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" required name="name" id="payer_name" placeholder="Enter Full Name">
-                                                    <label for="payer_name">Full Name</label>
-                                                </div>
-                                                
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="email" class="form-control" required name="email" id="payer_email" placeholder="Enter email">
-                                                            <label for="payer_email">Email Address</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="number" class="form-control" required name="phone" id="payer_phone" placeholder="Enter phone number">
-                                                            <label for="payer_phone">Phone Number</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" data-nexttab="steparrow-description-info-tab">
-                                                    <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Go
-                                                    to description
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <!-- Description Info Tab -->
-                                        <div class="tab-pane fade" id="steparrow-description-info" role="tabpanel" aria-labelledby="steparrow-description-info-tab">
-                                            <div>
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" name="address" id="address" placeholder="Enter Address">
-                                                    <label for="address">House Address</label>
-                                                </div>
-
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" name="referred_by" id="referred_by" placeholder="Enter Referral">
-                                                    <label for="referred_by">Referred By</label>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="password" class="form-control" required name="password" id="password-fieldx" placeholder="Enter password">
-                                                            <label for="password-fieldx">Password</label>
-                                                            <button type="button" class="btn btn-link position-absolute end-0 top-0 mt-2 me-2 toggle-password">
-                                                                <i class="bi bi-eye"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="password" class="form-control" required name="password_confirmation" id="password-fieldc" placeholder="Confirm password">
-                                                            <label for="password-fieldc">Confirm Password</label>
-                                                            <button type="button" class="btn btn-link position-absolute end-0 top-0 mt-2 me-2 toggle-password">
-                                                                <i class="bi bi-eye"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div id='danger_password'></div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-light text-light btn-label previestab" data-previous="steparrow-gen-info-tab">
-                                                    <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
-                                                    Back to General
-                                                </button>
-                                                <button type="button" class="btn btn-success btn-label right ms-auto nexttab nexttab" data-nexttab="pills-experience-tab">
-                                                    <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Finish
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <!-- Experience Tab -->
-                                        <div class="tab-pane fade" id="pills-experience" role="tabpanel">
-                                            <div>
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="form-floating mb-3">
-                                                            @if(isset($slug))
-                                                                <input class="form-control" type="text" value="{{$company->name}}" readonly disabled>
-                                                                <label>Cooperative Name</label>
-                                                                <input class='form-control' value="{{$company->uuid}}" name='company' type='hidden' />
-                                                            @else
-                                                                <select class='form-control planId' required name='company' id="cooperative-select">
-                                                                    <option value="">--Select Cooperative--</option>
-                                                                    @foreach($coperative ?? App\Models\Company::all() as $coop)
-                                                                        <option value='{{$coop->uuid}}'>{{ $coop->name }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                                <label for="cooperative-select">Select Cooperative</label>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6 displayReg" style="display:none">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control feeInput" readonly name="reg_fee" id="reg_fee" placeholder="Registration Fee">
-                                                            <label for="reg_fee">Registration Fee</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="form-check mb-3">
-                                                            <input type="checkbox" class="form-check-input" id="terms" required>
-                                                            <label class="form-check-label" for="terms">I Agree to the <a href='#'>terms & conditions.</a></label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex align-items-start gap-3 mt-4">
-                                                <button style='background-color:#082720;border:0px' type="button" class="btn btn-light text-light btn-label previestab" data-previous="steparrow-description-info-tab">
-                                                    <i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>
-                                                    Back to Description
-                                                </button>
-                                                <button style='background-color:#082720;border:0px' type="submit" class="btn btn-success btn-label right ms-auto">
-                                                    <i class="ri-arrow-right-line label-icon align-middle fs-16 ms-2"></i>Submit
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end tab content -->
-                                </form>
-                                <div class="text-center mb-3">Already have an account? <a href="/login" class="">Login</a></div>
+                            <div class="step active" data-step="1">
+                                <div class="step-number">1</div>
+                                <span class="step-text">Personal Info</span>
+                            </div>
+                            <div class="step" data-step="2">
+                                <div class="step-number">2</div>
+                                <span class="step-text">Account Setup</span>
+                            </div>
+                            <div class="step" data-step="3">
+                                <div class="step-number">3</div>
+                                <span class="step-text">Finish</span>
                             </div>
                         </div>
                     </div>
 
-                </div>
-                <div class="col-12 col-md-6 col-xl-6 p-4 d-none d-md-block">
-                    <div class="card adminuiux-card bg-theme-1-space position-relative overflow-hidden h-100">
-                        <div class="position-absolute start-0 top-0 h-100 w-100 coverimg opacity-75 z-index-0"><img src="assets/img/background-image/background-image-8.html" alt=""></div>
-                        <div class="card-body position-relative z-index-1">
-                            <div class="row h-100 d-flex flex-column justify-content-center align-items-center gx-0 text-center">
-                                <div class="col-10 col-md-11 col-xl-8 mb-4 mx-auto">
-                                    <div class="swiper swipernavpagination pb-5">
-                                        <div class="swiper-wrapper">
-                                            <div class="swiper-slide">
-                                                <img src="assets/img/investment/slider.png" alt="" class="mw-100 mb-3">
-                                                <h2 class="text-white mb-3">"When we save together, we grow together. Cooperative savings is the foundation of community wealth."</h2>
-                                                <p class="lead opacity-75">- Fasanya Oluwapelumi</p>
-                                            </div>
+                    <!-- Form Steps Content -->
+                    <div class="tab-content">
+                        <!-- Step 1: Personal Information -->
+                        <div class="tab-pane fade show active" id="step1">
+                        <div class="mb-3">
+                                <label class="form-label">Select Cooperative</label>
+                                @if(isset($company) && $company)
+                                    <input type="hidden" name="company" value="{{ $company->id }}">
+                                    <input type="text" class="form-control" value="{{ $company->name }}" readonly>
+                                @else
+                                    <select class="form-control form-select planId" name="company" >
+                                        <option value="">Choose a cooperative</option>
+                                        @foreach(\App\Models\Company::where('visibility','public')->get() as $cooperative)
+                                            <option value="{{ $cooperative->id }}">{{ $cooperative->name }}</option>
+                                        @endforeach
+                                    </select>
+                                @endif
+                                <div class="invalid-feedback">Please select a cooperative</div>
+                            </div>
 
-
+                            <div class="displayReg mb-3" style="display: none;">
+                                <div class="alert alert-info">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-info-circle me-2"></i>
+                                        <div>
+                                            <h6 class="mb-0">Registration Fee Required</h6>
+                                            <p class="mb-0">Amount: ₦<span class="fee-amount">0</span></p>
                                         </div>
-                                        <div class="swiper-pagination white bottom-0"></div>
                                     </div>
                                 </div>
+                                <input type="hidden" class="feeInput" name="registration_fee">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" name="name" id="fullName" required>
+                                <div class="invalid-feedback">Please enter your full name</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="email" id="email" required>
+                                    <div class="invalid-feedback">Please enter a valid email address</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" class="form-control" name="phone" id="phone" required>
+                                    <div class="invalid-feedback">Please enter your phone number</div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mt-4">
+                                <button type="button" class="btn btn-primary px-4 nexttab" data-nexttab="step2">
+                                    Next <i class="bi bi-arrow-right ms-2"></i>
+                                </button>
                             </div>
                         </div>
+
+                        <!-- Step 2: Account Setup -->
+                        <div class="tab-pane fade" id="step2">
+                            <div class="mb-3">
+                                <label class="form-label">Address</label>
+                                <input type="text" class="form-control" name="address" id="address" required>
+                                <div class="invalid-feedback">Please enter your address</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">Password</label>
+                                    <div class="position-relative">
+                                        <input type="password" class="form-control" name="password" id="password-fieldx" required>
+                                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y toggle-password">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div id="password-strength" class="mt-2"></div>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">Confirm Password</label>
+                                    <div class="position-relative">
+                                        <input type="password" class="form-control" name="password_confirmation" id="password-fieldc" required>
+                                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y toggle-password">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="danger_password"></div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn btn-outline-secondary previestab" data-previous="step1">
+                                    <i class="bi bi-arrow-left me-2"></i> Back
+                                </button>
+                                <button type="button" class="btn btn-primary nexttab" data-nexttab="step3">
+                                    Next <i class="bi bi-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Final Step -->
+                        <div class="tab-pane fade" id="step3">
+                            <div class="text-center mb-4">
+                                <div class="mb-3">
+                                    <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                                </div>
+                                <h4>Review Your Information</h4>
+                                <div class="review-info mt-4"></div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn btn-outline-secondary previestab" data-previous="step2">
+                                    <i class="bi bi-arrow-left me-2"></i> Back
+                                </button>
+                                <button type="submit" class="btn btn-success">
+                                    Complete Registration <i class="bi bi-check2 ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="text-muted">Already have an account?
+                        <a href="/login" class="text-primary">Sign in</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Column - Banner -->
+            <div class="col-lg-7 d-none d-lg-block">
+                <div  class="position-relative h-100 bg-primary bg-gradient rounded-4 p-5">
+                    <div class="position-absolute top-50 start-50 translate-middle text-center text-white" style="width: 80%;">
+                        <h1 class="display-5 fw-bold mb-4">Cooperative Savings Made Simple</h1>
+                        <p class="lead">"When we save together, we grow together. Cooperative savings is the foundation of community wealth."</p>
+                        <p class="opacity-75 mt-3">- Fasanya Oluwapelumi</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
+
+<style>
+    .registration-form {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .registration-steps .step {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .step-number {
+        width: 32px;
+        height: 32px;
+        background: #e9ecef;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .step.active .step-number {
+        background: #094168;
+        color: white;
+    }
+
+    .step.done .step-number {
+        background: #28a745;
+        color: white;
+    }
+
+    .step-text {
+        font-size: 14px;
+        color: #6c757d;
+        display: block;
+    }
+
+    .form-control {
+        padding: 0.75rem 1rem;
+        border-radius: 6px;
+        border: 1.5px solid #e5e9f2;
+        transition: all 0.2s ease;
+    }
+
+    .form-control:focus {
+        border-color: #094168;
+        box-shadow: 0 0 0 0.2rem rgba(9, 65, 104, 0.15);
+    }
+
+    .btn-primary {
+        background: #094168;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background: #073251;
+        transform: translateY(-1px);
+    }
+</style>
 <script src="assets/js/investment/investment-auth.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -392,160 +412,27 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+       
         // $('.preloader').show();
         e.preventDefault();
         // alert("ere")
         var form_details = $(this).serializeArray();
 
-        processPayment(form_details);
+        finalizeRegistration(form_details);
     })
 
-    function processPayment(data) {
-        data = data;
-        $('.preloader').show();
+  
+  
+
+    function finalizeRegistration(form_details) {
         $.ajax({
             type: 'POST',
-            url: 'pay-for-plan',
-            dataType: 'json',
-            data: data,
-            success: function(e) {
-                $('.preloader').hide();
-                $('.preloader').hide();
-                if (e.status == 0) {
-                    new swal("Congratulations!", "Registration Succesful", "success");
-                    window.location.href = "{{ route('dashboard') }}";
-                    // window.location.reload();
-                } else {
-                    $("#order_id").val(e.order_id)
-                    $('#paymentModal').modal('show');
-
-                }
-            },
-            error: function(e) {
-                $('.preloader').hide();
-                // var errorList = '';
-                // Object.keys(e.responseJSON.message).forEach(function(key) {
-                // errorList += '<li>' + e.responseJSON.message[key][0] + '</li>';
-                // });
-                new swal("Opss", e.responseJSON.message, "error");
-            }
-        })
-
-    }
-
-    $('#payaza-form').submit(function(e) {
-        e.preventDefault();
-        showCustomAlert({
-            title: 'Processing payment, please wait...',
-            icon: 'info',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading()
-            }
-        })
-
-        // Collect card details
-        var cardDetails = {
-            number: $('#card-number').val(),
-            expiryMonth: $('#expiry-date').val().split('/')[0], // Extract month from MM/YY
-            expiryYear: $('#expiry-date').val().split('/')[1], // Extract year from MM/YY
-            cvv: $('#cvv').val()
-        };
-        var ref = $("#order_id").val()
-        // Prepare the data for the Payaza API request
-        console.log($("#payer_name").val(), $("#payer_email").val(), $("#amountToBePaid").html())
-        var payload = {
-            "service_payload": {
-                "first_name": $("#payer_name").val(),
-                "last_name": $("#payer_name").val(),
-                "email_address": $("#payer_email").val(),
-                "phone_number": $("#payer_phone").val(),
-                "amount": $("#amountToBePaid").html(), // The amount to charge (adjust as needed)
-                "transaction_reference": ref, //"PL-1KBPSCJCRD" + Math.floor((Math.random() * 10000000) + 1), // Unique transaction reference
-                "currency": "NGN", // Currency code (adjust as needed)
-                "description": "E-coop Registration Payment", // Payment description
-                "card": {
-                    "expiryMonth": cardDetails.expiryMonth,
-                    "expiryYear": cardDetails.expiryYear,
-                    "securityCode": cardDetails.cvv,
-                    "cardNumber": cardDetails.number
-                },
-                "callback_url": "https://e-coop.cthostel.com/api/payment/webhook" // Your callback URL for payment updates
-            }
-        };
-
-        // Set up headers for the request
-        var headers = {
-            "Authorization": "Payaza " + "{{env('PAYAZA_API')}}", // Authorization token from Payaza
-            "Content-Type": "application/json"
-        };
-
-        // Send the AJAX request to Payaza API
-        $.ajax({
-            url: "https://cards-live.78financials.com/card_charge/", // Payaza endpoint
-            method: "POST",
-            headers: headers,
-            data: JSON.stringify(payload),
-            contentType: "application/json",
-            success: function(response) {
-                console.log("RAW RESULT: ", response);
-                if (response.statusOk) {
-                    if (response.do3dsAuth) {
-                        if (response.formData && response.threeDsUrl) {
-                            const creq = document.getElementById("creq");
-                            creq.value = response.formData;
-                            const form = document.getElementById("threedsChallengeRedirectForm");
-                            form.setAttribute("action", response.threeDsUrl);
-                            form.submit();
-                        } else {
-                            console.log("Missing 3DS data:", response);
-                            showCustomAlert({
-                                title: '3DS Authentication data missing. Please try again.',
-                                icon: 'error'
-                            })
-
-                        }
-                    } else {
-                        console.log("Payment Process Journey Completed");
-                        // $('#process-order-form').submit();
-                        showCustomAlert('Payment Completed', 'Payment completed successfully!', 'success')
-
-                        location.href = "/payaza/transaction-successful?order_id=" + $("#order_id").val() +
-                            '&reference=' + response.transactionReference;
-
-                        // Optionally submit your order form here if payment is successful
-
-                    }
-                } else {
-                    console.log("Error found:", response.debugMessage);
-                    showCustomAlert({
-                        title: "Payment Failed: " + response.debugMessage,
-                        icon: 'error'
-                    })
-                }
-            },
-            error: function(xhr, status, error) {
-                console.log("Error:", error);
-                showCustomAlert({
-                    title: "Network connection error: " + (error.debugMessage || error.message || "Try again later"),
-                    icon: 'error'
-                })
-            }
-        });
-    });
-
-
-
-    function finalizeRegistration(transactionId) {
-        $.ajax({
-            type: 'POST',
-            url: 'confirm-registration',
-            data: {
-                transactionId: transactionId
-            },
+            url: "{{ route('signup_user') }}",
+            data: form_details,
+             
             success: function() {
                 showCustomAlert("Success", "Your registration is complete!", "success").then(() => {
-                    window.location.href = "/welcome"; // Redirect on successful registration
+                    window.location.href = "/dashboard"; // Redirect on successful registration
                 });
             },
             error: function() {
@@ -573,31 +460,41 @@
         });
 
         $(".planId").on("change", function(e) {
-            var id = $(this).val(); //$(this).data('id');
+            var id = $(this).val();
             if (id == "") {
                 $('.displayReg').hide();
                 $('.feeInput').removeAttr('required');
                 $('.feeInput').val("");
+                $('#amountToBePaid').html('0');
                 return;
             }
-            $.get("{{ route('get_plan_details_by_id') }}?id=" + id,
-                function(data) {
-                    if (data['plan'].reg_fee > 0) {
-                        $('.displayReg').show();
+            
+            // Fixed AJAX request
+            $.get(`/get-plan-details/${id}`, function(response) {
+                if (response.status && response.data) {
+                    if (response.data.registration_fee > 0) {
+                        const formattedFee = parseFloat(response.data.registration_fee).toLocaleString();
+                        $('.fee-amount').text(formattedFee);
+                        $('.feeInput').val(response.data.registration_fee);
+                        $('#amountToBePaid').html(formattedFee);
+                        $('.displayReg').fadeIn();
                         $('.feeInput').attr('required', true);
-                        $('.feeInput').val(data['plan'].reg_fee);
-                        $('#amountToBePaid').html(data['plan'].reg_fee.toLocaleString());
                     } else {
                         $('.displayReg').hide();
-                        $('.feeInput').removeAttr('required');
-                        $('.feeInput').val("");
-                        $('#amountToBePaid').html('');
+                        $('.feeInput').removeAttr('required').val("");
+                        $('#amountToBePaid').html('0');
                     }
-                })
-
+                }
+            })
+            .fail(function(error) {
+                showCustomAlert({
+                    title: 'Error',
+                    text: 'Failed to fetch cooperative details',
+                    icon: 'error'
+                });
+            });
         });
     });
-
     $("#password-fieldx, #password-fieldc").on('input', function() {
 
         var password = $("#password-fieldx").val()
@@ -614,97 +511,165 @@
 </script>
 <script>
     $(document).ready(function() {
-        // Track current step
         let currentStep = 1;
         const totalSteps = 3;
+        const formData = {};
 
-        // Update progress bar
+        // Initialize form validation
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+
+        // Update progress bar and step indicators
         function updateProgress() {
-            const progress = (currentStep / totalSteps) * 100;
-            $('.progress').css('width', progress + '%');
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            $('.progress-line-fill').css('width', `${progress}%`);
+
+            $('.step').each(function(index) {
+                const stepNum = index + 1;
+                $(this).removeClass('active done');
+                if (stepNum < currentStep) {
+                    $(this).addClass('done');
+                } else if (stepNum === currentStep) {
+                    $(this).addClass('active');
+                }
+            });
         }
 
-        // Navigation buttons functionality
+        // Show/hide steps with animation
+        function showStep(step) {
+            $('.tab-pane').fadeOut(200).promise().done(function() {
+                $(`#step${step}`).fadeIn(200).addClass('show active');
+                currentStep = step;
+                updateProgress();
+                if (step === 3) {
+                    updateReviewInfo();
+                }
+            });
+        }
+
+        // Update review information in step 3
+        function updateReviewInfo() {
+            const reviewHtml = `
+            <div class="text-start">
+                <div class="review-item mb-3">
+                    <h6 class="mb-2">Personal Information</h6>
+                    <p class="mb-1"><strong>Name:</strong> ${$('#fullName').val()}</p>
+                    <p class="mb-1"><strong>Email:</strong> ${$('#email').val()}</p>
+                    <p class="mb-1"><strong>Phone:</strong> ${$('#phone').val()}</p>
+                </div>
+                <div class="review-item">
+                    <h6 class="mb-2">Account Details</h6>
+                    <p class="mb-1"><strong>Address:</strong> ${$('#address').val()}</p>
+                </div>
+            </div>
+        `;
+            $('.review-info').html(reviewHtml);
+        }
+
+        // Next button click handler
         $('.nexttab').click(function(e) {
             e.preventDefault();
-            const nextTabId = $(this).data('nexttab');
-
-            // Validate current tab
-            if (validateCurrentTab()) {
-                $(`#${nextTabId}`).click();
-                currentStep++;
-                updateProgress();
-
-                // Update previous button states
-                const prevTab = $(this).closest('.tab-pane').prev().attr('id');
-                if (prevTab) {
-                    $(`#${prevTab}-tab`).addClass('done');
+            if (validateCurrentStep()) {
+                const nextStep = currentStep + 1;
+                if (nextStep <= totalSteps) {
+                    showStep(nextStep);
                 }
             }
         });
 
+        // Previous button click handler
         $('.previestab').click(function(e) {
             e.preventDefault();
-            const prevTab = $(this).data('previous');
-            $(`#${prevTab}`).click();
-            currentStep--;
-            updateProgress();
+            const prevStep = currentStep - 1;
+            if (prevStep >= 1) {
+                showStep(prevStep);
+            }
         });
 
-        // Form validation
-        function validateCurrentTab() {
-            const currentTab = $('.tab-pane.active');
+        // Validate current step
+        function validateCurrentStep() {
+            const currentPane = $(`#step${currentStep}`);
             let isValid = true;
 
-            currentTab.find('input[required]').each(function() {
-                if (!$(this).val()) {
+            // Reset previous validations
+            currentPane.find('.is-invalid').removeClass('is-invalid');
+            currentPane.find('.invalid-feedback').hide();
+
+            // Validate required fields
+            currentPane.find('input[required]').each(function() {
+                if (!$(this).val().trim()) {
                     isValid = false;
                     $(this).addClass('is-invalid');
-                    showCustomAlert({
-                        title: 'Required Fields',
-                        text: 'Please fill in all required fields',
-                        icon: 'warning'
-                    });
-                } else {
-                    $(this).removeClass('is-invalid');
+                    $(this).siblings('.invalid-feedback').show();
                 }
             });
+
+            if (currentStep === 1) {
+                // if (!$('.planId').val()) {
+                //     isValid = false;
+                //     $('.planId').addClass('is-invalid');
+                // }
+            }
+            // Special validation for step 2 (password)
+            if (currentStep === 2) {
+                const password = $('#password-fieldx').val();
+                const confirmPassword = $('#password-fieldc').val();
+
+                if (password.length < 8) {
+                    isValid = false;
+                    $('#password-fieldx').addClass('is-invalid');
+                    $('#danger_password').html('<div class="alert alert-danger">Password must be at least 8 characters</div>');
+                } else if (password !== confirmPassword) {
+                    isValid = false;
+                    $('#password-fieldc').addClass('is-invalid');
+                    $('#danger_password').html('<div class="alert alert-danger">Passwords do not match</div>');
+                } else {
+                    $('#danger_password').html('');
+                }
+            }
+
+            if (!isValid) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Required Fields',
+                    text: 'Please fill in all required fields correctly',
+                    confirmButtonColor: '#094168'
+                });
+            }
 
             return isValid;
         }
 
-        // Real-time password validation
+        // Password strength indicator
         $('#password-fieldx').on('input', function() {
             const password = $(this).val();
             const strength = checkPasswordStrength(password);
             updatePasswordStrengthIndicator(strength);
         });
 
-        function checkPasswordStrength(password) {
-            let strength = 0;
-            if (password.length >= 8) strength++;
-            if (password.match(/[A-Z]/)) strength++;
-            if (password.match(/[0-9]/)) strength++;
-            if (password.match(/[^A-Za-z0-9]/)) strength++;
-            return strength;
-        }
+        // Password toggle visibility
+        $('.toggle-password').click(function() {
+            const input = $(this).closest('.position-relative').find('input');
+            const icon = $(this).find('i');
 
-        function updatePasswordStrengthIndicator(strength) {
-            const indicators = ['Weak', 'Fair', 'Good', 'Strong'];
-            const colors = ['#dc3545', '#ffc107', '#0dcaf0', '#198754'];
-
-            if (strength > 0) {
-                $('#password-strength').html(`
-                <div class="mt-1">
-                    <small class="text-${strength >= 3 ? 'success' : 'warning'}">
-                        Password Strength: ${indicators[strength - 1]}
-                    </small>
-                    <div class="progress" style="height: 5px;">
-                        <div class="progress-bar" style="width: ${strength * 25}%; background-color: ${colors[strength - 1]}"></div>
-                    </div>
-                </div>
-            `);
+            if (input.attr('type') === 'password') {
+                input.attr('type', 'text');
+                icon.removeClass('bi-eye').addClass('bi-eye-slash');
+            } else {
+                input.attr('type', 'password');
+                icon.removeClass('bi-eye-slash').addClass('bi-eye');
             }
-        }
+        });
+
+        // Initialize form
+        showStep(1);
     });
 </script>

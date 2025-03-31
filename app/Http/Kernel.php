@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'member' => \App\Http\Middleware\Member::class,
         '2fa' => \App\Http\Middleware\T2fa::class,
         'apiUser' => \App\Http\Middleware\ApiUser::class,
+        'reg_fee' => \App\Http\Middleware\Reg_fee::class,
     ];
 }

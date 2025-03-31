@@ -37,7 +37,7 @@
 <div class="our-services-area ptb-120">
     <div class="container">
         {{-- <div class="section-title">
-            <span class="sub-title two bg-color-9edd05 rounded-pill">OUR SERVICES</span>
+            <span class="sub-title two bg-color-FF821A rounded-pill">OUR SERVICES</span>
             <h2>Get Started And Enjoy Full Service Features</h2>
         </div>  --}}
         <div class="row g-4 justify-content-center" data-cues="slideInUp" data-duration="800" data-disabled="true">

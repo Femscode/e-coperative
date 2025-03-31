@@ -20,9 +20,7 @@ class AllTransactions extends Component
         $data['title'] = "All Transactions";
         $user = auth()->user();
         $company = Company::where('uuid', $user->company_id)->first();
-        if(!$company) {
-            $company = Company::find($user->company_id);
-        }
+        
         if($this->search == ''){
             $data['transactions'] = Transaction::where('company_id',$company->id)->where([
                 ['status', 'Success'],

@@ -21,10 +21,11 @@ Route::get('/signup', [App\Http\Controllers\Auth\RegisterController::class, 'sig
 Route::get('/signup/{slug}', [App\Http\Controllers\Auth\RegisterController::class, 'signup'])->name('signup');
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'signup'])->name('signup');
 Route::post('/register_user', [App\Http\Controllers\Auth\RegisterController::class, 'register_user'])->name('save_coop_reg');
+Route::any('/signup_user', [App\Http\Controllers\Auth\RegisterController::class, 'signup_user'])->name('signup_user');
 
 Route::get('/payaza/transaction-successful', [App\Http\Controllers\TransactionController::class, 'payazaVerifyPayment'])->name('payazaVerifyPayment');
 Route::get('/paystack/transaction-successful', [App\Http\Controllers\TransactionController::class, 'verifyPayment'])->name('verify-payment');
-Route::get('/get-plan-details', [App\Http\Controllers\PlanController::class, 'planDetails'])->name('get_plan_details_by_id');
+Route::get('/get-plan-details/{id}', [App\Http\Controllers\PlanController::class, 'planDetails'])->name('get_plan_details_by_id');
 Route::get('/test', function () {
     return view('test');
 })->name('test');
@@ -34,7 +35,7 @@ Route::get('/', [App\Http\Controllers\WebsiteController::class, 'index'])->name(
 Route::get('/blog', [App\Http\Controllers\WebsiteController::class, 'blog'])->name('blog-page');
 Route::get('/about-us', [App\Http\Controllers\WebsiteController::class, 'about'])->name('about-page');
 Route::get('/contact-us', [App\Http\Controllers\WebsiteController::class, 'contact'])->name('contact-page');
-Route::post('/pay-for-plan', [App\Http\Controllers\TransactionController::class, 'planPayment'])->name('pay-for-plan');
+Route::any('/pay-for-plan', [App\Http\Controllers\TransactionController::class, 'planPayment'])->name('pay-for-plan');
 Route::post('/pay-for-dues', [App\Http\Controllers\TransactionController::class, 'duesPayment'])->name('pay-dues');
 Route::post('/pay-for-anytime', [App\Http\Controllers\TransactionController::class, 'anytimePayment'])->name('pay-anytime');
 Route::post('/pay-for-form', [App\Http\Controllers\TransactionController::class, 'formPayment'])->name('pay-form');
@@ -43,11 +44,13 @@ Route::get('/cooperatives-list', [App\Http\Controllers\WebsiteController::class,
 Route::get('//cooperatives/{id}', [App\Http\Controllers\WebsiteController::class, 'show'])->name('cooperatives.details');
 Route::get('/join/contribution/{id}', [App\Http\Controllers\WebsiteController::class, 'joinCont']);
 
-
-
-
 Route::get('/home', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('home');
 Auth::routes();
+//Payment route 
+
+Route::post('/checkout', [App\Http\Controllers\FundingController::class, 'checkout'])->name('checkout');
+Route::any('/generateBankDetails', [App\Http\Controllers\FundingController::class, 'generateBankDetails'])->name('generateBankDetails');
+
 Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/my-profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
@@ -134,8 +137,9 @@ Route::group(['middleware' => ['auth']], function () {
                 });
             });
         });
+        Route::get('member/reg_fee', [App\Http\Controllers\MemberController::class, 'reg_fee'])->name('registration.fee');
         Route::group(['middleware' => 'member'], function () {
-            Route::group(['prefix' => 'member'], function () {
+            Route::group(['prefix' => 'member', 'middleware' => 'reg_fee'], function () {
                 Route::get('/', [App\Http\Controllers\MemberController::class, 'index'])->name('member_home');
                 Route::get('/transactions', [App\Http\Controllers\MemberController::class, 'transactions'])->name('transactions');
                 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'profile'])->name('member-profile');

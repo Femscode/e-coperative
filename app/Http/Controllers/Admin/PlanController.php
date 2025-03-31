@@ -28,6 +28,7 @@ class PlanController extends Controller
             if(!$company) {
                 $company = Company::find(auth()->user()->company_id);
             }
+            // dd($input);
             $company->update($input);
             return api_request_response(
                 'ok',

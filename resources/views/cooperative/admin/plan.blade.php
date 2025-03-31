@@ -1,105 +1,145 @@
 @extends('cooperative.admin.master')
 @section('header')
-<style> 
-.settings-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-}
+<style>
+    .visibility-option {
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
 
-.settings-header {
-    padding: 2rem 0;
-}
+    .visibility-option:hover {
+        background-color: #f8f9fa;
+        border-color: #094168 !important;
+    }
 
-.settings-header .header-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto;
-    background: linear-gradient(45deg, #4318FF, #9181F2);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    .visibility-option .form-check-input {
+        width: 1.5em;
+        height: 1.5em;
+        margin-top: 0.5em;
+    }
 
-.settings-header .header-icon i {
-    font-size: 32px;
-    color: white;
-}
+    .visibility-option .form-check-input:checked {
+        background-color: #094168;
+        border-color: #094168;
+    }
 
-.settings-card {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
+    .visibility-option:has(.form-check-input:checked) {
+        border-color: #094168 !important;
+        background-color: rgba(9, 65, 104, 0.05);
+    }
 
-.settings-card:hover {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-}
-
-.settings-card-header {
-    padding: 1.5rem;
-    background: #f8f9fa;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-}
-
-.settings-card-header i {
-    font-size: 24px;
-}
-
-.settings-card-header h5 {
-    margin: 0;
-    font-weight: 600;
-}
-
-.settings-card-body {
-    padding: 1.5rem;
-}
-
-.form-floating {
-    margin-bottom: 0;
-}
-
-.form-control, .form-select {
-    border: 2px solid #e9ecef;
-    padding: 0.75rem 1rem;
-    height: auto;
-    font-size: 1rem;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: #4318FF;
-    box-shadow: 0 0 0 4px rgba(67, 24, 255, 0.1);
-}
-
-.form-floating > label {
-    padding: 0.75rem 1rem;
-}
-
-.btn-lg {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    border-radius: 8px;
-}
-
-.btn-primary {
-    background: #4318FF;
-    border-color: #4318FF;
-}
-
-.btn-primary:hover {
-    background: #3a14d9;
-    border-color: #3a14d9;
-}
+    .visibility-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: rgba(9, 65, 104, 0.1);
+    }
 </style>
+<style>
+    .settings-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
 
+    .settings-header {
+        padding: 2rem 0;
+    }
+
+    .settings-header .header-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto;
+        background: linear-gradient(45deg, #094168, #1e6491);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .settings-header .header-icon i {
+        font-size: 32px;
+        color: white;
+    }
+
+    .settings-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 12px rgba(9, 65, 104, 0.08);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .settings-card:hover {
+        box-shadow: 0 4px 20px rgba(9, 65, 104, 0.12);
+    }
+
+    .settings-card-header {
+        padding: 1.5rem;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        border-bottom: 1px solid rgba(9, 65, 104, 0.08);
+    }
+
+    .settings-card-header i {
+        font-size: 24px;
+    }
+
+    .settings-card-header h5 {
+        margin: 0;
+        font-weight: 600;
+        color: #094168;
+    }
+
+    .settings-card-body {
+        padding: 1.5rem;
+    }
+
+    .form-floating {
+        margin-bottom: 0;
+    }
+
+    .form-control,
+    .form-select {
+        border: 2px solid #e9ecef;
+        padding: 0.75rem 1rem;
+        height: auto;
+        font-size: 1rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #094168;
+        box-shadow: 0 0 0 4px rgba(9, 65, 104, 0.1);
+    }
+
+    .form-floating>label {
+        padding: 0.75rem 1rem;
+        color: #526579;
+    }
+
+    .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 8px;
+    }
+
+    .btn-primary {
+        background: #094168;
+        border-color: #094168;
+    }
+
+    .btn-primary:hover {
+        background: #073553;
+        border-color: #073553;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -220,10 +260,45 @@
                     <h5>Additional Information</h5>
                 </div>
                 <div class="settings-card-body">
+
+
                     <div class="form-floating">
-                        <textarea class="form-control" name="note" required rows="3" id="noteInput" style="height: 100px" placeholder="Enter description">{{ $plan->description }}</textarea>
+                        <textarea class="form-control" name="description" required rows="3" id="noteInput" style="height: 100px" placeholder="Enter description">{{ $plan->description }}</textarea>
                         <label for="noteInput">Plan Description</label>
                     </div>
+
+                    <div class="form-floating mb-4">
+                        <div class="visibility-options p-3">
+                            <label class="form-label fw-bold mb-3">Cooperative Visibility</label>
+                            <div class="d-flex flex-column gap-3">
+                                <div class="form-check visibility-option p-3 border rounded-3">
+                                    <input class="form-check-input" type="radio" name="visibility" id="publicVisibility" value="public" {{ $plan->visibility == 'public' ? 'checked' : '' }}>
+                                    <label class="form-check-label d-flex align-items-center gap-3" for="publicVisibility">
+                                        <span class="visibility-icon">
+                                            <i class="ri-global-line text-success fs-3"></i>
+                                        </span>
+                                        <div>
+                                            <span class="d-block fw-semibold fs-5 mb-1">Open Membership</span>
+                                            <small class="text-muted">Allow instant registration for all new members. No approval required.</small>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="form-check visibility-option p-3 border rounded-3">
+                                    <input class="form-check-input" type="radio" name="visibility" id="privateVisibility" value="private" {{ $plan->visibility == 'private' ? 'checked' : '' }}>
+                                    <label class="form-check-label d-flex align-items-center gap-3" for="privateVisibility">
+                                        <span class="visibility-icon">
+                                            <i class="ri-shield-check-line text-danger fs-3"></i>
+                                        </span>
+                                        <div>
+                                            <span class="d-block fw-semibold fs-5 mb-1">Restricted Access</span>
+                                            <small class="text-muted">Members can only join through invitation links. Admin approval required.</small>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 

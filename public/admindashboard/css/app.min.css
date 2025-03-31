@@ -53,7 +53,7 @@ html[data-bs-theme=dark][data-menu-color=light] {
 html[data-topbar-color=light] {
   --bs-topbar-bg: #e6eef5;
   --bs-topbar-item-color: #707793;
-  --bs-topbar-search-bg: #eae8e8;
+  --bs-topbar-search-bg: #e6eef5;
 }
 
 /* Topbar Dark */
