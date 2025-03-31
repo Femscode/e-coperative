@@ -210,7 +210,7 @@ class RegisterController extends Controller
                 'company_id' => $company->uuid,
                 'address' => $data['address'],
                 'referred_by' => $data['referred_by'] ?? null,
-                'status' => $company->visibility == "private" ? 1 : NULL
+                'status' => $company->visibility == "private" ? NULL : 1
             ]);
 
             Auth::login($user);
