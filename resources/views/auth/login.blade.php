@@ -276,7 +276,7 @@ $(document).ready(function() {
                                 timer: 1500,
                                 showConfirmButton: false
                             }).then(() => {
-                                window.location.href = response.redirect || '/dashboard'; // Redirect after successful login
+                                window.location.href =  '/dashboard'; // Redirect after successful login
                             });
                         } else {
 
