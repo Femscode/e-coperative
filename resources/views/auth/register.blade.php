@@ -1,7 +1,5 @@
 <!doctype html>
 <html lang="en">
-<!-- Mirrored from www.adminuiux.com/adminuiux/investment-uiux/investment-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 23 Dec 2024 11:53:11 GMT -->
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">

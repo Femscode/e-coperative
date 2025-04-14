@@ -220,9 +220,9 @@
                color: #6B7280;
           }
      </style>
- <link href="{{ url('admindashboard/css/sweetalert-custom.css') }}" rel="stylesheet">
+     <link href="{{ url('admindashboard/css/sweetalert-custom.css') }}" rel="stylesheet">
 
-<script src="{{ asset('admindashboard/js/sweetalert-custom.js') }}"></script>
+     <script src="{{ asset('admindashboard/js/sweetalert-custom.js') }}"></script>
 
      @yield('header')
 </head>
@@ -251,57 +251,50 @@
                          </div>
 
                          <div class="d-flex align-items-center gap-1">
-
-                              <!-- Theme Color (Light/Dark) -->
-                              <div class="topbar-item">
-                                   <button type="button" class="topbar-button" id="light-dark-mode">
-                                        <iconify-icon icon="solar:moon-bold-duotone" class="fs-24 align-middle"></iconify-icon>
-                                   </button>
-                              </div>
-
-
-
-
                               <!-- User -->
-                              <div class="dropdown topbar-item">
-                                   <a type="button" class="topbar-button" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <div class="dropdown">
+                                   <button type="button" class="btn dropdown-toggle p-0 border-0" data-bs-toggle="dropdown" aria-expanded="false">
                                         <span class="d-flex align-items-center">
                                              @if($user->image ?? auth()->user()->image !== null)
                                              <img src="https://syncosave.com/synco_files/public/{{ Auth::user()->profile_image }}"
-                                                  alt="" class="rounded-circle" width="32">
+                                                  alt="Profile" class="rounded-circle" width="32">
                                              @else
                                              <img src="{{url('assets/images/avatar.png')}}"
-                                                  alt="" class="rounded-circle" width="32">
+                                                  alt="Profile" class="rounded-circle" width="32">
                                              @endif
+                                             <span class="ms-2 d-none d-sm-inline-block">
+                                                  {{ $user->name ?? auth()->user()->name }}
+                                                  <i class="mdi mdi-chevron-down"></i>
+                                             </span>
                                         </span>
-                                   </a>
-                                   <div class="dropdown-menu dropdown-menu-end">
-                                        <!-- item-->
-                                        <h6 class="dropdown-header">Welcome {{$user->name ?? auth()->user()->name }}!</h6>
-                                        <a class="dropdown-item" href="/my-profile">
-                                             <i class="bx bx-user-circle text-muted fs-18 align-middle me-1"></i><span class="align-middle">Profile</span>
-                                        </a>
-
-                                        <a class="dropdown-item" href="https://wa.me/2349058744473?">
-                                             <i class="bx bx-help-circle text-muted fs-18 align-middle me-1"></i><span class="align-middle">Contact Us</span>
-                                        </a>
-
-
-                                        <div class="dropdown-divider my-1"></div>
-
-                                        <a class="dropdown-item text-danger" href="/logout" onclick="return confirm('Are you sure you want to logout?')">
-                                             <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class="align-middle">Logout</span>
-                                        </a>
-                                   </div>
+                                   </button>
+                                   <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                             <h6 class="dropdown-header">Welcome {{$user->name ?? auth()->user()->name }}!</h6>
+                                        </li>
+                                        <li>
+                                             <a class="dropdown-item d-flex align-items-center" href="/my-profile">
+                                                  <i class="bx bx-user-circle text-muted fs-18 me-2"></i>
+                                                  <span>Profile</span>
+                                             </a>
+                                        </li>
+                                        <li>
+                                             <a class="dropdown-item d-flex align-items-center" href="https://wa.me/2349058744473">
+                                                  <i class="bx bx-help-circle text-muted fs-18 me-2"></i>
+                                                  <span>Contact Us</span>
+                                             </a>
+                                        </li>
+                                        <li>
+                                             <hr class="dropdown-divider">
+                                        </li>
+                                        <li>
+                                             <a class="dropdown-item d-flex align-items-center text-danger" href="/logout" onclick="return confirm('Are you sure you want to logout?')">
+                                                  <i class="bx bx-log-out fs-18 me-2"></i>
+                                                  <span>Logout</span>
+                                             </a>
+                                        </li>
+                                   </ul>
                               </div>
-
-                              <!-- App Search-->
-                              <!-- <form class="app-search d-none d-md-block ms-2">
-                                   <div class="position-relative">
-                                        <input type="search" class="form-control" placeholder="Search..." autocomplete="off" value="">
-                                        <iconify-icon icon="solar:magnifer-linear" class="search-widget-icon"></iconify-icon>
-                                   </div>
-                              </form> -->
                          </div>
                     </div>
                </div>

@@ -11,7 +11,7 @@
         <div class="row align-items-center">
             <div class="col-12 col-lg mb-4">
                 <h3 class="fw-normal mb-0 text-secondary">Hi, {{ $user->name }}.</h3>
-                <h2>{{ $user->company->name }} Member {{$user->coop_id}}</h2>
+                <h2>{{ $user->company->name ?? '' }} Member {{$user->coop_id}}</h2>
 
             </div>
 
