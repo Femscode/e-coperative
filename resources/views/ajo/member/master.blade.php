@@ -213,42 +213,48 @@
             }
         }
     </style>
-       <style>
-                                .payment-option-card {
-                                    padding: 1rem;
-                                    border: 1px solid #dee2e6;
-                                    border-radius: 0.75rem;
-                                    transition: all 0.3s ease;
-                                }
-                                .payment-option-card:hover {
-                                    border-color: #6c757d;
-                                    background-color: #f8f9fa;
-                                }
-                                .payment-option-card .form-check-input:checked ~ .form-check-label {
-                                    color: var(--bs-primary);
-                                }
-                                .payment-option-card .form-check-input:checked ~ .form-check-label .payment-icon {
-                                    background-color: var(--bs-primary) !important;
-                                    color: white !important;
-                                }
-                                .payment-icon {
-                                    width: 48px;
-                                    height: 48px;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    border-radius: 12px;
-                                }
-                                .bg-soft-primary {
-                                    background-color: rgba(var(--bs-primary-rgb), 0.1);
-                                    color: var(--bs-primary);
-                                }
-                                .bg-soft-success {
-                                    background-color: rgba(var(--bs-success-rgb), 0.1);
-                                    color: var(--bs-success);
-                                }
-                            </style>
-   
+    <style>
+        .payment-option-card {
+            padding: 1rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option-card:hover {
+            border-color: #6c757d;
+            background-color: #f8f9fa;
+        }
+
+        .payment-option-card .form-check-input:checked~.form-check-label {
+            color: var(--bs-primary);
+        }
+
+        .payment-option-card .form-check-input:checked~.form-check-label .payment-icon {
+            background-color: var(--bs-primary) !important;
+            color: white !important;
+        }
+
+        .payment-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .bg-soft-primary {
+            background-color: rgba(var(--bs-primary-rgb), 0.1);
+            color: var(--bs-primary);
+        }
+
+        .bg-soft-success {
+            background-color: rgba(var(--bs-success-rgb), 0.1);
+            color: var(--bs-success);
+        }
+    </style>
+
     <link href="{{ url('admindashboard/css/sweetalert-custom.css') }}" rel="stylesheet">
 
     <script src="{{ asset('admindashboard/js/sweetalert-custom.js') }}"></script>
@@ -376,38 +382,15 @@
             </div>
             <ul class="nav flex-column menu-active-line">
                 <li class="nav-item"><a href="/dashboard" class="nav-link"><i class="menu-icon bi bi-columns-gap"></i> <span class="menu-name">Dashboard</span></a></li>
-                <li class="nav-item"><a href="/member/manual-payment" class="nav-link"><i class="menu-icon bi bi-wallet"></i> <span class="menu-name">Pay Dues</span></a></li>
-                <li class="nav-item"><a href="/member/loan" class="nav-link"><i class="menu-icon bi bi-piggy-bank"></i> <span class="menu-name">My Loans</span></a>
-                    <div class="dropdown-menu">
-                        <div class="nav-item"><a href="/member/loan-repayment" class="nav-link"><i class="menu-icon bi bi-bank"></i> <span class="menu-name">Loan Repayment</span></a></div>
-                        <div class="nav-item"><a href="/member/loan" class="nav-link"><i class="menu-icon bi bi-cash-coin"></i> <span class="menu-name">Pending Loan Applications</span></a></div>
-                        <div class="nav-item"><a href="/member/loan/ongoing" class="nav-link"><i class="menu-icon bi bi-percent"></i> <span class="menu-name">Ongoing Loan Applications</span></a></div>
-                        <div class="nav-item"><a href="/member/loan/completed" class="nav-link"><i class="menu-icon bi bi-percent"></i> <span class="menu-name">Completed Loan Applications</span></a></div>
-                    </div>
-                </li>
+
                 <li class="nav-item"><a class="nav-link" href="/member/profile"><i class="menu-icon bi bi-person"></i> <span class="menu-name">Profile</span></a></li>
                 <li class="nav-item"><a class="nav-link" href="/member/transactions"><i class="menu-icon bi bi-table"></i> <span class="menu-name">Transactions</span></a></li>
-            </ul>
-            <div class="mt-auto"></div>
-            <div class="px-3 mb-3 not-iconic">
-                <h6 class="mb-3 fw-medium">Quick Links</h6>
-                <div class="card adminuiux-card">
-                    <div class="card-body p-2">
-                        <div class="row gx-2">
-                            <div class="col-12 d-flex justify-content-between"><a href="investment-search-mutual-funds.html" class="btn btn-square btn-link theme-red"><span class="position-relative"><i data-feather="heart"></i> <span class="position-absolute top-0 start-100 translate-middle p-1 bg-success rounded-circle"><span class="visually-hidden">New alerts</span> </span></span></a><a href="investment-schedule.html" class="btn btn-square btn-link"><span class="position-relative"><i data-feather="calendar"></i> <span class="position-absolute top-0 start-100 translate-middle p-1 bg-warning rounded-circle"><span class="visually-hidden">New alerts</span> </span></span></a><a href="investment-inbox.html" class="btn btn-square btn-link"><i data-feather="inbox"></i> </a><a href="investment-help-center.html" class="btn btn-square btn-link"><i data-feather="help-circle"></i></a></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <ul class="nav flex-column menu-active-line">
-                <li class="nav-item"><a href="/member/loan-repayment" class="nav-link"><i class="menu-icon" data-feather="users"></i> <span class="menu-name">Loan Repayment</span></a></li>
-                <li class="nav-item"><a href="/member/loan" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Pending Loan Applications</span></a></li>
-                <li class="nav-item"><a href="/member/loan/ongoing" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Ongoing Loan Applications</span></a></li>
-                <li class="nav-item"><a href="/member/loan/completed" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Completed Loan Applications</span></a></li>
+
                 <li class="nav-item"><a href="{{ route('my-contribution') }}" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">My Circle(s)</span></a></li>
                 <li class="nav-item"><a href="{{ route('member-contribution-payment') }}" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Contribution Dues</span></a></li>
                 <li class="nav-item"><a href="/logout" onclick='return confirm("Are you sure you want to log this user out?");' class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Logout</span></a></li>
             </ul>
+
         </div>
     </div>
     @yield('main')
@@ -429,125 +412,7 @@
     </div>
 </footer>
 <div class="position-fixed bottom-0 end-0 m-3 z-index-5"><button class="btn btn-square btn-theme shadow" type="button" data-bs-toggle="offcanvas" data-bs-target="#theming" aria-controls="theming"><i class="bi bi-palette"></i></button><br><button class="btn btn-theme btn-square rounded-circle shadow mt-2 d-none" id="backtotop"><i class="bi bi-arrow-up"></i></button></div>
-<div class="offcanvas offcanvas-end shadow border-0" tabindex="-1" id="theming" data-bs-scroll="true" data-bs-backdrop="false" aria-labelledby="theminglabel">
-    <div class="offcanvas-header border-bottom">
-        <div>
-            <h5 class="offcanvas-title" id="theminglabel">Personalize</h5>
-            <p class="text-secondary small">Make it more like your own</p>
-        </div><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <h6 class="offcanvas-title">Colors</h6>
-        <p class="text-secondary small mb-4">Change colors of templates</p>
-        <div class="row mb-4 theme-select">
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title=""><span class="avatar avatar-40 rounded-circle mb-2 bg-default"><i class="bi bi-arrow-clockwise"></i></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="theme-blue"><span class="avatar avatar-40 rounded-circle mb-2 bg-blue"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="theme-indigo"><span class="avatar avatar-40 rounded-circle mb-2 bg-indigo"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="theme-purple"><span class="avatar avatar-40 rounded-circle mb-2 bg-purple"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="theme-pink"><span class="avatar avatar-40 rounded-circle mb-2 bg-pink"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="theme-red"><span class="avatar avatar-40 rounded-circle mb-2 bg-red"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="theme-orange"><span class="avatar avatar-40 rounded-circle mb-2 bg-orange"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="theme-yellow"><span class="avatar avatar-40 rounded-circle mb-2 bg-yellow"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="theme-green"><span class="avatar avatar-40 rounded-circle mb-2 bg-green"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="theme-teal"><span class="avatar avatar-40 rounded-circle mb-2 bg-teal"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="theme-cyan"><span class="avatar avatar-40 rounded-circle mb-2 bg-cyan"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="theme-grey"><span class="avatar avatar-40 rounded-circle mb-2 bg-grey"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="theme-brown"><span class="avatar avatar-40 rounded-circle mb-2 bg-brown"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="theme-chocolate"><span class="avatar avatar-40 rounded-circle mb-2 bg-chocolate"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="theme-black"><span class="avatar avatar-40 rounded-circle mb-2 bg-dark"></span></div>
-            </div>
-        </div>
-        <h6 class="offcanvas-title">Backgrounds</h6>
-        <p class="text-secondary small mb-4">Change color for background</p>
-        <div class="row mb-4 theme-background">
-            <div class="col-auto">
-                <div class="gradient-box text-center mb-2" data-title="bg-default"><span class="avatar avatar-40 rounded-circle mb-2 bg-default"><i class="bi bi-arrow-clockwise"></i></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="gradient-box text-center mb-2" data-title="bg-white"><span class="avatar avatar-40 rounded-circle mb-2 bg-white"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="gradient-box text-center mb-2" data-title="bg-r-gradient"><span class="avatar avatar-40 rounded-circle mb-2 bg-r-gradient"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="gradient-box text-center mb-2" data-title="bg-gradient-1"><span class="avatar avatar-40 rounded-circle mb-2 bg-gradient-1"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="gradient-box text-center mb-2" data-title="bg-gradient-2"><span class="avatar avatar-40 rounded-circle mb-2 bg-gradient-2"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="gradient-box text-center mb-2" data-title="bg-gradient-3"><span class="avatar avatar-40 rounded-circle mb-2 bg-gradient-3"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="gradient-box text-center mb-2" data-title="bg-gradient-4"><span class="avatar avatar-40 rounded-circle mb-2 bg-gradient-4"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="gradient-box text-center mb-2" data-title="bg-gradient-5"><span class="avatar avatar-40 rounded-circle mb-2 bg-gradient-5"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="gradient-box text-center mb-2" data-title="bg-gradient-6"><span class="avatar avatar-40 rounded-circle mb-2 bg-gradient-6"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="gradient-box text-center mb-2" data-title="bg-gradient-7"><span class="avatar avatar-40 rounded-circle mb-2 bg-gradient-7"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="gradient-box text-center mb-2" data-title="bg-gradient-8"><span class="avatar avatar-40 rounded-circle mb-2 bg-gradient-8"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="gradient-box text-center mb-2" data-title="bg-gradient-9"><span class="avatar avatar-40 rounded-circle mb-2 bg-gradient-9"></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="gradient-box text-center mb-2" data-title="bg-gradient-10"><span class="avatar avatar-40 rounded-circle mb-2 bg-gradient-10"></span></div>
-            </div>
-        </div>
-        <h6 class="offcanvas-title">Sidebar Layout</h6>
-        <p class="text-secondary small mb-4">Change sidebar layout style</p>
-        <div class="row mb-4 sidebar-layout">
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="adminuiux-sidebar-standard" data-bs-toggle="tooltip" title="None"><span class="avatar avatar-40 rounded-circle mb-2 bg-default"><i class="bi bi-arrow-clockwise"></i></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="adminuiux-sidebar-iconic" data-bs-toggle="tooltip" title="Iconic"><span class="avatar avatar-40 rounded-circle mb-2 bg-default"><i class="bi bi-bezier h4"></i></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="adminuiux-sidebar-boxed" data-bs-toggle="tooltip" title="Boxed"><span class="avatar avatar-40 rounded-circle mb-2 bg-default"><i class="bi bi-box h5"></i></span></div>
-            </div>
-            <div class="col-auto">
-                <div class="select-box text-center mb-2" data-title="adminuiux-sidebar-boxed adminuiux-sidebar-iconic" data-bs-toggle="tooltip" title="Iconic+Boxed"><span class="avatar avatar-40 rounded-circle mb-2 bg-default"><i class="bi bi-bounding-box h5"></i></span></div>
-            </div>
-        </div>
-        <div class="text-center mb-4"><a href="investment-personalization.html" class="btn btn-sm btn-outline-theme">More options <i class="bi bi-arrow-right-short"></i></a></div>
-    </div>
-</div>
+
 <script src="{{url('memberdashboard/js/investment/investment-cooperative.admin.js')}}"></script>
 <script src="{{ asset('js\requestController.js') }}"></script>
 <script src="{{ asset('js\formController.js') }}"></script>

@@ -30,6 +30,20 @@
      <!-- Theme Config js (Require in all Page) -->
      <script src="{{url('admindashboard/js/config.js')}}"></script>
      <style>
+          .dropdown-toggle::after {
+               font-family: boxicons;
+               content: "\ea4a";
+               position: relative;
+               display: none !important;
+               top: 3px;
+               margin-left: 0.255em;
+               font-size: 16px;
+               font-weight: 400;
+               line-height: 1;
+               text-rendering: auto;
+               text-transform: none;
+          }
+
           .nav-tabs-custom {
                background: #fff;
                border-radius: 12px;
@@ -253,18 +267,49 @@
                          <div class="d-flex align-items-center gap-1">
                               <!-- User -->
                               <div class="dropdown">
-                                   <button type="button" class="btn dropdown-toggle p-0 border-0" data-bs-toggle="dropdown" aria-expanded="false">
+
+
+                                   <style>
+                                        .avatar-icon {
+                                             width: 32px;
+                                             height: 32px;
+                                             border-radius: 50%;
+                                             background: linear-gradient(45deg, #094168, #0d6efd);
+                                             display: flex;
+                                             align-items: center;
+                                             justify-content: center;
+                                             color: white;
+                                             font-size: 18px;
+                                             transition: all 0.3s ease;
+                                             animation: pulse 2s infinite;
+                                        }
+
+                                        @keyframes pulse {
+                                             0% {
+                                                  box-shadow: 0 0 0 0 rgba(9, 65, 104, 0.4);
+                                             }
+
+                                             70% {
+                                                  box-shadow: 0 0 0 10px rgba(9, 65, 104, 0);
+                                             }
+
+                                             100% {
+                                                  box-shadow: 0 0 0 0 rgba(9, 65, 104, 0);
+                                             }
+                                        }
+
+                                        .dropdown:hover .avatar-icon {
+                                             transform: scale(1.1);
+                                        }
+                                   </style>
+                                   <button type="button" class=" dropdown-toggle p-0 border-0" data-bs-toggle="dropdown" aria-expanded="false">
                                         <span class="d-flex align-items-center">
-                                             @if($user->image ?? auth()->user()->image !== null)
-                                             <img src="https://syncosave.com/synco_files/public/{{ Auth::user()->profile_image }}"
-                                                  alt="Profile" class="rounded-circle" width="32">
-                                             @else
-                                             <img src="{{url('assets/images/avatar.png')}}"
-                                                  alt="Profile" class="rounded-circle" width="32">
-                                             @endif
+                                             <div class="avatar-icon">
+                                                  <i class="ri-user-3-fill"></i>
+                                             </div>
                                              <span class="ms-2 d-none d-sm-inline-block">
                                                   {{ $user->name ?? auth()->user()->name }}
-                                                  <i class="mdi mdi-chevron-down"></i>
+                                                  <i class="ri-arrow-down-s-line"></i>
                                              </span>
                                         </span>
                                    </button>
@@ -273,9 +318,9 @@
                                              <h6 class="dropdown-header">Welcome {{$user->name ?? auth()->user()->name }}!</h6>
                                         </li>
                                         <li>
-                                             <a class="dropdown-item d-flex align-items-center" href="/my-profile">
+                                             <a class="dropdown-item d-flex align-items-center" href="/admin/faq">
                                                   <i class="bx bx-user-circle text-muted fs-18 me-2"></i>
-                                                  <span>Profile</span>
+                                                  <span>F.A.Q</span>
                                              </a>
                                         </li>
                                         <li>

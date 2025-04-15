@@ -287,7 +287,11 @@ class GroupController extends Controller
     }
 
     public function contribution(){
-        $data['user'] = Auth::user();
+        $data['user'] = $user = Auth::user();
+        if($user->company->type == 2) {
+
+            return view('ajo.member.my_group', $data);
+        }
         return view('ajo.my_group', $data);
     }
 

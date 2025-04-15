@@ -1,20 +1,23 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use App\Models\User;
+
+use App\Jobs\OtpNotification;
+use App\Mail\OTPMail;
 use App\Models\Bank;
-use Illuminate\Support\Facades\Http;
+use App\Models\Transaction;
+use App\Models\User;
+use Carbon\Carbon;
 use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
 use function App\Helpers\success_status_code;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use App\Mail\OTPMail;
-use App\Jobs\OtpNotification;
-use Carbon\Carbon;
+
 class ProfileController extends Controller
 {
     public function dashboard()
@@ -41,13 +44,15 @@ class ProfileController extends Controller
         // dd($plan);
         if ($user->user_type == "Admin") {
             return view('cooperative.admin.profile', $data);
-
         } else {
+            if ($user->company->type == 2) {
+                return view('ajo.member.profile', $data);
+            }
             return view('cooperative.member.profile', $data);
-            return view('member.profile', $data);
-
         }
     }
+
+
 
     public function otp()
     {
@@ -94,7 +99,6 @@ class ProfileController extends Controller
                     bad_response_status_code()
                 );
             }
-
         } catch (\Exception $exception) {
             return api_request_response(
                 'error',
@@ -117,7 +121,6 @@ class ProfileController extends Controller
                 'Profile updated successfully!',
                 success_status_code(),
             );
-
         } catch (\Exception $exception) {
 
             return api_request_response(
@@ -201,7 +204,6 @@ class ProfileController extends Controller
         } else {
             $user->update(['cover_image' => $file]);
         }
-
     }
 
     public function toggleTwo(Request $request)
@@ -307,5 +309,4 @@ class ProfileController extends Controller
             'message' => 'Profile updated successfully'
         ]);
     }
-
 }

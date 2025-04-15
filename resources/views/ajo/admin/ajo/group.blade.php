@@ -3,7 +3,7 @@
 
 <style>
         .bg-gradient-primary {
-            background: linear-gradient(45deg, #094168, #FF821A);
+            background: linear-gradient(45deg, #094168, black);
         }
 
         .modal-content {
@@ -42,13 +42,13 @@
         }
 
         .btn-primary {
-            background: linear-gradient(45deg, #094168, #FF821A);
+            background: linear-gradient(45deg, #094168, black);
             border: none;
            
         }
 
         .btn-primary:hover {
-            background: linear-gradient(45deg, #073553, #E67616);    
+            background: linear-gradient(45deg, #073553, black);    
         }
     </style>
 
@@ -303,6 +303,7 @@
                 popup: 'colored-toast'
             }
         });
+        
     }).catch(err => {
         console.error("Failed to copy: ", err);
     });

@@ -19,33 +19,31 @@ class MemberController extends Controller
     {
         $date = date('Y-m-d', strtotime(Auth::user()->created_at));
         $data['now'] = Carbon::now();
-        // $data['activities'] = Activity::where('is_global', '=', 1)
-        // ->where('created_at', '>=', $date)
-        // ->orwhere(
-        //     function($query) {
-        //       return $query
-        //              ->where('user_id', Auth::user()->id);
-        //      })
-        //      ->get();
+
         $data['user'] = $user = Auth::user();
         $data['member_loan'] = MemberLoan::where('user_id', $user->id)->where('approval_status', 1)->get();
         $data['transactions'] = Transaction::where('user_id', $user->id)->orWhere('email', $user->email)->where('status', 'Success')->latest()->paginate(10);
         $data['company'] = $company = Company::where('uuid', $user->company_id)->first();
-       
-        
-        return view('cooperative.member.index', $data);
+
+        $userCompany = Company::where('uuid', $user->company_id)->first();
+        if ($userCompany->type == 2) {
+          
+            return view('ajo.member.index', $data);
+        } else {
+            return view('cooperative.member.index', $data);
+        }
     }
     public function reg_fee(Request $request)
     {
         $date = date('Y-m-d', strtotime(Auth::user()->created_at));
         $data['now'] = Carbon::now();
-        
+
         $data['user'] = $user = Auth::user();
         $data['member_loan'] = MemberLoan::where('user_id', $user->id)->where('approval_status', 1)->get();
         $data['transactions'] = Transaction::where('user_id', $user->id)->orWhere('email', $user->email)->where('status', 'Success')->latest()->paginate(10);
         $data['company'] = $company = Company::where('uuid', $user->company_id)->first();
-       
-        
+
+
         return view('cooperative.member.registration-fee', $data);
     }
 
@@ -53,6 +51,9 @@ class MemberController extends Controller
     {
         $data['user'] = $user =  Auth::user();
         $data['transactions'] = Transaction::where('user_id',  $user->id)->orWhere('email', $user->email)->where('status', 'Success')->latest()->paginate(10);
+        if($user->company->type == 2) {
+            return view('ajo.member.transactions', $data);
+        }
         return view('cooperative.member.transactions', $data);
     }
 
@@ -243,9 +244,14 @@ class MemberController extends Controller
         }
         // dd($months);
         $data['months'] = $months;
-        $data['user'] = Auth::user();
+        $data['user'] = $user = Auth::user();
+        if($user->company->type == 2) {
+            return view('ajo.member.contribution', $data);
+
+        }
         return view('cooperative.member.payment.contribution', $data);
     }
+   
     public function loanPayment()
     {
         $startDate = Carbon::parse(Auth::user()->created_at);

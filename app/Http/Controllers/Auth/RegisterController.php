@@ -179,6 +179,7 @@ class RegisterController extends Controller
             ], 422);
         }
 
+        // dd($request->company);
         try {
             $company = Company::find($request->company);
 
@@ -189,18 +190,18 @@ class RegisterController extends Controller
                 ], 404);
             }
             //check if company will have to approve members before joining
-            // if($company->visibility == "private"){
-            //     // insert to pending reg 
-            //     $user = PendingRegistration::create([
-            //         'name' => $data['name'],
-            //         'email' => $data['email'],
-            //         'user_type' => 'Member',
-            //         'password' => Hash::make($data['password']),
-            //         'company_id' => $company->uuid,
-            //         'address' => $data['address'],
-            //         'referred_by' => $data['referred_by'] ?? null
-            //     ]);
-            // }
+            if($company->visibility == "private"){
+                // insert to pending reg 
+                $user = PendingRegistration::create([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'user_type' => 'Member',
+                    'password' => Hash::make($data['password']),
+                    'company_id' => $company->uuid,
+                    'address' => $data['address'],
+                    'referred_by' => $data['referred_by'] ?? null
+                ]);
+            }
             //$status 
             $user = User::create([
                 'name' => $data['name'],

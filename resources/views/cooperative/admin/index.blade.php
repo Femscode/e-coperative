@@ -1,6 +1,67 @@
 @extends('cooperative.admin.master')
 @section('header')
 
+
+<style>
+    .referral-code-container {
+        position: relative;
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 15px 0;
+        border: 1px solid #e9ecef;
+    }
+
+    .referral-code-container h3 {
+        font-size: 14px;
+        margin: 0;
+        color: #094168;
+        word-break: break-all;
+    }
+
+    .copy-icon2 {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #094168;
+        font-size: 18px;
+        transition: all 0.3s ease;
+    }
+
+    .copy-icon2:hover {
+        color: #073553;
+    }
+
+    .ref-code {
+        font-weight: normal;
+        color: #6c757d;
+    }
+</style>
+
+<script>
+function copyRefLink() {
+    const linkText = document.getElementById('ref_link').value;
+    navigator.clipboard.writeText(linkText).then(() => {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+        Toast.fire({
+            icon: 'success',
+            title: 'Link copied to clipboard'
+        });
+    });
+}
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endsection
 
@@ -90,6 +151,14 @@
                               <div class="card">
                                    <div class="card-body text-center">
                                         <h4 class="card-title mb-2">Share your Synco Link</h4>
+                                        <p class="text-muted">Copy the URL below and share it with your members:</p>
+                                      
+                                        <div class="referral-code-container">
+                                             <i class="fas fa-copy copy-icon2" onclick="copyRefLink()"></i>
+                                             <h3>Synco Link: <span class="ref-code">https://syncosave.com/signup/{{ $plan->slug }}</span><a href="#!" onclick="copyRefLink()" class="ms-auto fs-3 text-primary"><i class="copy-link ti ti-copy"></i></a></h3>
+                                            
+                                            <input type="hidden" id="ref_link" value="https://syncosave.com/signup/{{ $plan->slug }}" />
+                                        </div>
                                         <ul class="list-inline d-flex gap-1 my-3 align-items-center justify-content-center">
                                              <li class="list-inline-item">
                                                   <a href="https://www.facebook.com/sharer/sharer.php?u=https://syncosave.com/signup/{{ $plan->slug }}&quote=Dear members, kindly join our synco group via this link"
@@ -130,11 +199,7 @@
                                                   </a>
                                              </li>
                                         </ul>
-                                        <p class="text-muted">Copy the URL below and share it with your members:</p>
-                                        <p class="d-flex align-items-center border p-2 rounded-2 border-dashed bg-body text-start mb-0" id="cttaste-link" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                             <span class="flex-grow-1" style="min-width: 0;">https://syncosave.com/signup/{{ $plan->slug }}</span>
-                                             <a href="#!" class="ms-2 flex-shrink-0"><i class="copy-link ti ti-copy"></i></a>
-                                        </p>
+                                       
                                    </div>
                               </div>
                          </div>
@@ -143,7 +208,7 @@
 
                </div>
 
-               
+
 
 
 
@@ -245,7 +310,7 @@
                tempInput.val(linkText).select();
                document.execCommand('copy');
                tempInput.remove();
-               
+
                const Toast = Swal.mixin({
                     toast: true,
                     position: 'top-end',

@@ -156,6 +156,7 @@ Route::group(['middleware' => ['auth']], function () {
                     Route::get('/completed', [App\Http\Controllers\MemberLoanController::class, 'completed'])->name('loan.completed');
                     Route::post('/apply', [App\Http\Controllers\MemberLoanController::class, 'apply'])->name('apply-loan');
                 });
+              
             });
 
         });
