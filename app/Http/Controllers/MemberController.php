@@ -27,7 +27,7 @@ class MemberController extends Controller
 
         $userCompany = Company::where('uuid', $user->company_id)->first();
         if ($userCompany->type == 2) {
-          
+
             return view('ajo.member.index', $data);
         } else {
             return view('cooperative.member.index', $data);
@@ -51,7 +51,7 @@ class MemberController extends Controller
     {
         $data['user'] = $user =  Auth::user();
         $data['transactions'] = Transaction::where('user_id',  $user->id)->orWhere('email', $user->email)->where('status', 'Success')->latest()->paginate(10);
-        if($user->company->type == 2) {
+        if ($user->company->type == 2) {
             return view('ajo.member.transactions', $data);
         }
         return view('cooperative.member.transactions', $data);
@@ -166,7 +166,7 @@ class MemberController extends Controller
         // dd($check, $data);
         return view('cooperative.member.payment.weekly', $data);
     }
-    public function contributionPayment()
+    public function oldcontributionPayment()
     {
         $groups = GroupMember::where('user_id', Auth::user()->id)->select('group_id')->distinct()->pluck('group_id')->toArray();
         $participation = Group::whereIn('id', $groups)->where('status', 1)->get();
@@ -245,13 +245,136 @@ class MemberController extends Controller
         // dd($months);
         $data['months'] = $months;
         $data['user'] = $user = Auth::user();
-        if($user->company->type == 2) {
+        if ($user->company->type == 2) {
             return view('ajo.member.contribution', $data);
-
         }
         return view('cooperative.member.payment.contribution', $data);
     }
-   
+
+    public function contributionPayment()
+    {
+        $data['user'] = $user = Auth::user();
+        $groups = GroupMember::where('user_id', Auth::user()->id)
+            ->select('group_id')
+            ->distinct()
+            ->pluck('group_id')
+            ->toArray();
+
+        $participation = Group::whereIn('id', $groups)->where('status', 1)->get();
+        $allMonths = [];
+
+        foreach ($participation as $single) {
+            $startDate = Carbon::parse($single->start_date);
+            $endDate = Carbon::now();
+            $mode = $single->mode;
+
+            if ($mode == "Weekly") {
+                $currentDate = $startDate->copy()->startOfWeek();
+                $weeksToView = [];
+
+                while ($currentDate->lte($endDate)) {
+                    $weekStart = $currentDate->format('M d');
+                    $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
+                    $weeksToView[] = "$weekStart - $weekEnd";
+                    $currentDate->addWeek();
+                }
+
+                $myWeeks = Transaction::where('user_id', auth()->user()->id)
+                    ->where([
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution'],
+                        ['uuid', $single->uuid]
+                    ])
+                    ->pluck('week')  // Changed from 'month' to 'week'
+                    ->toArray();
+
+                foreach ($weeksToView as $thisWeek) {
+                    $check = in_array($thisWeek, $myWeeks);
+                    if (!$check) {
+                        $allMonths[] = [
+                            'source' => '1',
+                            'week' => $thisWeek,
+                            'period' => $thisWeek,  // Added period for consistency
+                            'amount' => $single->amount,
+                            'uuid' => $single->uuid,
+                            'title' => $single->title,
+                            'mode' => $mode
+                        ];
+                    }
+                }
+            } elseif ($mode == "Monthly") {
+                $monthsToView = [];
+                $currentDate = $startDate->copy()->startOfMonth();
+
+                while ($currentDate->lte($endDate)) {
+                    $monthsToView[] = $currentDate->format('F Y');
+                    $currentDate->addMonth();
+                }
+
+                $myMonths = Transaction::where('user_id', auth()->user()->id)
+                    ->where([
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution'],
+                        ['uuid', $single->uuid]
+                    ])
+                    ->pluck('month')
+                    ->toArray();
+
+                foreach ($monthsToView as $thisMonth) {
+                    $check = in_array($thisMonth, $myMonths);
+                    if (!$check) {
+                        $allMonths[] = [
+                            'source' => '1',
+                            'month' => $thisMonth,
+                            'period' => $thisMonth,  // Added period for consistency
+                            'amount' => $single->amount,
+                            'uuid' => $single->uuid,
+                            'title' => $single->title,
+                            'mode' => $mode
+                        ];
+                    }
+                }
+            } else { // Daily
+                $daysToView = [];
+                $currentDate = $startDate->copy()->startOfDay();
+
+                while ($currentDate->lte($endDate)) {
+                    $daysToView[] = $currentDate->format('F d, Y');
+                    $currentDate->addDay();
+                }
+
+                $myDays = Transaction::where('user_id', auth()->user()->id)
+                    ->where([
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution'],
+                        ['uuid', $single->uuid]
+                    ])
+                    ->pluck('month')  // Consider creating a 'day' column in transactions
+                    ->toArray();
+
+                foreach ($daysToView as $thisDay) {
+                    $check = in_array($thisDay, $myDays);
+                    if (!$check) {
+                        $allMonths[] = [
+                            'source' => '1',
+                            'month' => $thisDay,
+                            'period' => $thisDay,  // Added period for consistency
+                            'amount' => $single->amount,
+                            'uuid' => $single->uuid,
+                            'title' => $single->title,
+                            'mode' => $mode
+                        ];
+                    }
+                }
+            }
+        }
+
+        return view($user->company->type == 2 ? 'ajo.member.contribution' : 'cooperative.member.payment.contribution', [
+            'months' => $allMonths,
+            'user' => Auth::user()
+        ]);
+    }
+
     public function loanPayment()
     {
         $startDate = Carbon::parse(Auth::user()->created_at);

@@ -294,6 +294,7 @@
         })
 
     }
+
 </script>
 <script>
     // toggle all
@@ -484,6 +485,7 @@
             }
         });
     }
+    
     function handlePaymentSubmit(event) {
         event.preventDefault();
 

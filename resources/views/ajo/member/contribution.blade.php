@@ -1,75 +1,230 @@
 @extends('ajo.member.master')
 
-
 @section('header')
+<script src="https://checkout.flutterwave.com/v3.js"></script>
 <style>
-    .grand-total-container {
-        max-width: 300px;
+    /* Global Styles */
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f5f6f8;
+    }
+
+    .container {
+        max-width: 800px;
         margin: auto;
+        padding: 1rem;
+    }
+
+    /* Card Styling */
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        background: #fff;
+        padding: 1.5rem;
+    }
+
+    /* Contribution Items */
+    .contribution-item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        transition: background 0.2s ease;
+    }
+
+    .contribution-item:hover {
+        background: #f9fafb;
+    }
+
+    .contribution-item .form-check {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .contribution-item .form-check-input {
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-right: 1rem;
+        cursor: pointer;
+        border: 2px solid #094168;
+    }
+
+    .contribution-item .form-check-input:checked {
+        background-color: #094168;
+        border-color: #094168;
+    }
+
+    .contribution-item .form-check-label {
+        flex: 1;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .contribution-amount {
+        font-weight: 600;
+        color: #094168;
+    }
+
+    /* Sticky Footer */
+    .sticky-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-top: 1px solid #e5e7eb;
+        padding: 1rem;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+        z-index: 1000;
+    }
+
+    .sticky-footer .grand-total-container {
+        max-width: 800px;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .grand-total-input {
-        font-size: 1.5rem;
-        font-weight: bold;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #094168;
+        background: #f1f5f9;
+        border: 2px solid #094168;
+        border-radius: 8px;
+        padding: 0.5rem;
+        width: 150px;
         text-align: center;
-        background-color: #f8f9fa;
-        border: 2px solid #28a745;
-        color: #28a745;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        transition: box-shadow 0.3s ease, transform 0.3s ease;
     }
 
-    .grand-total-input:focus {
-        box-shadow: 0 6px 15px rgba(0, 128, 0, 0.3);
-        transform: scale(1.02);
-        outline: none;
+    .btn-primary {
+        background: #094168;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        transition: background 0.2s ease;
+    }
+
+    .btn-primary:hover {
+        background: #073251;
+    }
+
+    /* Modal Styling */
+    .modal-content {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        padding: 0.75rem;
+    }
+
+    .form-control:focus {
+        border-color: #094168;
+        box-shadow: 0 0 0 0.2rem rgba(9, 65, 104, 0.1);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .sticky-footer .grand-total-container {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .btn-primary {
+            width: 100%;
+        }
+
+        .page-title-box {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .page-title-right {
+            width: 100%;
+        }
     }
 </style>
+@endsection
 
-@endsection 
 @section('main')
-<!-- Payment Modal -->
+<!-- Payment Modal (Unchanged) -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header border-0 bg-light">
-                <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' class="img-fluid" style="max-width: 140px" />
+                <img src='{{url("admindashboard/images/logo/syncologo2.png")}}' alt='payaza' class="payment-logo" />
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
-                <form id="payaza-form">
-                    <div class='alert alert-danger bg-danger-subtle border-0'>
-                        <i class="bi bi-info-circle me-2"></i>
-                        For testing purpose, kindly use the default prefilled card details
-                    </div>
-                    <div class='text-center mb-2'>Amount To Be Paid</div>
-                    <h2 class='text-center fw-bold mb-4'>₦<span id='amountToBePaid'>0</span></h2>
-                    <div class="mb-3">
-                        <label for="card-number" class="form-label small text-muted">Card Number</label>
-                        <input type='hidden' id='order_id' />
-                        <div class="input-group">
-                            <input type="text" value='4012000033330026' id="card-number" 
-                                class="form-control" required placeholder="Enter Card Number">
-                            <span class="input-group-text"><i class="bi bi-credit-card"></i></span>
+
+
+
+                <div class="amount-display text-center mb-4">
+                    <span class="text-muted">Amount To Be Paid </span>
+                    <h2 class="amount-text mb-0">₦<span id="amountToBePaid">0</span></h2>
+                </div>
+
+                <div class="card-details">
+                    <form id="paymentForm" method="POST" accept-charset="UTF-8">
+                        @csrf
+                        <input required name="amount" type="hidden" min="100" class="form-control real_amount" placeholder="Enter Amount">
+                        <span class="text-danger" id="show_charge"></span>
+
+                        <div class="mt-4">
+                            <label class="form-label fw-medium mb-3">Select Payment Method</label>
+                            <div class="payment-options">
+                                <div class="form-check payment-option-card mb-3">
+                                    <input required type="radio" name="type" value="transfer" class="form-check-input" id="transferOption">
+                                    <label class="form-check-label d-flex align-items-center gap-3" for="transferOption">
+                                        <span class="payment-icon bg-soft-primary">
+                                            <i class="bi bi-bank fs-4"></i>
+                                        </span>
+                                        <div>
+                                            <span class="d-block fw-medium">Automatic Bank Transfer</span>
+                                            <small class="text-muted">Pay directly from your bank account</small>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="form-check payment-option-card">
+                                    <input required type="radio" name="type" value="card" class="form-check-input" id="cardOption">
+                                    <label class="form-check-label d-flex align-items-center gap-3" for="cardOption">
+                                        <span class="payment-icon bg-soft-success">
+                                            <i class="bi bi-credit-card fs-4"></i>
+                                        </span>
+                                        <div>
+                                            <input id='phone' value='{{ $user->phone }}' type='hidden' />
+                                            <input id='name' value='{{ $user->name }}' type='hidden' />
+                                            <input id='email' value='{{ $user->email }}' type='hidden' />
+                                            <input class='real_amount' value='' type='hidden' />
+                                            <input id='redirect_url' value='https://vtubiz.com/payment/callback' type='hidden' />
+                                            <input id='public_key' value='{{  env('FLW_PUBLIC_KEY') }}' type='hidden' />
+                                            <span class="d-block fw-medium">Credit Card</span>
+                                            <small class="text-muted">Pay with your credit or debit card</small>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class='form-group row g-3'>
-                        <div class="col-6">
-                            <label for="expiry-date" class="form-label small text-muted">Expiry Date</label>
-                            <input value='01/39' type="text" id="expiry-date" 
-                                class="form-control" required placeholder="MM/YY">
-                        </div>
-                        <div class="col-6">
-                            <label for="cvv" class="form-label small text-muted">CVV</label>
-                            <input type="text" value='100' id="cvv" 
-                                class="form-control" required placeholder="Enter CVV">
-                        </div>
-                    </div>
-                    <div class='mt-4'>
-                        <button type="submit" class="btn btn-primary w-100 py-2">Pay Now</button>
-                    </div>
-                </form>
+
+                        <button type="button" class="btn btn-primary btn-lg w-100 mt-4" onclick="handlePaymentSubmit()">
+                            <i class="bi bi-lock me-2"></i>Pay Now
+                        </button>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
@@ -78,12 +233,12 @@
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container mt-4" id="main-content">
         <!-- Header -->
-        <div class="row">
-            <div class="col-12 mb-4">
+        <div class="row mb-4">
+            <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <div>
-                        <h4 class="mb-sm-0 fw-bold">Pending Contribution Dues</h4>
-                        <p class="text-muted mb-0">Select the contributions you want to pay</p>
+                        <h4 class="fw-bold">Pending Contribution Dues</h4>
+                        <p class="text-muted">Select the contributions you want to pay</p>
                     </div>
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
@@ -103,218 +258,100 @@
         <!-- Content -->
         <div class="row">
             <div class="col-12">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body p-4">
+                <div class="card">
+                    <div class="card-body">
                         <form id="monthly-dues" method="post">
                             @csrf
-                            <div class="live-preview">
-                                <div class="contribution-list">
-                                    @if(count($months) > 0)
-                                    <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="contribution-list">
+                                @if(count($months) > 0)
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                            id="masterCheckbox" onchange="toggleAllCheckboxes()">
+                                        <label class="form-check-label" for="masterCheckbox">
+                                            Select All Contributions
+                                        </label>
+                                    </div>
+                                    <span class="badge bg-primary">{{ count($months) }} Pending</span>
+                                </div>
+
+                                <div class="contribution-items">
+                                    @foreach ($months as $month)
+                                    <div class="contribution-item">
+                                        <input type="hidden" value="Contribution" name="payment_type[]">
+                                        <input type="hidden" value="{{ $month['uuid'] }}" name="uuid[]">
+                                        <input type="hidden" value="{{ $month['amount'] }}" name="fee[]">
+
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" 
-                                                id="masterCheckbox" onchange="toggleAllCheckboxes()" value="option1">
-                                            <label class="form-check-label" for="masterCheckbox">
-                                                Select All Contributions
+                                            <input class="form-check-input controlledCheckbox"
+                                                data-id="{{ $month['amount'] }}"
+                                                name="check[]" type="checkbox" id="check_{{ $loop->index }}">
+                                            <label class="form-check-label" for="check_{{ $loop->index }}">
+                                                <div class="d-flex justify-content-between align-items-center w-100">
+                                                    <div>
+                                                        <input type="hidden" name="month[]"
+                                                            value="{{ $month['week'] ?? $month['month'] ?? $month['period'] ?? 'N/A' }}">
+                                                        <h6 class="mb-1">{{ $month['week'] ?? $month['month'] ?? $month['period'] ?? 'N/A' }}</h6>
+                                                        <span class="badge bg-light text-dark">
+                                                            {{ $month['title'] ?? 'General Contribution' }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="contribution-amount">
+                                                        <input type="hidden" name="original[]" value="{{ $month['amount'] }}">
+                                                        <span class="amount">₦{{ number_format($month['amount'], 2) }}</span>
+                                                    </div>
+                                                </div>
                                             </label>
                                         </div>
-                                        <div class="contribution-count">
-                                            <span class="badge bg-primary">{{ count($months) }} Pending</span>
-                                        </div>
                                     </div>
-
-                                    <div class="contribution-items">
-                                        @foreach ($months as $month)
-                                        <div class="contribution-item">
-                                            <input type="hidden" @isset($month['amount']) value="Contribution" 
-                                                @else value="Contribution" @endisset name="payment_type[]">
-                                            <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}" 
-                                                @else value="" @endisset name="uuid[]">
-                                            <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}" 
-                                                @else value="{{ $plan->dues }}" @endisset name="fee[]">
-                                            
-                                            <div class="form-check">
-                                                <input class="form-check-input controlledCheckbox" 
-                                                    @isset($month['amount']) data-id="{{ $month['amount'] }}" 
-                                                    @else data-id="{{ $plan->dues }}" @endisset 
-                                                    name="check[]" type="checkbox" id="check_{{ $loop->index }}">
-                                                <label class="form-check-label" for="check_{{ $loop->index }}">
-                                                    <div class="d-flex justify-content-between align-items-center w-100">
-                                                        <div>
-                                                            <input type="hidden" name="month[]" value="{{ $month['month'] }}">
-                                                            <h6 class="mb-1">{{ $month['month'] }}</h6>
-                                                            <span class="badge bg-light text-dark">
-                                                                @isset($month['amount']) Contribution @else Contribution @endisset
-                                                            </span>
-                                                        </div>
-                                                        <div class="contribution-amount">
-                                                            <input type="hidden" name="original[]" 
-                                                                @isset($month['amount']) value="{{ $month['amount'] }}" 
-                                                                @else value="{{ $plan->getMondays($month['month']) * $plan->monthly_dues }}" @endisset>
-                                                            <span class="amount">
-                                                                ₦@isset($month['amount']) 
-                                                                    {{ number_format($month['amount'], 2) }}
-                                                                @else 
-                                                                    {{ number_format($plan->dues, 2) }}
-                                                                @endisset
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                    @else
-                                    <div class="text-center py-5">
-                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" 
-                                            trigger="loop" colors="primary:#094168,secondary:#22c55e" 
-                                            style="width:80px;height:80px">
-                                        </lord-icon>
-                                        <h5 class="mt-3">No Pending Dues!</h5>
-                                        <p class="text-muted">You're all caught up with your contributions.</p>
-                                    </div>
-                                    @endif
+                                    @endforeach
                                 </div>
+                                @else
+                                <div class="text-center py-5">
+                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json"
+                                        trigger="loop" colors="primary:#094168,secondary:#22c55e"
+                                        style="width:80px;height:80px">
+                                    </lord-icon>
+                                    <h5 class="mt-3">No Pending Dues!</h5>
+                                    <p class="text-muted">You're all caught up with your contributions.</p>
+                                </div>
+                                @endif
                             </div>
 
                             @if(count($months) > 0)
                             <input type="hidden" id="userEmail" name="email" value="{{Auth::user()->email}}">
                             <input type="hidden" id="userPhone" name="phone" value="{{Auth::user()->phone}}">
-                            
-                            <div class="payment-summary mt-4">
-                                <div class="row align-items-center">
-                                    <div class="col-md-6">
-                                        <div class="grand-total-container">
-                                            <label for="total" class="form-label text-uppercase fw-bold mb-2">
-                                                Grand Total
-                                            </label>
-                                            <input type="text" class="form-control grand-total-input"
-                                                name="total_amount" value="0" readonly id="total">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 text-md-end mt-3 mt-md-0">
-                                        <button type="submit" id="submit-btn" 
-                                            class="btn btn-primary submit-btn px-4 py-2">
-                                            <i class="bi bi-credit-card me-2"></i>
-                                            Make Payment
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
                             @endif
-                        </form>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Sticky Footer -->
+    @if(count($months) > 0)
+    <div class="sticky-footer">
+
+        <div class="grand-total-container">
+            <div>
+                <label class="fw-bold">Grand Total</label>
+                <input type="text" class="grand-total-input"
+                    name="total_amount" value="0" readonly id="total">
+            </div>
+            <button type="submit" id="submit-btn"
+                class="btn btn-primary submit-btn">
+                <i class="bi bi-credit-card me-2"></i>
+                Make Payment
+            </button>
+        </div>
+    </div>
+    @endif
+    </form>
 </main>
-
-<style>
-.modal-content {
-    border-radius: 1rem;
-    overflow: hidden;
-}
-
-.form-control {
-    border-radius: 0.5rem;
-    padding: 0.75rem 1rem;
-    border: 1px solid #e0e0e0;
-}
-
-.form-control:focus {
-    border-color: #094168;
-    box-shadow: 0 0 0 0.2rem rgba(9, 65, 104, 0.1);
-}
-
-.contribution-list {
-    background: #fff;
-    border-radius: 0.5rem;
-}
-
-.contribution-items {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.contribution-item {
-    padding: 1rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 0.5rem;
-    transition: all 0.3s ease;
-}
-
-.contribution-item:hover {
-    background: #f8f9fa;
-}
-
-.contribution-item .form-check {
-    margin: 0;
-    padding: 0;
-}
-
-.contribution-item .form-check-input {
-    float: none;
-    margin: 0;
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.contribution-item .form-check-label {
-    padding-left: 2rem;
-    width: 100%;
-    cursor: pointer;
-}
-
-.contribution-amount {
-    font-weight: 600;
-    color: #094168;
-}
-
-.btn-primary {
-    background: #094168;
-    border: none;
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    background: #073251;
-    transform: translateY(-1px);
-}
-
-.payment-summary {
-    border-top: 1px solid #e0e0e0;
-    padding-top: 1.5rem;
-}
-
-.grand-total-input {
-    font-size: 1.5rem;
-    font-weight: 600;
-    text-align: center;
-    color: #094168;
-    background: #f8f9fa;
-    border: 2px solid #094168;
-}
-
-@media (max-width: 768px) {
-    .page-title-box {
-        flex-direction: column;
-        align-items: flex-start !important;
-    }
-
-    .page-title-right {
-        margin-top: 1rem;
-    }
-}
-</style>
 @endsection
 
 @section('script')
-<script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
     $('#monthly-dues').submit(function(e) {
         $.ajaxSetup({
@@ -331,15 +368,13 @@
 
     function filterCheckedData() {
         var checkedData = [];
-
-        // Iterate through the checked checkboxes and collect data from the same row
         $('.controlledCheckbox:checked').each(function() {
-            var $row = $(this).closest('tr'); // Find the closest row
-            var paymentType = $row.find('[name="payment_type[]"]').val();
-            var fee = $row.find('[name="fee[]"]').val();
-            var month = $row.find('[name="month[]"]').val();
-            var original = $row.find('[name="original[]"]').val();
-            var uuid = $row.find('[name="uuid[]"]').val();
+            var $item = $(this).closest('.contribution-item');
+            var paymentType = $item.find('[name="payment_type[]"]').val();
+            var fee = $item.find('[name="fee[]"]').val();
+            var month = $item.find('[name="month[]"]').val();
+            var original = $item.find('[name="original[]"]').val();
+            var uuid = $item.find('[name="uuid[]"]').val();
 
             checkedData.push({
                 payment_type: paymentType,
@@ -349,16 +384,13 @@
                 uuid: uuid
             });
         });
-        console.log(checkedData)
         return checkedData;
     }
 
     function processPayment(data) {
-        data = data;
-        // console.log(data)
         var email = $('#userEmail').val();
         var phone = $('#userPhone').val();
-        var totalAmount = $('#total').val();
+        var totalAmount = $('#total').val().replace(/,/g, '');
         $('.preloader').show();
         var ajaxUrl = "{{ route('pay-dues') }}";
         $.ajax({
@@ -373,237 +405,194 @@
             },
             success: function(e) {
                 $('.preloader').hide();
-                $('.preloader').hide();
-                $("#amountToBePaid").html(totalAmount.toLocaleString())
-                $("#order_id").val(e.order_id.transaction_id)
+                $("#amountToBePaid").html(totalAmount.toLocaleString());
+                $(".real_amount").val(totalAmount)
+                $("#order_id").val(e.order_id.transaction_id);
                 $('#paymentModal').modal('show');
-                // payWithPaystack(e);
             },
             error: function(e) {
                 $('.preloader').hide();
-                // var errorList = '';
-                // Object.keys(e.responseJSON.message).forEach(function(key) {
-                // errorList += '<li>' + e.responseJSON.message[key][0] + '</li>';
-                // });
                 new swal("Opss", e.responseJSON.message, "error");
             }
-        })
-
-    }
-
-
-    $('#payaza-form').submit(function(e) {
-        e.preventDefault();
-        showCustomAlert({
-            title: 'Processing payment, please wait...',
-            icon: 'info',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading()
-            }
-        })
-
-        // Collect card details
-        var cardDetails = {
-            number: $('#card-number').val(),
-            expiryMonth: $('#expiry-date').val().split('/')[0], // Extract month from MM/YY
-            expiryYear: $('#expiry-date').val().split('/')[1], // Extract year from MM/YY
-            cvv: $('#cvv').val()
-        };
-
-
-        // Prepare the data for the Payaza API request
-        var payload = {
-            "service_payload": {
-                "first_name": "{{$user->name}}",
-                "last_name": "{{$user->name}}",
-                "email_address": "{{$user->email}}",
-                "phone_number": "{{$user->phone}}",
-                "amount": 100, // The amount to charge (adjust as needed)
-                "transaction_reference": "PL-1KBPSCJCRD" + Math.floor((Math.random() * 10000000) + 1), // Unique transaction reference
-                "currency": "NGN", // Currency code (adjust as needed)
-                "description": "E-cooperative payment testing.", // Payment description
-                "card": {
-                    "expiryMonth": cardDetails.expiryMonth,
-                    "expiryYear": cardDetails.expiryYear,
-                    "securityCode": cardDetails.cvv,
-                    "cardNumber": cardDetails.number
-                },
-                "callback_url": "https://e-coop.cthostel.com/api/payment/webhook" // Your callback URL for payment updates
-            }
-        };
-
-        // Set up headers for the request
-        var headers = {
-            "Authorization": "Payaza " + "{{env('PAYAZA_API')}}", // Authorization token from Payaza
-            "Content-Type": "application/json"
-        };
-
-        // Send the AJAX request to Payaza API
-        $.ajax({
-            url: "https://cards-live.78financials.com/card_charge/", // Payaza endpoint
-            method: "POST",
-            headers: headers,
-            data: JSON.stringify(payload),
-            contentType: "application/json",
-            success: function(response) {
-                console.log("RAW RESULT: ", response);
-                if (response.statusOk) {
-                    if (response.do3dsAuth) {
-                        if (response.formData && response.threeDsUrl) {
-                            const creq = document.getElementById("creq");
-                            creq.value = response.formData;
-                            const form = document.getElementById("threedsChallengeRedirectForm");
-                            form.setAttribute("action", response.threeDsUrl);
-                            form.submit();
-                        } else {
-                            console.log("Missing 3DS data:", response);
-                            showCustomAlert({
-                                title: '3DS Authentication data missing. Please try again.',
-                                icon: 'error'
-                            })
-
-                        }
-                    } else {
-                        console.log("Payment Process Journey Completed");
-                        $('#process-order-form').submit();
-                        showCustomAlert('Payment Completed', 'Payment completed successfully!', 'success')
-
-                        location.href = "/payaza/transaction-successful?order_id=" + $("#order_id").val() +
-                            '&reference=' + response.transactionReference;
-
-                        // Optionally submit your order form here if payment is successful
-
-                    }
-                } else {
-                    console.log("Error found:", response.debugMessage);
-                    showCustomAlert({
-                        title: "Payment Failed: " + response.debugMessage,
-                        icon: 'error'
-                    })
-                }
-            },
-            error: function(xhr, status, error) {
-                console.log("Error:", error);
-                showCustomAlert({
-                    title: "Exception Error: " + (error.debugMessage || error.message || "Unknown error"),
-                    icon: 'error'
-                })
-            }
         });
-    });
-
-    function handlePaystackPopup(event) {
-        const paystackPopup = PaystackPop.setup(config);
-        paystackPopup.openIframe();
     }
-    const paystackSecretKey = @json(env('PAYSTACK_PUBLIC_KEY'));
 
-    function payWithPaystack(data) {
-        // console.log(data)
-        var orderObj = {
-            email: $('[name=email]').val(),
-            amount: data.amount_paid * 100,
-            order_id: data.order_id,
-            phone: $('[name=phone]').val(),
-            process_transaction: "1",
-            card: data.card,
-        };
 
-        var data = data;
-        var handler = PaystackPop.setup({
-            // key: 'pk_live_af922c7f707c7ad3dc1a03433a3768007f6a0401',
-            key: paystackSecretKey, //'pk_test_031c3ba6cf25565da961c7bceea2f75887d08e22',
-            // key: 'pk_test_a36f058d84321e7d8f7f2d27655ddddd6a700b3f',
-            // key: 'pk_live_e139b3ad8d001c8219ed6ea7fb1cb756d2ce66f1',
-            email: orderObj.email,
-            amount: orderObj.amount,
-            ref: data.transaction_id,
-            metadata: {
-                custom_fields: [{
-                    display_name: "Order ID",
-                    variable_name: "order_id",
-                    value: orderObj.order_id
-                }]
-            },
-            callback: function(response) {
-                $('.preloader').show();
-
-                location.href = "/paystack/transaction-successful?order_id=" + orderObj.order_id +
-                    '&reference=' + response.reference;
-
-            },
-            onClose: function() {
-                $('.preloader').hide();
-                alert('Click "Pay online now" to retry payment.');
-            }
-        });
-        handler.openIframe();
-    }
-</script>
-<script>
-    // toggle all
     function toggleAllCheckboxes() {
         const masterCheckbox = document.getElementById('masterCheckbox');
         const controlledCheckboxes = document.getElementsByClassName('controlledCheckbox');
         const isChecked = masterCheckbox.checked;
-        let totalAmount = 0; // Initialize the total amount variable
+        let totalAmount = 0;
 
         for (let i = 0; i < controlledCheckboxes.length; i++) {
             controlledCheckboxes[i].checked = isChecked;
             if (isChecked) {
-                // If the master checkbox is checked, add the data('id') to the totalAmount
                 const amount = parseFloat(controlledCheckboxes[i].getAttribute('data-id'));
                 totalAmount += amount;
             }
         }
         $("#total").val(totalAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-        if (totalAmount == 0) {
-            $(".submit-btn").hide();
-            $(".submit-btn").hide();
+        $("#submit-btn").toggle(totalAmount > 0);
+    }
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $("#submit-btn").hide();
+
+    $(".controlledCheckbox").on("change", function() {
+        let total = parseFloat($("#total").val().replace(/,/g, '')) || 0;
+        const amount = parseFloat($(this).data('id'));
+
+        if ($(this).is(":checked")) {
+            total += amount;
         } else {
-            $(".submit-btn").show();
-            $(".submit-btn").show();
+            total -= amount;
+        }
+
+        $("#total").val(total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $("#submit-btn").toggle(total > 0);
+    });
+
+    function handlePaymentSubmit() {
+        const paymentType = document.querySelector('input[name="type"]:checked');
+
+        if (!paymentType) {
+            alert('Please select a payment method');
+            return;
+        }
+
+        if (paymentType.value === 'card') {
+            makePayment();
+        } else {
+            generateBankDetails();
         }
     }
-</script>
-<script>
-    $(document).ready(function() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+    function makePayment() {
+        const phone = document.getElementById('phone').value;
+        const email = document.getElementById('email').value;
+        const name = document.getElementById('name').value;
+        const amount = parseFloat(document.querySelector('.real_amount').value.replace(/,/g, ''));
+        const public_key = document.getElementById('public_key').value;
+        const redirect_url = document.getElementById('redirect_url').value;
+
+        FlutterwaveCheckout({
+            public_key: public_key,
+            tx_ref: "titanic-48981487343MDI0NzJD",
+            amount: amount,
+            currency: "NGN",
+            payment_options: "card, mobilemoneyghana, ussd",
+            redirect_url: redirect_url,
+            meta: {
+                consumer_id: 13,
+                consumer_mac: "92a3-983jd-1192a",
+            },
+            customer: {
+                email: email,
+                phone_number: phone,
+                name: name,
+            },
+            customizations: {
+                title: "Syncosave Checkout",
+                description: "Fast and Easy Payment",
+                logo: "https://syncosave.com/admindashboard/images/logo/syncologo2.png",
+            },
+        });
+    }
+
+    function generateBankDetails() {
+        const amount = parseFloat(document.querySelector('.real_amount').value.replace(/,/g, ''));
+        const submitBtn = document.querySelector('button[type="submit"]');
+
+        // Disable button and show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating Account...';
+
+        $.ajax({
+            url: "{{ route('generateBankDetails') }}",
+            type: "POST",
+            data: {
+                amount: amount,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(response) {
+                // Create modal content
+                const modalContent = `
+                    <div class="text-center mb-4">
+                        <div class="payment-icon bg-soft-primary rounded-circle mx-auto mb-3" style="width: 64px; height: 64px;">
+                            <i class="bi bi-bank fs-2 text-primary d-flex align-items-center justify-content-center h-100"></i>
+                        </div>
+                        <h4 class="mb-1">Bank Transfer Details</h4>
+                        <p class="text-muted">Complete your payment using the details below</p>
+                    </div>
+                    <div class="bank-details bg-light rounded-4 p-4 mb-4">
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Bank Name</label>
+                            <div class="fw-medium">${response.bank_name}</div>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Account Number</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="fw-medium fs-5">${response.account_no}</span>
+                                <button class="btn btn-sm btn-light" onclick="copyToClipboard('${response.account_no}')" title="Copy">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Amount</label>
+                            <div class="fw-medium fs-5">₦${response.amount}</div>
+                        </div>
+                        <div class="detail-item">
+                            <label class="text-muted small mb-1">Expires In</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="text-danger fw-medium" id="countdown"></div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <small>Please complete your transfer before the expiry time. The account will be automatically deactivated after expiry.</small>
+                    </div>`;
+
+                // Update modal content
+                $('.modal-body').html(modalContent);
+
+                // Start countdown timer
+                const expiryDate = new Date(response.expiry_date).getTime();
+                const countdownTimer = setInterval(() => {
+                    const now = new Date().getTime();
+                    const distance = expiryDate - now;
+
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    document.getElementById("countdown").innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+
+                    if (distance < 0) {
+                        clearInterval(countdownTimer);
+                        document.getElementById("countdown").innerHTML = "EXPIRED";
+                    }
+                }, 1000);
+
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="bi bi-lock me-2"></i>Pay Now';
+            },
+            error: function(xhr) {
+                console.error(xhr);
+                alert('Error generating bank details. Please try again.');
+
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="bi bi-lock me-2"></i>Pay Now';
             }
         });
-        $(".submit-btn").hide();
-        $(".submit-btn").hide();
-        // check or uncheck any data
-        $(".controlledCheckbox").on("change", function(e) {
-            // console.log("is_checked", $(this).is(":checked"));
-            // $(this).data('id');
-            const total = $("#total").val().replace(/,/g, '');
-            var sign = Number.parseFloat(total);
-            // const service = $(this).attr('value');
-            const amount = $(this).data('id');
-            var signet = Number.parseFloat(amount);
-            if ($(this).is(":checked") == true)
-                var addSum = sign + signet; //.toFixed(2);
-            $("#total").val(addSum);
-            // alert("heree")
-            if ($(this).is(":checked") == false)
-                var addSum = sign - signet; //.toFixed(2);
-
-            $("#total").val(addSum.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-
-            if (addSum == 0) {
-                $(".submit-btn").hide();
-                $(".submit-btn").hide();
-            } else {
-                $(".submit-btn").show();
-                $(".submit-btn").show();
-            }
-
-        })
-
-    })
+    }
 </script>
 @endsection

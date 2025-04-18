@@ -157,7 +157,7 @@ class TransactionController extends Controller
             }
             $input['month'] = $fee['month'] ?? "";
             $input['balance'] = floatval($fee['fee']);
-            $input['original'] = floatval($fee['original']);
+            $input['original'] = floatval($fee['original'] ?? $fee['fee']);
             $input['payment_type'] = $fee['payment_type'];
             $transaction = Transaction::create($input);
         }

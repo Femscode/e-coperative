@@ -20,6 +20,7 @@ class Reg_fee
         $user = $request->user();
 
         // Allow non-members to proceed
+        // return $next($request);
         if ($user->user_type !== 'Member') {
             return $next($request);
         }

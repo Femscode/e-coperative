@@ -26,9 +26,10 @@ class GroupController extends Controller
         return view('ajo.admin.ajo.group');
     }
 
-    public function contributionPayment(){
+    public function oldcontributionPayment(){
         $groups = GroupMember::where('user_id', Auth::user()->id)->select('group_id')->distinct()->pluck('group_id')->toArray();
         $participation = Group::whereIn('id', $groups)->where('status', 1)->get();
+       
         $months = [];
         foreach($participation as $single){
             $startDate = Carbon::parse($single->start_date);
@@ -58,9 +59,10 @@ class GroupController extends Controller
                 $weeks = [];
                 // dd()
                 foreach ($weeksToView as $thisWeek) {
+                    
                     $check = in_array($thisWeek, $myWeeks);
                     if (!$check) {
-                        $months[] = ['source' => '1', 'week' => $thisWeek, "amount" => $single->amount, 'uuid' => $single->uuid];
+                        $months[] = ['source' => '1', 'week' => $thisWeek, "amount" => $single->amount, 'uuid' => $single->uuid, 'title' => $single->title];
                     }
                 }
             }elseif ($mode == "Monthly") {
@@ -78,7 +80,7 @@ class GroupController extends Controller
                 foreach ($monthsToView as $thisMonth) {
                     $check =  in_array($thisMonth, $myMonths);
                     if ($check == false) {
-                        $months[] = ['source' => '1', 'month' => $thisMonth, "amount" => $single->amount, 'uuid' => $single->uuid];
+                        $months[] = ['source' => '1', 'month' => $thisMonth, "amount" => $single->amount, 'uuid' => $single->uuid, 'title' => $single->title];
                     }
                 }
             }else{
@@ -96,7 +98,7 @@ class GroupController extends Controller
                 foreach ($monthsToView as $thisMonth) {
                     $check =  in_array($thisMonth, $myMonths);
                     if ($check == false) {
-                        $months[] = ['source' => '1', 'month' => $thisMonth, "amount" => $single->amount, 'uuid' => $single->uuid];
+                        $months[] = ['source' => '1', 'month' => $thisMonth, "amount" => $single->amount, 'uuid' => $single->uuid, 'title' => $single->title];
                     }
                 }
             }
@@ -104,8 +106,127 @@ class GroupController extends Controller
         }
         $data['months'] = $months;
         $data['user'] = Auth::user();
+       
+        
         return view ('ajo.admin.ajo.dues', $data);  
     }
+
+    public function contributionPayment(){
+        $groups = GroupMember::where('user_id', Auth::user()->id)
+            ->select('group_id')
+            ->distinct()
+            ->pluck('group_id')
+            ->toArray();
+        
+        $participation = Group::whereIn('id', $groups)->where('status', 1)->get();
+        $months = [];
+    
+        foreach($participation as $single){
+            $startDate = Carbon::parse($single->start_date);
+            $endDate = Carbon::now();
+            $mode = $single->mode;
+    
+            if($mode == "Weekly"){
+                $currentDate = $startDate->copy()->startOfWeek();
+                $weeksToView = [];
+        
+                while ($currentDate->lte($endDate)) {
+                    $weekStart = $currentDate->format('M d');
+                    $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
+                    $weeksToView[] = "$weekStart - $weekEnd";
+                    $currentDate->addWeek();
+                }
+    
+                $myWeeks = Transaction::where('user_id', auth()->user()->id)
+                    ->where([
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution']
+                    ])
+                    ->pluck('month')
+                    ->toArray();
+        
+                foreach ($weeksToView as $thisWeek) {
+                    $check = in_array($thisWeek, $myWeeks);
+                    if (!$check) {
+                        $months[] = [
+                            'source' => '1',
+                            'week' => $thisWeek,
+                            'amount' => $single->amount,
+                            'uuid' => $single->uuid,
+                            'title' => $single->title,
+                            'mode' => $mode
+                        ];
+                    }
+                }
+            } elseif ($mode == "Monthly") {
+                $monthsToView = [];
+                $currentDate = $startDate->copy()->startOfMonth();
+    
+                while ($currentDate->lte($endDate) && ($currentDate->year < $endDate->year || ($currentDate->year == $endDate->year && $currentDate->month <= $endDate->month))) {
+                    $monthsToView[] = $currentDate->format('F Y');
+                    $currentDate->addMonth();
+                }
+    
+                $myMonths = Transaction::where('user_id', auth()->user()->id)
+                    ->where([
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution']
+                    ])
+                    ->pluck('month')
+                    ->toArray();
+    
+                foreach ($monthsToView as $thisMonth) {
+                    $check = in_array($thisMonth, $myMonths);
+                    if (!$check) {
+                        $months[] = [
+                            'source' => '1',
+                            'month' => $thisMonth,
+                            'amount' => $single->amount,
+                            'uuid' => $single->uuid,
+                            'title' => $single->title,
+                            'mode' => $mode
+                        ];
+                    }
+                }
+            } else { // Daily
+                $monthsToView = [];
+                $currentDate = $startDate->copy()->startOfDay();
+    
+                while ($currentDate->lte($endDate)) {
+                    $monthsToView[] = $currentDate->format('F d, Y');
+                    $currentDate->addDay();
+                }
+    
+                $myMonths = Transaction::where('user_id', auth()->user()->id)
+                    ->where([
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution']
+                    ])
+                    ->pluck('month')
+                    ->toArray();
+    
+                foreach ($monthsToView as $thisMonth) {
+                    $check = in_array($thisMonth, $myMonths);
+                    if (!$check) {
+                        $months[] = [
+                            'source' => '1',
+                            'month' => $thisMonth,
+                            'amount' => $single->amount,
+                            'uuid' => $single->uuid,
+                            'title' => $single->title,
+                            'mode' => $mode
+                        ];
+                    }
+                }
+            }
+        }
+    
+        return view('ajo.admin.ajo.dues', [
+            'months' => $months,
+            'user' => Auth::user()
+        ]);
+    }
+
 
     public function circleMembers($uuid){
         $data['group'] = $group = Group::where('uuid', $uuid)->first();
