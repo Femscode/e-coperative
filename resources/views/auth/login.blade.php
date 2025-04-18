@@ -254,7 +254,7 @@
 
         // Quick login buttons
         $('#memberLogin').click(function() {
-            $('#email').val('fasanyfemi@gmail.com');
+            $('#email').val('fasanyafemi@gmail.com');
             $('#password').val('Password123');
             $('#loginButton').click();
         });
