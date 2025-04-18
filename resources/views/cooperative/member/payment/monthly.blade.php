@@ -1,9 +1,35 @@
 @extends('cooperative.member.master')
 
-
 @section('header')
 <script src="https://checkout.flutterwave.com/v3.js"></script>
+<style>
+    .sticky-footer {
+        position: sticky;
+        bottom: 0;
+        background: #fff;
+        z-index: 1000;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+        margin-top: 1rem;
+        display: none;
+    }
+
+    .sticky-footer.show {
+        display: block;
+    }
+
+    .grand-total-container {
+        background: #f8f9fa;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+    }
+
+    .submit-btn {
+        padding: 0.75rem 2rem !important;
+    }
+</style>
 @endsection
+
 @section('main')
 <!-- Payment Modal -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
@@ -14,9 +40,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
-
-
-
                 <div class="amount-display text-center mb-4">
                     <span class="text-muted">Amount To Be Paid</span>
                     <h2 class="amount-text mb-0">₦<span id="amountToBePaid">0</span></h2>
@@ -69,7 +92,6 @@
                         </button>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
@@ -112,8 +134,8 @@
                                         <tr>
                                             <th width="50">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" 
-                                                        id="masterCheckbox" onchange="toggleAllCheckboxes()" 
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="masterCheckbox" onchange="toggleAllCheckboxes()"
                                                         value="option1">
                                                 </div>
                                             </th>
@@ -125,18 +147,18 @@
                                     <tbody>
                                         @foreach ($months as $month)
                                         <tr>
-                                            <input type="hidden" @isset($month['amount']) value="Repayment" 
+                                            <input type="hidden" @isset($month['amount']) value="Repayment"
                                                 @else value="Monthly Dues" @endisset name="payment_type[]">
-                                            <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}" 
+                                            <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}"
                                                 @else value="" @endisset name="uuid[]">
-                                            <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}" 
+                                            <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}"
                                                 @else value="{{ $plan->dues }}" @endisset name="fee[]">
-                                            
+
                                             <td>
                                                 <div class="form-check">
-                                                    <input class="form-check-input controlledCheckbox" 
-                                                        @isset($month['amount']) data-id="{{ $month['amount'] }}" 
-                                                        @else data-id="{{ $plan->dues }}" @endisset 
+                                                    <input class="form-check-input controlledCheckbox"
+                                                        @isset($month['amount']) data-id="{{ $month['amount'] }}"
+                                                        @else data-id="{{ $plan->dues }}" @endisset
                                                         name="check[]" type="checkbox" id="inlineCheckbox2">
                                                 </div>
                                             </td>
@@ -153,14 +175,14 @@
                                                 </span>
                                             </td>
                                             <td class="text-end">
-                                                <input type="hidden" name="original[]" 
-                                                    @isset($month['amount']) value="{{ $month['amount'] }}" 
-                                                    @else value="{{ $plan->getMondays($month['month']) * $plan->monthly_dues }}" 
+                                                <input type="hidden" name="original[]"
+                                                    @isset($month['amount']) value="{{ $month['amount'] }}"
+                                                    @else value="{{ $plan->getMondays($month['month']) * $plan->monthly_dues }}"
                                                     @endisset>
-                                                @isset($month['amount']) 
-                                                    {{ number_format($month['amount'], 2) }} 
-                                                @else 
-                                                    {{ number_format($plan->dues, 2) }} 
+                                                @isset($month['amount'])
+                                                {{ number_format($month['amount'], 2) }}
+                                                @else
+                                                {{ number_format($plan->dues, 2) }}
                                                 @endisset
                                             </td>
                                         </tr>
@@ -170,8 +192,8 @@
                                 @else
                                 <div class="text-center py-5">
                                     <div class="mb-3">
-                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" 
-                                            trigger="loop" colors="primary:#094168,secondary:#22c55e" 
+                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json"
+                                            trigger="loop" colors="primary:#094168,secondary:#22c55e"
                                             style="width:80px;height:80px">
                                         </lord-icon>
                                     </div>
@@ -182,26 +204,27 @@
                             </div>
 
                             @if(count($months) > 0)
-                            <div class="mt-4">
+                            <div class="sticky-footer">
                                 <input type="hidden" id="userEmail" name="email" value="{{Auth::user()->email}}">
                                 <input type="hidden" id="userPhone" name="phone" value="{{Auth::user()->phone}}">
-                                
-                                <div class="row justify-content-end">
-                                    <div class="col-md-4">
-                                        <div class="bg-light rounded-4 p-4">
-                                            <label for="total" class="form-label text-uppercase fw-bold mb-3">
-                                                Grand Total
-                                            </label>
-                                            <input type="text" class="form-control form-control-lg text-center"
-                                                name="total_amount" value="0" readonly id="total">
+
+                                <div class="container">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-6">
+                                            <div class="grand-total-container">
+                                                <label for="total" class="form-label text-uppercase fw-bold mb-3">
+                                                    Grand Total
+                                                </label>
+                                                <input type="text" class="form-control form-control-lg text-center"
+                                                    name="total_amount" value="0" readonly id="total">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 text-end">
+                                            <button type="submit" id="submit-btn" class="btn btn-primary btn-lg submit-btn">
+                                                <i class="bi bi-credit-card me-2"></i>Make Payment
+                                            </button>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="mt-4 text-end">
-                                    <button type="submit" id="submit-btn" class="btn btn-primary btn-lg px-5">
-                                        <i class="bi bi-credit-card me-2"></i>Make Payment
-                                    </button>
                                 </div>
                             </div>
                             @endif
@@ -223,19 +246,15 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        // $('.preloader').show();
         e.preventDefault();
-        // alert("ere")
         var checkedData = filterCheckedData();
         processPayment(checkedData);
     })
 
     function filterCheckedData() {
         var checkedData = [];
-
-        // Iterate through the checked checkboxes and collect data from the same row
         $('.controlledCheckbox:checked').each(function() {
-            var $row = $(this).closest('tr'); // Find the closest row
+            var $row = $(this).closest('tr');
             var paymentType = $row.find('[name="payment_type[]"]').val();
             var fee = $row.find('[name="fee[]"]').val();
             var month = $row.find('[name="month[]"]').val();
@@ -250,16 +269,13 @@
                 uuid: uuid
             });
         });
-
         return checkedData;
     }
 
     function processPayment(data) {
-        data = data;
         var email = $('#userEmail').val();
         var phone = $('#userPhone').val();
         var totalAmount = $('#total').val();
-
         $('.preloader').show();
         var ajaxUrl = "{{ route('pay-dues') }}";
         $.ajax({
@@ -274,95 +290,69 @@
             },
             success: function(e) {
                 $('.preloader').hide();
-                $('.preloader').hide();
-                $("#amountToBePaid").html(totalAmount.toLocaleString())
-                $(".real_amount").val(totalAmount)
-                $("#order_id").val(e.order_id.transaction_id)
+                $("#amountToBePaid").html(totalAmount.toLocaleString());
+                $(".real_amount").val(totalAmount);
+                $("#order_id").val(e.order_id.transaction_id);
                 $('#paymentModal').modal('show');
-                // payWithPaystack(e);
             },
             error: function(e) {
                 $('.preloader').hide();
-                // var errorList = '';
-                // Object.keys(e.responseJSON.message).forEach(function(key) {
-                // errorList += '<li>' + e.responseJSON.message[key][0] + '</li>';
-                // });
                 new swal("Opss", e.responseJSON.message, "error");
             }
-        })
-
+        });
     }
 
-
-       
-</script>
-<script>
-    // toggle all
     function toggleAllCheckboxes() {
         const masterCheckbox = document.getElementById('masterCheckbox');
         const controlledCheckboxes = document.getElementsByClassName('controlledCheckbox');
         const isChecked = masterCheckbox.checked;
-        let totalAmount = 0; // Initialize the total amount variable
+        let totalAmount = 0;
 
         for (let i = 0; i < controlledCheckboxes.length; i++) {
             controlledCheckboxes[i].checked = isChecked;
             if (isChecked) {
-                // If the master checkbox is checked, add the data('id') to the totalAmount
                 const amount = parseFloat(controlledCheckboxes[i].getAttribute('data-id'));
                 totalAmount += amount;
             }
         }
         $("#total").val(totalAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-        if (totalAmount == 0) {
-            $(".submit-btn").hide();
-            $(".submit-btn").hide();
+        toggleStickyFooter(totalAmount);
+    }
+
+    function toggleStickyFooter(totalAmount) {
+        if (totalAmount > 0) {
+            $('.sticky-footer').addClass('show');
         } else {
-            $(".submit-btn").show();
-            $(".submit-btn").show();
+            $('.sticky-footer').removeClass('show');
         }
     }
-</script>
-<script>
+
     $(document).ready(function() {
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        $(".submit-btn").hide();
-        $(".submit-btn").hide();
-        // check or uncheck any data
-        $(".controlledCheckbox").on("change", function(e) {
-            // console.log("is_checked", $(this).is(":checked"));
-            // $(this).data('id');
+
+        $('.controlledCheckbox').on('change', function() {
             const total = $("#total").val().replace(/,/g, '');
             var sign = Number.parseFloat(total);
-            // const service = $(this).attr('value');
             const amount = $(this).data('id');
             var signet = Number.parseFloat(amount);
-            if ($(this).is(":checked") == true)
-                var addSum = sign + signet; //.toFixed(2);
-            $("#total").val(addSum);
-            // alert("heree")
-            if ($(this).is(":checked") == false)
-                var addSum = sign - signet; //.toFixed(2);
+            let addSum;
 
-            $("#total").val(addSum.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-
-            if (addSum == 0) {
-                $(".submit-btn").hide();
-                $(".submit-btn").hide();
+            if ($(this).is(":checked")) {
+                addSum = sign + signet;
             } else {
-                $(".submit-btn").show();
-                $(".submit-btn").show();
+                addSum = sign - signet;
             }
 
-        })
-
-    })
-
-
-
+            $("#total").val(addSum.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            toggleStickyFooter(addSum);
+        });
+    });
+</script>
+<script>
     function makePayment() {
         const phone = document.getElementById('phone').value;
         const email = document.getElementById('email').value;
@@ -398,8 +388,7 @@
     function generateBankDetails() {
         const amount = parseFloat(document.querySelector('.real_amount').value.replace(/,/g, ''));
         const submitBtn = document.querySelector('button[type="submit"]');
-        
-        // Disable button and show loading state
+
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating Account...';
 
@@ -411,98 +400,88 @@
                 _token: "{{ csrf_token() }}"
             },
             success: function(response) {
-                // Create modal content
                 const modalContent = `
-                    <div class="text-center mb-4">
-                        <div class="payment-icon bg-soft-primary rounded-circle mx-auto mb-3" style="width: 64px; height: 64px;">
-                            <i class="bi bi-bank fs-2 text-primary d-flex align-items-center justify-content-center h-100"></i>
+                        <div class="text-center mb-4">
+                            <div class="payment-icon bg-soft-primary rounded-circle mx-auto mb-3" style="width: 64px; height: 64px;">
+                                <i class="bi bi-bank fs-2 text-primary d-flex align-items-center justify-content-center h-100"></i>
+                            </div>
+                            <h4 class="mb-1">Bank Transfer Details</h4>
+                            <p class="text-muted">Complete your payment using the details below</p>
                         </div>
-                        <h4 class="mb-1">Bank Transfer Details</h4>
-                        <p class="text-muted">Complete your payment using the details below</p>
-                    </div>
-                    <div class="bank-details bg-light rounded-4 p-4 mb-4">
-                        <div class="detail-item mb-3">
-                            <label class="text-muted small mb-1">Bank Name</label>
-                            <div class="fw-medium">${response.bank_name}</div>
-                        </div>
-                        <div class="detail-item mb-3">
-                            <label class="text-muted small mb-1">Account Number</label>
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="fw-medium fs-5">${response.account_no}</span>
-                                <button class="btn btn-sm btn-light" onclick="copyToClipboard('${response.account_no}')" title="Copy">
-                                    <i class="bi bi-clipboard"></i>
-                                </button>
+                        <div class="bank-details bg-light rounded-4 p-4 mb-4">
+                            <div class="detail-item mb-3">
+                                <label class="text-muted small mb-1">Bank Name</label>
+                                <div class="fw-medium">${response.bank_name}</div>
+                            </div>
+                            <div class="detail-item mb-3">
+                                <label class="text-muted small mb-1">Account Number</label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="fw-medium fs-5">${response.account_no}</span>
+                                    <button class="btn btn-sm btn-light" onclick="copyToClipboard('${response.account_no}')" title="Copy">
+                                        <i class="bi bi-clipboard"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="detail-item mb-3">
+                                <label class="text-muted small mb-1">Amount</label>
+                                <div class="fw-medium fs-5">₦${response.amount}</div>
+                            </div>
+                            <div class="detail-item">
+                                <label class="text-muted small mb-1">Expires In</label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="text-danger fw-medium" id="countdown"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="detail-item mb-3">
-                            <label class="text-muted small mb-1">Amount</label>
-                            <div class="fw-medium fs-5">₦${response.amount}</div>
-                        </div>
-                        <div class="detail-item">
-                            <label class="text-muted small mb-1">Expires In</label>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="text-danger fw-medium" id="countdown"></div>
-                               
-                            </div>
-                        </div>
-                    </div>
-                    <div class="alert alert-warning d-flex align-items-center" role="alert">
-                        <i class="bi bi-exclamation-triangle me-2"></i>
-                        <small>Please complete your transfer before the expiry time. The account will be automatically deactivated after expiry.</small>
-                    </div>`;
+                        <div class="alert alert-warning d-flex align-items-center" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <small>Please complete your transfer before the expiry time. The account will be automatically deactivated after expiry.</small>
+                        </div>`;
 
-                // Update modal content
                 $('.modal-body').html(modalContent);
 
-                // Start countdown timer
                 const expiryDate = new Date(response.expiry_date).getTime();
                 const countdownTimer = setInterval(() => {
                     const now = new Date().getTime();
                     const distance = expiryDate - now;
-                    
+
                     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                    
+
                     document.getElementById("countdown").innerHTML = `${hours}h ${minutes}m ${seconds}s`;
-                    
+
                     if (distance < 0) {
                         clearInterval(countdownTimer);
                         document.getElementById("countdown").innerHTML = "EXPIRED";
                     }
                 }, 1000);
 
-                // Reset button state
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="bi bi-lock me-2"></i>Pay Now';
             },
             error: function(xhr) {
                 console.error(xhr);
                 alert('Error generating bank details. Please try again.');
-                
-                // Reset button state
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="bi bi-lock me-2"></i>Pay Now';
             }
         });
     }
+
     function handlePaymentSubmit(event) {
         event.preventDefault();
-
         const paymentType = document.querySelector('input[name="type"]:checked').value;
-
         if (paymentType === 'card') {
             makePayment();
         } else {
             generateBankDetails();
         }
-
         return false;
     }
 
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
-            // Show a brief success message or tooltip
             alert('Account number copied!');
         });
     }

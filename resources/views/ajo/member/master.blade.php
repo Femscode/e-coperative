@@ -381,14 +381,14 @@
                 </div>
             </div>
             <ul class="nav flex-column menu-active-line">
-                <li class="nav-item"><a href="/dashboard" class="nav-link"><i class="menu-icon bi bi-columns-gap"></i> <span class="menu-name">Dashboard</span></a></li>
+                <li class="nav-item"><a href="/dashboard" class="nav-link"><i class="menu-icon bi bi-grid-1x2-fill"></i> <span class="menu-name">Dashboard</span></a></li>
 
-                <li class="nav-item"><a class="nav-link" href="/member/profile"><i class="menu-icon bi bi-person"></i> <span class="menu-name">Profile</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="/member/transactions"><i class="menu-icon bi bi-table"></i> <span class="menu-name">Transactions</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/member/profile"><i class="menu-icon bi bi-person-circle"></i> <span class="menu-name">Profile</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/member/transactions"><i class="menu-icon bi bi-receipt"></i> <span class="menu-name">Transactions</span></a></li>
 
-                <li class="nav-item"><a href="{{ route('my-contribution') }}" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">My Circle(s)</span></a></li>
-                <li class="nav-item"><a href="{{ route('member-contribution-payment') }}" class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Contribution Dues</span></a></li>
-                <li class="nav-item"><a href="/logout" onclick='return confirm("Are you sure you want to log this user out?");' class="nav-link"><i class="menu-icon" data-feather="settings"></i> <span class="menu-name">Logout</span></a></li>
+                <li class="nav-item"><a href="{{ route('my-contribution') }}" class="nav-link"><i class="menu-icon bi bi-people-fill"></i> <span class="menu-name">My Circle(s)</span></a></li>
+                <li class="nav-item"><a href="{{ route('member-contribution-payment') }}" class="nav-link"><i class="menu-icon bi bi-wallet2"></i> <span class="menu-name">Contribution Dues</span></a></li>
+                <li class="nav-item"><a href="/logout" onclick='return confirm("Are you sure you want to log this user out?");' class="nav-link"><i class="menu-icon bi bi-box-arrow-right"></i> <span class="menu-name">Logout</span></a></li>
             </ul>
 
         </div>

@@ -20,7 +20,7 @@
                             <div class="card-body pb-0">
                                 <div class="card adminuiux-card bg-theme-1-subtle mb-3">
                                     <div class="card-body">
-                                        <p class="text-secondary mb-2">Total Spent</p>
+                                        <p class="text-secondary mb-2">Total Payments Made</p>
                                         <h4 class="fw-medium">₦{{number_format($transactions->where('payment_type', '!=','disbursed')->sum('amount')) }}
                                             <!-- <span class="text-success fs-14"><i class="bi bi-arrow-up-short me-1"></i> 18.5%</span> -->
                                         </h4>
@@ -28,7 +28,7 @@
                                 </div>
                                 <div class="card adminuiux-card bg-theme-1-subtle theme-orange mb-3">
                                     <div class="card-body">
-                                        <p class="text-secondary mb-2">Total Received</p>
+                                        <p class="text-secondary mb-2">Total Amount Received</p>
                                         <h4 class="fw-medium">₦{{number_format($transactions->where('payment_type'  ,'disbursed')->sum('amount')) }}
                                             <!-- <span class="text-success fs-14"><i class="bi bi-arrow-up-short me-1"></i> 11.5%</span> -->
                                         </h4>
@@ -46,7 +46,7 @@
                                             <div class="col">
                                                 <h6>Recent Transaction</h6>
                                             </div>
-                                            <div class="col-auto px-0"><a class="btn btn-sm btn btn-link">See All</a></div>
+                                            
                                             <div class="col-auto"><button class="btn btn-sm btn-outline-theme"><i class="bi bi-arrow-up-right me-1"></i> Export </button></div>
                                         </div>
                                     </div>
