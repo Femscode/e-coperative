@@ -254,7 +254,7 @@
 
         // Quick login buttons
         $('#memberLogin').click(function() {
-            $('#email').val('pelumi333@gmail.com');
+            $('#email').val('fasanyfemi@gmail.com');
             $('#password').val('Password123');
             $('#loginButton').click();
         });
@@ -362,7 +362,8 @@
                     showCustomAlert({
                         icon: 'error',
                         title: 'Login Error',
-                        text: errorMessage
+                        text: 'Something went wrong, unable to login!'
+                        // text: errorMessage
                     });
                 }
             });
