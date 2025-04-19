@@ -512,7 +512,6 @@ class MemberController extends Controller
                         // Check if this specific contribution is paid
                         $isPaid = isset($paidContributions[$single->uuid . '_' . $weekFormat]);
 
-                        dd($isPaid);
                         $allMonths[] = [
                             'week' => $weekFormat,
                             'period' => $weekFormat,
