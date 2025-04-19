@@ -8,25 +8,30 @@
         bottom: 0;
         background: #fff;
         z-index: 1000;
-        box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
         padding: 1rem 0;
         margin-top: 1rem;
         display: none;
     }
+
     .sticky-footer.show {
         display: block;
     }
+
     .payment-summary {
         transition: all 0.3s ease;
     }
+
     .grand-total-container {
         background: #f8f9fa;
         border-radius: 0.5rem;
         padding: 1.5rem;
     }
+
     .payment-actions {
         margin-top: 0 !important;
     }
+
     .submit-btn {
         padding: 0.75rem 2rem !important;
     }
@@ -134,7 +139,7 @@
                             <div class="table-responsive">
                                 @if(count($months) > 0)
                                 <table class="table table-hover align-middle custom-table">
-                                    <thead class="table-light">
+                                <thead class="table-light">
                                         <tr>
                                             <th scope="col" width="50">
                                                 <div class="form-check">
@@ -145,11 +150,12 @@
                                             </th>
                                             <th scope="col">Week</th>
                                             <th scope="col" class="text-end">Amount(₦)</th>
+                                            <th scope="col" class="text-end">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($months as $month)
-                                        <tr class="dues-row">
+                                        <tr class="dues-row {{ isset($month['paid']) && $month['paid'] ? 'bg-light' : '' }}">
                                             <input type="hidden" @isset($month['amount']) value="Repayment"
                                                 @else value="Weekly Dues" @endisset name="payment_type[]">
                                             <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] ?? ''}}"
@@ -159,10 +165,12 @@
 
                                             <td>
                                                 <div class="form-check">
+                                                    @if(!isset($month['paid']) || !$month['paid'])
                                                     <input class="form-check-input controlledCheckbox"
                                                         @isset($month['amount']) data-id="{{ $month['amount'] }}"
                                                         @else data-id="{{ $plan->dues }}" @endisset
                                                         name="check[]" type="checkbox">
+                                                    @endif
                                                 </div>
                                             </td>
                                             <td>
@@ -186,9 +194,15 @@
                                                     @endisset
                                                 </span>
                                             </td>
+                                            <td class="text-end">
+                                                @if(isset($month['paid']) && $month['paid'])
+                                                    <span class="badge bg-success">Paid</span>
+                                                @else
+                                                    <span class="badge bg-warning">Pending</span>
+                                                @endif
+                                            </td>
                                         </tr>
                                         @endforeach
-                                    </tbody>
                                 </table>
                                 @else
                                 <div class="empty-state text-center py-5">
@@ -351,57 +365,57 @@
             $("#total").val(addSum.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
             toggleStickyFooter(addSum);
         });
-        });
+    });
 </script>
 <script>
-        function makePayment() {
-            const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value;
-            const name = document.getElementById('name').value;
-            const amount = parseFloat(document.querySelector('.real_amount').value.replace(/,/g, ''));
-            const public_key = document.getElementById('public_key').value;
-            const redirect_url = document.getElementById('redirect_url').value;
+    function makePayment() {
+        const phone = document.getElementById('phone').value;
+        const email = document.getElementById('email').value;
+        const name = document.getElementById('name').value;
+        const amount = parseFloat(document.querySelector('.real_amount').value.replace(/,/g, ''));
+        const public_key = document.getElementById('public_key').value;
+        const redirect_url = document.getElementById('redirect_url').value;
 
-            FlutterwaveCheckout({
-                public_key: public_key,
-                tx_ref: "titanic-48981487343MDI0NzJD",
+        FlutterwaveCheckout({
+            public_key: public_key,
+            tx_ref: "titanic-48981487343MDI0NzJD",
+            amount: amount,
+            currency: "NGN",
+            payment_options: "card, mobilemoneyghana, ussd",
+            redirect_url: redirect_url,
+            meta: {
+                consumer_id: 13,
+                consumer_mac: "92a3-983jd-1192a",
+            },
+            customer: {
+                email: email,
+                phone_number: phone,
+                name: name,
+            },
+            customizations: {
+                title: "Syncosave Checkout",
+                description: "Fast and Easy Payment",
+                logo: "https://syncosave.com/admindashboard/images/logo/syncologo2.png",
+            },
+        });
+    }
+
+    function generateBankDetails() {
+        const amount = parseFloat(document.querySelector('.real_amount').value.replace(/,/g, ''));
+        const submitBtn = document.querySelector('button[type="submit"]');
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating Account...';
+
+        $.ajax({
+            url: "{{ route('generateBankDetails') }}",
+            type: "POST",
+            data: {
                 amount: amount,
-                currency: "NGN",
-                payment_options: "card, mobilemoneyghana, ussd",
-                redirect_url: redirect_url,
-                meta: {
-                    consumer_id: 13,
-                    consumer_mac: "92a3-983jd-1192a",
-                },
-                customer: {
-                    email: email,
-                    phone_number: phone,
-                    name: name,
-                },
-                customizations: {
-                    title: "Syncosave Checkout",
-                    description: "Fast and Easy Payment",
-                    logo: "https://syncosave.com/admindashboard/images/logo/syncologo2.png",
-                },
-            });
-        }
-
-        function generateBankDetails() {
-            const amount = parseFloat(document.querySelector('.real_amount').value.replace(/,/g, ''));
-            const submitBtn = document.querySelector('button[type="submit"]');
-            
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating Account...';
-
-            $.ajax({
-                url: "{{ route('generateBankDetails') }}",
-                type: "POST",
-                data: {
-                    amount: amount,
-                    _token: "{{ csrf_token() }}"
-                },
-                success: function(response) {
-                    const modalContent = `
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(response) {
+                const modalContent = `
                         <div class="text-center mb-4">
                             <div class="payment-icon bg-soft-primary rounded-circle mx-auto mb-3" style="width: 64px; height: 64px;">
                                 <i class="bi bi-bank fs-2 text-primary d-flex align-items-center justify-content-center h-100"></i>
@@ -439,52 +453,52 @@
                             <small>Please complete your transfer before the expiry time. The account will be automatically deactivated after expiry.</small>
                         </div>`;
 
-                    $('.modal-body').html(modalContent);
+                $('.modal-body').html(modalContent);
 
-                    const expiryDate = new Date(response.expiry_date).getTime();
-                    const countdownTimer = setInterval(() => {
-                        const now = new Date().getTime();
-                        const distance = expiryDate - now;
-                        
-                        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                        
-                        document.getElementById("countdown").innerHTML = `${hours}h ${minutes}m ${seconds}s`;
-                        
-                        if (distance < 0) {
-                            clearInterval(countdownTimer);
-                            document.getElementById("countdown").innerHTML = "EXPIRED";
-                        }
-                    }, 1000);
+                const expiryDate = new Date(response.expiry_date).getTime();
+                const countdownTimer = setInterval(() => {
+                    const now = new Date().getTime();
+                    const distance = expiryDate - now;
 
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<i class="bi bi-lock me-2"></i>Pay Now';
-                },
-                error: function(xhr) {
-                    console.error(xhr);
-                    alert('Error generating bank details. Please try again.');
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<i class="bi bi-lock me-2"></i>Pay Now';
-                }
-            });
-        }
-        
-        function handlePaymentSubmit(event) {
-            event.preventDefault();
-            const paymentType = document.querySelector('input[name="type"]:checked').value;
-            if (paymentType === 'card') {
-                makePayment();
-            } else {
-                generateBankDetails();
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    document.getElementById("countdown").innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+
+                    if (distance < 0) {
+                        clearInterval(countdownTimer);
+                        document.getElementById("countdown").innerHTML = "EXPIRED";
+                    }
+                }, 1000);
+
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="bi bi-lock me-2"></i>Pay Now';
+            },
+            error: function(xhr) {
+                console.error(xhr);
+                alert('Error generating bank details. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="bi bi-lock me-2"></i>Pay Now';
             }
-            return false;
-        }
+        });
+    }
 
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Account number copied!');
-            });
+    function handlePaymentSubmit(event) {
+        event.preventDefault();
+        const paymentType = document.querySelector('input[name="type"]:checked').value;
+        if (paymentType === 'card') {
+            makePayment();
+        } else {
+            generateBankDetails();
         }
+        return false;
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Account number copied!');
+        });
+    }
 </script>
 @endsection

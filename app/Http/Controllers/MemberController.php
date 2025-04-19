@@ -208,13 +208,13 @@ class MemberController extends Controller
                         ->where('month', $monthFormat)
                         ->exists();
 
-                    if (!$paymentExists) {
-                        $monthsToView[] = [
-                            'source' => '1',
-                            'month' => $monthFormat,
-                            'amount' => $user->plan()->dues
-                        ];
-                    }
+                    $monthsToView[] = [
+                        'source' => '1',
+                        'month' => $monthFormat,
+                        'amount' => $user->plan()->dues,
+                        'paid' => $paymentExists
+                    ];
+                    
                     $currentDate->addMonth();
                 }
 
@@ -240,12 +240,13 @@ class MemberController extends Controller
                             ->where('month', $monthFormat)
                             ->exists();
 
-                        if (!$loanPaymentExists && $loanDate->lte(now())) {
+                        if ($loanDate->lte(now())) {
                             $monthsToView[] = [
                                 'source' => '2',
                                 'month' => $monthFormat,
                                 'amount' => $ongoingLoan->monthly_return,
-                                'uuid' => $ongoingLoan->uuid
+                                'uuid' => $ongoingLoan->uuid,
+                                'paid' => $loanPaymentExists
                             ];
                         }
                         $loanDate->addMonth();
@@ -271,13 +272,13 @@ class MemberController extends Controller
                         ->where('week', $weekFormat)
                         ->exists();
 
-                    if (!$paymentExists) {
-                        $weeksToView[] = [
-                            'source' => '1',
-                            'week' => $weekFormat,
-                            'amount' => $user->plan()->dues
-                        ];
-                    }
+                    $weeksToView[] = [
+                        'source' => '1',
+                        'week' => $weekFormat,
+                        'amount' => $user->plan()->dues,
+                        'paid' => $paymentExists
+                    ];
+                    
                     $currentDate->addWeek();
                 }
 
@@ -304,12 +305,13 @@ class MemberController extends Controller
                             ->where('week', $weekFormat)
                             ->exists();
 
-                        if (!$loanPaymentExists && $loanDate->lte(now())) {
+                        if ($loanDate->lte(now())) {
                             $weeksToView[] = [
                                 'source' => '2',
                                 'week' => $weekFormat,
                                 'amount' => $ongoingLoan->monthly_return,
-                                'uuid' => $ongoingLoan->uuid
+                                'uuid' => $ongoingLoan->uuid,
+                                'paid' => $loanPaymentExists
                             ];
                         }
                         $loanDate->addWeek();
