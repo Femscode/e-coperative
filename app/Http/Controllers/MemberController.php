@@ -33,16 +33,27 @@ class MemberController extends Controller
             return view('cooperative.member.index', $data);
         }
     }
+   
     public function reg_fee(Request $request)
     {
-        $date = date('Y-m-d', strtotime(Auth::user()->created_at));
-        $data['now'] = Carbon::now();
+        $user = Auth::user();
+        $company = Company::where('uuid', $user->company_id)->first();
+        
+        // Check if registration fee is already paid
+        $regFeePaid = Transaction::where('user_id', $user->uuid)
+            ->where('status', 'Success')
+            ->where('payment_type', 'Registration')
+            ->exists();
+            
+        if ($regFeePaid) {
+            return redirect('/dashboard')->with('info', 'Registration fee has already been paid');
+        }
 
-        $data['user'] = $user = Auth::user();
+        $data['now'] = Carbon::now();
+        $data['user'] = $user;
         $data['member_loan'] = MemberLoan::where('user_id', $user->id)->where('approval_status', 1)->get();
         $data['transactions'] = Transaction::where('user_id', $user->id)->orWhere('email', $user->email)->where('status', 'Success')->latest()->paginate(10);
-        $data['company'] = $company = Company::where('uuid', $user->company_id)->first();
-
+        $data['company'] = $company;
 
         return view('cooperative.member.registration-fee', $data);
     }
