@@ -330,7 +330,7 @@ class MemberController extends Controller
     
 
 
-    public function oldcontributionPayment()
+    public function contributionPayment()
     {
         $data['user'] = $user = Auth::user();
         $groups = GroupMember::where('user_id', Auth::user()->id)
@@ -454,7 +454,7 @@ class MemberController extends Controller
         ]);
     }
 
-    public function contributionPayment()
+    public function newcontributionPayment()
     {
         $data['user'] = $user = Auth::user();
         $groups = GroupMember::where('user_id', Auth::user()->id)
