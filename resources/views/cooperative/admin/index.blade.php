@@ -82,7 +82,7 @@ function copyRefLink() {
                                         <div class="card-body overflow-hidden position-relative">
 
                                              <div class="d-flex align-items-center gap-2">
-                                                  <h1 class="mb-0 fw-bold mt-3 mb-1" id="amount-display">₦{{ number_format($transactions->sum('balance'),2) }}</h1>
+                                                  <h1 class="mb-0 fw-bold mt-3 mb-1" id="amount-display">₦{{ number_format($transactions->sum('amount'),2) }}</h1>
                                                   <button class="btn btn-link text-muted p-0 mt-3" id="toggle-amount">
                                                        <i class="ti ti-eye fs-20"></i>
                                                   </button>
