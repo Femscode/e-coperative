@@ -486,7 +486,7 @@ class MemberController extends Controller
                 ->whereIn('uuid', $participation->pluck('uuid'))
                 ->get()
                 ->groupBy('uuid');
-                dd($transactions);
+               
 
             $allMonths = [];
 
@@ -504,6 +504,8 @@ class MemberController extends Controller
 
                         $isPaid = isset($transactions[$single->uuid]) && 
                                   $transactions[$single->uuid]->contains('week', $weekFormat);
+
+                        dd($isPaid);
 
                         $allMonths[] = [
                             'week' => $weekFormat,
