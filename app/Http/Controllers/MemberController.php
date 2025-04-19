@@ -68,7 +68,7 @@ class MemberController extends Controller
         return view('cooperative.member.transactions', $data);
     }
 
-    public function manualPayment()
+    public function oldmanualPayment()
     {
         $startDate = Carbon::parse(Auth::user()->created_at);
         $endDate = Carbon::now();
@@ -177,6 +177,156 @@ class MemberController extends Controller
         // dd($check, $data);
         return view('cooperative.member.payment.weekly', $data);
     }
+
+    public function manualPayment()
+    {
+        $startDate = Carbon::parse(Auth::user()->created_at);
+        $endDate = Carbon::now();
+        $mode = Auth::user()->plan()->mode;
+        $data['user'] = $user = Auth::user();
+        $data['transactions'] = Transaction::where('user_id', $user->id)
+            ->orWhere('email', $user->email)
+            ->where('status', 'Success')
+            ->latest()
+            ->paginate(10);
+
+        switch ($mode) {
+            case 'Anytime':
+                return view('cooperative.member.payment.anytime', $data);
+
+            case 'Monthly':
+                $currentDate = $startDate->copy()->startOfMonth();
+                $monthsToView = [];
+
+                while ($currentDate->lte($endDate)) {
+                    $monthFormat = $currentDate->format('F Y');
+                    
+                    // Check if payment exists for this month
+                    $paymentExists = Transaction::where('user_id', $user->id)
+                        ->where('status', 'Success')
+                        ->where('payment_type', 'Monthly Dues')
+                        ->where('month', $monthFormat)
+                        ->exists();
+
+                    if (!$paymentExists) {
+                        $monthsToView[] = [
+                            'source' => '1',
+                            'month' => $monthFormat,
+                            'amount' => $user->plan()->dues
+                        ];
+                    }
+                    $currentDate->addMonth();
+                }
+
+                // Check for loan repayments
+                $ongoingLoan = MemberLoan::where([
+                    ['user_id', $user->id],
+                    ['status', 'Ongoing']
+                ])->first();
+
+                if ($ongoingLoan) {
+                    $loanDate = Carbon::parse($ongoingLoan->disbursed_date);
+                    $payback = $user->plan()->loan_month_repayment - 1;
+                    $endMonth = Carbon::parse($ongoingLoan->disbursed_date)->addMonths($payback);
+                    
+                    while ($loanDate->lte($endMonth)) {
+                        $monthFormat = $loanDate->format('F Y');
+                        
+                        // Check if loan payment exists for this month
+                        $loanPaymentExists = Transaction::where('user_id', $user->id)
+                            ->where('status', 'Success')
+                            ->where('payment_type', 'Repayment')
+                            ->where('uuid', $ongoingLoan->uuid)
+                            ->where('month', $monthFormat)
+                            ->exists();
+
+                        if (!$loanPaymentExists && $loanDate->lte(now())) {
+                            $monthsToView[] = [
+                                'source' => '2',
+                                'month' => $monthFormat,
+                                'amount' => $ongoingLoan->monthly_return,
+                                'uuid' => $ongoingLoan->uuid
+                            ];
+                        }
+                        $loanDate->addMonth();
+                    }
+                }
+
+                $data['months'] = $monthsToView;
+                $data['plan'] = $user->plan();
+                return view('cooperative.member.payment.monthly', $data);
+
+            case 'Weekly':
+                $currentDate = $startDate->copy()->startOfWeek();
+                $weeksToView = [];
+
+                while ($currentDate->lte($endDate)) {
+                    $weekFormat = $currentDate->format('M d') . ' - ' . 
+                                 $currentDate->copy()->endOfWeek()->format('M d, Y');
+                    
+                    // Check if payment exists for this week
+                    $paymentExists = Transaction::where('user_id', $user->id)
+                        ->where('status', 'Success')
+                        ->where('payment_type', 'Weekly Dues')
+                        ->where('week', $weekFormat)
+                        ->exists();
+
+                    if (!$paymentExists) {
+                        $weeksToView[] = [
+                            'source' => '1',
+                            'week' => $weekFormat,
+                            'amount' => $user->plan()->dues
+                        ];
+                    }
+                    $currentDate->addWeek();
+                }
+
+                // Check for loan repayments
+                $ongoingLoan = MemberLoan::where([
+                    ['user_id', $user->id],
+                    ['status', 'Ongoing']
+                ])->first();
+
+                if ($ongoingLoan) {
+                    $loanDate = Carbon::parse($ongoingLoan->disbursed_date);
+                    $payback = $user->plan()->loan_month_repayment - 1;
+                    $endMonth = Carbon::parse($ongoingLoan->disbursed_date)->addMonths($payback);
+                    
+                    while ($loanDate->lte($endMonth)) {
+                        $weekFormat = $loanDate->format('M d') . ' - ' . 
+                                    $loanDate->copy()->endOfWeek()->format('M d, Y');
+                        
+                        // Check if loan payment exists for this week
+                        $loanPaymentExists = Transaction::where('user_id', $user->id)
+                            ->where('status', 'Success')
+                            ->where('payment_type', 'Repayment')
+                            ->where('uuid', $ongoingLoan->uuid)
+                            ->where('week', $weekFormat)
+                            ->exists();
+
+                        if (!$loanPaymentExists && $loanDate->lte(now())) {
+                            $weeksToView[] = [
+                                'source' => '2',
+                                'week' => $weekFormat,
+                                'amount' => $ongoingLoan->monthly_return,
+                                'uuid' => $ongoingLoan->uuid
+                            ];
+                        }
+                        $loanDate->addWeek();
+                    }
+                }
+
+                $data['months'] = $weeksToView;
+                $data['plan'] = $user->plan();
+                return view('cooperative.member.payment.weekly', $data);
+
+            default:
+                return redirect()->back()->with('error', 'Invalid payment mode');
+        }
+    }
+
+    
+
     public function oldcontributionPayment()
     {
         $groups = GroupMember::where('user_id', Auth::user()->id)->select('group_id')->distinct()->pluck('group_id')->toArray();
