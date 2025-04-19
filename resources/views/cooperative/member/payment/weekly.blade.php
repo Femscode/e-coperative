@@ -152,7 +152,7 @@
                                         <tr class="dues-row">
                                             <input type="hidden" @isset($month['amount']) value="Repayment"
                                                 @else value="Weekly Dues" @endisset name="payment_type[]">
-                                            <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}"
+                                            <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] ?? ''}}"
                                                 @else value="" @endisset name="uuid[]">
                                             <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}"
                                                 @else value="{{ $plan->dues }}" @endisset name="fee[]">
