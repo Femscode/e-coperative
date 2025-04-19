@@ -139,7 +139,7 @@
                             <div class="table-responsive">
                                 @if(count($months) > 0)
                                 <table class="table table-hover align-middle custom-table">
-                                <thead class="table-light">
+                                    <thead class="table-light">
                                         <tr>
                                             <th scope="col" width="50">
                                                 <div class="form-check">
@@ -196,9 +196,9 @@
                                             </td>
                                             <td class="text-end">
                                                 @if(isset($month['paid']) && $month['paid'])
-                                                    <span class="badge bg-success">Paid</span>
+                                                <span class="badge bg-success">Paid</span>
                                                 @else
-                                                    <span class="badge bg-warning">Pending</span>
+                                                <span class="badge bg-warning">Pending</span>
                                                 @endif
                                             </td>
                                         </tr>

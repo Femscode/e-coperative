@@ -70,7 +70,7 @@ class MemberController extends Controller
 
     
 
-    public function oldmanualPayment()
+    public function oldoldmanualPayment()
     {
         $startDate = Carbon::parse(Auth::user()->created_at);
         $endDate = Carbon::now();
@@ -220,7 +220,7 @@ class MemberController extends Controller
     }
 
 
-    public function manualPayment()
+    public function oldmanualPayment()
     {
         try {
             $user = Auth::user();
@@ -234,6 +234,7 @@ class MemberController extends Controller
                 'transactions' => Transaction::where('user_id', $user->uuid)
                     ->orWhere('email', $user->email)
                     ->where('status', 'Success')
+                    ->where('payment_type', 'Cooperative-Dues')
                     ->latest()
                     ->paginate(10)
             ];
@@ -241,11 +242,11 @@ class MemberController extends Controller
             // Get all paid transactions for faster lookup
             $paidTransactions = Transaction::where('user_id', $user->uuid)
                 ->where('status', 'Success')
-                ->whereIn('payment_type', ['Monthly Dues', 'Weekly Dues', 'Repayment'])
-                ->get()
-                ->groupBy(function($transaction) {
-                    return $transaction->payment_type . '_' . ($transaction->month ?? $transaction->week);
-                });
+                ->where('payment_type', 'Cooperative-Dues')
+                ->get();
+                // ->groupBy(function($transaction) {
+                //     return $transaction->payment_type . '_' . ($transaction->month ?? $transaction->week);
+                // });
 
             switch ($mode) {
                 case 'Anytime':
@@ -372,6 +373,168 @@ class MemberController extends Controller
         }
     }
 
+    public function manualPayment()
+    {
+        try {
+            $user = Auth::user();
+            $startDate = Carbon::parse($user->created_at);
+            $endDate = Carbon::now();
+            $mode = $user->plan()->mode;
+            
+            $data = [
+                'user' => $user,
+                'plan' => $user->plan()
+            ];
+
+            // Get all paid cooperative dues for faster lookup
+            $paidDues = Transaction::where('user_id', $user->uuid)
+                ->where('status', 'Success')
+                ->where('payment_type', 'Cooperative-Dues')
+                ->get()
+                ->mapWithKeys(function($transaction) {
+                    $key = $transaction->month ?? $transaction->week;
+                    return [$key => true];
+                })
+                ->toArray();
+
+            switch ($mode) {
+                case 'Anytime':
+                    return view('cooperative.member.payment.anytime', $data);
+
+                case 'Monthly':
+                    $monthsToView = [];
+                    $currentDate = $startDate->copy()->startOfMonth();
+
+                    while ($currentDate->lte($endDate)) {
+                        $monthFormat = $currentDate->format('F Y');
+                        
+                        // Check if this month is paid
+                        $paymentExists = isset($paidDues[$monthFormat]);
+
+                        $monthsToView[] = [
+                            'source' => '1',
+                            'month' => $monthFormat,
+                            'amount' => $user->plan()->dues,
+                            'paid' => $paymentExists,
+                            'period' => $monthFormat,
+                            'payment_type' => 'Cooperative-Dues'
+                        ];
+
+                        $currentDate->addMonth();
+                    }
+
+                    // Handle loan repayments
+                    $ongoingLoan = MemberLoan::where([
+                        ['user_id', $user->id],
+                        ['status', 'Ongoing']
+                    ])->first();
+
+                    if ($ongoingLoan) {
+                        $loanPayments = Transaction::where('user_id', $user->uuid)
+                            ->where('status', 'Success')
+                            ->where('payment_type', 'Repayment')
+                            ->where('uuid', $ongoingLoan->uuid)
+                            ->pluck('month')
+                            ->flip()
+                            ->toArray();
+
+                        $loanDate = Carbon::parse($ongoingLoan->disbursed_date);
+                        $payback = $user->plan()->loan_month_repayment - 1;
+                        $endMonth = Carbon::parse($ongoingLoan->disbursed_date)->addMonths($payback);
+
+                        while ($loanDate->lte($endMonth)) {
+                            $monthFormat = $loanDate->format('F Y');
+                            
+                            if ($loanDate->lte(now())) {
+                                $monthsToView[] = [
+                                    'source' => '2',
+                                    'month' => $monthFormat,
+                                    'amount' => $ongoingLoan->monthly_return,
+                                    'uuid' => $ongoingLoan->uuid,
+                                    'paid' => isset($loanPayments[$monthFormat]),
+                                    'period' => $monthFormat,
+                                    'payment_type' => 'Repayment'
+                                ];
+                            }
+                            $loanDate->addMonth();
+                        }
+                    }
+
+                    $data['months'] = $monthsToView;
+                    return view('cooperative.member.payment.monthly', $data);
+
+                case 'Weekly':
+                    $weeksToView = [];
+                    $currentDate = $startDate->copy()->startOfWeek();
+
+                    while ($currentDate->lte($endDate)) {
+                        $weekFormat = $currentDate->format('M d') . ' - ' . 
+                                    $currentDate->copy()->endOfWeek()->format('M d, Y');
+                        
+                        // Check if this week is paid
+                        $paymentExists = isset($paidDues[$weekFormat]);
+
+                        $weeksToView[] = [
+                            'source' => '1',
+                            'week' => $weekFormat,
+                            'amount' => $user->plan()->dues,
+                            'paid' => $paymentExists,
+                            'period' => $weekFormat,
+                            'payment_type' => 'Cooperative-Dues'
+                        ];
+
+                        $currentDate->addWeek();
+                    }
+
+                    // Handle loan repayments
+                    $ongoingLoan = MemberLoan::where([
+                        ['user_id', $user->id],
+                        ['status', 'Ongoing']
+                    ])->first();
+
+                    if ($ongoingLoan) {
+                        $loanPayments = Transaction::where('user_id', $user->uuid)
+                            ->where('status', 'Success')
+                            ->where('payment_type', 'Repayment')
+                            ->where('uuid', $ongoingLoan->uuid)
+                            ->pluck('week')
+                            ->flip()
+                            ->toArray();
+
+                        $loanDate = Carbon::parse($ongoingLoan->disbursed_date);
+                        $payback = $user->plan()->loan_month_repayment - 1;
+                        $endMonth = Carbon::parse($ongoingLoan->disbursed_date)->addMonths($payback);
+
+                        while ($loanDate->lte($endMonth)) {
+                            $weekFormat = $loanDate->format('M d') . ' - ' . 
+                                        $loanDate->copy()->endOfWeek()->format('M d, Y');
+
+                            if ($loanDate->lte(now())) {
+                                $weeksToView[] = [
+                                    'source' => '2',
+                                    'week' => $weekFormat,
+                                    'amount' => $ongoingLoan->monthly_return,
+                                    'uuid' => $ongoingLoan->uuid,
+                                    'paid' => isset($loanPayments[$weekFormat]),
+                                    'period' => $weekFormat,
+                                    'payment_type' => 'Repayment'
+                                ];
+                            }
+                            $loanDate->addWeek();
+                        }
+                    }
+
+                    $data['months'] = $weeksToView;
+                    return view('cooperative.member.payment.weekly', $data);
+
+                default:
+                    return redirect()->back()->with('error', 'Invalid payment mode');
+            }
+        } catch (\Exception $e) {
+            \Log::error('Manual payment error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while processing your request.');
+        }
+    }
 
     public function oldcontributionPayment()
     {

@@ -113,7 +113,7 @@ class PaymentController extends Controller
                         'amount' => $due['amount'],
                         'transaction_id' => $reference,
                         'status' => 'Success',
-                        'payment_type' => 'Monthly Dues',
+                        'payment_type' => 'Cooperative-Dues',
                         'month' => $due['month'] ?? null,
                         'week' => $due['week'] ?? null,
                         'email' => $email
