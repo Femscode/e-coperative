@@ -35,7 +35,7 @@ class HomeController extends Controller
         $company = Company::where('uuid',$user->company_id)->first();
         
         $data['users'] = User::where('company_id',$company->uuid)->get();
-        $transacts = Transaction::where('company_id',$company->id)->where('status','Success');
+        $transacts = Transaction::where('company_id',$company->uuid)->where('status','Success');
         $data['transactions'] = $transacts->get();
         $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->where('original','!=',0)->paginate(10);
         $data['plan'] = $company;//Company::find(auth()->user()->company_id);
