@@ -151,73 +151,73 @@
 @section('main')
 <!-- Payment Modal (Unchanged) -->
 <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-header border-0 bg-light">
-                    <img src='{{url("admindashboard/images/logo/syncologo2.png")}}' alt='payaza' class="payment-logo" />
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 bg-light">
+                <img src='{{url("admindashboard/images/logo/syncologo2.png")}}' alt='payaza' class="payment-logo" />
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+
+
+
+                <div class="amount-display text-center mb-4">
+                    <span class="text-muted">Amount To Be Paid </span>
+                    <h2 class="amount-text mb-0">₦<span id="amountToBePaid">0</span></h2>
                 </div>
-                <div class="modal-body p-4">
 
+                <div class="card-details">
+                    <form id="paymentForm" method="POST" accept-charset="UTF-8">
+                        @csrf
+                        <input required name="amount" type="hidden" min="100" class="form-control real_amount" placeholder="Enter Amount">
+                        <span class="text-danger" id="show_charge"></span>
 
-
-                    <div class="amount-display text-center mb-4">
-                        <span class="text-muted">Amount To Be Paid </span>
-                        <h2 class="amount-text mb-0">₦<span id="amountToBePaid">0</span></h2>
-                    </div>
-
-                    <div class="card-details">
-                        <form id="paymentForm" method="POST" accept-charset="UTF-8">
-                            @csrf
-                            <input required name="amount" type="hidden" min="100" class="form-control real_amount" placeholder="Enter Amount">
-                            <span class="text-danger" id="show_charge"></span>
-
-                            <div class="mt-4">
-                                <label class="form-label fw-medium mb-3">Select Payment Method</label>
-                                <div class="payment-options">
-                                    <div class="form-check payment-option-card mb-3">
-                                        <input required type="radio" name="type" value="transfer" class="form-check-input" id="transferOption">
-                                        <label class="form-check-label d-flex align-items-center gap-3" for="transferOption">
-                                            <span class="payment-icon bg-soft-primary">
-                                                <i class="bi bi-bank fs-4"></i>
-                                            </span>
-                                            <div>
-                                                <span class="d-block fw-medium">Automatic Bank Transfer</span>
-                                                <small class="text-muted">Pay directly from your bank account</small>
-                                            </div>
-                                        </label>
-                                    </div>
-                                    <div class="form-check payment-option-card">
-                                        <input required type="radio" name="type" value="card" class="form-check-input" id="cardOption">
-                                        <label class="form-check-label d-flex align-items-center gap-3" for="cardOption">
-                                            <span class="payment-icon bg-soft-success">
-                                                <i class="bi bi-credit-card fs-4"></i>
-                                            </span>
-                                            <div>
-                                                <input id='phone' value='{{ $user->phone }}' type='hidden' />
-                                                <input id='name' value='{{ $user->name }}' type='hidden' />
-                                                <input id='email' value='{{ $user->email }}' type='hidden' />
-                                                <input class='real_amount' value='' type='hidden' />
-                                                <input id='redirect_url' value='https://vtubiz.com/payment/callback' type='hidden' />
-                                                <input id='public_key' value='{{  env('FLW_PUBLIC_KEY') }}' type='hidden' />
-                                                <span class="d-block fw-medium">Credit Card</span>
-                                                <small class="text-muted">Pay with your credit or debit card</small>
-                                            </div>
-                                        </label>
-                                    </div>
+                        <div class="mt-4">
+                            <label class="form-label fw-medium mb-3">Select Payment Method</label>
+                            <div class="payment-options">
+                                <div class="form-check payment-option-card mb-3">
+                                    <input required type="radio" name="type" value="transfer" class="form-check-input" id="transferOption">
+                                    <label class="form-check-label d-flex align-items-center gap-3" for="transferOption">
+                                        <span class="payment-icon bg-soft-primary">
+                                            <i class="bi bi-bank fs-4"></i>
+                                        </span>
+                                        <div>
+                                            <span class="d-block fw-medium">Automatic Bank Transfer</span>
+                                            <small class="text-muted">Pay directly from your bank account</small>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="form-check payment-option-card">
+                                    <input required type="radio" name="type" value="card" class="form-check-input" id="cardOption">
+                                    <label class="form-check-label d-flex align-items-center gap-3" for="cardOption">
+                                        <span class="payment-icon bg-soft-success">
+                                            <i class="bi bi-credit-card fs-4"></i>
+                                        </span>
+                                        <div>
+                                            <input id='phone' value='{{ $user->phone }}' type='hidden' />
+                                            <input id='name' value='{{ $user->name }}' type='hidden' />
+                                            <input id='email' value='{{ $user->email }}' type='hidden' />
+                                            <input class='real_amount' value='' type='hidden' />
+                                            <input id='redirect_url' value='https://vtubiz.com/payment/callback' type='hidden' />
+                                            <input id='public_key' value='{{  env('FLW_PUBLIC_KEY') }}' type='hidden' />
+                                            <span class="d-block fw-medium">Credit Card</span>
+                                            <small class="text-muted">Pay with your credit or debit card</small>
+                                        </div>
+                                    </label>
                                 </div>
                             </div>
+                        </div>
 
-                            <button type="button" class="paynow_btn btn btn-primary btn-lg w-100 mt-4" onclick="handlePaymentSubmit()">
-                                <i class="bi bi-lock me-2"></i>Pay Now
-                            </button>
-                        </form>
-                    </div>
-
+                        <button type="button" class="paynow_btn btn btn-primary btn-lg w-100 mt-4" onclick="handlePaymentSubmit()">
+                            <i class="bi bi-lock me-2"></i>Pay Now
+                        </button>
+                    </form>
                 </div>
+
             </div>
         </div>
     </div>
+</div>
 
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container mt-4" id="main-content">
@@ -257,22 +257,17 @@
                                         <input type="hidden" value="{{ $month['amount'] }}" name="fee[]">
 
                                         <div class="form-check">
+                                            @if(!$month['paid'])
                                             <input class="form-check-input controlledCheckbox"
                                                 data-id="{{ $month['amount'] }}"
                                                 name="check[]" type="checkbox" id="check_{{ $loop->index }}">
+                                            @endif
                                             <label class="form-check-label" for="check_{{ $loop->index }}">
                                                 <div class="d-flex justify-content-between align-items-center w-100">
                                                     <div>
                                                         @php
-                                                        $displayDate = '';
+                                                        $displayDate = $month['period'] ?? '';
                                                         $displayTitle = $month['title'] ?? 'General Contribution';
-                                                        if (isset($month['week'])) {
-                                                        $displayDate = $month['week'];
-                                                        } elseif (isset($month['month'])) {
-                                                        $displayDate = $month['month'];
-                                                        } elseif (isset($month['period'])) {
-                                                        $displayDate = $month['period'];
-                                                        }
                                                         @endphp
                                                         <input type="hidden" name="month[]" value="{{ $displayDate }}">
                                                         <h6 class="mb-1">{{ $displayDate }}</h6>
@@ -282,6 +277,11 @@
                                                             <span class="ms-1">({{ $month['mode'] }})</span>
                                                             @endif
                                                         </span>
+                                                        @if($month['paid'])
+                                                        <span class="badge bg-success ms-2">Paid</span>
+                                                        @else
+                                                        <span class="badge bg-warning ms-2">Pending</span>
+                                                        @endif
                                                     </div>
                                                     <div class="contribution-amount">
                                                         <input type="hidden" name="original[]" value="{{ $month['amount'] }}">
@@ -309,7 +309,7 @@
                             <input type="hidden" id="userEmail" name="email" value="{{Auth::user()->email}}">
                             <input type="hidden" id="userPhone" name="phone" value="{{Auth::user()->phone}}">
                             @endif
-                       
+
                     </div>
                 </div>
             </div>
@@ -390,7 +390,7 @@
             },
             success: function(e) {
                 $('.preloader').hide();
-                $("#amountToBePaid").html(new Intl.NumberFormat('en-NG', { 
+                $("#amountToBePaid").html(new Intl.NumberFormat('en-NG', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                 }).format(totalAmount));
@@ -404,8 +404,6 @@
             }
         });
     }
-
- 
 </script>
 
 <script>
