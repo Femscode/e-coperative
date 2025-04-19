@@ -42,17 +42,17 @@ class PaymentController extends Controller
         
         // Check for pending registration fee
         $hasRegFee = false;
-        if ($company->reg_fee > 0) {
+        if (intval($company->reg_fee) > 0) {
             $regFeePaid = Transaction::where('user_id', $user->uuid)
                 ->where('status', 'Success')
                 ->where('payment_type', 'Registration')
                 ->exists();
                 
-            if (!$regFeePaid && $amountPaid >= $company->reg_fee) {
+            if (!$regFeePaid && $amountPaid >= intval($company->reg_fee)) {
                 // Create registration fee transaction
                 Transaction::create([
                     'user_id' => $user->uuid,
-                    'company_id' => $company->id,
+                    'company_id' => $company->uuid,
                     'amount' => $company->reg_fee,
                     'transaction_id' => $reference,
                     'status' => 'Success',
@@ -60,7 +60,7 @@ class PaymentController extends Controller
                     'email' => $email
                 ]);
                 
-                $amountPaid -= $company->reg_fee;
+                $amountPaid -= intval($company->reg_fee);
                 $hasRegFee = true;
             }
         }

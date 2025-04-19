@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // Route::group(['middleware' => 'apiUser'], function () {
-    Route::any('/payment/webhook', [App\Http\Controllers\Api\PaymentController::class, 'new_payment_webhook'])->name('payment_webhhook');
+    Route::any('/payment/webhook', [App\Http\Controllers\Api\PaymentController::class, 'payment_webhook'])->name('payment_webhhook');
     Route::any('/payment/callback', [App\Http\Controllers\Api\PaymentController::class, 'callback_webhook'])->name('callback_webhook');
     Route::post('/login', [App\Http\Controllers\Api\LoginController::class, 'login'])->name('login');
 // });
