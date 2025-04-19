@@ -461,7 +461,7 @@ class MemberController extends Controller
         try {
             $user = Auth::user();
             if (!$user) {
-                Log::warning('Unauthenticated user attempted to access contribution payment');
+               
                 return redirect()->route('login');
             }
 
@@ -477,9 +477,7 @@ class MemberController extends Controller
                 ->where('status', 1)
                 ->get();
 
-            if ($participation->isEmpty()) {
-                Log::info('No active groups found for user', ['user_id' => $user->id]);
-            }
+            
 
             // Fetch all relevant transactions
             $transactions = Transaction::where('user_id', $user->uuid)
@@ -488,6 +486,7 @@ class MemberController extends Controller
                 ->whereIn('uuid', $participation->pluck('uuid'))
                 ->get()
                 ->groupBy('uuid');
+                dd($transactions);
 
             $allMonths = [];
 
