@@ -33,18 +33,18 @@ class MemberController extends Controller
             return view('cooperative.member.index', $data);
         }
     }
-   
+
     public function reg_fee(Request $request)
     {
         $user = Auth::user();
         $company = Company::where('uuid', $user->company_id)->first();
-        
+
         // Check if registration fee is already paid
         $regFeePaid = Transaction::where('user_id', $user->uuid)
             ->where('status', 'Success')
             ->where('payment_type', 'Registration')
             ->exists();
-            
+
         if ($regFeePaid) {
             return redirect('/dashboard')->with('info', 'Registration fee has already been paid');
         }
@@ -200,7 +200,7 @@ class MemberController extends Controller
 
                 while ($currentDate->lte($endDate)) {
                     $monthFormat = $currentDate->format('F Y');
-                    
+
                     // Check if payment exists for this month
                     $paymentExists = Transaction::where('user_id', $user->uuid)
                         ->where('status', 'Success')
@@ -214,7 +214,7 @@ class MemberController extends Controller
                         'amount' => $user->plan()->dues,
                         'paid' => $paymentExists
                     ];
-                    
+
                     $currentDate->addMonth();
                 }
 
@@ -228,10 +228,10 @@ class MemberController extends Controller
                     $loanDate = Carbon::parse($ongoingLoan->disbursed_date);
                     $payback = $user->plan()->loan_month_repayment - 1;
                     $endMonth = Carbon::parse($ongoingLoan->disbursed_date)->addMonths($payback);
-                    
+
                     while ($loanDate->lte($endMonth)) {
                         $monthFormat = $loanDate->format('F Y');
-                        
+
                         // Check if loan payment exists for this month
                         $loanPaymentExists = Transaction::where('user_id', $user->uuid)
                             ->where('status', 'Success')
@@ -262,9 +262,9 @@ class MemberController extends Controller
                 $weeksToView = [];
 
                 while ($currentDate->lte($endDate)) {
-                    $weekFormat = $currentDate->format('M d') . ' - ' . 
-                                 $currentDate->copy()->endOfWeek()->format('M d, Y');
-                    
+                    $weekFormat = $currentDate->format('M d') . ' - ' .
+                        $currentDate->copy()->endOfWeek()->format('M d, Y');
+
                     // Check if payment exists for this week
                     $paymentExists = Transaction::where('user_id', $user->uuid)
                         ->where('status', 'Success')
@@ -278,7 +278,7 @@ class MemberController extends Controller
                         'amount' => $user->plan()->dues,
                         'paid' => $paymentExists
                     ];
-                    
+
                     $currentDate->addWeek();
                 }
 
@@ -292,11 +292,11 @@ class MemberController extends Controller
                     $loanDate = Carbon::parse($ongoingLoan->disbursed_date);
                     $payback = $user->plan()->loan_month_repayment - 1;
                     $endMonth = Carbon::parse($ongoingLoan->disbursed_date)->addMonths($payback);
-                    
+
                     while ($loanDate->lte($endMonth)) {
-                        $weekFormat = $loanDate->format('M d') . ' - ' . 
-                                    $loanDate->copy()->endOfWeek()->format('M d, Y');
-                        
+                        $weekFormat = $loanDate->format('M d') . ' - ' .
+                            $loanDate->copy()->endOfWeek()->format('M d, Y');
+
                         // Check if loan payment exists for this week
                         $loanPaymentExists = Transaction::where('user_id', $user->uuid)
                             ->where('status', 'Success')
@@ -327,7 +327,7 @@ class MemberController extends Controller
         }
     }
 
-    
+
 
 
     public function oldcontributionPayment()
@@ -357,7 +357,7 @@ class MemberController extends Controller
                     $weeksToView[] = "$weekStart - $weekEnd";
                     $currentDate->addWeek();
                 }
-                
+
 
                 $myWeeks = Transaction::where('user_id', auth()->user()->uuid)
                     ->where([
@@ -461,7 +461,7 @@ class MemberController extends Controller
         try {
             $user = Auth::user();
             if (!$user) {
-               
+
                 return redirect()->route('login');
             }
 
@@ -477,16 +477,23 @@ class MemberController extends Controller
                 ->where('status', 1)
                 ->get();
 
-            
+
 
             // Fetch all relevant transactions
+            // Fetch all paid contributions
             $transactions = Transaction::where('user_id', $user->uuid)
                 ->where('status', 'Success')
                 ->where('payment_type', 'Contribution')
                 ->whereIn('uuid', $participation->pluck('uuid'))
-                ->get()
-                ->groupBy('uuid');
-               
+                ->select('uuid', 'week', 'month')
+                ->get();
+
+            // Create a lookup array for faster checking
+            $paidContributions = [];
+            foreach ($transactions as $transaction) {
+                $key = $transaction->uuid . '_' . ($transaction->week ?? $transaction->month);
+                $paidContributions[$key] = true;
+            }
 
             $allMonths = [];
 
@@ -502,11 +509,10 @@ class MemberController extends Controller
                         $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
                         $weekFormat = "$weekStart - $weekEnd";
 
-                        $isPaid = isset($transactions[$single->uuid]) && 
-                                  $transactions[$single->uuid]->contains('week', $weekFormat);
+                        // Check if this specific contribution is paid
+                        $isPaid = isset($paidContributions[$single->uuid . '_' . $weekFormat]);
 
                         dd($isPaid);
-
                         $allMonths[] = [
                             'week' => $weekFormat,
                             'period' => $weekFormat,
@@ -524,8 +530,8 @@ class MemberController extends Controller
                     while ($currentDate->lte($endDate)) {
                         $monthFormat = $currentDate->format('F Y');
 
-                        $isPaid = isset($transactions[$single->uuid]) && 
-                                  $transactions[$single->uuid]->contains('month', $monthFormat);
+                        $isPaid = isset($transactions[$single->uuid]) &&
+                            $transactions[$single->uuid]->contains('month', $monthFormat);
 
                         $allMonths[] = [
                             'month' => $monthFormat,
@@ -544,8 +550,8 @@ class MemberController extends Controller
                     while ($currentDate->lte($endDate)) {
                         $dayFormat = $currentDate->format('F d, Y');
 
-                        $isPaid = isset($transactions[$single->uuid]) && 
-                                  $transactions[$single->uuid]->contains('day', $dayFormat);
+                        $isPaid = isset($transactions[$single->uuid]) &&
+                            $transactions[$single->uuid]->contains('day', $dayFormat);
 
                         $allMonths[] = [
                             'day' => $dayFormat,
@@ -563,7 +569,7 @@ class MemberController extends Controller
             }
 
             // Log for debugging
-            
+
 
             $data['months'] = $allMonths;
 
@@ -603,7 +609,7 @@ class MemberController extends Controller
                     $weekStart = $currentDate->format('M d');
                     $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
                     $weekFormat = "$weekStart - $weekEnd";
-                    
+
                     // Check if this specific week for this contribution is paid
                     $isPaid = Transaction::where('user_id', auth()->user()->id)
                         ->where([
@@ -624,7 +630,7 @@ class MemberController extends Controller
                         'mode' => $mode,
                         'paid' => $isPaid
                     ];
-                    
+
                     $currentDate->addWeek();
                 }
             } elseif ($mode == "Monthly") {
@@ -632,7 +638,7 @@ class MemberController extends Controller
 
                 while ($currentDate->lte($endDate)) {
                     $monthFormat = $currentDate->format('F Y');
-                    
+
                     // Check if this specific month for this contribution is paid
                     $isPaid = Transaction::where('user_id', auth()->user()->id)
                         ->where([
@@ -653,7 +659,7 @@ class MemberController extends Controller
                         'mode' => $mode,
                         'paid' => $isPaid
                     ];
-                    
+
                     $currentDate->addMonth();
                 }
             } else { // Daily
@@ -661,7 +667,7 @@ class MemberController extends Controller
 
                 while ($currentDate->lte($endDate)) {
                     $dayFormat = $currentDate->format('F d, Y');
-                    
+
                     // Check if this specific day for this contribution is paid
                     $isPaid = Transaction::where('user_id', auth()->user()->id)
                         ->where([
@@ -682,7 +688,7 @@ class MemberController extends Controller
                         'mode' => $mode,
                         'paid' => $isPaid
                     ];
-                    
+
                     $currentDate->addDay();
                 }
             }
