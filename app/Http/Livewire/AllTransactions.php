@@ -22,11 +22,11 @@ class AllTransactions extends Component
         $company = Company::where('uuid', $user->company_id)->first();
         
         if($this->search == ''){
-            $data['transactions'] = Transaction::where('company_id',$company->id)->where([
+            $data['transactions'] = Transaction::where('company_id',$company->uuid)->where([
                 ['status', 'Success'],
             ])->paginate(10);
         }else{
-            $data['transactions'] = Transaction::where('company_id',$company->id)->where(function ($query) {
+            $data['transactions'] = Transaction::where('company_id',$company->uuid)->where(function ($query) {
                 $query->where('status', 'Success');
             })
             ->where(function ($query) {

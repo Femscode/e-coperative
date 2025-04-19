@@ -22,12 +22,12 @@ class MonthlyTransactions extends Component
         $company = Company::where('uuid', $user->company_id)->first();
         
         if($this->search == ''){
-            $data['transactions'] = Transaction::where('company_id',$company->id)->where([
+            $data['transactions'] = Transaction::where('company_id',$company->uuid)->where([
                 ['status', 'Success'],
                 // ['payment_type', 'Monthly Dues'],
             ])->whereIn('payment_type', ['Weekly Dues','Monthly Dues','Funding','Anytime'])->paginate(10);
         }else{
-            $data['transactions'] = Transaction::where('company_id',$company->id)->where(function ($query) {
+            $data['transactions'] = Transaction::where('company_id',$company->uuid)->where(function ($query) {
                 $query->where('status', 'Success')
                 ->whereIn('payment_type', ['Weekly Dues','Monthly Dues','Funding','Anytime']);
             })
