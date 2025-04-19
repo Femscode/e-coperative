@@ -32,9 +32,9 @@ class PaymentController extends Controller
         file_put_contents(__DIR__ . '/flutterwave_payment.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
         
         // Verify the payment data
-        $email = $request->input('data.customer.email');
-        $amountPaid = intval($request->input('data.amount'));
-        $reference = $request->input('data.id');
+        $email = $request->input('customer.email');
+        $amountPaid = intval($request->input('amount'));
+        $reference = $request->input('id');
         
         // Find the user
         $user = User::where('email', $email)->firstOrFail();
