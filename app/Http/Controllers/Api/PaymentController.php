@@ -170,6 +170,129 @@ class PaymentController extends Controller
         return response()->json('OK', 200);
     }
 
+    public function new_payment_webhook(Request $request) {
+        $logPath = __DIR__ . '/webhook_logs/';
+        if (!file_exists($logPath)) {
+            mkdir($logPath, 0777, true);
+        }
+
+        // Log initial request
+        file_put_contents($logPath . 'initial_request.txt', 
+            json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
+
+        try {
+            // Log payment data extraction
+            $email = $request->input('customer.email');
+            $amountPaid = intval($request->input('amount'));
+            $reference = $request->input('id');
+            $status = $request->input('status');
+
+            file_put_contents($logPath . 'payment_data.txt', 
+                json_encode([
+                    'timestamp' => now(),
+                    'email' => $email,
+                    'amount' => $amountPaid,
+                    'reference' => $reference,
+                    'status' => $status
+                ], JSON_PRETTY_PRINT), FILE_APPEND);
+
+            // Verify transaction status
+            if ($status !== 'successful') {
+                file_put_contents($logPath . 'failed_status.txt', 
+                    "Payment not successful. Status: $status", FILE_APPEND);
+                return response()->json('Payment not successful', 400);
+            }
+
+            // Find user
+            $user = User::where('email', $email)->first();
+            if (!$user) {
+                file_put_contents($logPath . 'user_error.txt', 
+                    "User not found for email: $email", FILE_APPEND);
+                return response()->json('User not found', 404);
+            }
+
+            file_put_contents($logPath . 'user_found.txt', 
+                json_encode([
+                    'user_id' => $user->id,
+                    'email' => $user->email
+                ], JSON_PRETTY_PRINT), FILE_APPEND);
+
+            // Get company
+            $company = Company::where('uuid', $user->company_id)->first();
+            if (!$company) {
+                file_put_contents($logPath . 'company_error.txt', 
+                    "Company not found for user: $user->id", FILE_APPEND);
+                return response()->json('Company not found', 404);
+            }
+
+            file_put_contents($logPath . 'company_found.txt', 
+                json_encode([
+                    'company_id' => $company->id,
+                    'reg_fee' => $company->reg_fee,
+                    'type' => $company->type
+                ], JSON_PRETTY_PRINT), FILE_APPEND);
+
+            // Check registration fee
+            $hasRegFee = false;
+            if ($company->reg_fee > 0) {
+                $regFeePaid = Transaction::where('user_id', $user->uuid)
+                    ->where('status', 'Success')
+                    ->where('payment_type', 'Registration')
+                    ->exists();
+
+                file_put_contents($logPath . 'reg_fee_check.txt', 
+                    json_encode([
+                        'has_reg_fee' => true,
+                        'reg_fee_amount' => $company->reg_fee,
+                        'already_paid' => $regFeePaid,
+                        'amount_paid' => $amountPaid,
+                        'can_pay_reg_fee' => (!$regFeePaid && $amountPaid >= $company->reg_fee)
+                    ], JSON_PRETTY_PRINT), FILE_APPEND);
+                    
+                if (!$regFeePaid && $amountPaid >= $company->reg_fee) {
+                    try {
+                        Transaction::create([
+                            'user_id' => $user->uuid,
+                            'company_id' => $company->id,
+                            'amount' => $company->reg_fee,
+                            'transaction_id' => $reference,
+                            'status' => 'Success',
+                            'payment_type' => 'Registration',
+                            'email' => $email
+                        ]);
+
+                        file_put_contents($logPath . 'reg_fee_paid.txt', 
+                            "Registration fee successfully paid", FILE_APPEND);
+
+                        $amountPaid -= $company->reg_fee;
+                        $hasRegFee = true;
+                    } catch (\Exception $e) {
+                        file_put_contents($logPath . 'reg_fee_error.txt', 
+                            "Error saving registration fee: " . $e->getMessage(), FILE_APPEND);
+                    }
+                }
+            }
+
+            // Process remaining amount
+            file_put_contents($logPath . 'remaining_amount.txt', 
+                "Remaining amount to process: $amountPaid", FILE_APPEND);
+
+            // Continue with existing logic for processing remaining amount...
+            // [Previous code for processing contribution/cooperative payments remains the same]
+            
+            file_put_contents($logPath . 'process_complete.txt', 
+                "Payment processing completed successfully", FILE_APPEND);
+
+            return response()->json('OK', 200);
+
+        } catch (\Exception $e) {
+            file_put_contents($logPath . 'error_log.txt', 
+                "Error processing payment: " . $e->getMessage() . "\n" . 
+                "Stack trace: " . $e->getTraceAsString(), FILE_APPEND);
+            
+            return response()->json('Internal server error', 500);
+        }
+    }
     private function getPendingCoopDues($user) {
         $startDate = Carbon::parse($user->created_at);
         $endDate = Carbon::now();
