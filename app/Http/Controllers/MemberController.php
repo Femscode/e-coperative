@@ -458,102 +458,124 @@ class MemberController extends Controller
 
     public function contributionPayment()
     {
-        $user = Auth::user();
-        $data['user'] = $user;
-    
-        // Fetch groups the user is part of
-        $groupIds = GroupMember::where('user_id', $user->id)
-            ->distinct()
-            ->pluck('group_id')
-            ->toArray();
-    
-        $participation = Group::whereIn('id', $groupIds)
-            ->where('status', 1)
-            ->get();
-    
-        // Fetch all relevant transactions once
-        $transactions = Transaction::where('user_id', $user->uuid)
-            ->where('status', 'Success')
-            ->where('payment_type', 'Contribution')
-            ->whereIn('uuid', $participation->pluck('uuid'))
-            ->get()
-            ->groupBy('uuid');
-    
-        $allMonths = [];
-    
-        foreach ($participation as $single) {
-            $startDate = Carbon::parse($single->start_date);
-            $endDate = Carbon::now();
-            $mode = $single->mode;
-    
-            if ($mode == "Weekly") {
-                $currentDate = $startDate->copy()->startOfWeek();
-                while ($currentDate->lte($endDate)) {
-                    $weekStart = $currentDate->format('M d');
-                    $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
-                    $weekFormat = "$weekStart - $weekEnd";
-    
-                    $isPaid = isset($transactions[$single->uuid]) && $transactions[$single->uuid]->contains('week', $weekFormat);
-    
-                    $allMonths[] = [
-                        'week' => $weekFormat,
-                        'period' => $weekFormat,
-                        'amount' => $single->amount,
-                        'uuid' => $single->uuid,
-                        'title' => $single->title,
-                        'mode' => $mode,
-                        'paid' => $isPaid
-                    ];
-    
-                    $currentDate->addWeek();
-                }
-            } elseif ($mode == "Monthly") {
-                $currentDate = $startDate->copy()->startOfMonth();
-                while ($currentDate->lte($endDate)) {
-                    $monthFormat = $currentDate->format('F Y');
-    
-                    $isPaid = isset($transactions[$single->uuid]) && $transactions[$single->uuid]->contains('month', $monthFormat);
-    
-                    $allMonths[] = [
-                        'month' => $monthFormat,
-                        'period' => $monthFormat,
-                        'amount' => $single->amount,
-                        'uuid' => $single->uuid,
-                        'title' => $single->title,
-                        'mode' => $mode,
-                        'paid' => $isPaid
-                    ];
-    
-                    $currentDate->addMonth();
-                }
-            } else { // Daily
-                $currentDate = $startDate->copy()->startOfDay();
-                while ($currentDate->lte($endDate)) {
-                    $dayFormat = $currentDate->format('F d, Y');
-    
-                    // Assuming a 'day' field is added to Transaction
-                    $isPaid = isset($transactions[$single->uuid]) && $transactions[$single->uuid]->contains('day', $dayFormat);
-    
-                    $allMonths[] = [
-                        'day' => $dayFormat,
-                        'period' => $dayFormat,
-                        'amount' => $single->amount,
-                        'uuid' => $single->uuid,
-                        'title' => $single->title,
-                        'mode' => $mode,
-                        'paid' => $isPaid
-                    ];
-    
-                    $currentDate->addDay();
+        try {
+            $user = Auth::user();
+            if (!$user) {
+                Log::warning('Unauthenticated user attempted to access contribution payment');
+                return redirect()->route('login');
+            }
+
+            $data['user'] = $user;
+
+            // Fetch groups the user is part of
+            $groupIds = GroupMember::where('user_id', $user->id)
+                ->distinct()
+                ->pluck('group_id')
+                ->toArray();
+
+            $participation = Group::whereIn('id', $groupIds)
+                ->where('status', 1)
+                ->get();
+
+            if ($participation->isEmpty()) {
+                Log::info('No active groups found for user', ['user_id' => $user->id]);
+            }
+
+            // Fetch all relevant transactions
+            $transactions = Transaction::where('user_id', $user->uuid)
+                ->where('status', 'Success')
+                ->where('payment_type', 'Contribution')
+                ->whereIn('uuid', $participation->pluck('uuid'))
+                ->get()
+                ->groupBy('uuid');
+
+            $allMonths = [];
+
+            foreach ($participation as $single) {
+                $startDate = Carbon::parse($single->start_date);
+                $endDate = Carbon::now();
+                $mode = $single->mode;
+
+                if ($mode == "Weekly") {
+                    $currentDate = $startDate->copy()->startOfWeek();
+                    while ($currentDate->lte($endDate)) {
+                        $weekStart = $currentDate->format('M d');
+                        $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
+                        $weekFormat = "$weekStart - $weekEnd";
+
+                        $isPaid = isset($transactions[$single->uuid]) && 
+                                  $transactions[$single->uuid]->contains('week', $weekFormat);
+
+                        $allMonths[] = [
+                            'week' => $weekFormat,
+                            'period' => $weekFormat,
+                            'amount' => $single->amount,
+                            'uuid' => $single->uuid,
+                            'title' => $single->title,
+                            'mode' => $mode,
+                            'paid' => $isPaid
+                        ];
+
+                        $currentDate->addWeek();
+                    }
+                } elseif ($mode == "Monthly") {
+                    $currentDate = $startDate->copy()->startOfMonth();
+                    while ($currentDate->lte($endDate)) {
+                        $monthFormat = $currentDate->format('F Y');
+
+                        $isPaid = isset($transactions[$single->uuid]) && 
+                                  $transactions[$single->uuid]->contains('month', $monthFormat);
+
+                        $allMonths[] = [
+                            'month' => $monthFormat,
+                            'period' => $monthFormat,
+                            'amount' => $single->amount,
+                            'uuid' => $single->uuid,
+                            'title' => $single->title,
+                            'mode' => $mode,
+                            'paid' => $isPaid
+                        ];
+
+                        $currentDate->addMonth();
+                    }
+                } else { // Daily
+                    $currentDate = $startDate->copy()->startOfDay();
+                    while ($currentDate->lte($endDate)) {
+                        $dayFormat = $currentDate->format('F d, Y');
+
+                        $isPaid = isset($transactions[$single->uuid]) && 
+                                  $transactions[$single->uuid]->contains('day', $dayFormat);
+
+                        $allMonths[] = [
+                            'day' => $dayFormat,
+                            'period' => $dayFormat,
+                            'amount' => $single->amount,
+                            'uuid' => $single->uuid,
+                            'title' => $single->title,
+                            'mode' => $mode,
+                            'paid' => $isPaid
+                        ];
+
+                        $currentDate->addDay();
+                    }
                 }
             }
+
+            // Log for debugging
+            
+
+            $data['months'] = $allMonths;
+
+            // Render view based on company type
+            $view = $user->company->type == 2 ? 'ajo.member.contribution' : 'cooperative.member.payment.contribution';
+            return view($view, $data);
+        } catch (\Exception $e) {
+            Log::error('Failed to load contribution payment', [
+                'error' => $e->getMessage(),
+                'user_id' => $user->id ?? 'unknown'
+            ]);
+            return redirect()->back()->with('error', 'An error occurred while loading contributions.');
         }
-    
-        $data['months'] = $allMonths;
-    
-        // Render view based on company type
-        $view = $user->company->type == 2 ? 'ajo.member.contribution' : 'cooperative.member.payment.contribution';
-        return view($view, $data);
     }
     public function newcontributionPayment()
     {

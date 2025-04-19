@@ -22,12 +22,12 @@ class PaymentController extends Controller
         file_put_contents(__DIR__ . '/paycallback.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
 
     }
-    public function oldpayment_webhook(Request $request) {
+    public function oldoldpayment_webhook(Request $request) {
         file_put_contents(__DIR__ . '/flutterwave_payment.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
         
     }
 
-    public function payment_webhook(Request $request) {
+    public function oldpayment_webhook(Request $request) {
         // Log the webhook data
         file_put_contents(__DIR__ . '/flutterwave_payment2.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
         
@@ -168,6 +168,176 @@ class PaymentController extends Controller
         }
 
         return response()->json('OK', 200);
+    }
+
+    public function payment_webhook(Request $request)
+    {
+        try {
+            // Validate webhook request
+            if (!$request->has(['customer.email', 'amount', 'id'])) {
+                Log::warning('Invalid webhook payload', ['payload' => $request->all()]);
+                return response()->json(['error' => 'Invalid payload'], 400);
+            }
+
+            // Verify Flutterwave signature (implement as per Flutterwave's documentation)
+            // Example: if (!Flutterwave::verifyWebhookSignature($request)) { ... }
+
+            $email = $request->input('customer.email');
+            $amountPaid = intval($request->input('amount'));
+            $reference = $request->input('id');
+
+            // Find user and company
+            $user = User::where('email', $email)->first();
+            if (!$user) {
+                Log::error('User not found', ['email' => $email]);
+                return response()->json(['error' => 'User not found'], 404);
+            }
+
+            $company = Company::where('uuid', $user->company_id)->first();
+            if (!$company) {
+                Log::error('Company not found', ['company_id' => $user->company_id]);
+                return response()->json(['error' => 'Company not found'], 404);
+            }
+
+            // Process registration fee
+            if (intval($company->reg_fee) > 0) {
+                $regFeePaid = Transaction::where('user_id', $user->uuid)
+                    ->where('status', 'Success')
+                    ->where('payment_type', 'Registration')
+                    ->exists();
+
+                if (!$regFeePaid && $amountPaid >= intval($company->reg_fee)) {
+                    Transaction::create([
+                        'user_id' => $user->uuid,
+                        'company_id' => $company->uuid,
+                        'amount' => $company->reg_fee,
+                        'transaction_id' => $reference,
+                        'status' => 'Success',
+                        'payment_type' => 'Registration',
+                        'email' => $email,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                    $amountPaid -= intval($company->reg_fee);
+                }
+            }
+
+            // Process contributions and other payments
+            if ($company->type == 2) { // Contribution type
+                $groupIds = GroupMember::where('user_id', $user->id)
+                    ->distinct()
+                    ->pluck('group_id')
+                    ->toArray();
+
+                $groups = Group::whereIn('id', $groupIds)
+                    ->where('status', 1)
+                    ->get();
+
+                foreach ($groups as $group) {
+                    if ($amountPaid < $group->amount) {
+                        continue;
+                    }
+
+                    $periodData = $this->getPeriodData($group->mode);
+                    Transaction::create([
+                        'user_id' => $user->uuid,
+                        'company_id' => $company->uuid,
+                        'amount' => $group->amount,
+                        'transaction_id' => $reference,
+                        'status' => 'Success',
+                        'payment_type' => 'Contribution',
+                        'uuid' => $group->uuid,
+                        'email' => $email,
+                        'week' => $periodData['week'] ?? null,
+                        'month' => $periodData['month'] ?? null,
+                        'day' => $periodData['day'] ?? null,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                    $amountPaid -= $group->amount;
+                }
+            } else { // Cooperative type
+                // 1. Cooperative dues
+                $pendingCoopDues = $this->getPendingCoopDues($user);
+                foreach ($pendingCoopDues as $due) {
+                    if ($amountPaid >= $due['amount']) {
+                        Transaction::create([
+                            'user_id' => $user->uuid,
+                            'company_id' => $company->uuid,
+                            'amount' => $due['amount'],
+                            'transaction_id' => $reference,
+                            'status' => 'Success',
+                            'payment_type' => 'Monthly Dues',
+                            'month' => $due['month'] ?? null,
+                            'week' => $due['week'] ?? null,
+                            'email' => $email,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                        $amountPaid -= $due['amount'];
+                    }
+                }
+
+                // 2. Contributions
+                if ($amountPaid > 0) {
+                    $pendingContributions = $this->getPendingContributions($user);
+                    foreach ($pendingContributions as $contribution) {
+                        if ($amountPaid >= $contribution['amount']) {
+                            Transaction::create([
+                                'user_id' => $user->uuid,
+                                'company_id' => $company->uuid,
+                                'amount' => $contribution['amount'],
+                                'transaction_id' => $reference,
+                                'status' => 'Success',
+                                'payment_type' => 'Contribution',
+                                'uuid' => $contribution['uuid'],
+                                'email' => $email,
+                                'week' => $contribution['week'] ?? null,
+                                'month' => $contribution['month'] ?? null,
+                                'day' => $contribution['day'] ?? null,
+                                'created_at' => now(),
+                                'updated_at' => now(),
+                            ]);
+                            $amountPaid -= $contribution['amount'];
+                        }
+                    }
+                }
+
+                // 3. Loan repayments
+                if ($amountPaid > 0) {
+                    $pendingLoans = MemberLoan::where([
+                        ['user_id', $user->id],
+                        ['status', 'Ongoing']
+                    ])->get();
+
+                    foreach ($pendingLoans as $loan) {
+                        if ($amountPaid >= $loan->monthly_return) {
+                            Transaction::create([
+                                'user_id' => $user->uuid,
+                                'company_id' => $company->uuid,
+                                'amount' => $loan->monthly_return,
+                                'transaction_id' => $reference,
+                                'status' => 'Success',
+                                'payment_type' => 'Repayment',
+                                'uuid' => $loan->uuid,
+                                'email' => $email,
+                                'created_at' => now(),
+                                'updated_at' => now(),
+                            ]);
+                            $amountPaid -= $loan->monthly_return;
+                        }
+                    }
+                }
+            }
+
+            return response()->json(['status' => 'OK'], 200);
+        } catch (\Exception $e) {
+            Log::error('Webhook processing failed', [
+                'error' => $e->getMessage(),
+                'payload' => $request->all()
+            ]);
+            return response()->json(['error' => 'Internal server error'], 500);
+        }
     }
 
     public function new_payment_webhook(Request $request) {
