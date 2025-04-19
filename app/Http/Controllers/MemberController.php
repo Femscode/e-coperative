@@ -184,7 +184,7 @@ class MemberController extends Controller
         $endDate = Carbon::now();
         $mode = Auth::user()->plan()->mode;
         $data['user'] = $user = Auth::user();
-        $data['transactions'] = Transaction::where('user_id', $user->id)
+        $data['transactions'] = Transaction::where('user_id', $user->uuid)
             ->orWhere('email', $user->email)
             ->where('status', 'Success')
             ->latest()
@@ -202,7 +202,7 @@ class MemberController extends Controller
                     $monthFormat = $currentDate->format('F Y');
                     
                     // Check if payment exists for this month
-                    $paymentExists = Transaction::where('user_id', $user->id)
+                    $paymentExists = Transaction::where('user_id', $user->uuid)
                         ->where('status', 'Success')
                         ->where('payment_type', 'Monthly Dues')
                         ->where('month', $monthFormat)
@@ -233,7 +233,7 @@ class MemberController extends Controller
                         $monthFormat = $loanDate->format('F Y');
                         
                         // Check if loan payment exists for this month
-                        $loanPaymentExists = Transaction::where('user_id', $user->id)
+                        $loanPaymentExists = Transaction::where('user_id', $user->uuid)
                             ->where('status', 'Success')
                             ->where('payment_type', 'Repayment')
                             ->where('uuid', $ongoingLoan->uuid)
@@ -266,7 +266,7 @@ class MemberController extends Controller
                                  $currentDate->copy()->endOfWeek()->format('M d, Y');
                     
                     // Check if payment exists for this week
-                    $paymentExists = Transaction::where('user_id', $user->id)
+                    $paymentExists = Transaction::where('user_id', $user->uuid)
                         ->where('status', 'Success')
                         ->where('payment_type', 'Weekly Dues')
                         ->where('week', $weekFormat)
@@ -298,7 +298,7 @@ class MemberController extends Controller
                                     $loanDate->copy()->endOfWeek()->format('M d, Y');
                         
                         // Check if loan payment exists for this week
-                        $loanPaymentExists = Transaction::where('user_id', $user->id)
+                        $loanPaymentExists = Transaction::where('user_id', $user->uuid)
                             ->where('status', 'Success')
                             ->where('payment_type', 'Repayment')
                             ->where('uuid', $ongoingLoan->uuid)
@@ -358,7 +358,7 @@ class MemberController extends Controller
                     $currentDate->addWeek();
                 }
 
-                $myWeeks = Transaction::where('user_id', auth()->user()->id)
+                $myWeeks = Transaction::where('user_id', auth()->user()->uuid)
                     ->where([
                         ['status', 'Success'],
                         ['payment_type', 'Contribution'],
@@ -390,7 +390,7 @@ class MemberController extends Controller
                     $currentDate->addMonth();
                 }
 
-                $myMonths = Transaction::where('user_id', auth()->user()->id)
+                $myMonths = Transaction::where('user_id', auth()->user()->uuid)
                     ->where([
                         ['status', 'Success'],
                         ['payment_type', 'Contribution'],
@@ -422,7 +422,7 @@ class MemberController extends Controller
                     $currentDate->addDay();
                 }
 
-                $myDays = Transaction::where('user_id', auth()->user()->id)
+                $myDays = Transaction::where('user_id', auth()->user()->uuid)
                     ->where([
                         ['status', 'Success'],
                         ['payment_type', 'Contribution'],

@@ -91,7 +91,7 @@ class PaymentController extends Controller
                 if ($amountPaid >= $due['amount']) {
                     Transaction::create([
                         'user_id' => $user->uuid,
-                        'company_id' => $company->id,
+                        'company_id' => $company->uuid,
                         'amount' => $due['amount'],
                         'transaction_id' => $reference,
                         'status' => 'Success',
@@ -109,7 +109,7 @@ class PaymentController extends Controller
                 if ($amountPaid >= $due['amount']) {
                     Transaction::create([
                         'user_id' => $user->uuid,
-                        'company_id' => $company->id,
+                        'company_id' => $company->uuid,
                         'amount' => $due['amount'],
                         'transaction_id' => $reference,
                         'status' => 'Success',
@@ -129,7 +129,7 @@ class PaymentController extends Controller
                     if ($amountPaid >= $contribution['amount']) {
                         Transaction::create([
                             'user_id' => $user->uuid,
-                            'company_id' => $company->id,
+                            'company_id' => $company->uuid,
                             'amount' => $contribution['amount'],
                             'transaction_id' => $reference,
                             'status' => 'Success',
@@ -153,7 +153,7 @@ class PaymentController extends Controller
                     if ($amountPaid >= $loan->monthly_return) {
                         Transaction::create([
                             'user_id' => $user->uuid,
-                            'company_id' => $company->id,
+                            'company_id' => $company->uuid,
                             'amount' => $loan->monthly_return,
                             'transaction_id' => $reference,
                             'status' => 'Success',
