@@ -295,7 +295,7 @@ class PaymentController extends Controller
             return response()->json('Internal server error', 500);
         }
     }
-    private function getPendingCoopDues($user) {
+    private function oldgetPendingCoopDues($user) {
         $startDate = Carbon::parse($user->created_at);
         $endDate = Carbon::now();
         $mode = $user->plan()->mode;
@@ -322,6 +322,60 @@ class PaymentController extends Controller
             }
         }
         // Add similar logic for Weekly mode if needed
+
+        return $pendingDues;
+    }
+
+    private function getPendingCoopDues($user) {
+        $startDate = Carbon::parse($user->created_at);
+        $endDate = Carbon::now();
+        $mode = $user->plan()->mode;
+        $pendingDues = [];
+
+        if ($mode == 'Monthly') {
+            $currentDate = $startDate->copy()->startOfMonth();
+            while ($currentDate->lte($endDate)) {
+                $month = $currentDate->format('F Y');
+                $paid = Transaction::where('user_id', $user->uuid)
+                    ->where([
+                        ['status', 'Success'],
+                        ['payment_type', 'Cooperative-Dues'],
+                        ['month', $month]
+                    ])->exists();
+                
+                if (!$paid) {
+                    $pendingDues[] = [
+                        'month' => $month,
+                        'amount' => $user->plan()->dues,
+                        'period_type' => 'month'
+                    ];
+                }
+                $currentDate->addMonth();
+            }
+        } elseif ($mode == 'Weekly') {
+            $currentDate = $startDate->copy()->startOfWeek();
+            while ($currentDate->lte($endDate)) {
+                $weekStart = $currentDate->format('M d');
+                $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
+                $weekFormat = "$weekStart - $weekEnd";
+
+                $paid = Transaction::where('user_id', $user->uuid)
+                    ->where([
+                        ['status', 'Success'],
+                        ['payment_type', 'Cooperative-Dues'],
+                        ['week', $weekFormat]
+                    ])->exists();
+                
+                if (!$paid) {
+                    $pendingDues[] = [
+                        'week' => $weekFormat,
+                        'amount' => $user->plan()->dues,
+                        'period_type' => 'week'
+                    ];
+                }
+                $currentDate->addWeek();
+            }
+        }
 
         return $pendingDues;
     }
