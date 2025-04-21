@@ -20,9 +20,9 @@ class ApprovedLoan extends Component
         $company = Company::where('uuid', $user->company_id)->first();
         
         if($this->search == ''){
-            $data['loans'] = MemberLoan::where('company_id',$company->id)->where('approval_status', 1)->where('payment_status', 1)->where('status', "Awaiting")->paginate(10);
+            $data['loans'] = MemberLoan::where('company_id',$company->uuid)->where('approval_status', 1)->where('payment_status', 1)->where('status', "Awaiting")->paginate(10);
         }else{
-            $data['loans'] = MemberLoan::where('company_id',$company->id)->where('approval_status', 1)->where('payment_status', 1)->where('status', "Awaiting")->where(function ($query) {
+            $data['loans'] = MemberLoan::where('company_id',$company->uuid)->where('approval_status', 1)->where('payment_status', 1)->where('status', "Awaiting")->where(function ($query) {
                 $query->where('applied_date', 'LIKE', '%' . $this->search . '%')
                 ->orWhere('total_applied', 'LIKE', '%' . $this->search . '%')
                 ->orWhere('monthly_return', 'LIKE', '%' . $this->search . '%');
