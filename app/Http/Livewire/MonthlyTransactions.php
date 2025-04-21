@@ -25,11 +25,11 @@ class MonthlyTransactions extends Component
         if ($this->search == '') {
             $data['transactions'] = Transaction::where('company_id', $company->uuid)
                 ->where('status', 'Success')
-                ->where('payment_type', 'Contribution-Dues')->paginate(10);
+                ->where('payment_type', 'Cooperative-Dues')->paginate(10);
         } else {
             $data['transactions'] = Transaction::where('company_id', $company->uuid)
                 ->where('status', 'Success')
-                ->where('payment_type', 'Contribution-Dues')
+                ->where('payment_type', 'Cooperative-Dues')
 
                 ->where(function ($query) {
                     $query->where('amount', 'LIKE', '%' . $this->search . '%')
