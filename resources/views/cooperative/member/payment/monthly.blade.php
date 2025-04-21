@@ -57,9 +57,9 @@
                                 <div class="form-check payment-option-card mb-3">
                                     <input required type="radio" name="type" value="transfer" class="form-check-input" id="transferOption">
                                     <label class="form-check-label d-flex align-items-center gap-3" for="transferOption">
-                                        <span class="payment-icon bg-soft-primary">
+                                        <!-- <span class="payment-icon bg-soft-primary">
                                             <i class="bi bi-bank fs-4"></i>
-                                        </span>
+                                        </span> -->
                                         <div>
                                             <span class="d-block fw-medium">Automatic Bank Transfer</span>
                                             <small class="text-muted">Pay directly from your bank account</small>
