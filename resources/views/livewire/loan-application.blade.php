@@ -103,9 +103,51 @@
                         </span>
                     </div>
 
-                    <!-- Same structure as above, just with ongoing loan data -->
                     <div class="loan-details">
-                        <!-- ... Similar structure as above ... -->
+                        <div class="row g-4">
+                            <div class="col-6">
+                                <div class="detail-item">
+                                    <span class="label">Loan Amount</span>
+                                    <h3 class="amount">₦{{ number_format($transaction->total_applied, 2) }}</h3>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="detail-item text-end">
+                                    <span class="label">Interest Rate</span>
+                                    <h3 class="rate">5%</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="loan-meta mt-4">
+                            <div class="row align-items-center g-3">
+                                <div class="col-auto">
+                                    <div class="meta-item">
+                                        <i class="bi bi-calendar-event"></i>
+                                        <span>{{ $transaction->applied_date }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="meta-item">
+                                        <i class="bi bi-clock-history"></i>
+                                        <span>{{ $company->loan_month_repayment }} Months</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="repayment-info mt-4 text-center p-4 bg-light rounded-4">
+                            <span class="label d-block mb-2">Monthly Repayment</span>
+                            <h2 class="mb-0">₦{{ number_format($transaction->monthly_return, 2) }}</h2>
+                            
+                            @if($transaction->approval_status == 1 && $transaction->status == "Awaiting" && $transaction->payment_status == 0)
+                            <button class="btn btn-primary mt-3" onclick="processPayment(this)" 
+                                data-amount="{{$transaction->monthly_return}}" 
+                                data-id="{{ $transaction->uuid }}">
+                                <i class="bi bi-credit-card me-2"></i>Pay Now
+                            </button>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -231,3 +273,31 @@
     border-color: #073251;
 }
 </style>
+
+<script>
+    function processPayment(button) {
+        // Extract amount and transaction ID from button data attributes
+        const amount = parseFloat(button.getAttribute('data-amount').replace(/,/g, ''));
+        const transactionId = button.getAttribute('data-id');
+
+        // Update the payment modal with the amount
+        document.getElementById('amountToBePaid').innerHTML = amount.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+        document.querySelector('.real_amount').value = amount;
+
+        // Optionally store transaction ID in a hidden input for backend processing
+        let orderIdInput = document.getElementById('order_id');
+        if (!orderIdInput) {
+            orderIdInput = document.createElement('input');
+            orderIdInput.type = 'hidden';
+            orderIdInput.id = 'order_id';
+            document.getElementById('paymentForm').appendChild(orderIdInput);
+        }
+        orderIdInput.value = transactionId;
+
+        // Show the payment modal
+        $('#paymentModal').modal('show');
+    }
+</script>
