@@ -25,7 +25,7 @@ class MonthlyTransactions extends Component
             $data['transactions'] = Transaction::where('company_id',$company->uuid)->where([
                 ['status', 'Success'],
                 // ['payment_type', 'Monthly Dues'],
-            ])->whereIn('payment_type', ['Weekly Dues','Monthly Dues','Funding','Anytime'])->paginate(10);
+            ])->where('payment_type', 'Contribution-Dues')->paginate(10);
         }else{
             $data['transactions'] = Transaction::where('company_id',$company->uuid)->where(function ($query) {
                 $query->where('status', 'Success')

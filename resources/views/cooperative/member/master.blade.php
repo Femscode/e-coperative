@@ -213,42 +213,48 @@
             }
         }
     </style>
-       <style>
-                                .payment-option-card {
-                                    padding: 1rem;
-                                    border: 1px solid #dee2e6;
-                                    border-radius: 0.75rem;
-                                    transition: all 0.3s ease;
-                                }
-                                .payment-option-card:hover {
-                                    border-color: #6c757d;
-                                    background-color: #f8f9fa;
-                                }
-                                .payment-option-card .form-check-input:checked ~ .form-check-label {
-                                    color: var(--bs-primary);
-                                }
-                                .payment-option-card .form-check-input:checked ~ .form-check-label .payment-icon {
-                                    background-color: var(--bs-primary) !important;
-                                    color: white !important;
-                                }
-                                .payment-icon {
-                                    width: 48px;
-                                    height: 48px;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    border-radius: 12px;
-                                }
-                                .bg-soft-primary {
-                                    background-color: rgba(var(--bs-primary-rgb), 0.1);
-                                    color: var(--bs-primary);
-                                }
-                                .bg-soft-success {
-                                    background-color: rgba(var(--bs-success-rgb), 0.1);
-                                    color: var(--bs-success);
-                                }
-                            </style>
-   
+    <style>
+        .payment-option-card {
+            padding: 1rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option-card:hover {
+            border-color: #6c757d;
+            background-color: #f8f9fa;
+        }
+
+        .payment-option-card .form-check-input:checked~.form-check-label {
+            color: var(--bs-primary);
+        }
+
+        .payment-option-card .form-check-input:checked~.form-check-label .payment-icon {
+            background-color: var(--bs-primary) !important;
+            color: white !important;
+        }
+
+        .payment-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .bg-soft-primary {
+            background-color: rgba(var(--bs-primary-rgb), 0.1);
+            color: var(--bs-primary);
+        }
+
+        .bg-soft-success {
+            background-color: rgba(var(--bs-success-rgb), 0.1);
+            color: var(--bs-success);
+        }
+    </style>
+
     <link href="{{ url('admindashboard/css/sweetalert-custom.css') }}" rel="stylesheet">
 
     <script src="{{ asset('admindashboard/js/sweetalert-custom.js') }}"></script>
@@ -395,8 +401,8 @@
                 <li class="nav-item"><a href="{{ route('member-contribution-payment') }}" class="nav-link"><i class="menu-icon bi bi-currency-dollar"></i> <span class="menu-name">Contribution Dues</span></a></li>
                 <li class="nav-item"><a href="/logout" onclick='return confirm("Are you sure you want to log this user out?");' class="nav-link"><i class="menu-icon bi bi-box-arrow-right"></i> <span class="menu-name">Logout</span></a></li>
             </ul>
-           
-            
+
+
         </div>
     </div>
     @yield('main')
@@ -404,21 +410,14 @@
 <footer class="adminuiux-footer has-adminuiux-sidebar mt-auto">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 col-md col-lg py-2"><span class="small">Copyright @<?php echo Date('Y'); ?>, <a href="/" target="_blank">SyncoSave</a></span></div>
-            <div class="col-12 col-md-auto col-lg-auto align-self-center">
-                <ul class="nav small">
-                    <li class="nav-item"><a class="nav-link" href="#">Help</a></li>
-                    <li class="nav-item">|</li>
-                    <li class="nav-item"><a class="nav-link" href="#">Terms of Use</a></li>
-                    <li class="nav-item">|</li>
-                    <li class="nav-item"><a class="nav-link" href="#">Privacy Policy</a></li>
-                </ul>
-            </div>
+            <div class="col-12 col-md col-lg py-2 text-center"><span class="small">Copyright @<?php echo Date('Y'); ?>, <b style='text-decoration:none'>SyncoSave</b></span></div>
+
         </div>
     </div>
 </footer>
 <div class="position-fixed bottom-0 end-0 m-3 z-index-5">
-    <button class="btn btn-theme btn-square rounded-circle shadow mt-2 d-none" id="backtotop"><i class="bi bi-arrow-up"></i></button></div>
+    <button class="btn btn-theme btn-square rounded-circle shadow mt-2 d-none" id="backtotop"><i class="bi bi-arrow-up"></i></button>
+</div>
 
 <script src="{{url('memberdashboard/js/investment/investment-cooperative.admin.js')}}"></script>
 <script src="{{ asset('js\requestController.js') }}"></script>
