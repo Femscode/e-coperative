@@ -1,39 +1,105 @@
 @extends('cooperative.member.master')
 
-@section('main')
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' width='50%' />
+@section('header')
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<style>
+    .sticky-footer {
+        position: sticky;
+        bottom: 0;
+        background: #fff;
+        z-index: 1000;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+        margin-top: 1rem;
+        display: none;
+    }
 
+    .sticky-footer.show {
+        display: block;
+    }
+
+    .payment-summary {
+        transition: all 0.3s ease;
+    }
+
+    .grand-total-container {
+        background: #f8f9fa;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+    }
+
+    .payment-actions {
+        margin-top: 0 !important;
+    }
+
+    .submit-btn {
+        padding: 0.75rem 2rem !important;
+    }
+</style>
+@endsection
+
+@section('main')
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 bg-light">
+                <img src='{{url("admindashboard/images/logo/syncologo2.png")}}' alt='payaza' class="payment-logo" />
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form id="payaza-form">
-                    <div class='alert alert-danger'>For testing purpose, kindly use the default prefilled card details</div>
-                    <div class='text-center'>Amount To Be Paid</div>
-                    <h1 class='text-center text-red' style='color:#212529;border:0px'>NGN<span id='amountToBePaid'>0</span></h1>
-                    <div class="mb-3">
-                        <label for="card-number" class="form-label">Card Number</label>
-                        <input type='hidden' id='order_id' />
+            <div class="modal-body p-4">
+                <div class="amount-display text-center mb-4">
+                    <span class="text-muted">Amount To Be Paid</span>
+                    <h2 class="amount-text mb-0">₦<span id="amountToBePaid">0</span></h2>
+                </div>
 
-                        <input type="text" value='4012000033330026' id="card-number" class="form-control" required placeholder="Enter Card Number">
-                    </div>
-                    <div class='form-group row'>
-                        <div class="mb-3 col">
-                            <label for="expiry-date" class="form-label">Expiry Date</label>
-                            <input value='01/39' type="text" id="expiry-date" class="form-control" required placeholder="MM/YY">
+                <div class="card-details">
+                    <form id="paymentForm" method="POST" accept-charset="UTF-8" onsubmit="return handlePaymentSubmit(event)">
+                        @csrf
+                        <input required name="amount" type="hidden" min="100" class="form-control real_amount" placeholder="Enter Amount">
+                        <span class="text-danger" id="show_charge"></span>
+
+                        <div class="mt-4">
+                            <label class="form-label fw-medium mb-3">Select Payment Method</label>
+                            <div class="payment-options">
+                                <div class="form-check payment-option-card mb-3">
+                                    <input required type="radio" name="type" value="transfer" class="form-check-input" id="transferOption">
+                                    <label class="form-check-label d-flex align-items-center gap-3" for="transferOption">
+                                        <span class="payment-icon bg-soft-primary">
+                                            <i class="bi bi-bank fs-4"></i>
+                                        </span>
+                                        <div>
+                                            <span class="d-block fw-medium">Automatic Bank Transfer</span>
+                                            <small class="text-muted">Pay directly from your bank account</small>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="form-check payment-option-card">
+                                    <input required type="radio" name="type" value="card" class="form-check-input" id="cardOption">
+                                    <label class="form-check-label d-flex align-items-center gap-3" for="cardOption">
+                                        <span class="payment-icon bg-soft-success">
+                                            <i class="bi bi-credit-card fs-4"></i>
+                                        </span>
+                                        <div>
+                                            <input id='phone' value='{{ auth()->user()->phone }}' type='hidden' />
+                                            <input id='name' value='{{ auth()->user()->name }}' type='hidden' />
+                                            <input id='email' value='{{ auth()->user()->email }}' type='hidden' />
+                                            <input class='real_amount' value='' type='hidden' />
+                                            <input id='redirect_url' value='https://vtubiz.com/payment/callback' type='hidden' />
+                                            <input id='public_key' value='{{ env('FLW_PUBLIC_KEY') }}' type='hidden' />
+                                            <span class="d-block fw-medium">Credit Card</span>
+                                            <small class="text-muted">Pay with your credit or debit card</small>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3 col">
-                            <label for="cvv" class="form-label">CVV</label>
-                            <input type="text" value='100' id="cvv" class="form-control" required placeholder="Enter CVV">
-                        </div>
-                    </div>
-                    <div class='justify-content-center d-flex'>
-                        <button type="submit" style='background:#212529;border:0px' class="btn btn-success">Pay Now</button>
-                    </div>
-                </form>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100 mt-4">
+                            <i class="bi bi-lock me-2"></i>Pay Now
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -41,297 +107,81 @@
 
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container mt-4" id="main-content">
-       
-
-
-        <div class="container mt-4" id="main-content">
-
-            <!-- start page title -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Loan</h4>
-
-                        <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">Application</a></li>
-                                <li class="breadcrumb-item active">Loan</li>
-                            </ol>
-                        </div>
-
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0">Loan</h4>
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Application</a></li>
+                            <li class="breadcrumb-item active">Loan</li>
+                        </ol>
                     </div>
                 </div>
             </div>
+        </div>
 
-            @livewire('loan-application')
+        @livewire('loan-application')
 
-
-            <!-- Modal -->
-            <div class="modal fade zoomIn" id="addSeller" tabindex="-1" aria-labelledby="addSellerLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="personalDetails" role="tabpanel">
-                                    <form id="loanApplication" method="post">
-                                        @csrf
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="" class="form-label">Amount</label>
-                                                    <input type="text" name="total_applied" required
-                                                        data-min="{{ auth()->user()->plan()->min_loan_range ?? ""}}"
-                                                        data-max="{{ auth()->user()->plan()->max_loan_range ?? "" }}"
-                                                        data-refund="{{ auth()->user()->plan()->loan_month_repayment ?? ""}}"
-                                                        min="{{ auth()->user()->plan()->min_loan_range ?? "" }}"
-                                                        max="{{ auth()->user()->plan()->max_loan_range ?? "" }}"
-                                                        data-total="{{ auth()->user()->totalSavings() ?? "" }}"
-                                                        class="form-control loanAmount amount" id=""
-                                                        placeholder="Enter amount">
-                                                    <div id="passwordHelpBlock" class="form-text">
-                                                    </div>
-                                                </div>
-                                            </div><!--end col-->
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="lastnameInput" class="form-label">Monthly Refund</label>
-                                                    <input type="text" required readonly name="monthly_return"
-                                                        class="form-control refund" id="" placeholder="monthly refund">
-                                                </div>
-                                            </div><!--end col-->
-                                            <div class="col-lg-12">
-                                                <div class="hstack gap-2 justify-content-end">
-                                                    {{-- <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button> --}}
-                                                    <button type="button"
-                                                        class="btn btn-link link-success text-decoration-none fw-medium"
-                                                        data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i>
-                                                        Close</button>
-                                                    <button type="submit" class="btn btn-primary submitBtn"><i
-                                                            class="ri-save-3-line align-bottom me-1"></i> Save</button>
-                                                </div>
-                                            </div><!--end col-->
-                                        </div><!--end row-->
-                                    </form>
-                                </div>
+        <!-- Modal -->
+        <div class="modal fade zoomIn" id="addSeller" tabindex="-1" aria-labelledby="addSellerLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="personalDetails" role="tabpanel">
+                                <form id="loanApplication" method="post">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label for="" class="form-label">Amount</label>
+                                                <input type="text" name="total_applied" required
+                                                    data-min="{{ auth()->user()->plan()->min_loan_range ?? '' }}"
+                                                    data-max="{{ auth()->user()->plan()->max_loan_range ?? '' }}"
+                                                    data-refund="{{ auth()->user()->plan()->loan_month_repayment ?? '' }}"
+                                                    min="{{ auth()->user()->plan()->min_loan_range ?? '' }}"
+                                                    max="{{ auth()->user()->plan()->max_loan_range ?? '' }}"
+                                                    data-total="{{ auth()->user()->totalSavings() ?? '' }}"
+                                                    class="form-control loanAmount amount" id=""
+                                                    placeholder="Enter amount">
+                                                <div id="passwordHelpBlock" class="form-text"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label for="lastnameInput" class="form-label">Monthly Refund</label>
+                                                <input type="text" required readonly name="monthly_return"
+                                                    class="form-control refund" id="" placeholder="monthly refund">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="hstack gap-2 justify-content-end">
+                                                <button type="button"
+                                                    class="btn btn-link link-success text-decoration-none fw-medium"
+                                                    data-bs-dismiss="modal">
+                                                    <i class="ri-close-line me-1 align-middle"></i> Close
+                                                </button>
+                                                <button type="submit" class="btn btn-primary submitBtn">
+                                                    <i class="ri-save-3-line align-bottom me-1"></i> Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div><!--end modal-->
-
+            </div>
         </div>
+    </div>
 </main>
-<!-- container-fluid -->
 @endsection
 
 @section('script')
 <script src="https://js.paystack.co/v1/inline.js"></script>
-<script>
-    // function myFunction(event) {
-    //  console.log("here")
-    $(".loanAmount").keypress(function(e) {
-        var charCode = (e.which) ? e.which : e.keyCode;
-        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-            return false;
-        }
-        $(".loanAmount").on('keyup', function() {
-            // event.preventDefault();
-            var n = parseInt($(this).val().replace(/\D/g, ''), 10);
-            $(this).val(n.toLocaleString());
-            if (isNaN(n)) {
-                $(".loanAmount").val("");
-                // $(this).val();
-            }
-
-        });
-    });
-    // }
-</script>
-<script>
-    function processPayment(element) {
-        var uuid = $(element).data('id');
-        // alert(uuid)
-        var totalAmount = $(element).data('amount');
-        $('.preloader').show();
-        var ajaxUrl = "{{ route('pay-form') }}";
-        $.ajax({
-            type: 'POST',
-            url: ajaxUrl,
-            dataType: 'json',
-            data: {
-                uuid: uuid,
-                total_amount: totalAmount,
-            },
-            success: function(e) {
-                $('.preloader').hide();
-                $("#amountToBePaid").html(totalAmount.toLocaleString())
-                $("#order_id").val(e.order_id.transaction_id)
-                $('#paymentModal').modal('show');
-                // payWithPaystack(e);
-            },
-            error: function(e) {
-                $('.preloader').hide();
-                // var errorList = '';
-                // Object.keys(e.responseJSON.message).forEach(function(key) {
-                // errorList += '<li>' + e.responseJSON.message[key][0] + '</li>';
-                // });
-                new swal("Opss", e.responseJSON.message, "error");
-            }
-        })
-
-    }
-
-    $('#payaza-form').submit(function(e) {
-        e.preventDefault();
-        showCustomAlert({
-            title: 'Processing payment, please wait...',
-            icon: 'info',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading()
-            }
-        })
-
-        // Collect card details
-        var cardDetails = {
-            number: $('#card-number').val(),
-            expiryMonth: $('#expiry-date').val().split('/')[0], // Extract month from MM/YY
-            expiryYear: $('#expiry-date').val().split('/')[1], // Extract year from MM/YY
-            cvv: $('#cvv').val()
-        };
-
-
-        // Prepare the data for the Payaza API request
-        var payload = {
-            "service_payload": {
-                "first_name": "{{$user->name}}",
-                "last_name": "{{$user->name}}",
-                "email_address": "{{$user->email}}",
-                "phone_number": "{{$user->phone}}",
-                "amount": 100, // The amount to charge (adjust as needed)
-                "transaction_reference": "PL-1KBPSCJCRD" + Math.floor((Math.random() * 10000000) + 1), // Unique transaction reference
-                "currency": "NGN", // Currency code (adjust as needed)
-                "description": "E-cooperative payment testing.", // Payment description
-                "card": {
-                    "expiryMonth": cardDetails.expiryMonth,
-                    "expiryYear": cardDetails.expiryYear,
-                    "securityCode": cardDetails.cvv,
-                    "cardNumber": cardDetails.number
-                },
-                "callback_url": "https://e-coop.cthostel.com/api/payment/webhook" // Your callback URL for payment updates
-            }
-        };
-
-        // Set up headers for the request
-        var headers = {
-            "Authorization": "Payaza " + "{{env('PAYAZA_API')}}", // Authorization token from Payaza
-            "Content-Type": "application/json"
-        };
-
-        // Send the AJAX request to Payaza API
-        $.ajax({
-            url: "https://cards-live.78financials.com/card_charge/", // Payaza endpoint
-            method: "POST",
-            headers: headers,
-            data: JSON.stringify(payload),
-            contentType: "application/json",
-            success: function(response) {
-                console.log("RAW RESULT: ", response);
-                if (response.statusOk) {
-                    if (response.do3dsAuth) {
-                        if (response.formData && response.threeDsUrl) {
-                            const creq = document.getElementById("creq");
-                            creq.value = response.formData;
-                            const form = document.getElementById("threedsChallengeRedirectForm");
-                            form.setAttribute("action", response.threeDsUrl);
-                            form.submit();
-                        } else {
-                            console.log("Missing 3DS data:", response);
-                            showCustomAlert({
-                                title: '3DS Authentication data missing. Please try again.',
-                                icon: 'error'
-                            })
-
-                        }
-                    } else {
-                        console.log("Payment Process Journey Completed");
-                        $('#process-order-form').submit();
-                        showCustomAlert('Payment Completed', 'Payment completed successfully!', 'success')
-
-                        location.href = "/payaza/transaction-successful?order_id=" + $("#order_id").val() +
-                            '&reference=' + response.transactionReference;
-
-                        // Optionally submit your order form here if payment is successful
-
-                    }
-                } else {
-                    console.log("Error found:", response.debugMessage);
-                    showCustomAlert({
-                        title: "Payment Failed: " + response.debugMessage,
-                        icon: 'error'
-                    })
-                }
-            },
-            error: function(xhr, status, error) {
-                console.log("Error:", error);
-                showCustomAlert({
-                    title: "Exception Error: " + (error.debugMessage || error.message || "Unknown error"),
-                    icon: 'error'
-                })
-            }
-        });
-    });
-
-
-    function handlePaystackPopup(event) {
-        const paystackPopup = PaystackPop.setup(config);
-        paystackPopup.openIframe();
-    }
-    const paystackSecretKey = @json(env('PAYSTACK_PUBLIC_KEY'));
-
-    function payWithPaystack(data) {
-        // console.log(data)
-        var orderObj = {
-            email: data.email,
-            amount: data.amount_paid * 100,
-            order_id: data.order_id,
-            phone: data.phone,
-            process_transaction: "1",
-            card: data.card,
-        };
-
-        var data = data;
-        var handler = PaystackPop.setup({
-            // key: 'pk_live_af922c7f707c7ad3dc1a03433a3768007f6a0401',
-            key: paystackSecretKey, //'pk_test_031c3ba6cf25565da961c7bceea2f75887d08e22',
-            // key: 'pk_test_a36f058d84321e7d8f7f2d27655ddddd6a700b3f',
-            // key: 'pk_live_e139b3ad8d001c8219ed6ea7fb1cb756d2ce66f1',
-            email: orderObj.email,
-            amount: orderObj.amount,
-            ref: data.transaction_id,
-            metadata: {
-                custom_fields: [{
-                    display_name: "Order ID",
-                    variable_name: "order_id",
-                    value: orderObj.order_id
-                }]
-            },
-            callback: function(response) {
-                $('.preloader').show();
-
-                location.href = "/paystack/transaction-successful?order_id=" + orderObj
-                    .order_id +
-                    '&reference=' + response.reference;
-
-            },
-            onClose: function() {
-                $('.preloader').hide();
-                alert('Click "Pay online now" to retry payment.');
-            }
-        });
-        handler.openIframe();
-    }
-</script>
 <script>
     $(document).ready(function() {
         $.ajaxSetup({
@@ -340,95 +190,226 @@
             }
         });
 
-
-
-        $("#loanApplication").on('submit', async function(e) {
-            e.preventDefault();
-            const serializedData = $("#loanApplication").serializeArray();
-            $('.preloader').show();
-            try {
-                const postRequest = await request("/member/loan/apply",
-                    processFormInputs(
-                        serializedData), 'post');
-                console.log('postRequest.message', postRequest.message);
-                new swal("Good Job", postRequest.message, "success");
-                $('#loanApplication').trigger("reset");
-                $("#loanApplication .close").click();
-                window.location.reload();
-            } catch (e) {
-                $('.preloader').hide();
-                if ('message' in e) {
-                    // console.log('e.message', e.message);
-                    new swal("Opss", e.message, "error");
-
-                }
+        $(".loanAmount").keypress(function(e) {
+            var charCode = (e.which) ? e.which : e.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
             }
-        })
+            $(".loanAmount").on('keyup', function() {
+                var n = parseInt($(this).val().replace(/\D/g, ''), 10);
+                $(this).val(n.toLocaleString());
+                if (isNaN(n)) {
+                    $(".loanAmount").val("");
+                }
+            });
+        });
 
         $('.amount').on('keyup', function() {
-            // alert("here")
             var min = $(this).data('min');
             var max = $(this).data('max');
             var refund = $(this).data('refund');
             var totalsaved = $(this).data('total');
-            var minApplication = totalsaved * min ;//$(this).data('total');
-            var maxApplication = totalsaved * max ; //$(this).data('total');
+            var minApplication = totalsaved * min;
+            var maxApplication = totalsaved * max;
             var value = $(this).val().replace(/\D/g, '');
             var newValue = parseFloat(value);
-            var newMax = parseFloat(max);
-            //console.log(totalsaved)
-            if(totalsaved < 1){
+            if (totalsaved < 1) {
                 $('#passwordHelpBlock').html('You have no savings yet!')
                 $("#passwordHelpBlock").css("color", "red");
-                return $('.submitBtn').hide() 
+                return $('.submitBtn').hide()
             }
             if (value == "") {
                 $('.refund').val('');
             } else {
                 if (newValue < minApplication) {
                     $('#passwordHelpBlock').html('Minimum amount to apply for is ' + minApplication
-                        .toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        }))
+                        .toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }))
                     $("#passwordHelpBlock").css("color", "red");
                     return $('.submitBtn').hide()
-                    // new swal("Opss", 'Maximum amount to apply for is ' + max, "error");
                 }
                 if (newValue > maxApplication) {
                     $('#passwordHelpBlock').html('Maximum amount to apply for is ' + maxApplication
-                        .toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        }))
+                        .toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }))
                     $("#passwordHelpBlock").css("color", "red");
                     $('.submitBtn').hide()
-                    // new swal("Opss", 'Maximum amount to apply for is ' + max, "error");
                 } else {
                     var totalRefund = newValue / refund;
-                    // console.log(totalRefund,newValue,refund)
-                    // if (Number.isInteger(totalRefund)) {
-                        $('.refund').val(totalRefund.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        }))
-                    // } else {
-                    //     var roundedValue = Math.round(totalRefund / 100) * 100 + 100;
-                    //     $('.refund').val(roundedValue.toLocaleString(undefined, {
-                    //         minimumFractionDigits: 2,
-                    //         maximumFractionDigits: 2
-                    //     }))
-                    // }
+                    $('.refund').val(totalRefund.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }))
                     $('.submitBtn').show()
-                    // var refundRound = Math.round(refund/100) * 100 + 100;
                     $('#passwordHelpBlock').html('')
-
                 }
             }
-
-
         });
 
-    })
+        $("#loanApplication").on('submit', async function(e) {
+            e.preventDefault();
+            const serializedData = $("#loanApplication").serializeArray();
+            $('.preloader').show();
+            try {
+                const postRequest = await $.ajax({
+                    url: "/member/loan/apply",
+                    type: 'POST',
+                    data: processFormInputs(serializedData),
+                    dataType: 'json'
+                });
+                $('.preloader').hide();
+                $("#amountToBePaid").html(parseFloat(postRequest.amount).toLocaleString());
+                $(".real_amount").val(postRequest.amount);
+                $("#order_id").val(postRequest.order_id?.transaction_id || '');
+                $('#paymentModal').modal('show');
+            } catch (e) {
+                $('.preloader').hide();
+                if (e.responseJSON && 'message' in e.responseJSON) {
+                    new swal("Opss", e.responseJSON.message, "error");
+                } else {
+                    new swal("Opss", "An error occurred. Please try again.", "error");
+                }
+            }
+        });
+
+        function processFormInputs(formInputs) {
+            const data = {};
+            formInputs.forEach(input => {
+                data[input.name] = input.value;
+            });
+            return data;
+        }
+    });
+
+    function makePayment() {
+        const phone = document.getElementById('phone').value;
+        const email = document.getElementById('email').value;
+        const name = document.getElementById('name').value;
+        const amount = parseFloat(document.querySelector('.real_amount').value.replace(/,/g, ''));
+        const public_key = document.getElementById('public_key').value;
+        const redirect_url = document.getElementById('redirect_url').value;
+
+        FlutterwaveCheckout({
+            public_key: public_key,
+            tx_ref: "titanic-48981487343MDI0NzJD",
+            amount: amount,
+            currency: "NGN",
+            payment_options: "card, mobilemoneyghana, ussd",
+            redirect_url: redirect_url,
+            meta: {
+                consumer_id: 13,
+                consumer_mac: "92a3-983jd-1192a",
+            },
+            customer: {
+                email: email,
+                phone_number: phone,
+                name: name,
+            },
+            customizations: {
+                title: "Syncosave Checkout",
+                description: "Fast and Easy Payment",
+                logo: "https://syncosave.com/admindashboard/images/logo/syncologo2.png",
+            },
+        });
+    }
+
+    function generateBankDetails() {
+        const amount = parseFloat(document.querySelector('.real_amount').value.replace(/,/g, ''));
+        const submitBtn = document.querySelector('button[type="submit"]');
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating Account...';
+
+        $.ajax({
+            url: "{{ route('generateBankDetails') }}",
+            type: "POST",
+            data: {
+                amount: amount,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(response) {
+                const modalContent = `
+                    <div class="text-center mb-4">
+                        <div class="payment-icon bg-soft-primary rounded-circle mx-auto mb-3" style="width: 64px; height: 64px;">
+                            <i class="bi bi-bank fs-2 text-primary d-flex align-items-center justify-content-center h-100"></i>
+                        </div>
+                        <h4 class="mb-1">Bank Transfer Details</h4>
+                        <p class="text-muted">Complete your payment using the details below</p>
+                    </div>
+                    <div class="bank-details bg-light rounded-4 p-4 mb-4">
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Bank Name</label>
+                            <div class="fw-medium">${response.bank_name}</div>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Account Number</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="fw-medium fs-5">${response.account_no}</span>
+                                <button class="btn btn-sm btn-light" onclick="copyToClipboard('${response.account_no}')" title="Copy">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="detail-item mb-3">
+                            <label class="text-muted small mb-1">Amount</label>
+                            <div class="fw-medium fs-5">₦${response.amount}</div>
+                        </div>
+                        <div class="detail-item">
+                            <label class="text-muted small mb-1">Expires In</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="text-danger fw-medium" id="countdown"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <small>Please complete your transfer before the expiry time. The account will be automatically deactivated after expiry.</small>
+                    </div>`;
+
+                $('.modal-body').html(modalContent);
+
+                const expiryDate = new Date(response.expiry_date).getTime();
+                const countdownTimer = setInterval(() => {
+                    const now = new Date().getTime();
+                    const distance = expiryDate - now;
+
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    document.getElementById("countdown").innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+
+                    if (distance < 0) {
+                        clearInterval(countdownTimer);
+                        document.getElementById("countdown").innerHTML = "EXPIRED";
+                    }
+                }, 1000);
+
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="bi bi-lock me-2"></i>Pay Now';
+            },
+            error: function(xhr) {
+                console.error(xhr);
+                alert('Error generating bank details. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="bi bi-lock me-2"></i>Pay Now';
+            }
+        });
+    }
+
+    function handlePaymentSubmit(event) {
+        event.preventDefault();
+        const paymentType = document.querySelector('input[name="type"]:checked').value;
+        if (paymentType === 'card') {
+            makePayment();
+        } else {
+            generateBankDetails();
+        }
+        return false;
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Account number copied!');
+        });
+    }
 </script>
 @endsection
