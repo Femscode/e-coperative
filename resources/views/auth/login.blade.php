@@ -20,8 +20,10 @@
             --adminuiux-title-font-weight: 600
         }
     </style>
+    <!-- <script defer="defer" src="{{url('memberdashboard/js/appb174.js?ff1e8ee7ca91d18f44ea')}}"></script>
+    <link href="{{url('memberdashboard/css/appb174.css?ff1e8ee7ca91d18f44ea')}}" rel="stylesheet"> -->
     <script defer="defer" src="{{url('memberdashboard/js/appb174.js?ff1e8ee7ca91d18f44ea')}}"></script>
-    <link href="{{url('memberdashboard/css/appb174.css?ff1e8ee7ca91d18f44ea')}}" rel="stylesheet">
+    <link href="{{url('memberdashboard/css/appb174.css')}}" rel="stylesheet">
 
 
     <script src="{{ url('admindashboard/js/jquery/jquery.min.js') }}"></script>
