@@ -98,6 +98,7 @@ Route::group(['middleware' => ['auth']], function () {
 
                 Route::group(['prefix' => 'member'], function () {
                     Route::get('/', [App\Http\Controllers\Admin\MemberController::class, 'index'])->name('admin_member_home');
+                    Route::get('/pending', [App\Http\Controllers\Admin\MemberController::class, 'pending'])->name('admin_pending_members');
                     Route::get('/details/{id}', [App\Http\Controllers\Admin\MemberController::class, 'details'])->name('admin-member-details');
                     Route::get('/transactions/{id}', [App\Http\Controllers\Admin\MemberController::class, 'transactions'])->name('admin-member-transactions');
                     Route::post('/import', [App\Http\Controllers\Admin\MemberController::class, 'import'])->name('import_member_data');

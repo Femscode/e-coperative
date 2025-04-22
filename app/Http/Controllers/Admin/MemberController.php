@@ -24,9 +24,12 @@ class MemberController extends Controller
      */
     public function index()
     {
-
-
         return view('cooperative.admin.member_list');
+       
+    }
+    public function pending()
+    {
+        return view('cooperative.admin.pending');
        
     }
 

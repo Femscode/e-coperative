@@ -20,6 +20,14 @@
     </li>
 
     <li class="nav-item">
+         <a class="nav-link" href="/admin/member/pending" role="button" aria-expanded="false">
+              <span class="nav-icon">
+                   <iconify-icon icon="solar:users-group-rounded-bold-duotone"></iconify-icon>
+              </span>
+              <span class="nav-text">Pending Members </span>
+         </a>
+    </li>
+    <li class="nav-item">
          <a class="nav-link" href="/admin/member" role="button" aria-expanded="false">
               <span class="nav-icon">
                    <iconify-icon icon="solar:users-group-rounded-bold-duotone"></iconify-icon>
