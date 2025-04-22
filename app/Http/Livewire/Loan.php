@@ -23,7 +23,7 @@ class Loan extends Component
         
       
         if($this->search == ''){
-            $data['loans'] = MemberLoan::where('company_id',$company->id)
+            $data['loans'] = MemberLoan::where('company_id',$company->uuid)
             ->where(function ($query) {
                 $query->where('approval_status', 0)
                 ->OrWhere('approval_status', 1);
@@ -33,7 +33,7 @@ class Loan extends Component
             })
             ->paginate(10);
         }else{
-            $data['loans'] = MemberLoan::where('company_id',$company->id)->where(function ($query) {
+            $data['loans'] = MemberLoan::where('company_id',$company->uuid)->where(function ($query) {
                 $query->where('applied_date', 'LIKE', '%' . $this->search . '%')
                 ->orWhere('total_applied', 'LIKE', '%' . $this->search . '%')
                 ->orWhere('monthly_return', 'LIKE', '%' . $this->search . '%')

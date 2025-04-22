@@ -176,9 +176,9 @@
                                             <td>
                                                 <input type="hidden" name="week[]" value="{{ $month['week'] }}">
                                                 <div class="d-flex align-items-center">
-                                                    <span class="week-icon me-2">
+                                                    <!-- <span class="week-icon me-2">
                                                         <i class="bi bi-calendar-week"></i>
-                                                    </span>
+                                                    </span> -->
                                                     <span class="fw-medium">{{ $month['week'] }}</span>
                                                 </div>
                                             </td>

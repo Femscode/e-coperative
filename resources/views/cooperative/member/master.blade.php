@@ -213,42 +213,48 @@
             }
         }
     </style>
-       <style>
-                                .payment-option-card {
-                                    padding: 1rem;
-                                    border: 1px solid #dee2e6;
-                                    border-radius: 0.75rem;
-                                    transition: all 0.3s ease;
-                                }
-                                .payment-option-card:hover {
-                                    border-color: #6c757d;
-                                    background-color: #f8f9fa;
-                                }
-                                .payment-option-card .form-check-input:checked ~ .form-check-label {
-                                    color: var(--bs-primary);
-                                }
-                                .payment-option-card .form-check-input:checked ~ .form-check-label .payment-icon {
-                                    background-color: var(--bs-primary) !important;
-                                    color: white !important;
-                                }
-                                .payment-icon {
-                                    width: 48px;
-                                    height: 48px;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    border-radius: 12px;
-                                }
-                                .bg-soft-primary {
-                                    background-color: rgba(var(--bs-primary-rgb), 0.1);
-                                    color: var(--bs-primary);
-                                }
-                                .bg-soft-success {
-                                    background-color: rgba(var(--bs-success-rgb), 0.1);
-                                    color: var(--bs-success);
-                                }
-                            </style>
-   
+    <style>
+        .payment-option-card {
+            padding: 1rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option-card:hover {
+            border-color: #6c757d;
+            background-color: #f8f9fa;
+        }
+
+        .payment-option-card .form-check-input:checked~.form-check-label {
+            color: var(--bs-primary);
+        }
+
+        .payment-option-card .form-check-input:checked~.form-check-label .payment-icon {
+            background-color: var(--bs-primary) !important;
+            color: white !important;
+        }
+
+        .payment-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .bg-soft-primary {
+            background-color: rgba(var(--bs-primary-rgb), 0.1);
+            color: var(--bs-primary);
+        }
+
+        .bg-soft-success {
+            background-color: rgba(var(--bs-success-rgb), 0.1);
+            color: var(--bs-success);
+        }
+    </style>
+
     <link href="{{ url('admindashboard/css/sweetalert-custom.css') }}" rel="stylesheet">
 
     <script src="{{ asset('admindashboard/js/sweetalert-custom.js') }}"></script>
@@ -300,60 +306,83 @@
                         </svg> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon moon mx-auto">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                         </svg></button> -->
-                    <button class="btn btn-link btn-square btn-icon btn-link-header dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i data-feather="bell"></i> <span class="position-absolute top-0 end-0 badge rounded-pill bg-danger p-1"><small>9+</small> <span class="visually-hidden">unread messages</span></span></button>
-                    <ul class="dropdown-menu dropdown-menu-end notification-dd sm-mi-95px">
+                    <button class="btn btn-link btn-square btn-icon btn-link-header dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i data-feather="bell"></i> <span class="position-absolute top-0 end-0 badge rounded-pill bg-danger p-1"><small>1+</small> <span class="visually-hidden">unread messages</span></span></button>
 
-                        <li><a class="dropdown-item p-2" href="#">
-                                <div class="row gx-3">
-                                    <div class="col-auto">
-                                        <figure class="avatar avatar-40 rounded-circle bg-success"><i class="bi bi-patch-check text-white"></i></figure>
-                                    </div>
-                                    <div class="col">
-                                        <p class="mb-2 small">Your property <span class="fw-bold">#H10215</span> is published and live now.</p><span class="row"><span class="col"><span class="badge badge-light rounded-pill text-bg-primary small">System</span></span> <span class="col-auto small opacity-75">1:00 am</span></span>
-                                    </div>
-                                </div>
-                            </a></li>
-
-
-                        <li class="text-center"><button class="btn btn-link text-center" onclick="notifcationAll()">View all <i class="bi bi-arrow-right fs-14"></i></button></li>
-                    </ul>
                 </div>
-                <div class="dropdown d-inline-block"><a class="dropdown-toggle btn btn-link btn-square btn-link-header style-none no-caret px-0" id="userprofiledd" data-bs-toggle="dropdown" aria-expanded="false" role="button">
-                        <div class="row gx-0 d-inline-flex">
-                            <div class="col-auto align-self-center">
-                                <figure class="avatar avatar-28 rounded-circle coverimg align-middle"><img src="assets/img/modern-ai-image/user-6.jpg" alt="" id="userphotoonboarding2"></figure>
+                <div class="dropdown d-inline-block">
+                    <a class="dropdown-toggle btn btn-link btn-square btn-link-header style-none px-0" id="userprofiledd" data-bs-toggle="dropdown" aria-expanded="false" role="button">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; padding: 0;">
+                                <i class="bi bi-person-circle text-primary" style="font-size: 28px;"></i>
                             </div>
                         </div>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end width-300 pt-0 px-0 sm-mi-45px" aria-labelledby="userprofiledd">
-                        <div class="bg-theme-1-space rounded py-3 mb-3 dropdown-dontclose">
-                            <div class="row gx-0">
-                                <div class="col-auto px-3">
-                                    <figure class="avatar avatar-50 rounded-circle coverimg align-middle"><img src="assets/img/modern-ai-image/user-6.jpg" alt=""></figure>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="min-width: 300px; margin-top: 0.5rem;">
+                        <li class="p-3 border-bottom">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style="width: 45px; height: 45px;">
+                                    <i class="bi bi-person-circle text-primary" style="font-size: 32px;"></i>
                                 </div>
-                                <div class="col align-self-center">
-                                    <p class="mb-1"><span>SyncoSave</span></p>
-                                    <p><i class="bi bi-wallet2 me-2"></i> N1100.00 <small class="opacity-50">Balance</small></p>
+                                <div>
+                                    <h6 class="mb-1">{{ Auth::user()->name }}</h6>
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="bi bi-wallet2 me-2"></i>
+                                        <span>₦{{ number_format(Auth::user()->wallet_balance, 2) }}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="px-2">
-                            <div><a class="dropdown-item" href="/member/profile"><i data-feather="user" class="avatar avatar-18 me-1"></i> My Profile</a></div>
-                            <div><a class="dropdown-item" href="#"><i data-feather="dollar-sign" class="avatar avatar-18 me-1"></i> Referral</a></div>
-                            <div><a class="dropdown-item" href="#">
-                                    <div class="row">
-                                        <div class="col"><i data-feather="gift" class="avatar avatar-18 me-1"></i> Subscription</div>
-                                        <div class="col-auto">
-                                            <p class="small text-success">Upgrade</p>
-                                        </div>
-                                        <div class="col-auto"><span class="arrow bi bi-chevron-right"></span></div>
-                                    </div>
-                                </a></div>
-                            <div><a class="dropdown-item" href="#"><i data-feather="settings" class="avatar avatar-18 me-1"></i> Account Setting</a></div>
-                            <div><a class="dropdown-item theme-red" href="/logout" onclick="return confirm('Are you sure you want to logout?');"><i data-feather="power" class="avatar avatar-18 me-1"></i> Logout</a></div>
-                        </div>
-                    </div>
+                        </li>
+                        <li><a class="dropdown-item py-2 rounded-3" href="/member/profile">
+                            <i class="bi bi-person me-2"></i> My Profile
+                        </a></li>
+                        <li><a class="dropdown-item py-2 rounded-3" href="/member/referral">
+                            <i class="bi bi-share me-2"></i> Referral
+                        </a></li>
+                        <li><a class="dropdown-item py-2 rounded-3" href="/member/subscription">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div><i class="bi bi-star me-2"></i> Subscription</div>
+                                <div class="d-flex align-items-center">
+                                    <small class="text-success me-2">Upgrade</small>
+                                    <i class="bi bi-chevron-right"></i>
+                                </div>
+                            </div>
+                        </a></li>
+                        <li><a class="dropdown-item py-2 rounded-3" href="/member/settings">
+                            <i class="bi bi-gear me-2"></i> Account Setting
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2 rounded-3 text-danger" href="/logout" 
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="bi bi-box-arrow-right me-2"></i> Logout
+                        </a></li>
+                        <form id="logout-form" action="/logout" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </ul>
                 </div>
+                <style>
+                    .dropdown-item {
+                        transition: all 0.2s ease;
+                    }
+                    .dropdown-item:hover {
+                        background-color: rgba(9, 65, 104, 0.1);
+                        transform: translateX(5px);
+                    }
+                    .dropdown-menu {
+                        display: none;
+                        border: none;
+                        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+                    }
+                    .dropdown-menu.show {
+                        display: block;
+                    }
+                    .dropdown-toggle::after {
+                        display: none;
+                    }
+                    .text-primary {
+                        color: #094168 !important;
+                    }
+                </style>
             </div>
         </div>
     </nav>
@@ -395,8 +424,8 @@
                 <li class="nav-item"><a href="{{ route('member-contribution-payment') }}" class="nav-link"><i class="menu-icon bi bi-currency-dollar"></i> <span class="menu-name">Contribution Dues</span></a></li>
                 <li class="nav-item"><a href="/logout" onclick='return confirm("Are you sure you want to log this user out?");' class="nav-link"><i class="menu-icon bi bi-box-arrow-right"></i> <span class="menu-name">Logout</span></a></li>
             </ul>
-           
-            
+
+
         </div>
     </div>
     @yield('main')
@@ -404,21 +433,14 @@
 <footer class="adminuiux-footer has-adminuiux-sidebar mt-auto">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 col-md col-lg py-2"><span class="small">Copyright @<?php echo Date('Y'); ?>, <a href="/" target="_blank">SyncoSave</a></span></div>
-            <div class="col-12 col-md-auto col-lg-auto align-self-center">
-                <ul class="nav small">
-                    <li class="nav-item"><a class="nav-link" href="#">Help</a></li>
-                    <li class="nav-item">|</li>
-                    <li class="nav-item"><a class="nav-link" href="#">Terms of Use</a></li>
-                    <li class="nav-item">|</li>
-                    <li class="nav-item"><a class="nav-link" href="#">Privacy Policy</a></li>
-                </ul>
-            </div>
+            <div class="col-12 col-md col-lg py-2 text-center"><span class="small">Copyright @<?php echo Date('Y'); ?>, <b style='text-decoration:none'>SyncoSave</b></span></div>
+
         </div>
     </div>
 </footer>
 <div class="position-fixed bottom-0 end-0 m-3 z-index-5">
-    <button class="btn btn-theme btn-square rounded-circle shadow mt-2 d-none" id="backtotop"><i class="bi bi-arrow-up"></i></button></div>
+    <button class="btn btn-theme btn-square rounded-circle shadow mt-2 d-none" id="backtotop"><i class="bi bi-arrow-up"></i></button>
+</div>
 
 <script src="{{url('memberdashboard/js/investment/investment-cooperative.admin.js')}}"></script>
 <script src="{{ asset('js\requestController.js') }}"></script>

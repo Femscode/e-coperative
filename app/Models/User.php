@@ -88,7 +88,7 @@ class User extends Authenticatable implements Auditable
     }
     public function totalSavings()
     {
-        $plan = Transaction::where('user_id', $this->id)->where('status', 'Success')->whereIn('payment_type', ['Weekly Dues', 'Monthly Dues', 'Anytime'])->sum('original');
+        $plan = Transaction::where('user_id', $this->uuid)->where('status', 'Success')->where('payment_type', 'Cooperative-Dues')->sum('amount');
         return $plan;
     }
 
