@@ -20,7 +20,7 @@
         }
     </style>
     <script defer="defer" src="{{url('memberdashboard/js/appb174.js?ff1e8ee7ca91d18f44ea')}}"></script>
-    <link href="{{url('memberdashboard/css/appb174.css?ff1e8ee7ca91d18f44ea')}}" rel="stylesheet">
+    <link href="{{url('memberdashboard/css/appb174.css')}}" rel="stylesheet">
 
 
     <script src="{{ url('admindashboard/js/jquery/jquery.min.js') }}"></script>
@@ -306,18 +306,18 @@
                         </svg> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon moon mx-auto">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                         </svg></button> -->
-                    <button class="btn btn-link btn-square btn-icon btn-link-header dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i data-feather="bell"></i> <span class="position-absolute top-0 end-0 badge rounded-pill bg-danger p-1"><small>1+</small> <span class="visually-hidden">unread messages</span></span></button>
+                    <button class="btn btn-link btn-square btn-icon btn-link-header dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i data-feather="bell"></i> <span class="position-absolute top-0 end-0 badge rounded-pill bg-danger p-1"><small>3+</small> <span class="visually-hidden">unread messages</span></span></button>
 
                 </div>
                 <div class="dropdown d-inline-block">
-                    <a class="dropdown-toggle btn btn-link btn-square btn-link-header style-none px-0" id="userprofiledd" data-bs-toggle="dropdown" aria-expanded="false" role="button">
+                    <a class="user-profile-toggle" id="userProfileToggle" href="#" role="button">
                         <div class="d-flex align-items-center">
                             <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; padding: 0;">
                                 <i class="bi bi-person-circle text-primary" style="font-size: 28px;"></i>
                             </div>
                         </div>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="min-width: 300px; margin-top: 0.5rem;">
+                    <ul class="user-profile-dropdown" id="userProfileDropdown">
                         <li class="p-3 border-bottom">
                             <div class="d-flex align-items-center">
                                 <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style="width: 45px; height: 45px;">
@@ -332,13 +332,13 @@
                                 </div>
                             </div>
                         </li>
-                        <li><a class="dropdown-item py-2 rounded-3" href="/member/profile">
+                        <li><a class="profile-dropdown-item" href="/member/profile">
                             <i class="bi bi-person me-2"></i> My Profile
                         </a></li>
-                        <li><a class="dropdown-item py-2 rounded-3" href="/member/referral">
-                            <i class="bi bi-share me-2"></i> Referral
+                        <li><a class="profile-dropdown-item" href="https://wa.me/2349058744473">
+                            <i class="bi bi-phone me-2"></i> Contact us
                         </a></li>
-                        <li><a class="dropdown-item py-2 rounded-3" href="/member/subscription">
+                        <!-- <li><a class="profile-dropdown-item" href="/member/subscription">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div><i class="bi bi-star me-2"></i> Subscription</div>
                                 <div class="d-flex align-items-center">
@@ -346,43 +346,91 @@
                                     <i class="bi bi-chevron-right"></i>
                                 </div>
                             </div>
-                        </a></li>
-                        <li><a class="dropdown-item py-2 rounded-3" href="/member/settings">
+                        </a></li> -->
+                        <li><a class="profile-dropdown-item" href="/member/profile">
                             <i class="bi bi-gear me-2"></i> Account Setting
                         </a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item py-2 rounded-3 text-danger" href="/logout" 
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <li><a class="profile-dropdown-item text-danger" href="/logout" 
+                            onclick="return confirm('Are you sure you want to sign out?');">
                             <i class="bi bi-box-arrow-right me-2"></i> Logout
                         </a></li>
-                        <form id="logout-form" action="/logout" method="POST" class="d-none">
+                        <form id="logoutForm" action="/logout" method="POST" class="d-none">
                             @csrf
                         </form>
                     </ul>
                 </div>
                 <style>
-                    .dropdown-item {
-                        transition: all 0.2s ease;
+                    .user-profile-toggle {
+                        text-decoration: none;
+                        cursor: pointer;
                     }
-                    .dropdown-item:hover {
-                        background-color: rgba(9, 65, 104, 0.1);
-                        transform: translateX(5px);
-                    }
-                    .dropdown-menu {
+                    .user-profile-dropdown {
                         display: none;
-                        border: none;
+                        position: absolute;
+                        right: 0;
+                        top: 100%;
+                        min-width: 300px;
+                        background: white;
+                        border-radius: 8px;
                         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+                        margin-top: 0.5rem;
+                        padding: 0;
+                        list-style: none;
+                        z-index: 1000;
                     }
-                    .dropdown-menu.show {
+                    .user-profile-dropdown.show {
                         display: block;
                     }
-                    .dropdown-toggle::after {
-                        display: none;
+                    .profile-dropdown-item {
+                        display: block;
+                        padding: 0.75rem 1rem;
+                        text-decoration: none;
+                        color: #333;
+                        transition: all 0.2s ease;
+                    }
+                    .profile-dropdown-item:hover {
+                        background-color: rgba(9, 65, 104, 0.1);
+                        transform: translateX(5px);
                     }
                     .text-primary {
                         color: #094168 !important;
                     }
                 </style>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const toggle = document.getElementById('userProfileToggle');
+                        const dropdown = document.getElementById('userProfileDropdown');
+                        
+                        // Toggle dropdown
+                        toggle.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            dropdown.classList.toggle('show');
+                        });
+                        
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', function(e) {
+                            if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
+                                dropdown.classList.remove('show');
+                            }
+                        });
+                        
+                        // Prevent dropdown from closing when clicking inside
+                        dropdown.addEventListener('click', function(e) {
+                            if (!e.target.classList.contains('profile-dropdown-item')) {
+                                e.stopPropagation();
+                            }
+                        });
+                        
+                        // Close dropdown when pressing ESC
+                        document.addEventListener('keydown', function(e) {
+                            if (e.key === 'Escape') {
+                                dropdown.classList.remove('show');
+                            }
+                        });
+                    });
+                </script>
             </div>
         </div>
     </nav>
@@ -400,7 +448,7 @@
                 </div>
                 <div class="text-center collapse" id="usersidebarprofile">
                     <figure class="avatar avatar-100 rounded-circle coverimg my-3"><img src="assets/img/modern-ai-image/user-6.jpg" alt=""></figure>
-
+                    
                 </div>
             </div>
             <ul class="nav flex-column menu-active-line">
