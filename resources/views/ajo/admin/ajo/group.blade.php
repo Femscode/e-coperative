@@ -442,8 +442,7 @@
             $('.approveButton').prop('disabled', true).text('Loading ...');
             try {
                 // alert(data);
-                $.get("{{ route("
-                    start - contribution ") }}?id=" + id,
+                $.get("{{ route("start-contribution") }}?id=" + id,
                     function(data, status) {
                         // console.log(data, status);
                         //    alert(data.message)
