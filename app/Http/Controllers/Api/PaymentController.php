@@ -134,6 +134,8 @@ class PaymentController extends Controller
                             'transaction_id' => $reference,
                             'status' => 'Success',
                             'payment_type' => 'Contribution',
+                            'month' => $due['month'] ?? null,
+                            'week' => $due['week'] ?? null,
                             'uuid' => $contribution['uuid'],
                             'email' => $email
                         ]);
@@ -158,6 +160,8 @@ class PaymentController extends Controller
                             'transaction_id' => $reference,
                             'status' => 'Success',
                             'payment_type' => 'Repayment',
+                            'month' => $due['month'] ?? null,
+                            'week' => $due['week'] ?? null,
                             'uuid' => $loan->uuid,
                             'email' => $email
                         ]);
