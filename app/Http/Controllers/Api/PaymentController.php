@@ -68,23 +68,24 @@ class PaymentController extends Controller
         // Process remaining amount based on company type
         if ($company->type == 2) { // Contribution type
             // Get pending contribution dues
-            $pendingDues = Group::whereIn('id', 
-                GroupMember::where('user_id', $user->id)
-                    ->select('group_id')
-                    ->distinct()
-                    ->pluck('group_id')
-                    ->toArray()
-            )
-            ->where('status', 1)
-            ->get()
-            ->map(function($group) use ($user) {
-                return [
-                    'amount' => $group->amount,
-                    'uuid' => $group->uuid,
-                    'title' => $group->title
-                ];
-            })
-            ->toArray();
+            // $pendingDues = Group::whereIn('id', 
+            //     GroupMember::where('user_id', $user->id)
+            //         ->select('group_id')
+            //         ->distinct()
+            //         ->pluck('group_id')
+            //         ->toArray()
+            // )
+            // ->where('status', 1)
+            // ->get()
+            // ->map(function($group) use ($user) {
+            //     return [
+            //         'amount' => $group->amount,
+            //         'uuid' => $group->uuid,
+            //         'title' => $group->title
+            //     ];
+            // })
+            // ->toArray();
+            $pendingDues = $this->getPendingContributions($user);
 
             // Settle dues if amount matches
             foreach ($pendingDues as $due) {
@@ -136,8 +137,8 @@ class PaymentController extends Controller
                             'transaction_id' => $reference,
                             'status' => 'Success',
                             'payment_type' => 'Contribution',
-                            'month' => $due['month'] ?? null,
-                            'week' => $due['week'] ?? null,
+                            'month' => $contribution['month'] ?? null,
+                            'week' => $contribution['week'] ?? null,
                             'uuid' => $contribution['uuid'],
                             'email' => $email
                         ]);
@@ -386,7 +387,7 @@ class PaymentController extends Controller
         return $pendingDues;
     }
 
-    private function getPendingContributions($user) {
+    private function oldgetPendingContributions($user) {
         return Group::whereIn('id', 
             GroupMember::where('user_id', $user->id)
                 ->select('group_id')
@@ -405,6 +406,83 @@ class PaymentController extends Controller
         })
         ->toArray();
     }
+    private function getPendingContributions($user) {
+        $startDate = Carbon::parse($user->created_at);
+        $endDate = Carbon::now();
+        $groups = Group::whereIn('id', 
+            GroupMember::where('user_id', $user->id)
+                ->select('group_id')
+                ->distinct()
+                ->pluck('group_id')
+                ->toArray()
+        )
+        ->where('status', 1)
+        ->get();
+
+        $pendingContributions = [];
+        foreach ($groups as $group) {
+            $currentDate = $startDate->copy();
+            
+            if ($group->payment_mode == 'Monthly') {
+                $currentDate = $currentDate->startOfMonth();
+                while ($currentDate->lte($endDate)) {
+                    $month = $currentDate->format('F Y');
+                    
+                    // Check if payment exists for this month
+                    $paid = Transaction::where([
+                        ['user_id', $user->uuid],
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution'],
+                        ['uuid', $group->uuid],
+                        ['month', $month]
+                    ])->exists();
+                    
+                    if (!$paid) {
+                        $pendingContributions[] = [
+                            'amount' => $group->amount,
+                            'uuid' => $group->uuid,
+                            'title' => $group->title,
+                            'month' => $month,
+                            'week' => null,
+                            'period_type' => 'month'
+                        ];
+                    }
+                    $currentDate->addMonth();
+                }
+            } elseif ($group->payment_mode == 'Weekly') {
+                $currentDate = $currentDate->startOfWeek();
+                while ($currentDate->lte($endDate)) {
+                    $weekStart = $currentDate->format('M d');
+                    $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
+                    $weekFormat = "$weekStart - $weekEnd";
+                    
+                    // Check if payment exists for this week
+                    $paid = Transaction::where([
+                        ['user_id', $user->uuid],
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution'],
+                        ['uuid', $group->uuid],
+                        ['week', $weekFormat]
+                    ])->exists();
+                    
+                    if (!$paid) {
+                        $pendingContributions[] = [
+                            'amount' => $group->amount,
+                            'uuid' => $group->uuid,
+                            'title' => $group->title,
+                            'month' => null,
+                            'week' => $weekFormat,
+                            'period_type' => 'week'
+                        ];
+                    }
+                    $currentDate->addWeek();
+                }
+            }
+        }
+
+        return $pendingContributions;
+    }
+
     public function callback_webhook(Request $request) {
         file_put_contents(__DIR__ . '/paycallback.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
 
