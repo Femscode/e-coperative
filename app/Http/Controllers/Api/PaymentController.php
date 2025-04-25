@@ -97,6 +97,8 @@ class PaymentController extends Controller
                         'status' => 'Success',
                         'payment_type' => 'Contribution',
                         'uuid' => $due['uuid'],
+                        'month' => $due['month'] ?? null,
+                        'week' => $due['week'] ?? null,
                         'email' => $email
                     ]);
                     $amountPaid -= $due['amount'];
