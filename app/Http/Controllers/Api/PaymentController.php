@@ -372,7 +372,8 @@ class PaymentController extends Controller
             return [
                 'amount' => $group->amount,
                 'uuid' => $group->uuid,
-                'title' => $group->title
+                'title' => $group->title,
+
             ];
         })
         ->toArray();

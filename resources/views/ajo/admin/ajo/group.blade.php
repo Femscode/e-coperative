@@ -2,55 +2,55 @@
 @section('header')
 
 <style>
-        .bg-gradient-primary {
-            background: linear-gradient(45deg, #094168, black);
-        }
+    .bg-gradient-primary {
+        background: linear-gradient(45deg, #094168, black);
+    }
 
-        .modal-content {
-            border-radius: 15px;
-        }
+    .modal-content {
+        border-radius: 15px;
+    }
 
-        .form-floating {
-            position: relative;
-        }
+    .form-floating {
+        position: relative;
+    }
 
-        .form-floating>.form-control,
-        .form-floating>.form-select {
-            height: 60px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            padding: 1.25rem 1rem;
-        }
+    .form-floating>.form-control,
+    .form-floating>.form-select {
+        height: 60px;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 1.25rem 1rem;
+    }
 
-        .form-floating>label {
-            padding: 1rem;
-        }
+    .form-floating>label {
+        padding: 1rem;
+    }
 
-        .form-control:focus,
-        .form-select:focus {
-            border-color: #094168;
-            box-shadow: 0 0 0 0.25rem rgba(9, 65, 104, 0.1);
-        }
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #094168;
+        box-shadow: 0 0 0 0.25rem rgba(9, 65, 104, 0.1);
+    }
 
-        .btn-light-subtle {
-            background-color: #f8f9fa;
-            border: 2px solid #e9ecef;
-        }
+    .btn-light-subtle {
+        background-color: #f8f9fa;
+        border: 2px solid #e9ecef;
+    }
 
-        .btn-light-subtle:hover {
-            background-color: #e9ecef;
-        }
+    .btn-light-subtle:hover {
+        background-color: #e9ecef;
+    }
 
-        .btn-primary {
-            background: linear-gradient(45deg, #094168, black);
-            border: none;
-           
-        }
+    .btn-primary {
+        background: linear-gradient(45deg, #094168, black);
+        border: none;
 
-        .btn-primary:hover {
-            background: linear-gradient(45deg, #073553, black);    
-        }
-    </style>
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(45deg, #073553, black);
+    }
+</style>
 
 @endsection
 
@@ -289,25 +289,33 @@
         var preLoader = $(".preloader")
         //copy link
         $(".copy-btn").click(function() {
-    var link = $(this).data("link");
-    navigator.clipboard.writeText(link).then(() => {
-        showCustomAlert({
-            toast: true,
-            position: 'top',
-            icon: 'success',
-            title: 'Link copied!',
-            showConfirmButton: false,
-            timer: 1500,
-            timerProgressBar: true,
-            customClass: {
-                popup: 'colored-toast'
-            }
+            var link = $(this).data("link");
+            navigator.clipboard.writeText(link).then(() => {
+                showCustomAlert({
+                    toast: true,
+                    position: 'top',
+                    icon: 'success',
+                    title: 'Link copied!',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    customClass: {
+                        popup: 'colored-toast'
+                    }
+                });
+
+            }).catch(err => {
+                console.error("Failed to copy: ", err);
+            });
         });
-        
-    }).catch(err => {
-        console.error("Failed to copy: ", err);
-    });
-});
+
+        function processFormInputs(formInputs) {
+            const data = {};
+            formInputs.forEach(input => {
+                data[input.name] = input.value;
+            });
+            return data;
+        }
         // save contribution group
         $("#importMemberForm").on('submit', async function(e) {
 
@@ -315,9 +323,14 @@
             $(".preloader").show()
             const serializedData = $("#importMemberForm").serializeArray();
             try {
-                const postRequest = await request("/admin/group/create",
-                    processFormInputs(
-                        serializedData), 'post');
+              
+
+                const postRequest = await $.ajax({
+                    url: "admin/group/create",
+                    type: 'POST',
+                    data: processFormInputs(serializedData),
+                    dataType: 'json'
+                });
                 // console.log('postRequest.message', postRequest.message);
                 new swal("Good Job", postRequest.message, "success");
                 $('#importMemberForm').trigger("reset");
@@ -429,7 +442,8 @@
             $('.approveButton').prop('disabled', true).text('Loading ...');
             try {
                 // alert(data);
-                $.get("{{ route("start-contribution") }}?id=" + id,
+                $.get("{{ route("
+                    start - contribution ") }}?id=" + id,
                     function(data, status) {
                         // console.log(data, status);
                         //    alert(data.message)
