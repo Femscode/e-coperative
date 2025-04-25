@@ -302,36 +302,7 @@ class PaymentController extends Controller
             return response()->json('Internal server error', 500);
         }
     }
-    private function oldgetPendingCoopDues($user) {
-        $startDate = Carbon::parse($user->created_at);
-        $endDate = Carbon::now();
-        $mode = $user->plan()->mode;
-        $pendingDues = [];
-
-        if ($mode == 'Monthly') {
-            $currentDate = $startDate->copy()->startOfMonth();
-            while ($currentDate->lte($endDate)) {
-                $month = $currentDate->format('F Y');
-                $paid = Transaction::where('user_id', $user->id)
-                    ->where([
-                        ['status', 'Success'],
-                        ['payment_type', 'Monthly Dues'],
-                        ['month', $month]
-                    ])->exists();
-                
-                if (!$paid) {
-                    $pendingDues[] = [
-                        'month' => $month,
-                        'amount' => $user->plan()->amount
-                    ];
-                }
-                $currentDate->addMonth();
-            }
-        }
-        // Add similar logic for Weekly mode if needed
-
-        return $pendingDues;
-    }
+   
 
     private function getPendingCoopDues($user) {
         $startDate = Carbon::parse($user->created_at);
@@ -387,7 +358,7 @@ class PaymentController extends Controller
         return $pendingDues;
     }
 
-    private function oldgetPendingContributions($user) {
+    private function getPendingContributions($user) {
         return Group::whereIn('id', 
             GroupMember::where('user_id', $user->id)
                 ->select('group_id')
@@ -406,7 +377,7 @@ class PaymentController extends Controller
         })
         ->toArray();
     }
-    private function getPendingContributions($user) {
+    private function newPendingContributions($user) {
         $startDate = Carbon::parse($user->created_at);
         $endDate = Carbon::now();
         $groups = Group::whereIn('id', 
