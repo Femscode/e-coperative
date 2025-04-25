@@ -326,7 +326,7 @@
               
 
                 const postRequest = await $.ajax({
-                    url: "admin/group/create",
+                    url: "/admin/group/create",
                     type: 'POST',
                     data: processFormInputs(serializedData),
                     dataType: 'json'
