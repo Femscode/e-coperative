@@ -284,9 +284,9 @@
                                 <div class="form-check visibility-option p-3 border rounded-3">
                                     <input class="form-check-input" type="radio" name="visibility" id="publicVisibility" value="public" {{ $plan->visibility == 'public' ? 'checked' : '' }}>
                                     <label class="form-check-label d-flex align-items-center gap-3" for="publicVisibility">
-                                        <span class="visibility-icon">
+                                        <!-- <span class="visibility-icon">
                                             <i class="ri-global-line text-success fs-3"></i>
-                                        </span>
+                                        </span> -->
                                         <div>
                                             <span class="d-block fw-semibold fs-5 mb-1">Open Membership</span>
                                             <small class="text-muted">Allow instant registration for all new members. No approval required.</small>
@@ -296,9 +296,9 @@
                                 <div class="form-check visibility-option p-3 border rounded-3">
                                     <input class="form-check-input" type="radio" name="visibility" id="privateVisibility" value="private" {{ $plan->visibility == 'private' ? 'checked' : '' }}>
                                     <label class="form-check-label d-flex align-items-center gap-3" for="privateVisibility">
-                                        <span class="visibility-icon">
+                                        <!-- <span class="visibility-icon">
                                             <i class="ri-shield-check-line text-danger fs-3"></i>
-                                        </span>
+                                        </span> -->
                                         <div>
                                             <span class="d-block fw-semibold fs-5 mb-1">Restricted Access</span>
                                             <small class="text-muted">Members can only join through invitation links. Admin approval required.</small>
@@ -364,9 +364,15 @@
             $(".preloader").show()
             const serializedData = $("#specifyCoop").serializeArray();
             try {
-                const postRequest = await request("/admin/plan/create",
-                    processFormInputs(
-                        serializedData), 'post');
+                const postRequest = await $.ajax({
+                    url: "/admin/plan/create",
+                    type: 'POST',
+                    data: processFormInputs(serializedData),
+                    dataType: 'json'
+                });
+                // const postRequest = await request("/admin/plan/create",
+                //     processFormInputs(
+                //         serializedData), 'post');
                 // console.log('postRequest.message', postRequest.message);
                 new swal("Good Job", postRequest.message, "success");
                 $('#specifyCoop').trigger("reset");
