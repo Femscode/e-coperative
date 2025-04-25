@@ -163,8 +163,8 @@ class PaymentController extends Controller
                             'transaction_id' => $reference,
                             'status' => 'Success',
                             'payment_type' => 'Repayment',
-                            'month' => $due['month'] ?? null,
-                            'week' => $due['week'] ?? null,
+                            'month' => $loan['month'] ?? null,
+                            'week' => $loan['week'] ?? null,
                             'uuid' => $loan->uuid,
                             'email' => $email
                         ]);
@@ -427,8 +427,8 @@ class PaymentController extends Controller
                 $currentDate = $currentDate->startOfMonth();
                 while ($currentDate->lte($endDate)) {
                     $month = $currentDate->format('F Y');
+                    $timestamp = $currentDate->timestamp;
                     
-                    // Check if payment exists for this month
                     $paid = Transaction::where([
                         ['user_id', $user->uuid],
                         ['status', 'Success'],
@@ -444,7 +444,8 @@ class PaymentController extends Controller
                             'title' => $group->title,
                             'month' => $month,
                             'week' => null,
-                            'period_type' => 'month'
+                            'period_type' => 'month',
+                            'due_date' => $timestamp
                         ];
                     }
                     $currentDate->addMonth();
@@ -455,8 +456,8 @@ class PaymentController extends Controller
                     $weekStart = $currentDate->format('M d');
                     $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
                     $weekFormat = "$weekStart - $weekEnd";
+                    $timestamp = $currentDate->timestamp;
                     
-                    // Check if payment exists for this week
                     $paid = Transaction::where([
                         ['user_id', $user->uuid],
                         ['status', 'Success'],
@@ -472,13 +473,19 @@ class PaymentController extends Controller
                             'title' => $group->title,
                             'month' => null,
                             'week' => $weekFormat,
-                            'period_type' => 'week'
+                            'period_type' => 'week',
+                            'due_date' => $timestamp
                         ];
                     }
                     $currentDate->addWeek();
                 }
             }
         }
+
+        // Sort by due date (oldest first)
+        usort($pendingContributions, function($a, $b) {
+            return $a['due_date'] - $b['due_date'];
+        });
 
         return $pendingContributions;
     }
