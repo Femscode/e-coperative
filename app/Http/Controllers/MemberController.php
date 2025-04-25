@@ -380,6 +380,7 @@ class MemberController extends Controller
             $startDate = Carbon::parse($user->created_at);
             $endDate = Carbon::now();
             $mode = $user->plan()->mode;
+           
             
             $data = [
                 'user' => $user,
@@ -396,6 +397,7 @@ class MemberController extends Controller
                     return [$key => true];
                 })
                 ->toArray();
+               
 
             switch ($mode) {
                 case 'Anytime':
@@ -473,7 +475,7 @@ class MemberController extends Controller
                         
                         // Check if this week is paid
                         $paymentExists = isset($paidDues[$weekFormat]);
-
+                        
                         $weeksToView[] = [
                             'source' => '1',
                             'week' => $weekFormat,

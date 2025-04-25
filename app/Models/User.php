@@ -83,7 +83,7 @@ class User extends Authenticatable implements Auditable
     }
     public function plan()
     {
-        $plan = Company::where('id', $this->company_id)->orwhere('uuid', $this->company_id)->first();
+        $plan = Company::where('uuid', $this->company_id)->first();
         return $plan;
     }
     public function totalSavings()

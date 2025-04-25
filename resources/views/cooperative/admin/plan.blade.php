@@ -216,13 +216,17 @@
                         <div class="col-md-6">
                             <div class="form-floating">
                                 <input type="number" class="form-control" value="{{ $plan->min_loan_range }}" required name="min_loan_range" id="minLoanInput" placeholder="Enter minimum loan">
-                                <label for="minLoanInput">Minimum Loan Amount</label>
+                                <label for="minLoanInput">Minimum Loan Multiplier</label>
+                                <small class="text-muted mt-1 d-block">
+                                    <i class="ri-information-line me-1"></i>
+                                    This is a multiplier of member's savings. E.g., if set to 2 and member has ₦5,000 savings, they can request up to ₦10,000 (2×)
+                                </small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
                                 <input type="number" class="form-control" value="{{ $plan->max_loan_range }}" required name="max_loan_range" id="maxLoanInput" placeholder="Enter maximum loan">
-                                <label for="maxLoanInput">Maximum Loan Amount</label>
+                                <label for="maxLoanInput">Maximum Loan Multiplier</label>
                             </div>
                         </div>
                     </div>
@@ -237,13 +241,19 @@
                 </div>
                 <div class="settings-card-body">
                     <div class="row g-4">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-floating">
                                 <input type="number" name="loan_month_repayment" required value="{{ $plan->loan_month_repayment }}" class="form-control" id="repaymentDurationInput" placeholder="Enter duration">
                                 <label for="repaymentDurationInput">Repayment Duration (Months)</label>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" value="{{ $plan->interest }}" required name="interest" id="interest" placeholder="Enter interest in percentage">
+                                <label for="defaultChargeInput">Interest(%)</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class="form-floating">
                                 <input type="number" class="form-control" value="{{ $plan->default_charge }}" required name="default_charge" id="defaultChargeInput" placeholder="Enter charge amount">
                                 <label for="defaultChargeInput">Default Penalty Charge</label>

@@ -84,7 +84,7 @@
                                             <input id='name' value='{{ $user->name }}' type='hidden' />
                                             <input id='email' value='{{ $user->email }}' type='hidden' />
                                             <input class='real_amount' value='' type='hidden' />
-                                            <input id='redirect_url' value='https://vtubiz.com/payment/callback' type='hidden' />
+                                            <input id='redirect_url' value='https://vtubiz.com/api/payment/callback' type='hidden' />
                                             <input id='public_key' value='{{  env('FLW_PUBLIC_KEY') }}' type='hidden' />
                                             <span class="d-block fw-medium">Credit Card</span>
                                             <small class="text-muted">Pay with your credit or debit card</small>
