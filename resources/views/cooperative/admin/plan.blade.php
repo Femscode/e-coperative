@@ -359,6 +359,14 @@
                 })
         });
 
+        function processFormInputs(formInputs) {
+            const data = {};
+            formInputs.forEach(input => {
+                data[input.name] = input.value;
+            });
+            return data;
+        }
+
         $("#specifyCoop").on('submit', async function(e) {
             e.preventDefault();
             $(".preloader").show()
