@@ -454,43 +454,47 @@
 <!-- profile init js -->
 <script src="{{ asset('assets/js/pages/profile.init.js') }}"></script>
 <script>
-    async function request(url, data, method = 'POST') {
-        try {
-            const response = await $.ajax({
-                url: url,
-                method: method,
-                data: data,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            if (response.status === 'error') {
-                throw new Error(response.message);
-            }
-
-            return response;
-        } catch (error) {
-            throw {
-                message: error.responseJSON?.message || error.message || 'An error occurred'
-            };
-        }
-    }
-
     // Process form inputs helper
-    function processFormInputs(formData) {
-        let processedData = {};
-        formData.forEach(item => {
-            processedData[item.name] = item.value;
-        });
-        return processedData;
-    }
+
     $(document).ready(function() {
+// alert('jj')
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        async function request(url, data, method = 'POST') {
+            try {
+                const response = await $.ajax({
+                    url: url,
+                    method: method,
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                if (response.status === 'error') {
+                    throw new Error(response.message);
+                }
+
+                return response;
+            } catch (error) {
+                throw {
+                    message: error.responseJSON?.message || error.message || 'An error occurred'
+                };
+            }
+        }
+
+        // Process form inputs helper
+        function processFormInputs(formData) {
+            let processedData = {};
+            formData.forEach(item => {
+                processedData[item.name] = item.value;
+            });
+            return processedData;
+        }
 
         $('.switchTwo').on('click', function() {
             if ($(this).is(':checked')) {
