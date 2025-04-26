@@ -2,6 +2,76 @@
 
 @section('main')
 
+<div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header border-0 bg-gradient-primary p-4">
+                    <h5 class="modal-title text-white fs-4">Create New Group</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form method="Post" id="importMemberForm" class="needs-validation" novalidate>
+                    @csrf
+                    <div class="modal-body p-4">
+                        <div class="row g-4">
+                            <div class="col-lg-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="title" name="title"
+                                        placeholder="Enter group title" required>
+                                    <label for="title">Group Title</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-floating">
+                                    <select class="form-select form-control changeMode" name="mode" required>
+                                        <option value="" disabled selected>Select contribution mode</option>
+                                        <option value="Daily">Daily</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Monthly">Monthly</option>
+                                    </select>
+                                    <label>Contribution Mode</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control loanAmount amount" name="amount"
+                                        placeholder="Enter amount" required>
+                                    <label>Contribution Amount (₦)</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" name="min" min="2"
+                                        placeholder="Enter minimum participants" required>
+                                    <label>Minimum Participants</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" name="max" min="2"
+                                        placeholder="Enter maximum participants" required>
+                                    <label>Maximum Participants</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer border-0 pt-0 px-4 pb-4">
+                        <button type="button" class="btn btn-light-subtle px-4 py-2 rounded-pill" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill" id="update-btn">
+                            <i class="ri-save-line me-1"></i> Create Group
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container-fluid py-4">
         <!-- Header -->

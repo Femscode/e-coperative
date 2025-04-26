@@ -14,32 +14,33 @@ use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public function payaza_webhook(Request $request) {
+    public function payaza_webhook(Request $request)
+    {
         file_put_contents(__DIR__ . '/payaza.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
-        
     }
-    public function payaza_callback(Request $request) {
+    public function payaza_callback(Request $request)
+    {
         file_put_contents(__DIR__ . '/paycallback.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
-
     }
-    public function oldoldpayment_webhook(Request $request) {
+    public function oldoldpayment_webhook(Request $request)
+    {
         file_put_contents(__DIR__ . '/flutterwave_payment.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
-        
     }
 
-    public function payment_webhook(Request $request) {
+    public function payment_webhook(Request $request)
+    {
         // Log the webhook data
         file_put_contents(__DIR__ . '/flutterwave_payment2.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
-        
+
         // Verify the payment data
         $email = $request->input('customer.email');
         $amountPaid = intval($request->input('amount'));
         $reference = $request->input('id');
-        
+
         // Find the user
         $user = User::where('email', $email)->firstOrFail();
         $company = Company::where('uuid', $user->company_id)->first();
-        
+
         // Check for pending registration fee
         $hasRegFee = false;
         if (intval($company->reg_fee) > 0) {
@@ -47,7 +48,7 @@ class PaymentController extends Controller
                 ->where('status', 'Success')
                 ->where('payment_type', 'Registration')
                 ->exists();
-                
+
             if (!$regFeePaid && $amountPaid >= intval($company->reg_fee)) {
                 // Create registration fee transaction
                 Transaction::create([
@@ -59,7 +60,7 @@ class PaymentController extends Controller
                     'payment_type' => 'Registration',
                     'email' => $email
                 ]);
-                
+
                 $amountPaid -= intval($company->reg_fee);
                 $hasRegFee = true;
             }
@@ -100,6 +101,7 @@ class PaymentController extends Controller
                         'uuid' => $due['uuid'],
                         'month' => $due['month'] ?? null,
                         'week' => $due['week'] ?? null,
+                        'day' => $due['day'] ?? null,  // Add this line
                         'email' => $email
                     ]);
                     $amountPaid -= $due['amount'];
@@ -139,6 +141,7 @@ class PaymentController extends Controller
                             'payment_type' => 'Contribution',
                             'month' => $contribution['month'] ?? null,
                             'week' => $contribution['week'] ?? null,
+                            'day' => $contribution['day'] ?? null,
                             'uuid' => $contribution['uuid'],
                             'email' => $email
                         ]);
@@ -177,17 +180,21 @@ class PaymentController extends Controller
         return response()->json('OK', 200);
     }
 
-  
 
-    public function new_payment_webhook(Request $request) {
+
+    public function new_payment_webhook(Request $request)
+    {
         $logPath = __DIR__ . '/webhook_logs/';
         if (!file_exists($logPath)) {
             mkdir($logPath, 0777, true);
         }
 
         // Log initial request
-        file_put_contents($logPath . 'initial_request.txt', 
-            json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
+        file_put_contents(
+            $logPath . 'initial_request.txt',
+            json_encode($request->all(), JSON_PRETTY_PRINT),
+            FILE_APPEND
+        );
 
         try {
             // Log payment data extraction
@@ -196,50 +203,68 @@ class PaymentController extends Controller
             $reference = $request->input('id');
             $status = $request->input('status');
 
-            file_put_contents($logPath . 'payment_data.txt', 
+            file_put_contents(
+                $logPath . 'payment_data.txt',
                 json_encode([
                     'timestamp' => now(),
                     'email' => $email,
                     'amount' => $amountPaid,
                     'reference' => $reference,
                     'status' => $status
-                ], JSON_PRETTY_PRINT), FILE_APPEND);
+                ], JSON_PRETTY_PRINT),
+                FILE_APPEND
+            );
 
             // Verify transaction status
             if ($status !== 'successful') {
-                file_put_contents($logPath . 'failed_status.txt', 
-                    "Payment not successful. Status: $status", FILE_APPEND);
+                file_put_contents(
+                    $logPath . 'failed_status.txt',
+                    "Payment not successful. Status: $status",
+                    FILE_APPEND
+                );
                 return response()->json('Payment not successful', 400);
             }
 
             // Find user
             $user = User::where('email', $email)->first();
             if (!$user) {
-                file_put_contents($logPath . 'user_error.txt', 
-                    "User not found for email: $email", FILE_APPEND);
+                file_put_contents(
+                    $logPath . 'user_error.txt',
+                    "User not found for email: $email",
+                    FILE_APPEND
+                );
                 return response()->json('User not found', 404);
             }
 
-            file_put_contents($logPath . 'user_found.txt', 
+            file_put_contents(
+                $logPath . 'user_found.txt',
                 json_encode([
                     'user_id' => $user->id,
                     'email' => $user->email
-                ], JSON_PRETTY_PRINT), FILE_APPEND);
+                ], JSON_PRETTY_PRINT),
+                FILE_APPEND
+            );
 
             // Get company
             $company = Company::where('uuid', $user->company_id)->first();
             if (!$company) {
-                file_put_contents($logPath . 'company_error.txt', 
-                    "Company not found for user: $user->id", FILE_APPEND);
+                file_put_contents(
+                    $logPath . 'company_error.txt',
+                    "Company not found for user: $user->id",
+                    FILE_APPEND
+                );
                 return response()->json('Company not found', 404);
             }
 
-            file_put_contents($logPath . 'company_found.txt', 
+            file_put_contents(
+                $logPath . 'company_found.txt',
                 json_encode([
                     'company_id' => $company->id,
                     'reg_fee' => $company->reg_fee,
                     'type' => $company->type
-                ], JSON_PRETTY_PRINT), FILE_APPEND);
+                ], JSON_PRETTY_PRINT),
+                FILE_APPEND
+            );
 
             // Check registration fee
             $hasRegFee = false;
@@ -249,15 +274,18 @@ class PaymentController extends Controller
                     ->where('payment_type', 'Registration')
                     ->exists();
 
-                file_put_contents($logPath . 'reg_fee_check.txt', 
+                file_put_contents(
+                    $logPath . 'reg_fee_check.txt',
                     json_encode([
                         'has_reg_fee' => true,
                         'reg_fee_amount' => $company->reg_fee,
                         'already_paid' => $regFeePaid,
                         'amount_paid' => $amountPaid,
                         'can_pay_reg_fee' => (!$regFeePaid && $amountPaid >= $company->reg_fee)
-                    ], JSON_PRETTY_PRINT), FILE_APPEND);
-                    
+                    ], JSON_PRETTY_PRINT),
+                    FILE_APPEND
+                );
+
                 if (!$regFeePaid && $amountPaid >= $company->reg_fee) {
                     try {
                         Transaction::create([
@@ -270,41 +298,56 @@ class PaymentController extends Controller
                             'email' => $email
                         ]);
 
-                        file_put_contents($logPath . 'reg_fee_paid.txt', 
-                            "Registration fee successfully paid", FILE_APPEND);
+                        file_put_contents(
+                            $logPath . 'reg_fee_paid.txt',
+                            "Registration fee successfully paid",
+                            FILE_APPEND
+                        );
 
                         $amountPaid -= $company->reg_fee;
                         $hasRegFee = true;
                     } catch (\Exception $e) {
-                        file_put_contents($logPath . 'reg_fee_error.txt', 
-                            "Error saving registration fee: " . $e->getMessage(), FILE_APPEND);
+                        file_put_contents(
+                            $logPath . 'reg_fee_error.txt',
+                            "Error saving registration fee: " . $e->getMessage(),
+                            FILE_APPEND
+                        );
                     }
                 }
             }
 
             // Process remaining amount
-            file_put_contents($logPath . 'remaining_amount.txt', 
-                "Remaining amount to process: $amountPaid", FILE_APPEND);
+            file_put_contents(
+                $logPath . 'remaining_amount.txt',
+                "Remaining amount to process: $amountPaid",
+                FILE_APPEND
+            );
 
             // Continue with existing logic for processing remaining amount...
             // [Previous code for processing contribution/cooperative payments remains the same]
-            
-            file_put_contents($logPath . 'process_complete.txt', 
-                "Payment processing completed successfully", FILE_APPEND);
+
+            file_put_contents(
+                $logPath . 'process_complete.txt',
+                "Payment processing completed successfully",
+                FILE_APPEND
+            );
 
             return response()->json('OK', 200);
-
         } catch (\Exception $e) {
-            file_put_contents($logPath . 'error_log.txt', 
-                "Error processing payment: " . $e->getMessage() . "\n" . 
-                "Stack trace: " . $e->getTraceAsString(), FILE_APPEND);
-            
+            file_put_contents(
+                $logPath . 'error_log.txt',
+                "Error processing payment: " . $e->getMessage() . "\n" .
+                    "Stack trace: " . $e->getTraceAsString(),
+                FILE_APPEND
+            );
+
             return response()->json('Internal server error', 500);
         }
     }
-   
 
-    private function getPendingCoopDues($user) {
+
+    private function getPendingCoopDues($user)
+    {
         $startDate = Carbon::parse($user->created_at);
         $endDate = Carbon::now();
         $mode = $user->plan()->mode;
@@ -320,7 +363,7 @@ class PaymentController extends Controller
                         ['payment_type', 'Cooperative-Dues'],
                         ['month', $month]
                     ])->exists();
-                
+
                 if (!$paid) {
                     $pendingDues[] = [
                         'month' => $month,
@@ -343,7 +386,7 @@ class PaymentController extends Controller
                         ['payment_type', 'Cooperative-Dues'],
                         ['week', $weekFormat]
                     ])->exists();
-                
+
                 if (!$paid) {
                     $pendingDues[] = [
                         'week' => $weekFormat,
@@ -358,50 +401,54 @@ class PaymentController extends Controller
         return $pendingDues;
     }
 
-    private function oldgetPendingContributions($user) {
-        return Group::whereIn('id', 
+    private function oldgetPendingContributions($user)
+    {
+        return Group::whereIn(
+            'id',
             GroupMember::where('user_id', $user->id)
                 ->select('group_id')
                 ->distinct()
                 ->pluck('group_id')
                 ->toArray()
         )
-        ->where('status', 1)
-        ->get()
-        ->map(function($group) use ($user) {
-            return [
-                'amount' => $group->amount,
-                'uuid' => $group->uuid,
-                'title' => $group->title,
+            ->where('status', 1)
+            ->get()
+            ->map(function ($group) use ($user) {
+                return [
+                    'amount' => $group->amount,
+                    'uuid' => $group->uuid,
+                    'title' => $group->title,
 
-            ];
-        })
-        ->toArray();
+                ];
+            })
+            ->toArray();
     }
-    
-    private function getPendingContributions($user) {
-        $groups = Group::whereIn('id', 
+
+    private function getPendingContributions($user)
+    {
+        $groups = Group::whereIn(
+            'id',
             GroupMember::where('user_id', $user->id)
                 ->select('group_id')
                 ->distinct()
                 ->pluck('group_id')
                 ->toArray()
         )
-        ->where('status', 1)
-        ->get();
+            ->where('status', 1)
+            ->get();
 
         $pendingContributions = [];
         foreach ($groups as $group) {
             $startDate = Carbon::parse($group->start_date);
             $endDate = Carbon::now();
-            
+
             if ($group->mode == "Weekly") {
                 $currentDate = $startDate->copy()->startOfWeek();
                 while ($currentDate->lte($endDate)) {
                     $weekStart = $currentDate->format('M d');
                     $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
                     $weekFormat = "$weekStart - $weekEnd";
-                    
+
                     // Check if payment exists for this week
                     $paid = Transaction::where([
                         ['user_id', $user->uuid],
@@ -410,7 +457,7 @@ class PaymentController extends Controller
                         ['uuid', $group->uuid],
                         ['week', $weekFormat]
                     ])->exists();
-                    
+
                     if (!$paid) {
                         $pendingContributions[] = [
                             'amount' => $group->amount,
@@ -428,7 +475,7 @@ class PaymentController extends Controller
                 $currentDate = $startDate->copy()->startOfMonth();
                 while ($currentDate->lte($endDate)) {
                     $monthFormat = $currentDate->format('F Y');
-                    
+
                     // Check if payment exists for this month
                     $paid = Transaction::where([
                         ['user_id', $user->uuid],
@@ -437,7 +484,7 @@ class PaymentController extends Controller
                         ['uuid', $group->uuid],
                         ['month', $monthFormat]
                     ])->exists();
-                    
+
                     if (!$paid) {
                         $pendingContributions[] = [
                             'amount' => $group->amount,
@@ -451,11 +498,39 @@ class PaymentController extends Controller
                     }
                     $currentDate->addMonth();
                 }
+            } elseif ($group->mode == "Daily") {
+                $currentDate = $startDate->copy()->startOfDay();
+                while ($currentDate->lte($endDate)) {
+                    $dayFormat = $currentDate->format('F d, Y');
+
+                    // Check if payment exists for this day
+                    $paid = Transaction::where([
+                        ['user_id', $user->uuid],
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution'],
+                        ['uuid', $group->uuid],
+                        ['day', $dayFormat]
+                    ])->exists();
+
+                    if (!$paid) {
+                        $pendingContributions[] = [
+                            'amount' => $group->amount,
+                            'uuid' => $group->uuid,
+                            'title' => $group->title,
+                            'month' => null,
+                            'week' => null,
+                            'day' => $dayFormat,
+                            'mode' => 'Daily',
+                            'period' => $dayFormat
+                        ];
+                    }
+                    $currentDate->addDay();
+                }
             }
         }
 
         // Sort by date (oldest first)
-        usort($pendingContributions, function($a, $b) {
+        usort($pendingContributions, function ($a, $b) {
             $aDate = $a['month'] ? Carbon::parse($a['month']) : Carbon::parse(explode(' - ', $a['week'])[0]);
             $bDate = $b['month'] ? Carbon::parse($b['month']) : Carbon::parse(explode(' - ', $b['week'])[0]);
             return $aDate->timestamp - $bDate->timestamp;
@@ -463,8 +538,8 @@ class PaymentController extends Controller
 
         return $pendingContributions;
     }
-    public function callback_webhook(Request $request) {
+    public function callback_webhook(Request $request)
+    {
         file_put_contents(__DIR__ . '/paycallback.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
-
     }
 }
