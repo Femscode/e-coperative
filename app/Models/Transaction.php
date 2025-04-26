@@ -29,6 +29,7 @@ class Transaction extends Model implements Auditable
         'original',
         'uuid',
         'week',
+        'day',
     ];
 
     public function user()
