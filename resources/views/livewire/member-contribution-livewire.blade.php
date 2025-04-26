@@ -43,7 +43,7 @@
                                             <a class="members-link">
 
                                                 <i class="bi bi-calendar-check text-primary mb-1"></i>
-                                                <span class="label">Mode</span>
+                                                <span class="label"><b>Mode - </b></span>
                                                 <span class="value">{{ $transaction->mode }}</span>
                                             </a>
                                         </div>
@@ -102,13 +102,15 @@
     }
 
     .contribution-card {
-        background: #fff;
+        background: linear-gradient(145deg, #f5f7ff, #ffffff);
         border-radius: 0.75rem;
         padding: 1.25rem;
         position: relative;
-        border: 1px solid #e0e0e0;
+        border: 1px solid rgba(9, 65, 104, 0.1);
         transition: all 0.3s ease;
         height: 100%;
+        box-shadow: 4px 4px 8px rgba(9, 65, 104, 0.05), 
+                    -4px -4px 8px rgba(255, 255, 255, 0.9);
     }
 
     .card-content {
