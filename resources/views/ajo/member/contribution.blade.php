@@ -24,11 +24,7 @@
     }
 
     /* Contribution Items */
-    .contribution-items {
-        /* max-height: calc(100vh - 400px);
-        overflow-y: auto; */
-        /* padding-right: 10px; */
-    }
+
 
     .contribution-item {
         transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -40,9 +36,9 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
     }
 
-    .contribution-item .form-check-input:checked ~ .form-check-label {
-    opacity: 0.7;
-}
+    .contribution-item .form-check-input:checked~.form-check-label {
+        opacity: 0.7;
+    }
 
     .contribution-item .form-check {
         margin: 0;

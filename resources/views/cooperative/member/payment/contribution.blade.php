@@ -24,17 +24,17 @@
 
     /* Contribution Items */
     .contribution-item {
-        display: flex;
-        align-items: center;
-        padding: 0.75rem;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        margin-bottom: 0.5rem;
-        transition: background 0.2s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px solid rgba(0, 0, 0, 0.1);
     }
 
     .contribution-item:hover {
-        background: #f9fafb;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .contribution-item .form-check-input:checked~.form-check-label {
+        opacity: 0.7;
     }
 
     .contribution-item .form-check {
@@ -251,44 +251,48 @@
 
                                 <div class="contribution-items">
                                     @foreach ($months as $month)
-                                    <div class="contribution-item">
-                                        <input type="hidden" value="Contribution" name="payment_type[]">
-                                        <input type="hidden" value="{{ $month['uuid'] }}" name="uuid[]">
-                                        <input type="hidden" value="{{ $month['amount'] }}" name="fee[]">
+                                    <div class="contribution-item bg-white rounded-3 shadow-sm mb-3">
+                                        <div class="p-3">
+                                            <input type="hidden" value="Contribution" name="payment_type[]">
+                                            <input type="hidden" value="{{ $month['uuid'] }}" name="uuid[]">
+                                            <input type="hidden" value="{{ $month['amount'] }}" name="fee[]">
 
-                                        <div class="form-check">
-                                            @if(!$month['paid'])
-                                            <input class="form-check-input controlledCheckbox"
-                                                data-id="{{ $month['amount'] }}"
-                                                name="check[]" type="checkbox" id="check_{{ $loop->index }}">
-                                            @endif
-                                            <label class="form-check-label" for="check_{{ $loop->index }}">
-                                                <div class="d-flex justify-content-between align-items-center w-100">
-                                                    <div>
-                                                        @php
-                                                        $displayDate = $month['period'] ?? '';
-                                                        $displayTitle = $month['title'] ?? 'General Contribution';
-                                                        @endphp
-                                                        <input type="hidden" name="month[]" value="{{ $displayDate }}">
-                                                        <h6 class="mb-1">{{ $displayDate }}</h6>
-                                                        <span class="badge bg-light text-dark">
-                                                            {{ $displayTitle }}
+                                            <div class="form-check d-flex align-items-start">
+                                                @if(!$month['paid'])
+                                                <input class="form-check-input mt-2 controlledCheckbox"
+                                                    data-id="{{ $month['amount'] }}"
+                                                    name="check[]" type="checkbox" id="check_{{ $loop->index }}">
+                                                @endif
+                                                <label class="form-check-label ms-3 w-100" for="check_{{ $loop->index }}">
+                                                    <div class="d-flex flex-column">
+                                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                                            @php
+                                                            $displayDate = $month['period'] ?? '';
+                                                            $displayTitle = $month['title'] ?? 'General Contribution';
+                                                            @endphp
+                                                            <div>
+                                                                <input type="hidden" name="month[]" value="{{ $displayDate }}">
+                                                                <h6 class="mb-1 fw-bold">{{ $displayTitle }}</h6>
+                                                                <div class="text-muted small">{{ $displayDate }}</div>
+                                                            </div>
+                                                            <div class="contribution-amount text-end">
+                                                                <input type="hidden" name="original[]" value="{{ $month['amount'] }}">
+                                                                <div class="h5 mb-0 text-primary">₦{{ number_format($month['amount']) }}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center gap-2">
                                                             @if(isset($month['mode']))
-                                                            <span class="ms-1">({{ $month['mode'] }})</span>
+                                                            <span class="badge bg-light text-dark">{{ $month['mode'] }}</span>
                                                             @endif
-                                                        </span>
-                                                        @if($month['paid'])
-                                                        <span class="badge bg-success ms-2">Paid</span>
-                                                        @else
-                                                        <span class="badge bg-warning ms-2">Pending</span>
-                                                        @endif
+                                                            @if($month['paid'])
+                                                            <span class="badge bg-success">Paid</span>
+                                                            @else
+                                                            <span class="badge bg-warning">Pending</span>
+                                                            @endif
+                                                        </div>
                                                     </div>
-                                                    <div class="contribution-amount">
-                                                        <input type="hidden" name="original[]" value="{{ $month['amount'] }}">
-                                                        <span class="amount">₦{{ number_format($month['amount'], 2) }}</span>
-                                                    </div>
-                                                </div>
-                                            </label>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                     @endforeach
