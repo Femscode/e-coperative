@@ -25,9 +25,9 @@
 
     /* Contribution Items */
     .contribution-items {
-        max-height: calc(100vh - 400px);
-        overflow-y: auto;
-        padding-right: 10px;
+        /* max-height: calc(100vh - 400px);
+        overflow-y: auto; */
+        /* padding-right: 10px; */
     }
 
     .contribution-item {
