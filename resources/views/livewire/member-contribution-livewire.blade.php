@@ -34,23 +34,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="contribution-details mb-3">
-                                            <div class="detail-item">
-                                                <i class="bi bi-calendar-check text-primary mb-1"></i>
-                                                <span class="label">Mode</span>
-                                                <span class="value">{{ $transaction->mode }}</span>
-                                            </div>
-                                            <div class="detail-item">
-                                                <i class="bi bi-arrow-down-circle text-success mb-1"></i>
-                                                <span class="label">Min</span>
-                                                <span class="value">₦{{ number_format($transaction->min) }}</span>
-                                            </div>
-                                            <div class="detail-item">
-                                                <i class="bi bi-arrow-up-circle text-danger mb-1"></i>
-                                                <span class="label">Max</span>
-                                                <span class="value">₦{{ number_format($transaction->max) }}</span>
-                                            </div>
-                                        </div>
+                                        
 
                                         <div class="members-info mb-3">
                                             <a href="{{ route('admin_group_members', $transaction->uuid) }}" class="members-link">
