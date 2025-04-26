@@ -736,14 +736,15 @@ class MemberController extends Controller
 
                         $currentDate->addWeek();
                     }
-                } elseif ($mode == "Monthly") {
+                } 
+                elseif ($mode == "Monthly") {
                     $currentDate = $startDate->copy()->startOfMonth();
                     while ($currentDate->lte($endDate)) {
                         $monthFormat = $currentDate->format('F Y');
 
-                        $isPaid = isset($transactions[$single->uuid]) &&
-                            $transactions[$single->uuid]->contains('month', $monthFormat);
-
+                        // $isPaid = isset($transactions[$single->uuid]) &&
+                        //     $transactions[$single->uuid]->contains('month', $monthFormat);
+                        $isPaid = isset($paidContributions[$single->uuid . '_' . $monthFormat]);
                         $allMonths[] = [
                             'month' => $monthFormat,
                             'period' => $monthFormat,
@@ -756,7 +757,8 @@ class MemberController extends Controller
 
                         $currentDate->addMonth();
                     }
-                } else { // Daily
+                } 
+                else { // Daily
                     $currentDate = $startDate->copy()->startOfDay();
                     while ($currentDate->lte($endDate)) {
                         $dayFormat = $currentDate->format('F d, Y');

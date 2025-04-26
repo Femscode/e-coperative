@@ -442,7 +442,37 @@ class PaymentController extends Controller
             $startDate = Carbon::parse($group->start_date);
             $endDate = Carbon::now();
 
-            if ($group->mode == "Weekly") {
+            if($group->mode == "Daily") {
+                $currentDate = $startDate->copy()->startOfDay();
+                while ($currentDate->lte($endDate)) {
+                    $dayFormat = $currentDate->format('F d, Y');
+
+                    // Check if payment exists for this day
+                    $paid = Transaction::where([
+                        ['user_id', $user->uuid],
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution'],
+                        ['uuid', $group->uuid],
+                        ['day', $dayFormat]
+                    ])->exists();
+
+                    if (!$paid) {
+                        $pendingContributions[] = [
+                            'amount' => $group->amount,
+                            'uuid' => $group->uuid,
+                            'title' => $group->title,
+                            'month' => null,
+                            'week' => null,
+                            'day' => $dayFormat,
+                            'mode' => 'Daily',
+                            'period' => $dayFormat
+                        ];
+                    }
+                    $currentDate->addDay();
+                }
+            }
+
+            elseif ($group->mode == "Weekly") {
                 $currentDate = $startDate->copy()->startOfWeek();
                 while ($currentDate->lte($endDate)) {
                     $weekStart = $currentDate->format('M d');
@@ -471,7 +501,9 @@ class PaymentController extends Controller
                     }
                     $currentDate->addWeek();
                 }
-            } elseif ($group->mode == "Monthly") {
+            } 
+            
+            elseif ($group->mode == "Monthly") {
                 $currentDate = $startDate->copy()->startOfMonth();
                 while ($currentDate->lte($endDate)) {
                     $monthFormat = $currentDate->format('F Y');
@@ -497,34 +529,6 @@ class PaymentController extends Controller
                         ];
                     }
                     $currentDate->addMonth();
-                }
-            } elseif ($group->mode == "Daily") {
-                $currentDate = $startDate->copy()->startOfDay();
-                while ($currentDate->lte($endDate)) {
-                    $dayFormat = $currentDate->format('F d, Y');
-
-                    // Check if payment exists for this day
-                    $paid = Transaction::where([
-                        ['user_id', $user->uuid],
-                        ['status', 'Success'],
-                        ['payment_type', 'Contribution'],
-                        ['uuid', $group->uuid],
-                        ['day', $dayFormat]
-                    ])->exists();
-
-                    if (!$paid) {
-                        $pendingContributions[] = [
-                            'amount' => $group->amount,
-                            'uuid' => $group->uuid,
-                            'title' => $group->title,
-                            'month' => null,
-                            'week' => null,
-                            'day' => $dayFormat,
-                            'mode' => 'Daily',
-                            'period' => $dayFormat
-                        ];
-                    }
-                    $currentDate->addDay();
                 }
             }
         }
