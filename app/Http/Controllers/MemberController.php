@@ -693,15 +693,19 @@ class MemberController extends Controller
                 ->where('status', 'Success')
                 ->where('payment_type', 'Contribution')
                 ->whereIn('uuid', $participation->pluck('uuid'))
-                ->select('uuid', 'week', 'month')
+                ->select('uuid', 'week', 'month','day')
                 ->get();
 
             // Create a lookup array for faster checking
             $paidContributions = [];
+            
+
             foreach ($transactions as $transaction) {
-                $key = $transaction->uuid . '_' . ($transaction->week ?? $transaction->month);
+                $periodValue = $transaction->day ?? $transaction->week ?? $transaction->month;
+                $key = $transaction->uuid . '_' . $periodValue;
                 $paidContributions[$key] = true;
             }
+
 
             $allMonths = [];
 

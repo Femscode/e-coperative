@@ -284,7 +284,7 @@
                                             <input type="hidden" value="Contribution" name="payment_type[]">
                                             <input type="hidden" value="{{ $month['uuid'] }}" name="uuid[]">
                                             <input type="hidden" value="{{ $month['amount'] }}" name="fee[]">
-
+                                           
                                             <div class="form-check d-flex align-items-start">
                                                 @if(!$month['paid'])
                                                 <input class="form-check-input mt-2 controlledCheckbox"
