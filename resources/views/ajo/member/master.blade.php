@@ -294,72 +294,150 @@
 
                 <div class="dropdown d-inline-block">
                     <!-- <button class="btn btn-link btn-square btnsunmoon btn-link-header" id="btn-layout-modes-dark-page"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun sun mx-auto">
-                            <circle cx="12" cy="12" r="5"></circle>
-                            <line x1="12" y1="1" x2="12" y2="3"></line>
-                            <line x1="12" y1="21" x2="12" y2="23"></line>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                            <line x1="1" y1="12" x2="3" y2="12"></line>
-                            <line x1="21" y1="12" x2="23" y2="12"></line>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                        </svg> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon moon mx-auto">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                        </svg></button> -->
-                    <button class="btn btn-link btn-square btn-icon btn-link-header dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i data-feather="bell"></i> <span class="position-absolute top-0 end-0 badge rounded-pill bg-danger p-1"><small>9+</small> <span class="visually-hidden">unread messages</span></span></button>
-                    <ul class="dropdown-menu dropdown-menu-end notification-dd sm-mi-95px">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon moon mx-auto">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg></button> -->
+                    <button class="btn btn-link btn-square btn-icon btn-link-header dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i data-feather="bell"></i> <span class="position-absolute top-0 end-0 badge rounded-pill bg-danger p-1"><small>3+</small> <span class="visually-hidden">unread messages</span></span></button>
 
-                        <li><a class="dropdown-item p-2" href="#">
-                                <div class="row gx-3">
-                                    <div class="col-auto">
-                                        <figure class="avatar avatar-40 rounded-circle bg-success"><i class="bi bi-patch-check text-white"></i></figure>
-                                    </div>
-                                    <div class="col">
-                                        <p class="mb-2 small">Your property <span class="fw-bold">#H10215</span> is published and live now.</p><span class="row"><span class="col"><span class="badge badge-light rounded-pill text-bg-primary small">System</span></span> <span class="col-auto small opacity-75">1:00 am</span></span>
-                                    </div>
-                                </div>
-                            </a></li>
-
-
-                        <li class="text-center"><button class="btn btn-link text-center" onclick="notifcationAll()">View all <i class="bi bi-arrow-right fs-14"></i></button></li>
-                    </ul>
                 </div>
-                <div class="dropdown d-inline-block"><a class="dropdown-toggle btn btn-link btn-square btn-link-header style-none no-caret px-0" id="userprofiledd" data-bs-toggle="dropdown" aria-expanded="false" role="button">
-                        <div class="row gx-0 d-inline-flex">
-                            <div class="col-auto align-self-center">
-                                <figure class="avatar avatar-28 rounded-circle coverimg align-middle"><img src="assets/img/modern-ai-image/user-6.jpg" alt="" id="userphotoonboarding2"></figure>
+                <div class="dropdown d-inline-block">
+                    <a class="user-profile-toggle" id="userProfileToggle" href="#" role="button">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; padding: 0;">
+                                <i class="bi bi-person-circle text-primary" style="font-size: 28px;"></i>
                             </div>
                         </div>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end width-300 pt-0 px-0 sm-mi-45px" aria-labelledby="userprofiledd">
-                        <div class="bg-theme-1-space rounded py-3 mb-3 dropdown-dontclose">
-                            <div class="row gx-0">
-                                <div class="col-auto px-3">
-                                    <figure class="avatar avatar-50 rounded-circle coverimg align-middle"><img src="assets/img/modern-ai-image/user-6.jpg" alt=""></figure>
+                    <ul class="user-profile-dropdown" id="userProfileDropdown">
+                        <li class="p-3 border-bottom">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style="width: 45px; height: 45px;">
+                                    <i class="bi bi-person-circle text-primary" style="font-size: 32px;"></i>
                                 </div>
-                                <div class="col align-self-center">
-                                    <p class="mb-1"><span>SyncoSave</span></p>
-                                    <p><i class="bi bi-wallet2 me-2"></i> N1100.00 <small class="opacity-50">Balance</small></p>
+                                <div>
+                                    <h6 class="mb-1">{{ Auth::user()->name }}</h6>
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="bi bi-wallet2 me-2"></i>
+                                        <span>₦{{ number_format(Auth::user()->wallet_balance, 2) }}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="px-2">
-                            <div><a class="dropdown-item" href="/member/profile"><i data-feather="user" class="avatar avatar-18 me-1"></i> My Profile</a></div>
-                            <div><a class="dropdown-item" href="#"><i data-feather="dollar-sign" class="avatar avatar-18 me-1"></i> Referral</a></div>
-                            <div><a class="dropdown-item" href="#">
-                                    <div class="row">
-                                        <div class="col"><i data-feather="gift" class="avatar avatar-18 me-1"></i> Subscription</div>
-                                        <div class="col-auto">
-                                            <p class="small text-success">Upgrade</p>
-                                        </div>
-                                        <div class="col-auto"><span class="arrow bi bi-chevron-right"></span></div>
-                                    </div>
-                                </a></div>
-                            <div><a class="dropdown-item" href="#"><i data-feather="settings" class="avatar avatar-18 me-1"></i> Account Setting</a></div>
-                            <div><a class="dropdown-item theme-red" href="/logout" onclick="return confirm('Are you sure you want to logout?');"><i data-feather="power" class="avatar avatar-18 me-1"></i> Logout</a></div>
-                        </div>
-                    </div>
+                        </li>
+                        <li><a class="profile-dropdown-item" href="/member/profile">
+                                <i class="bi bi-person me-2"></i> My Profile
+                            </a></li>
+                        <li><a class="profile-dropdown-item" href="https://wa.me/2349058744473">
+                                <i class="bi bi-phone me-2"></i> Contact us
+                            </a></li>
+                        <!-- <li><a class="profile-dropdown-item" href="/member/subscription">
+            <div class="d-flex align-items-center justify-content-between">
+                <div><i class="bi bi-star me-2"></i> Subscription</div>
+                <div class="d-flex align-items-center">
+                    <small class="text-success me-2">Upgrade</small>
+                    <i class="bi bi-chevron-right"></i>
                 </div>
+            </div>
+        </a></li> -->
+                        <li><a class="profile-dropdown-item" href="/member/profile">
+                                <i class="bi bi-gear me-2"></i> Account Setting
+                            </a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="profile-dropdown-item text-danger" href="/logout"
+                                onclick="return confirm('Are you sure you want to sign out?');">
+                                <i class="bi bi-box-arrow-right me-2"></i> Logout
+                            </a></li>
+                        <form id="logoutForm" action="/logout" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </ul>
+                </div>
+                <style>
+                    .user-profile-toggle {
+                        text-decoration: none;
+                        cursor: pointer;
+                    }
+
+                    .user-profile-dropdown {
+                        display: none;
+                        position: absolute;
+                        right: 0;
+                        top: 100%;
+                        min-width: 300px;
+                        background: white;
+                        border-radius: 8px;
+                        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+                        margin-top: 0.5rem;
+                        padding: 0;
+                        list-style: none;
+                        z-index: 1000;
+                    }
+
+                    .user-profile-dropdown.show {
+                        display: block;
+                    }
+
+                    .profile-dropdown-item {
+                        display: block;
+                        padding: 0.75rem 1rem;
+                        text-decoration: none;
+                        color: #333;
+                        transition: all 0.2s ease;
+                    }
+
+                    .profile-dropdown-item:hover {
+                        background-color: rgba(9, 65, 104, 0.1);
+                        transform: translateX(5px);
+                    }
+
+                    .text-primary {
+                        color: #094168 !important;
+                    }
+                </style>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const toggle = document.getElementById('userProfileToggle');
+                        const dropdown = document.getElementById('userProfileDropdown');
+
+                        // Toggle dropdown
+                        toggle.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            dropdown.classList.toggle('show');
+                        });
+
+                        // Close dropdown when clicking outside
+                        document.addEventListener('click', function(e) {
+                            if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
+                                dropdown.classList.remove('show');
+                            }
+                        });
+
+                        // Prevent dropdown from closing when clicking inside
+                        dropdown.addEventListener('click', function(e) {
+                            if (!e.target.classList.contains('profile-dropdown-item')) {
+                                e.stopPropagation();
+                            }
+                        });
+
+                        // Close dropdown when pressing ESC
+                        document.addEventListener('keydown', function(e) {
+                            if (e.key === 'Escape') {
+                                dropdown.classList.remove('show');
+                            }
+                        });
+                    });
+                </script>
             </div>
         </div>
     </nav>
