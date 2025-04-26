@@ -68,7 +68,7 @@ class MemberController extends Controller
         return view('cooperative.member.transactions', $data);
     }
 
-    
+
 
     public function oldoldmanualPayment()
     {
@@ -227,7 +227,7 @@ class MemberController extends Controller
             $startDate = Carbon::parse($user->created_at);
             $endDate = Carbon::now();
             $mode = $user->plan()->mode;
-            
+
             $data = [
                 'user' => $user,
                 'plan' => $user->plan(),
@@ -244,9 +244,9 @@ class MemberController extends Controller
                 ->where('status', 'Success')
                 ->where('payment_type', 'Cooperative-Dues')
                 ->get();
-                // ->groupBy(function($transaction) {
-                //     return $transaction->payment_type . '_' . ($transaction->month ?? $transaction->week);
-                // });
+            // ->groupBy(function($transaction) {
+            //     return $transaction->payment_type . '_' . ($transaction->month ?? $transaction->week);
+            // });
 
             switch ($mode) {
                 case 'Anytime':
@@ -258,7 +258,7 @@ class MemberController extends Controller
 
                     while ($currentDate->lte($endDate)) {
                         $monthFormat = $currentDate->format('F Y');
-                        
+
                         // Check payment status using the lookup array
                         $paymentExists = isset($paidTransactions['Monthly Dues_' . $monthFormat]);
 
@@ -286,7 +286,7 @@ class MemberController extends Controller
 
                         while ($loanDate->lte($endMonth)) {
                             $monthFormat = $loanDate->format('F Y');
-                            
+
                             // Check loan payment status using the lookup array
                             $loanPaymentExists = isset($paidTransactions['Repayment_' . $monthFormat]);
 
@@ -312,9 +312,9 @@ class MemberController extends Controller
                     $currentDate = $startDate->copy()->startOfWeek();
 
                     while ($currentDate->lte($endDate)) {
-                        $weekFormat = $currentDate->format('M d') . ' - ' . 
-                                    $currentDate->copy()->endOfWeek()->format('M d, Y');
-                        
+                        $weekFormat = $currentDate->format('M d') . ' - ' .
+                            $currentDate->copy()->endOfWeek()->format('M d, Y');
+
                         // Check payment status using the lookup array
                         $paymentExists = isset($paidTransactions['Weekly Dues_' . $weekFormat]);
 
@@ -341,9 +341,9 @@ class MemberController extends Controller
                         $endMonth = Carbon::parse($ongoingLoan->disbursed_date)->addMonths($payback);
 
                         while ($loanDate->lte($endMonth)) {
-                            $weekFormat = $loanDate->format('M d') . ' - ' . 
-                                        $loanDate->copy()->endOfWeek()->format('M d, Y');
-                            
+                            $weekFormat = $loanDate->format('M d') . ' - ' .
+                                $loanDate->copy()->endOfWeek()->format('M d, Y');
+
                             // Check loan payment status using the lookup array
                             $loanPaymentExists = isset($paidTransactions['Repayment_' . $weekFormat]);
 
@@ -380,8 +380,8 @@ class MemberController extends Controller
             $startDate = Carbon::parse($user->created_at);
             $endDate = Carbon::now();
             $mode = $user->plan()->mode;
-           
-            
+
+
             $data = [
                 'user' => $user,
                 'plan' => $user->plan()
@@ -392,12 +392,12 @@ class MemberController extends Controller
                 ->where('status', 'Success')
                 ->where('payment_type', 'Cooperative-Dues')
                 ->get()
-                ->mapWithKeys(function($transaction) {
+                ->mapWithKeys(function ($transaction) {
                     $key = $transaction->month ?? $transaction->week;
                     return [$key => true];
                 })
                 ->toArray();
-               
+
 
             switch ($mode) {
                 case 'Anytime':
@@ -409,7 +409,7 @@ class MemberController extends Controller
 
                     while ($currentDate->lte($endDate)) {
                         $monthFormat = $currentDate->format('F Y');
-                        
+
                         // Check if this month is paid
                         $paymentExists = isset($paidDues[$monthFormat]);
 
@@ -446,7 +446,7 @@ class MemberController extends Controller
 
                         while ($loanDate->lte($endMonth)) {
                             $monthFormat = $loanDate->format('F Y');
-                            
+
                             if ($loanDate->lte(now())) {
                                 $monthsToView[] = [
                                     'source' => '2',
@@ -470,12 +470,12 @@ class MemberController extends Controller
                     $currentDate = $startDate->copy()->startOfWeek();
 
                     while ($currentDate->lte($endDate)) {
-                        $weekFormat = $currentDate->format('M d') . ' - ' . 
-                                    $currentDate->copy()->endOfWeek()->format('M d, Y');
-                        
+                        $weekFormat = $currentDate->format('M d') . ' - ' .
+                            $currentDate->copy()->endOfWeek()->format('M d, Y');
+
                         // Check if this week is paid
                         $paymentExists = isset($paidDues[$weekFormat]);
-                        
+
                         $weeksToView[] = [
                             'source' => '1',
                             'week' => $weekFormat,
@@ -508,8 +508,8 @@ class MemberController extends Controller
                         $endMonth = Carbon::parse($ongoingLoan->disbursed_date)->addMonths($payback);
 
                         while ($loanDate->lte($endMonth)) {
-                            $weekFormat = $loanDate->format('M d') . ' - ' . 
-                                        $loanDate->copy()->endOfWeek()->format('M d, Y');
+                            $weekFormat = $loanDate->format('M d') . ' - ' .
+                                $loanDate->copy()->endOfWeek()->format('M d, Y');
 
                             if ($loanDate->lte(now())) {
                                 $weeksToView[] = [
@@ -757,8 +757,8 @@ class MemberController extends Controller
                     while ($currentDate->lte($endDate)) {
                         $dayFormat = $currentDate->format('F d, Y');
 
-                        $isPaid = isset($transactions[$single->uuid]) &&
-                            $transactions[$single->uuid]->contains('day', $dayFormat);
+                        // Check if this specific day contribution is paid
+                        $isPaid = isset($paidContributions[$single->uuid . '_' . $dayFormat]);
 
                         $allMonths[] = [
                             'day' => $dayFormat,
