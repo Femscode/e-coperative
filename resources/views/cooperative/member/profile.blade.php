@@ -114,7 +114,7 @@
                             <div class="profile-image-wrapper position-relative d-inline-block mb-4">
                                 <div class="profile-image">
                                     <img @if($user->profile_image)
-                                    src="https://e-coop.cthostel.com/ecoop_files/public/{{ $user->profile_image }}"
+                                    src="https://syncosave.com/public/{{ $user->profile_image }}"
                                     @else src="{{ asset('assets/images/avatar.png') }}"
                                     @endif
                                     data-id="profile"
@@ -457,7 +457,7 @@
     // Process form inputs helper
 
     $(document).ready(function() {
-// alert('jj')
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
