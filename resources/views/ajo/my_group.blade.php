@@ -1,53 +1,6 @@
 @extends('cooperative.member.master')
 
 @section('main')
-<!-- Payment Modal -->
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header border-0 bg-light">
-                <img src='{{url("assets/images/payaza1.gif")}}' alt='payaza' class="img-fluid" style="max-width: 140px" />
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4">
-                <form id="payaza-form">
-                    <div class='alert alert-danger bg-danger-subtle border-0'>
-                        <i class="bi bi-info-circle me-2"></i>
-                        For testing purpose, kindly use the default prefilled card details
-                    </div>
-                    <div class='text-center mb-2'>Amount To Be Paid</div>
-                    <h2 class='text-center fw-bold mb-4'>₦<span id='amountToBePaid'>0</span></h2>
-                    <div class="mb-3">
-                        <label for="card-number" class="form-label small text-muted">Card Number</label>
-                        <input type='hidden' id='order_id' />
-                        <div class="input-group">
-                            <input type="text" value='4012000033330026' id="card-number" 
-                                class="form-control form-control-lg" required placeholder="Enter Card Number">
-                            <span class="input-group-text"><i class="bi bi-credit-card"></i></span>
-                        </div>
-                    </div>
-                    <div class='row g-3'>
-                        <div class="col-md-6">
-                            <label for="expiry-date" class="form-label small text-muted">Expiry Date</label>
-                            <input value='01/39' type="text" id="expiry-date" 
-                                class="form-control form-control-lg" required placeholder="MM/YY">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="cvv" class="form-label small text-muted">CVV</label>
-                            <input type="text" value='100' id="cvv" 
-                                class="form-control form-control-lg" required placeholder="Enter CVV">
-                        </div>
-                    </div>
-                    <div class='mt-4'>
-                        <button type="submit" class="btn btn-primary btn-lg w-100">
-                            <i class="bi bi-lock me-2"></i>Pay Now
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container-fluid py-4">
@@ -55,7 +8,7 @@
         <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4">
             <div class="mb-3 mb-md-0">
                 <h3 class="fw-bold mb-1">My Contribution Circle</h3>
-                <nav aria-label="breadcrumb">
+                <!-- <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item">
                             <a href="#" class="text-decoration-none">
@@ -65,7 +18,7 @@
                         </li>
                         <li class="breadcrumb-item active">Circle</li>
                     </ol>
-                </nav>
+                </nav> -->
             </div>
             <div>
                 <button class="btn btn-primary">
