@@ -98,8 +98,8 @@ class PaymentController extends Controller
                         'status' => 'Success',
                         'payment_type' => 'Contribution',
                         'uuid' => $due['uuid'],
-                        // 'month' => $due['month'] ?? null,
-                        // 'week' => $due['week'] ?? null,
+                        'month' => $due['month'] ?? null,
+                        'week' => $due['week'] ?? null,
                         'email' => $email
                     ]);
                     $amountPaid -= $due['amount'];
@@ -137,8 +137,8 @@ class PaymentController extends Controller
                             'transaction_id' => $reference,
                             'status' => 'Success',
                             'payment_type' => 'Contribution',
-                            // 'month' => $contribution['month'] ?? null,
-                            // 'week' => $contribution['week'] ?? null,
+                            'month' => $contribution['month'] ?? null,
+                            'week' => $contribution['week'] ?? null,
                             'uuid' => $contribution['uuid'],
                             'email' => $email
                         ]);
@@ -358,7 +358,7 @@ class PaymentController extends Controller
         return $pendingDues;
     }
 
-    private function getPendingContributions($user) {
+    private function oldgetPendingContributions($user) {
         return Group::whereIn('id', 
             GroupMember::where('user_id', $user->id)
                 ->select('group_id')
@@ -378,9 +378,8 @@ class PaymentController extends Controller
         })
         ->toArray();
     }
-    private function newPendingContributions($user) {
-        $startDate = Carbon::parse($user->created_at);
-        $endDate = Carbon::now();
+    
+    private function getPendingContributions($user) {
         $groups = Group::whereIn('id', 
             GroupMember::where('user_id', $user->id)
                 ->select('group_id')
@@ -393,43 +392,17 @@ class PaymentController extends Controller
 
         $pendingContributions = [];
         foreach ($groups as $group) {
-            $currentDate = $startDate->copy();
+            $startDate = Carbon::parse($group->start_date);
+            $endDate = Carbon::now();
             
-            if ($group->payment_mode == 'Monthly') {
-                $currentDate = $currentDate->startOfMonth();
-                while ($currentDate->lte($endDate)) {
-                    $month = $currentDate->format('F Y');
-                    $timestamp = $currentDate->timestamp;
-                    
-                    $paid = Transaction::where([
-                        ['user_id', $user->uuid],
-                        ['status', 'Success'],
-                        ['payment_type', 'Contribution'],
-                        ['uuid', $group->uuid],
-                        ['month', $month]
-                    ])->exists();
-                    
-                    if (!$paid) {
-                        $pendingContributions[] = [
-                            'amount' => $group->amount,
-                            'uuid' => $group->uuid,
-                            'title' => $group->title,
-                            'month' => $month,
-                            'week' => null,
-                            'period_type' => 'month',
-                            'due_date' => $timestamp
-                        ];
-                    }
-                    $currentDate->addMonth();
-                }
-            } elseif ($group->payment_mode == 'Weekly') {
-                $currentDate = $currentDate->startOfWeek();
+            if ($group->mode == "Weekly") {
+                $currentDate = $startDate->copy()->startOfWeek();
                 while ($currentDate->lte($endDate)) {
                     $weekStart = $currentDate->format('M d');
                     $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
                     $weekFormat = "$weekStart - $weekEnd";
-                    $timestamp = $currentDate->timestamp;
                     
+                    // Check if payment exists for this week
                     $paid = Transaction::where([
                         ['user_id', $user->uuid],
                         ['status', 'Success'],
@@ -443,25 +416,53 @@ class PaymentController extends Controller
                             'amount' => $group->amount,
                             'uuid' => $group->uuid,
                             'title' => $group->title,
-                            'month' => null,
                             'week' => $weekFormat,
-                            'period_type' => 'week',
-                            'due_date' => $timestamp
+                            'month' => null,
+                            'mode' => 'Weekly',
+                            'period' => $weekFormat
                         ];
                     }
                     $currentDate->addWeek();
                 }
+            } elseif ($group->mode == "Monthly") {
+                $currentDate = $startDate->copy()->startOfMonth();
+                while ($currentDate->lte($endDate)) {
+                    $monthFormat = $currentDate->format('F Y');
+                    
+                    // Check if payment exists for this month
+                    $paid = Transaction::where([
+                        ['user_id', $user->uuid],
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution'],
+                        ['uuid', $group->uuid],
+                        ['month', $monthFormat]
+                    ])->exists();
+                    
+                    if (!$paid) {
+                        $pendingContributions[] = [
+                            'amount' => $group->amount,
+                            'uuid' => $group->uuid,
+                            'title' => $group->title,
+                            'month' => $monthFormat,
+                            'week' => null,
+                            'mode' => 'Monthly',
+                            'period' => $monthFormat
+                        ];
+                    }
+                    $currentDate->addMonth();
+                }
             }
         }
 
-        // Sort by due date (oldest first)
+        // Sort by date (oldest first)
         usort($pendingContributions, function($a, $b) {
-            return $a['due_date'] - $b['due_date'];
+            $aDate = $a['month'] ? Carbon::parse($a['month']) : Carbon::parse(explode(' - ', $a['week'])[0]);
+            $bDate = $b['month'] ? Carbon::parse($b['month']) : Carbon::parse(explode(' - ', $b['week'])[0]);
+            return $aDate->timestamp - $bDate->timestamp;
         });
 
         return $pendingContributions;
     }
-
     public function callback_webhook(Request $request) {
         file_put_contents(__DIR__ . '/paycallback.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
 

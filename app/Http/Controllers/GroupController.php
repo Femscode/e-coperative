@@ -112,6 +112,7 @@ class GroupController extends Controller
     }
 
     public function contributionPayment(){
+     
         $groups = GroupMember::where('user_id', Auth::user()->id)
             ->select('group_id')
             ->distinct()
