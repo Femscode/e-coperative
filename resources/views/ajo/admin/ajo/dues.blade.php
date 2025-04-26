@@ -492,7 +492,7 @@
                                             @elseif(isset($month['month']))
                                             {{ $month['month'] }}
                                             @else
-                                            {{ $month['period'] ?? 'N/A' }}
+                                            {{ $month['day'] ?? 'N/A' }}
                                             @endif
                                         </div>
                                         <div class="due-type">
