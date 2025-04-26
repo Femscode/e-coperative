@@ -34,12 +34,17 @@
                                             </div>
                                         </div>
 
-                                        
 
                                         <div class="members-info mb-3">
                                             <a href="{{ route('admin_group_members', $transaction->uuid) }}" class="members-link">
                                                 <i class="bi bi-people"></i>
                                                 <span>{{ $transaction->members->count() }} members joined</span>
+                                            </a>
+                                            <a class="members-link">
+
+                                                <i class="bi bi-calendar-check text-primary mb-1"></i>
+                                                <span class="label">Mode</span>
+                                                <span class="value">{{ $transaction->mode }}</span>
                                             </a>
                                         </div>
 
@@ -218,7 +223,7 @@
         align-items: center;
         gap: 0.5rem;
     }
-  
+
 
     .copy-btn {
         background: #e8f0fe;
