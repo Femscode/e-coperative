@@ -473,6 +473,7 @@
                             @foreach ($months as $month)
                             <div class="col-xl-3 col-lg-4 col-md-6">
                                 <div class="due-card">
+                                    @if(!isset($month['paid']) || !$month['paid'])
                                     <div class="form-check">
                                         <input class="form-check-input controlledCheckbox"
                                             data-id="{{ $month['amount'] }}"
@@ -482,8 +483,14 @@
                                     <input type="hidden" value="Contribution" name="payment_type[]">
                                     <input type="hidden" value="{{ $month['uuid'] }}" name="uuid[]">
                                     <input type="hidden" value="{{ $month['amount'] }}" name="fee[]">
-                                    <input type="hidden" name="month[]"
-                                        value="{{ $month['week'] ?? $month['month'] ?? $month['period'] ?? 'N/A' }}">
+                                    @if(isset($month['week']))
+                                    <input type="hidden" name="week[]" value="{{ $month['week'] }}">
+                                    @elseif(isset($month['month']))
+                                    <input type="hidden" name="month[]" value="{{ $month['month'] }}">
+                                    @else
+                                    <input type="hidden" name="day[]" value="{{ $month['period'] }}">
+                                    @endif
+                                    @endif
 
                                     <div class="due-card-body">
                                         <div class="due-month">
@@ -492,13 +499,18 @@
                                             @elseif(isset($month['month']))
                                             {{ $month['month'] }}
                                             @else
-                                            {{ $month['day'] ?? 'N/A' }}
+                                            {{ $month['period'] ?? 'N/A' }}
                                             @endif
                                         </div>
                                         <div class="due-type">
                                             <span class="badge bg-light text-dark rounded-pill px-3">
                                                 {{ $month['title'] ?? 'General Contribution' }}
                                             </span>
+                                            @if(isset($month['paid']) && $month['paid'])
+                                            <span class="badge bg-success ms-2">Paid</span>
+                                            @else
+                                            <span class="badge bg-warning ms-2">Pending</span>
+                                            @endif
                                         </div>
                                         <div class="due-amount">
                                             <span class="amount-label">Amount Due</span>
@@ -600,7 +612,7 @@
             },
             success: function(e) {
                 $('.preloader').hide();
-                $("#amountToBePaid").html(new Intl.NumberFormat('en-NG', { 
+                $("#amountToBePaid").html(new Intl.NumberFormat('en-NG', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                 }).format(totalAmount));
