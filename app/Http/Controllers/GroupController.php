@@ -26,92 +26,9 @@ class GroupController extends Controller
         return view('ajo.admin.ajo.group');
     }
 
-    public function oldcontributionPayment(){
-        $groups = GroupMember::where('user_id', Auth::user()->id)->select('group_id')->distinct()->pluck('group_id')->toArray();
-        $participation = Group::whereIn('id', $groups)->where('status', 1)->get();
-       
-        $months = [];
-        foreach($participation as $single){
-            $startDate = Carbon::parse($single->start_date);
-            $endDate = Carbon::now();
-            // dd($startDate);
-            $mode = $single->mode;
-            if($mode == "Weekly"){
-                $currentDate = $startDate->copy()->startOfWeek();  // Start at the beginning of the week
-                $weeksToView = [];
-        
-                while ($currentDate->lte($endDate)) {
-                    $weekStart = $currentDate->format('M d');
-                    $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
-                    $weeksToView[] = "$weekStart - $weekEnd";
-                    $currentDate->addWeek();  // Move to the next week
-                }
-                // dd("here");
-                // Assuming your `Transaction` records store weeks in a similar format as above (or adjust the format as needed)
-                $myWeeks = Transaction::where('user_id', auth()->user()->id)
-                    ->where([
-                        ['status', 'Success'],
-                        ['payment_type', 'Contribution']
-                    ])
-                    ->pluck('month')  // Change 'month' to 'week' if you have a week field
-                    ->toArray();
-        
-                $weeks = [];
-                // dd()
-                foreach ($weeksToView as $thisWeek) {
-                    
-                    $check = in_array($thisWeek, $myWeeks);
-                    if (!$check) {
-                        $months[] = ['source' => '1', 'week' => $thisWeek, "amount" => $single->amount, 'uuid' => $single->uuid, 'title' => $single->title];
-                    }
-                }
-            }elseif ($mode == "Monthly") {
-                $monthsToView = [];
-                $currentDate = $startDate->copy()->startOfMonth();
-                // dd($currentDate);
-                while ($currentDate->lte($endDate) && ($currentDate->year < $endDate->year || ($currentDate->year == $endDate->year && $currentDate->month <= $endDate->month))) {
-                    $monthsToView[] = $currentDate->format('F Y');
-                    $currentDate->addMonth();
-                }
-                // dd($monthsToView);
-                $myMonths = Transaction::where('user_id',  auth()->user()->id)->where([['status', 'Success'],['payment_type','Contribution']])->pluck('month')->toArray();
-                // dd($monthsToView, $myMonths);
-                $months = [];
-                foreach ($monthsToView as $thisMonth) {
-                    $check =  in_array($thisMonth, $myMonths);
-                    if ($check == false) {
-                        $months[] = ['source' => '1', 'month' => $thisMonth, "amount" => $single->amount, 'uuid' => $single->uuid, 'title' => $single->title];
-                    }
-                }
-            }else{
-                $monthsToView = [];
-                $currentDate = $startDate->copy()->startOfDay();
-                // dd($currentDate);
-                while ($currentDate->lte($endDate) && ($currentDate->year < $endDate->year || ($currentDate->year == $endDate->year && $currentDate->month <= $endDate->month))) {
-                    $monthsToView[] = $currentDate->format('F Y');
-                    $currentDate->addDay();
-                }
-                // dd($monthsToView);
-                $myMonths = Transaction::where('user_id',  auth()->user()->id)->where([['status', 'Success'],['payment_type','Contribution']])->pluck('month')->toArray();
-                // dd($monthsToView, $myMonths);
-                $months = [];
-                foreach ($monthsToView as $thisMonth) {
-                    $check =  in_array($thisMonth, $myMonths);
-                    if ($check == false) {
-                        $months[] = ['source' => '1', 'month' => $thisMonth, "amount" => $single->amount, 'uuid' => $single->uuid, 'title' => $single->title];
-                    }
-                }
-            }
 
-        }
-        $data['months'] = $months;
-        $data['user'] = Auth::user();
-       
-        
-        return view ('ajo.admin.ajo.dues', $data);  
-    }
 
-    public function contributionPayment()
+    public function oldcontributionPayment()
     {
 
         $groups = GroupMember::where('user_id', Auth::user()->id)
@@ -231,25 +148,150 @@ class GroupController extends Controller
         ]);
     }
 
+    public function contributionPayment()
+    {
 
-    public function circleMembers($uuid){
+        $user = Auth::user();
+        if (!$user) {
+
+            return redirect()->route('login');
+        }
+
+        $data['user'] = $user;
+
+        // Fetch groups the user is part of
+        $groupIds = GroupMember::where('user_id', $user->id)
+            ->distinct()
+            ->pluck('group_id')
+            ->toArray();
+
+        $participation = Group::whereIn('id', $groupIds)
+            ->where('status', 1)
+            ->get();
+
+
+
+        // Fetch all relevant transactions
+        // Fetch all paid contributions
+        $transactions = Transaction::where('user_id', $user->uuid)
+            ->where('status', 'Success')
+            ->where('payment_type', 'Contribution')
+            ->whereIn('uuid', $participation->pluck('uuid'))
+            ->select('uuid', 'week', 'month', 'day')
+            ->get();
+
+        // Create a lookup array for faster checking
+        $paidContributions = [];
+
+
+        foreach ($transactions as $transaction) {
+            $periodValue = $transaction->day ?? $transaction->week ?? $transaction->month;
+            $key = $transaction->uuid . '_' . $periodValue;
+            $paidContributions[$key] = true;
+        }
+
+
+        $allMonths = [];
+
+        foreach ($participation as $single) {
+            $startDate = Carbon::parse($single->start_date);
+            $endDate = Carbon::now();
+            $mode = $single->mode;
+
+            if ($mode == "Weekly") {
+                $currentDate = $startDate->copy()->startOfWeek();
+                while ($currentDate->lte($endDate)) {
+                    $weekStart = $currentDate->format('M d');
+                    $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
+                    $weekFormat = "$weekStart - $weekEnd";
+
+                    // Check if this specific contribution is paid
+                    $isPaid = isset($paidContributions[$single->uuid . '_' . $weekFormat]);
+
+                    $allMonths[] = [
+                        'week' => $weekFormat,
+                        'period' => $weekFormat,
+                        'amount' => $single->amount,
+                        'uuid' => $single->uuid,
+                        'title' => $single->title,
+                        'mode' => $mode,
+                        'paid' => $isPaid
+                    ];
+
+                    $currentDate->addWeek();
+                }
+            } elseif ($mode == "Monthly") {
+                $currentDate = $startDate->copy()->startOfMonth();
+                while ($currentDate->lte($endDate)) {
+                    $monthFormat = $currentDate->format('F Y');
+
+                    // $isPaid = isset($transactions[$single->uuid]) &&
+                    //     $transactions[$single->uuid]->contains('month', $monthFormat);
+                    $isPaid = isset($paidContributions[$single->uuid . '_' . $monthFormat]);
+                    $allMonths[] = [
+                        'month' => $monthFormat,
+                        'period' => $monthFormat,
+                        'amount' => $single->amount,
+                        'uuid' => $single->uuid,
+                        'title' => $single->title,
+                        'mode' => $mode,
+                        'paid' => $isPaid
+                    ];
+
+                    $currentDate->addMonth();
+                }
+            } else { // Daily
+                $currentDate = $startDate->copy()->startOfDay();
+                while ($currentDate->lte($endDate)) {
+                    $dayFormat = $currentDate->format('F d, Y');
+
+                    // Check if this specific day contribution is paid
+                    $isPaid = isset($paidContributions[$single->uuid . '_' . $dayFormat]);
+
+                    $allMonths[] = [
+                        'day' => $dayFormat,
+                        'period' => $dayFormat,
+                        'amount' => $single->amount,
+                        'uuid' => $single->uuid,
+                        'title' => $single->title,
+                        'mode' => $mode,
+                        'paid' => $isPaid
+                    ];
+
+                    $currentDate->addDay();
+                }
+            }
+        }
+
+
+        $data['months'] = $allMonths;
+
+        // Render view based on company type
+
+        return view('ajo.admin.ajo.dues', $data);
+    }
+
+    public function circleMembers($uuid)
+    {
         $data['group'] = $group = Group::where('uuid', $uuid)->first();
         $data['id'] = $uuid;
-        if(!$group){
+        if (!$group) {
             return redirect()->back();
         }
         return view('ajo.circle_members', $data);
     }
 
-    public function view($id){
+    public function view($id)
+    {
         // dd($id);
-        $data['id'] =$id;
-        return view('ajo.admin.ajo.group_view',$data);
+        $data['id'] = $id;
+        return view('ajo.admin.ajo.group_view', $data);
     }
-    public function cDues($id){
-       
-        $data['id'] =$id;
-        return view('ajo.admin.ajo.pending',$data);
+    public function cDues($id)
+    {
+
+        $data['id'] = $id;
+        return view('ajo.admin.ajo.pending', $data);
     }
 
     /**
@@ -262,8 +304,8 @@ class GroupController extends Controller
         try {
             $input = $request->all();
             $input['uuid'] = $uuid = rand();
-            $gen = generate_slug_with_uuid_suffix($request->title,$uuid);
-            $input['link'] = url('/'). '/join/contribution/' ."join"."-".$gen;
+            $gen = generate_slug_with_uuid_suffix($request->title, $uuid);
+            $input['link'] = url('/') . '/join/contribution/' . "join" . "-" . $gen;
             // dd($input,);
             $input['amount'] = str_replace(',', '', $input['amount']);
             Group::create($input);
@@ -272,7 +314,6 @@ class GroupController extends Controller
                 'Group saved successfully!',
                 success_status_code(),
             );
-
         } catch (\Exception $exception) {
             return api_request_response(
                 'error',
@@ -282,15 +323,16 @@ class GroupController extends Controller
         }
     }
 
-    public function approve(Request $request){
-      
+    public function approve(Request $request)
+    {
+
         try {
             $id = $request->id;
             $user = Auth::user();
-            $group =Group::find($id);
+            $group = Group::find($id);
             //verify if user is already part of this group
             $gMember = GroupMember::where('group_id', $group->id)->where('user_id', $user->id)->first();
-            if($gMember){
+            if ($gMember) {
                 return api_request_response(
                     'error',
                     'You are already a member of this group!',
@@ -298,14 +340,14 @@ class GroupController extends Controller
                 );
             }
             $countNumber = $group->members->count();
-            if($countNumber >= $group->max){
+            if ($countNumber >= $group->max) {
                 return api_request_response(
                     'error',
                     'Maximum member reached !',
                     success_status_code()
                 );
             }
-            if($group->start_date){
+            if ($group->start_date) {
                 return api_request_response(
                     'error',
                     'Contribution already ongoing !',
@@ -315,9 +357,9 @@ class GroupController extends Controller
             $number = $countNumber + 1;
 
             $application = GroupMember::create([
-                "group_id" =>  $group->id, 
+                "group_id" =>  $group->id,
                 "user_id" =>  $user->id,
-                "turn" => $number, 
+                "turn" => $number,
             ]);
 
             $message = "Welcome Onboard!";
@@ -327,7 +369,6 @@ class GroupController extends Controller
                 $message,
                 success_status_code(),
             );
-
         } catch (\Exception $exception) {
             return api_request_response(
                 'error',
@@ -337,14 +378,15 @@ class GroupController extends Controller
         }
     }
 
-    public function start(Request $request){
+    public function start(Request $request)
+    {
         try {
             $id = $request->id;
             $user = Auth::user();
-            $group =Group::find($id);
+            $group = Group::find($id);
             //verify if user is already part of this group
             $gMember = GroupMember::where('group_id', $group->id)->where('user_id', $user->id)->first();
-            if($group->start_date){
+            if ($group->start_date) {
                 return api_request_response(
                     'error',
                     'Contribution is already in progress!',
@@ -352,7 +394,7 @@ class GroupController extends Controller
                 );
             }
             $countNumber = $group->members->count();
-            if($countNumber < 1){
+            if ($countNumber < 1) {
                 return api_request_response(
                     'error',
                     'No member on this contribution yet !',
@@ -368,7 +410,7 @@ class GroupController extends Controller
                     // Count today, so we subtract 1
                     $endDate = (clone $use)->addDays($countNumber - 1);
                     break;
-            
+
                 case 'Weekly':
                     if ($countNumber == 1) {
                         // Ends this week's Saturday
@@ -378,7 +420,7 @@ class GroupController extends Controller
                         $endDate = (clone $use)->addWeeks($countNumber - 1)->endOfWeek(Carbon::SATURDAY);
                     }
                     break;
-            
+
                 case 'Monthly':
                     if ($countNumber == 1) {
                         // Ends this month's last day
@@ -388,12 +430,12 @@ class GroupController extends Controller
                         $endDate = (clone $use)->addMonths($countNumber - 1)->endOfMonth();
                     }
                     break;
-            
-                // default:
-                //     $endDate = $startDate; // Fallback (should not happen)
+
+                    // default:
+                    //     $endDate = $startDate; // Fallback (should not happen)
             }
             // dd($endDate,$startDate);
-            $group->update(['status' => 1,'end_date' => $endDate, "start_date" => $startDate]);
+            $group->update(['status' => 1, 'end_date' => $endDate, "start_date" => $startDate]);
             $message = "Hurray! Contribution now in progress mode !";
 
             return api_request_response(
@@ -401,7 +443,6 @@ class GroupController extends Controller
                 $message,
                 success_status_code(),
             );
-
         } catch (\Exception $exception) {
             return api_request_response(
                 'error',
@@ -411,16 +452,18 @@ class GroupController extends Controller
         }
     }
 
-    public function contribution(){
+    public function contribution()
+    {
         $data['user'] = $user = Auth::user();
-        if($user->company->type == 2) {
+        if ($user->company->type == 2) {
 
             return view('ajo.member.my_group', $data);
         }
         return view('ajo.my_group', $data);
     }
 
-    public function disburseContribution(Request $request){
+    public function disburseContribution(Request $request)
+    {
         try {
             $apiSecret = env('PAYSTACK_DISBURSE_SECRET_KEY');
             $client = new Client();
@@ -432,7 +475,7 @@ class GroupController extends Controller
             $number = $user->account_number;
             $group = Group::find($loanDetails->group_id);
             $totalM = GroupMember::where('group_id', $group->id)->count();
-            if(!$code){
+            if (!$code) {
                 return api_request_response(
                     'error',
                     "Member hasn't completed bank info to receive loan!",
@@ -473,26 +516,26 @@ class GroupController extends Controller
             //     ]);
             //     $responseData = json_decode($response->getBody());
             //     if ($responseData->status) {
-                    // Transfer initiated successfully
-                    $loanDetails->update(['packed' => 1]);
-                    // You can save the transfer reference and status in your database for tracking
-                    return api_request_response(
-                        'ok',
-                        'Transfer initiated successfully!',
-                        success_status_code(),
-                    );
-                    // return redirect()->back()->with('success', 'Transfer initiated successfully');
-                // } else {
-                //     // Handle the error
-                //     return api_request_response(
-                //         'error',
-                //         $responseData->message,
-                //         bad_response_status_code()
-                //     );
-                //     // return redirect()->back()->with('error', $transfer->data->message);
-                // }
+            // Transfer initiated successfully
+            $loanDetails->update(['packed' => 1]);
+            // You can save the transfer reference and status in your database for tracking
+            return api_request_response(
+                'ok',
+                'Transfer initiated successfully!',
+                success_status_code(),
+            );
+            // return redirect()->back()->with('success', 'Transfer initiated successfully');
+            // } else {
+            //     // Handle the error
+            //     return api_request_response(
+            //         'error',
+            //         $responseData->message,
+            //         bad_response_status_code()
+            //     );
+            //     // return redirect()->back()->with('error', $transfer->data->message);
+            // }
 
-                // return redirect()->back()->with('success', 'Recipient created successfully');
+            // return redirect()->back()->with('success', 'Recipient created successfully');
             // } else {
             //     // Handle the error
             //     return api_request_response(
