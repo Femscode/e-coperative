@@ -316,9 +316,15 @@
                                              <h6 class="dropdown-header">Welcome {{$user->name ?? auth()->user()->name }}!</h6>
                                         </li>
                                         <li>
-                                             <a class="dropdown-item d-flex align-items-center" href="/admin/faq">
+                                             <a class="dropdown-item d-flex align-items-center" href="/my-profile">
                                                   <i class="bx bx-user-circle text-muted fs-18 me-2"></i>
-                                                  <span>F.A.Q</span>
+                                                  <span>Profile</span>
+                                             </a>
+                                        </li>
+                                        <li>
+                                             <a class="dropdown-item d-flex align-items-center" href="/admin/my-transactions">
+                                                  <i class="bx bx-table text-muted fs-18 me-2"></i>
+                                                  <span>My Transactions</span>
                                              </a>
                                         </li>
                                         <li>

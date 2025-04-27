@@ -72,6 +72,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::group(['middleware' => 'admin'], function () {
             Route::group(['prefix' => 'admin'], function () {
                 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('admin-home');
+                Route::get('/all-transactions', [App\Http\Controllers\HomeController::class, 'alltransactions'])->name('all-transactions');
+                Route::get('/my-transactions', [App\Http\Controllers\HomeController::class, 'mytransactions'])->name('my-transactions');
                 Route::get('/download_member_template', [App\Http\Controllers\UserController::class, 'download_member_template'])->name('download_member_template');
 
                 Route::group(['prefix' => 'group'], function () {

@@ -281,7 +281,14 @@ class ProfileController extends Controller
 
     public function show()
     {
-        $user = Auth::user();
+        $data['user'] = $user = Auth::user();
+       
+        if($user->plan()->type == 2) {
+
+            return view('cooperative.admin.ajo-profile', $data);
+
+        }
+
         return view('profile.show', compact('user'));
     }
     public function updateProfile(Request $request)

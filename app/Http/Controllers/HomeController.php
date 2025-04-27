@@ -36,7 +36,8 @@ class HomeController extends Controller
         
         $data['users'] = User::where('company_id',$company->uuid)->get();
         $transacts = Transaction::where('company_id',$company->uuid)->where('status','Success');
-        $data['transactions'] = $transacts->get();
+        $data['transactions'] = $transacts->latest()->take(10)->get();
+        $data['all_transactions'] = $transacts->sum('amount');
         $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->where('original','!=',0)->paginate(10);
         $data['plan'] = $company;//Company::find(auth()->user()->company_id);
         $data['loans'] = MemberLoan::where('company_id', $company->id)->get();
@@ -46,6 +47,40 @@ class HomeController extends Controller
             return view('cooperative.admin.index', $data);
         } else {
             return view('cooperative.admin.ajo-index', $data);
+
+        }
+    }
+    public function alltransactions()
+    {
+        $data['user'] = $user = Auth::user();
+       
+        $data['now'] = Carbon::now();
+        $company = Company::where('uuid',$user->company_id)->first();
+        $transacts = Transaction::where('company_id',$company->uuid)->where('status','Success');
+        $data['transactions'] = $transacts->latest()->paginate(20);
+       
+        if($company->type == 1) {
+
+            return view('cooperative.admin.index', $data);
+        } else {
+            return view('cooperative.admin.ajo-all-transactions', $data);
+
+        }
+    }
+    public function mytransactions()
+    {
+        $data['user'] = $user = Auth::user();
+       
+        $data['now'] = Carbon::now();
+        $company = Company::where('uuid',$user->company_id)->first();
+        $transacts = Transaction::where('company_id',$company->uuid)->where('user_id', $user->uuid)->where('status','Success');
+        $data['transactions'] = $transacts->latest()->paginate(20);
+       
+        if($company->type == 1) {
+
+            return view('cooperative.admin.index', $data);
+        } else {
+            return view('cooperative.admin.ajo-my-transactions', $data);
 
         }
     }

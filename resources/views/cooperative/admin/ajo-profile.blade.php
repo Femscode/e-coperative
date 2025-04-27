@@ -1,6 +1,6 @@
-@extends('cooperative.member.master')
-
+@extends('cooperative.admin.master')
 @section('header')
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
 <link rel="stylesheet" href="{{ asset('assets/libs/swiper/swiper-bundle.min.css') }}">
 
@@ -98,7 +98,7 @@
 </style>
 @endsection
 
-@section('main')
+@section('content')
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container mt-4" id="main-content">
         <h2>My Profile</h2>
@@ -440,4 +440,5 @@
         });
     });
 </script>
+
 @endsection

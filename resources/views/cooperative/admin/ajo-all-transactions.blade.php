@@ -1,66 +1,7 @@
 @extends('cooperative.admin.master')
 @section('header')
-<style>
-    .referral-code-container {
-        position: relative;
-        background: #f8f9fa;
-        border-radius: 8px;
-        padding: 15px;
-        margin: 15px 0;
-        border: 1px solid #e9ecef;
-    }
 
-    .referral-code-container h3 {
-        font-size: 14px;
-        margin: 0;
-        color: #094168;
-        word-break: break-all;
-    }
 
-    .copy-icon2 {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        color: #094168;
-        font-size: 18px;
-        transition: all 0.3s ease;
-    }
-
-    .copy-icon2:hover {
-        color: #073553;
-    }
-
-    .ref-code {
-        font-weight: normal;
-        color: #6c757d;
-    }
-</style>
-
-<script>
-function copyRefLink() {
-    const linkText = document.getElementById('ref_link').value;
-    navigator.clipboard.writeText(linkText).then(() => {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-        Toast.fire({
-            icon: 'success',
-            title: 'Link copied to clipboard'
-        });
-    });
-}
-</script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endsection
 
 @section('content')
@@ -70,137 +11,7 @@ function copyRefLink() {
      <div class="row">
           <div class="col-xxl-12">
 
-               <h4>Hi, {{ $user->name }}</h4>
-               <div class="row">
-
-                    <div class='col-md-8'>
-                         <div class="row">
-                              <div class="col">
-                                   <div class="card">
-                                        <div class="card-body overflow-hidden position-relative">
-
-                                             <div class="d-flex align-items-center gap-2">
-                                                  <h1 class="mb-0 fw-bold mt-3 mb-1" id="amount-display">₦{{ number_format($all_transactions,2) }}</h1>
-                                                  <button class="btn btn-link text-muted p-0 mt-3" id="toggle-amount">
-                                                       <i class="ti ti-eye fs-20"></i>
-                                                  </button>
-                                             </div>
-                                             <a href='/admin/transaction/all' class="text-muted">Total Revenue</a>
-                                             <i class="bx bx-building-house widget-icon"></i>
-                                        </div> <!-- end card-body -->
-                                   </div> <!-- end card -->
-                              </div> <!-- end col -->
-                              <!-- end col -->
-                         </div>
-
-
-
-                         <div class="row mt-4 mb-4">
-
-                              <div class="col-12">
-                                   <div class="d-flex justify-content-center gap-4">
-
-                                        <a href="/admin/transaction/repayment" class="text-decoration-none">
-                                             <div class="circle-box text-center">
-                                                  <div class="circle-icon">
-                                                       <iconify-icon icon="solar:clock-circle-broken" class="fs-32"></iconify-icon>
-                                                  </div>
-                                                  <h6 class="mt-2 mb-0">Payment History</h6>
-                                             </div>
-                                        </a>
-
-                                        <a href="/admin/group" class="text-decoration-none">
-                                             <div class="circle-box text-center">
-                                                  <div class="circle-icon">
-                                                       <iconify-icon icon="solar:inbox-line-broken" class="fs-32"></iconify-icon>
-
-                                                  </div>
-                                                  <h6 class="mt-2 mb-0">Create New Group</h6>
-                                             </div>
-                                        </a>
-
-                                        <a href="/admin/transaction/monthly_dues" class="text-decoration-none">
-                                             <div class="circle-box text-center">
-                                                  <div class="circle-icon">
-                                                       <iconify-icon icon="solar:clipboard-check-broken" class="fs-32"></iconify-icon>
-                                                  </div>
-                                                  <h6 class="mt-2 mb-0">My Dues</h6>
-                                             </div>
-                                        </a>
-
-                                       
-                                   </div>
-                              </div>
-
-                         </div>
-
-
-                    </div>
-                    <div class='col-md-4'>
-
-                         <div class="col">
-                              <div class="card">
-                                   <div class="card-body text-center">
-                                   <h4 class="card-title mb-2">Share your Synco Link</h4>
-                                        <p class="text-muted">Copy the URL below and share it with your members:</p>
-                                      
-                                        <div class="referral-code-container">
-                                             <i class="fas fa-copy copy-icon2" onclick="copyRefLink()"></i>
-                                             <h3>Synco Link: <span class="ref-code">https://syncosave.com/signup/{{ $plan->slug }}</span><a href="#!" onclick="copyRefLink()" class="ms-auto fs-3 text-primary"><i class="copy-link ti ti-copy"></i></a></h3>
-                                             <input type="hidden" id="ref_link" value="https://syncosave.com/signup/{{ $plan->slug }}" />
-                                        </div>
-                                        <ul class="list-inline d-flex gap-1 my-3 align-items-center justify-content-center">
-                                             <li class="list-inline-item">
-                                                  <a href="https://www.facebook.com/sharer/sharer.php?u=https://syncosave.com/{{ $plan->slug }}&quote=Dear members, kindly join our synco group via this link"
-                                                       target="_blank"
-                                                       class="btn btn-soft-primary avatar-sm d-flex align-items-center justify-content-center fs-20">
-                                                       <i class="bx bxl-facebook"></i>
-                                                  </a>
-                                             </li>
-
-                                             <li class="list-inline-item">
-                                                  <a href="https://www.instagram.com/share?url=https://syncosave.com/{{ $plan->slug }}"
-                                                       target="_blank"
-                                                       class="btn btn-soft-danger avatar-sm d-flex align-items-center justify-content-center fs-20">
-                                                       <i class="bx bxl-instagram"></i>
-                                                  </a>
-                                             </li>
-
-                                             <li class="list-inline-item">
-                                                  <a href="https://twitter.com/intent/tweet?url=https://syncosave.com/{{ $plan->slug }}&text=Dear members, kindly join our synco group via this link"
-                                                       target="_blank"
-                                                       class="btn btn-soft-info avatar-sm d-flex align-items-center justify-content-center fs-20">
-                                                       <i class="bx bxl-twitter"></i>
-                                                  </a>
-                                             </li>
-
-                                             <li class="list-inline-item">
-                                                  <a href="https://api.whatsapp.com/send?text=Dear members, kindly join our synco group via this link: https://syncosave.com/{{ $plan->slug }}"
-                                                       target="_blank"
-                                                       class="btn btn-soft-success avatar-sm d-flex align-items-center justify-content-center fs-20">
-                                                       <i class="bx bxl-whatsapp"></i>
-                                                  </a>
-                                             </li>
-
-                                             <li class="list-inline-item">
-                                                  <a href="mailto:?subject=Join Our Synco Group&body=Dear members, kindly join our synco group via this link: https://syncosave.com/{{ $plan->slug }}"
-                                                       class="btn btn-soft-warning avatar-sm d-flex align-items-center justify-content-center fs-20">
-                                                       <i class="bx bx-envelope"></i>
-                                                  </a>
-                                             </li>
-                                        </ul>
-                                        
-                                   </div>
-                              </div>
-                         </div>
-
-                    </div>
-
-               </div>
-
-               
-
-
+            
 
 
                <div class='row'>
@@ -215,7 +26,7 @@ function copyRefLink() {
                                                   <div class="card-header d-flex align-items-center">
                                                        <h4 class="card-title flex-grow-1 mb-0">Transaction Histrory</h4>
                                                        <div class="flex-shrink-0">
-                                                            <a href="/admin/all-transactions" class="btn btn-soft-dark btn-sm">View All Transactions</a>
+                                                            <a href="#" class="btn btn-soft-dark btn-sm">View Chart</a>
                                                        </div>
                                                   </div><!-- end cardheader -->
                                                   <div class="card-body">
@@ -245,7 +56,11 @@ function copyRefLink() {
                                                                  </tbody><!-- end tbody -->
                                                             </table><!-- end table -->
                                                        </div>
-                                                      
+                                                       <div class="d-flex justify-content-end">
+                                                            <div class="pagination-wrap hstack gap-2">
+                                                                 {{ $transactions->links() }}
+                                                            </div>
+                                                       </div>
                                                   </div><!-- end card body -->
                                              </div><!-- end card -->
                                         </div><!-- end col -->
