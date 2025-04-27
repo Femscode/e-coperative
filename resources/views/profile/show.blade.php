@@ -385,7 +385,17 @@
         
         $("#profileUpdate").on('submit', function(e) {
             e.preventDefault();
-            
+            Swal.fire({
+                title: 'Updating profile',
+                text: 'Please wait...',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
             $.ajax({
                 url: "{{ route('profile.update') }}",
                 method: 'POST',
@@ -398,7 +408,7 @@
                     $('.preloader').hide();
                     if (response.success) {
                         // Show success message (you might want to use your custom alert)
-                        alert(response.message); // Or use: new showCustomAlert("Success", response.message, "success");
+                        Swal.fire(response.message); // Or use: new showCustomAlert("Success", response.message, "success");
                         
                         // Optionally update the UI with new values
                         // location.reload(); // Refresh page if needed
@@ -411,7 +421,7 @@
                         errorMessage = xhr.responseJSON.message;
                     }
                     // Show error message
-                    alert(errorMessage); // Or use: new showCustomAlert("Error", errorMessage, "error");
+                    Swal.fire(errorMessage); // Or use: new showCustomAlert("Error", errorMessage, "error");
                     
                     // If you have validation errors
                     if (xhr.status === 422) {
