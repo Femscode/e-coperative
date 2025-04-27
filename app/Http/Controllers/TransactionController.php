@@ -152,8 +152,11 @@ class TransactionController extends Controller
             $input['company_id'] = Auth::user()->company_id;
             if (isset($fee['month'])) {
                 $input['month'] = $fee['month'];
-            } else {
+            } 
+            elseif (isset($fee['week'])) {
                 $input['week'] = $fee['week'];
+            } else {
+                $input['day'] = $fee['day'];
             }
             $input['month'] = $fee['month'] ?? "";
             $input['balance'] = floatval($fee['fee']);
