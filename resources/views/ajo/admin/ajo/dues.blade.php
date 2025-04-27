@@ -488,7 +488,7 @@
                                     @elseif(isset($month['month']))
                                     <input type="hidden" name="month[]" value="{{ $month['month'] }}">
                                     @else
-                                    <input type="hidden" name="day[]" value="{{ $month['period'] }}">
+                                    <input type="hidden" name="day[]" value="{{ $month['day'] }}">
                                     @endif
                                     @endif
 
@@ -499,7 +499,7 @@
                                             @elseif(isset($month['month']))
                                             {{ $month['month'] }}
                                             @else
-                                            {{ $month['period'] ?? 'N/A' }}
+                                            {{ $month['day'] ?? 'N/A' }}
                                             @endif
                                         </div>
                                         <div class="due-type">
