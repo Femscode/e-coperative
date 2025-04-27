@@ -474,9 +474,11 @@
                             <div class="col-xl-3 col-lg-4 col-md-6">
                                 <div class="due-card">
                                     <div class="form-check">
+                                        @if(!$month['paid'])
                                         <input class="form-check-input controlledCheckbox"
                                             data-id="{{ $month['amount'] }}"
                                             name="check[]" type="checkbox" id="check_{{ $loop->index }}">
+                                        @endif
                                     </div>
 
                                     <input type="hidden" value="Contribution" name="payment_type[]">
@@ -499,6 +501,11 @@
                                             <span class="badge bg-light text-dark rounded-pill px-3">
                                                 {{ $month['title'] ?? 'General Contribution' }}
                                             </span>
+                                            @if($month['paid'])
+                                            <span class="badge bg-success">Paid</span>
+                                            @else
+                                            <span class="badge bg-warning">Pending</span>
+                                            @endif
                                         </div>
                                         <div class="due-amount">
                                             <span class="amount-label">Amount Due</span>
@@ -600,7 +607,7 @@
             },
             success: function(e) {
                 $('.preloader').hide();
-                $("#amountToBePaid").html(new Intl.NumberFormat('en-NG', { 
+                $("#amountToBePaid").html(new Intl.NumberFormat('en-NG', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                 }).format(totalAmount));
