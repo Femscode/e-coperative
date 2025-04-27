@@ -454,89 +454,88 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-body">
-                    <form id="monthly-dues" method="post">
-                        @csrf
-                        @if(count($months) > 0)
-                        <div class="d-flex align-items-center justify-content-between mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox"
-                                    id="masterCheckbox" onchange="toggleAllCheckboxes()">
-                                <label class="form-check-label" for="masterCheckbox">
-                                    Select All Dues
-                                </label>
-                            </div>
-                            <span class="badge bg-primary">{{ count($months) }} Pending</span>
-                        </div>
-
-                        <div class="row g-4">
-                            @foreach ($months as $month)
-                            <div class="col-xl-3 col-lg-4 col-md-6">
-                                <div class="due-card">
-                                    @if(!isset($month['paid']) || !$month['paid'])
+            <div class="card-body">
+                        <form id="monthly-dues" method="post">
+                            @csrf
+                            <div class="contribution-list">
+                                @if(count($months) > 0)
+                                <div class="d-flex align-items-center justify-content-between mb-3">
                                     <div class="form-check">
-                                        <input class="form-check-input controlledCheckbox"
-                                            data-id="{{ $month['amount'] }}"
-                                            name="check[]" type="checkbox" id="check_{{ $loop->index }}">
+                                        <input class="form-check-input" type="checkbox"
+                                            id="masterCheckbox" onchange="toggleAllCheckboxes()">
+                                        <label class="form-check-label" for="masterCheckbox">
+                                            Select All Dues
+                                        </label>
                                     </div>
+                                    <span class="badge bg-primary">{{ count($months) }} Pending</span>
+                                </div>
 
-                                    <input type="hidden" value="Contribution" name="payment_type[]">
-                                    <input type="hidden" value="{{ $month['uuid'] }}" name="uuid[]">
-                                    <input type="hidden" value="{{ $month['amount'] }}" name="fee[]">
-                                    @if(isset($month['week']))
-                                    <input type="hidden" name="week[]" value="{{ $month['week'] }}">
-                                    @elseif(isset($month['month']))
-                                    <input type="hidden" name="month[]" value="{{ $month['month'] }}">
-                                    @else
-                                    <input type="hidden" name="day[]" value="{{ $month['day'] }}">
-                                    @endif
-                                    @endif
+                                <div class="contribution-items">
+                                    @foreach ($months as $month)
+                                    <div class="contribution-item bg-white rounded-3 shadow-sm mb-3">
+                                        <div class="p-3">
+                                            <input type="hidden" value="Contribution" name="payment_type[]">
+                                            <input type="hidden" value="{{ $month['uuid'] }}" name="uuid[]">
+                                            <input type="hidden" value="{{ $month['amount'] }}" name="fee[]">
 
-                                    <div class="due-card-body">
-                                        <div class="due-month">
-                                            @if(isset($month['week']))
-                                            {{ $month['week'] }}
-                                            @elseif(isset($month['month']))
-                                            {{ $month['month'] }}
-                                            @else
-                                            {{ $month['day'] ?? 'N/A' }}
-                                            @endif
-                                        </div>
-                                        <div class="due-type">
-                                            <span class="badge bg-light text-dark rounded-pill px-3">
-                                                {{ $month['title'] ?? 'General Contribution' }}
-                                            </span>
-                                            @if(isset($month['paid']) && $month['paid'])
-                                            <span class="badge bg-success ms-2">Paid</span>
-                                            @else
-                                            <span class="badge bg-warning ms-2">Pending</span>
-                                            @endif
-                                        </div>
-                                        <div class="due-amount">
-                                            <span class="amount-label">Amount Due</span>
-                                            <h5>₦{{ number_format($month['amount'], 2) }}</h5>
+                                            <div class="form-check d-flex align-items-start">
+                                                @if(!$month['paid'])
+                                                <input class="form-check-input mt-2 controlledCheckbox"
+                                                    data-id="{{ $month['amount'] }}"
+                                                    name="check[]" type="checkbox" id="check_{{ $loop->index }}">
+                                                @endif
+                                                <label class="form-check-label ms-3 w-100" for="check_{{ $loop->index }}">
+                                                    <div class="d-flex flex-column">
+                                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                                            @php
+                                                            $displayDate = $month['period'] ?? '';
+                                                            $displayTitle = $month['title'] ?? 'General Contribution';
+                                                            @endphp
+                                                            <div>
+                                                                <input type="hidden" name="month[]" value="{{ $displayDate }}">
+                                                                <h6 class="mb-1 fw-bold">{{ $displayTitle }}</h6>
+                                                                <div class="text-muted small">{{ $displayDate }}</div>
+                                                            </div>
+                                                            <div class="contribution-amount text-end">
+                                                                <input type="hidden" name="original[]" value="{{ $month['amount'] }}">
+                                                                <div class="h5 mb-0 text-primary">₦{{ number_format($month['amount']) }}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            @if(isset($month['mode']))
+                                                            <span class="badge bg-light text-dark">{{ $month['mode'] }}</span>
+                                                            @endif
+                                                            @if($month['paid'])
+                                                            <span class="badge bg-success">Paid</span>
+                                                            @else
+                                                            <span class="badge bg-warning">Pending</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
+                                    @endforeach
                                 </div>
-                            </div>
-                            @endforeach
-                        </div>
-
-                        <input type="hidden" id="userEmail" name="email" value="{{Auth::user()->email}}">
-                        <input type="hidden" id="userPhone" name="phone" value="{{Auth::user()->phone}}">
-                        @else
-                        <div class="text-center py-5">
-                            <div class="avatar-lg mx-auto mb-4">
-                                <div class="avatar-title bg-light text-primary fs-1 rounded-circle">
-                                    <i class="ri-calendar-todo-line"></i>
+                                @else
+                                <div class="text-center py-5">
+                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json"
+                                        trigger="loop" colors="primary:#094168,secondary:#22c55e"
+                                        style="width:80px;height:80px">
+                                    </lord-icon>
+                                    <h5 class="mt-3">No Pending Dues!</h5>
+                                    <p class="text-muted">You're all caught up with your contributions.</p>
                                 </div>
+                                @endif
                             </div>
-                            <h5>No Dues Found</h5>
-                            <p class="text-muted">There are no dues to display at the moment.</p>
-                        </div>
-                        @endif
 
-                </div>
+                            @if(count($months) > 0)
+                            <input type="hidden" id="userEmail" name="email" value="{{Auth::user()->email}}">
+                            <input type="hidden" id="userPhone" name="phone" value="{{Auth::user()->phone}}">
+                            @endif
+
+                    </div>
             </div>
         </div>
     </div>
@@ -564,7 +563,7 @@
 
 @section('script')
 <script>
-    $('#monthly-dues').submit(function(e) {
+     $('#monthly-dues').submit(function(e) {
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -573,7 +572,7 @@
         e.preventDefault();
         var checkedData = filterCheckedData();
         processPayment(checkedData);
-    });
+    })
 
     function filterCheckedData() {
         var checkedData = [];
