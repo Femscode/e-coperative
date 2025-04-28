@@ -18,7 +18,7 @@
     <meta property="og:title" content="Join {{ $company->name ?? 'us' }} to save together | Building Financial Success Together." />
     <meta property="og:url" content="https://syncosave.com/signup/{{$company->slug ?? ''}}" />
     
-    <meta property="og:image" content="https://syncosave.com/public/file/{{ $company->image ?? 'syncologo.png' }}" />
+    <meta property="og:image" content="https://syncosave.com/public/{{ $company->image ?? 'syncologo.png' }}" />
    
 
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
