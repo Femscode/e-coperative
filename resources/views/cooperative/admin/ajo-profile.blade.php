@@ -113,7 +113,7 @@
                                     <div class="profile-image">
                                         <img 
                                         @if($user->photo)
-                                        src="https://syncosave.com/public/file/{{ $user->photo }}"
+                                        src="https://syncosave.com/public/{{ $user->photo }}"
                                        
                                         @else
                                         src="{{ asset('/admindashboard/images/avatar.png') }}"
