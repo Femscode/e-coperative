@@ -1,13 +1,26 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>SyncoSave | Login</title>
+
     <link rel="icon" type="image/png" href="assets/img/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <meta name="description" content="Saving together, growing together!" />
+    <meta name="keywords" content="cooperative savings, {{ $company->name ?? 'SyncoSave' }}, financial community, group savings, thrift society, contribution scheme, secure savings, cooperative membership, joint savings, financial goals, community banking, savings group" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Join {{ $company->name ?? 'us' }} to save together. | Building Financial Success Together." />
+    <meta property="og:url" content="https://syncosave.com/signup/{{$company->slug ?? ''}}" />
+    
+    <meta property="og:image" content="https://syncosave.com/public/file/{{ $company->image ?? 'syncologo.png' }}" />
+   
+
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet">
     <style>
@@ -202,18 +215,18 @@
                     <div class="tab-content">
                         <!-- Step 1: Personal Information -->
                         <div class="tab-pane fade show active" id="step1">
-                        <div class="mb-3">
+                            <div class="mb-3">
                                 <label class="form-label">Select Cooperative</label>
                                 @if(isset($company) && $company)
-                                    <input type="hidden" name="company" value="{{ $company->id }}">
-                                    <input type="text" class="form-control" value="{{ $company->name }}" readonly>
+                                <input type="hidden" name="company" value="{{ $company->id }}">
+                                <input type="text" class="form-control" value="{{ $company->name }}" readonly>
                                 @else
-                                    <select class="form-control form-select planId" name="company" >
-                                        <option value="">Choose a cooperative</option>
-                                        @foreach(\App\Models\Company::where('visibility','public')->get() as $cooperative)
-                                            <option value="{{ $cooperative->id }}">{{ $cooperative->name }}</option>
-                                        @endforeach
-                                    </select>
+                                <select class="form-control form-select planId" name="company">
+                                    <option value="">Choose a cooperative</option>
+                                    @foreach(\App\Models\Company::where('visibility','public')->get() as $cooperative)
+                                    <option value="{{ $cooperative->id }}">{{ $cooperative->name }}</option>
+                                    @endforeach
+                                </select>
                                 @endif
                                 <div class="invalid-feedback">Please select a cooperative</div>
                             </div>
@@ -323,7 +336,7 @@
 
             <!-- Right Column - Banner -->
             <div class="col-lg-7 d-none d-lg-block">
-                <div  class="position-relative h-100 bg-primary bg-gradient rounded-4 p-5">
+                <div class="position-relative h-100 bg-primary bg-gradient rounded-4 p-5">
                     <div class="position-absolute top-50 start-50 translate-middle text-center text-white" style="width: 80%;">
                         <h1 class="display-5 fw-bold mb-4">Cooperative Savings Made Simple</h1>
                         <p class="lead">"When we save together, we grow together. Cooperative savings is the foundation of community wealth."</p>
@@ -410,7 +423,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-       
+
         // $('.preloader').show();
         e.preventDefault();
         // alert("ere")
@@ -419,15 +432,15 @@
         finalizeRegistration(form_details);
     })
 
-  
-  
+
+
 
     function finalizeRegistration(form_details) {
         $.ajax({
             type: 'POST',
             url: "{{ route('signup_user') }}",
             data: form_details,
-             
+
             success: function() {
                 showCustomAlert("Success", "Your registration is complete!", "success").then(() => {
                     window.location.href = "/dashboard"; // Redirect on successful registration
@@ -466,31 +479,31 @@
                 $('#amountToBePaid').html('0');
                 return;
             }
-            
+
             // Fixed AJAX request
             $.get(`/get-plan-details/${id}`, function(response) {
-                if (response.status && response.data) {
-                    if (response.data.registration_fee > 0) {
-                        const formattedFee = parseFloat(response.data.registration_fee).toLocaleString();
-                        $('.fee-amount').text(formattedFee);
-                        $('.feeInput').val(response.data.registration_fee);
-                        $('#amountToBePaid').html(formattedFee);
-                        $('.displayReg').fadeIn();
-                        $('.feeInput').attr('required', true);
-                    } else {
-                        $('.displayReg').hide();
-                        $('.feeInput').removeAttr('required').val("");
-                        $('#amountToBePaid').html('0');
+                    if (response.status && response.data) {
+                        if (response.data.registration_fee > 0) {
+                            const formattedFee = parseFloat(response.data.registration_fee).toLocaleString();
+                            $('.fee-amount').text(formattedFee);
+                            $('.feeInput').val(response.data.registration_fee);
+                            $('#amountToBePaid').html(formattedFee);
+                            $('.displayReg').fadeIn();
+                            $('.feeInput').attr('required', true);
+                        } else {
+                            $('.displayReg').hide();
+                            $('.feeInput').removeAttr('required').val("");
+                            $('#amountToBePaid').html('0');
+                        }
                     }
-                }
-            })
-            .fail(function(error) {
-                showCustomAlert({
-                    title: 'Error',
-                    text: 'Failed to fetch cooperative details',
-                    icon: 'error'
+                })
+                .fail(function(error) {
+                    showCustomAlert({
+                        title: 'Error',
+                        text: 'Failed to fetch cooperative details',
+                        icon: 'error'
+                    });
                 });
-            });
         });
     });
     $("#password-fieldx, #password-fieldc").on('input', function() {

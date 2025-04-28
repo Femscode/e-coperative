@@ -108,28 +108,28 @@
                                                             <span class="text-muted small">Share via</span>
                                                             <ul class="list-inline mb-0 d-flex gap-2">
                                                                  <li class="list-inline-item">
-                                                                      <a href="https://www.facebook.com/sharer/sharer.php?u=https://syncosave.com/{{ $plan->slug }}"
+                                                                      <a href="https://www.facebook.com/sharer/sharer.php?u=https://syncosave.com/signup/{{ $plan->slug }}"
                                                                            target="_blank"
                                                                            class="btn btn-icon btn-soft-primary btn-sm">
                                                                            <i class="bx bxl-facebook"></i>
                                                                       </a>
                                                                  </li>
                                                                  <li class="list-inline-item">
-                                                                      <a href="https://api.whatsapp.com/send?text=Join our Synco group: https://syncosave.com/{{ $plan->slug }}"
+                                                                      <a href="https://api.whatsapp.com/send?text=Join our Synco group: https://syncosave.com/signup/{{ $plan->slug }}"
                                                                            target="_blank"
                                                                            class="btn btn-icon btn-soft-success btn-sm">
                                                                            <i class="bx bxl-whatsapp"></i>
                                                                       </a>
                                                                  </li>
                                                                  <li class="list-inline-item">
-                                                                      <a href="https://twitter.com/intent/tweet?url=https://syncosave.com/{{ $plan->slug }}"
+                                                                      <a href="https://twitter.com/intent/tweet?url=https://syncosave.com/signup/{{ $plan->slug }}"
                                                                            target="_blank"
                                                                            class="btn btn-icon btn-soft-info btn-sm">
                                                                            <i class="bx bxl-twitter"></i>
                                                                       </a>
                                                                  </li>
                                                                  <li class="list-inline-item">
-                                                                      <a href="mailto:?subject=Join Our Synco Group&body=https://syncosave.com/{{ $plan->slug }}"
+                                                                      <a href="mailto:?subject=Join Our Synco Group&body=https://syncosave.com/signup/{{ $plan->slug }}"
                                                                            class="btn btn-icon btn-soft-warning btn-sm">
                                                                            <i class="bx bx-envelope"></i>
                                                                       </a>
