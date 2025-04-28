@@ -24,10 +24,10 @@
                                         <div class="col-xl-12">
                                              <div class="card">
                                                   <div class="card-header d-flex align-items-center">
-                                                       <h4 class="card-title flex-grow-1 mb-0">Transaction Histrory</h4>
+                                                       <h4 class="card-title flex-grow-1 mb-0">Transaction History</h4>
                                                        <div class="flex-shrink-0">
                                                             <a href="/admin/my-transactions" class="btn btn-soft-dark btn-sm">My Transactions</a>
-                                                            <a href="#" class="btn btn-soft-dark btn-sm">View Chart</a>
+                                                            <!-- <a href="#" class="btn btn-soft-dark btn-sm">View Chart</a> -->
                                                        </div>
                                                   </div><!-- end cardheader -->
                                                   <div class="card-body">

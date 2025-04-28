@@ -44,7 +44,7 @@
                                         <tr>
                                             <td class="fw-medium">{{ $transaction['name'] }}</td>
                                             <td class="fw-medium">{{ $transaction['month'] }}</td>
-                                            <td class="fw-medium">{{ number_format($transaction['amount'],2) }}</td>
+                                            <td class="fw-medium">₦{{ number_format($transaction['amount'],2) }}</td>
                                             {{-- <td class="text-muted">
                                                 @if($transaction->status == 0)
                                                 <button class="btn rounded-pill btn-sm btn-soft-info" data-id="{{ $transaction->id }}">Start</button>

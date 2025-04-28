@@ -91,7 +91,7 @@
                                                        </div>
 
                                                        <div class="referral-code-container bg-light rounded-3 p-3 mb-4">
-                                                            <div class="d-flex align-items-center">
+                                                            <div class=" align-items-center">
                                                                  <div class="flex-grow-1">
                                                                       <span class="text-muted small">Your unique invite link</span>
                                                                       <div class="d-flex align-items-center gap-2">

@@ -26,7 +26,7 @@
                                                   <div class="card-header d-flex align-items-center">
                                                        <h4 class="card-title flex-grow-1 mb-0">My Transaction Histrory</h4>
                                                        <div class="flex-shrink-0">
-                                                            <a href="#" class="btn btn-soft-dark btn-sm">View Chart</a>
+                                                            <!-- <a href="#" class="btn btn-soft-dark btn-sm">View Chart</a> -->
                                                        </div>
                                                   </div><!-- end cardheader -->
                                                   <div class="card-body">

@@ -15,7 +15,7 @@
     <meta name="keywords" content="cooperative savings, {{ $company->name ?? 'SyncoSave' }}, financial community, group savings, thrift society, contribution scheme, secure savings, cooperative membership, joint savings, financial goals, community banking, savings group" />
 
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Join {{ $company->name ?? 'us' }} to save together. | Building Financial Success Together." />
+    <meta property="og:title" content="Join {{ $company->name ?? 'us' }} to save together | Building Financial Success Together." />
     <meta property="og:url" content="https://syncosave.com/signup/{{$company->slug ?? ''}}" />
     
     <meta property="og:image" content="https://syncosave.com/public/file/{{ $company->image ?? 'syncologo.png' }}" />

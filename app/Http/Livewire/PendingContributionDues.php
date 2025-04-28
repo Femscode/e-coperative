@@ -43,7 +43,7 @@ class PendingContributionDues extends Component
                         ['status', 'Success'],
                         ['payment_type', 'Contribution']
                     ])
-                    ->pluck('month')  // Change 'month' to 'week' if you have a week field
+                    ->pluck('week')  // Change 'month' to 'week' if you have a week field
                     ->toArray();
         
                 // $weeks = [];
@@ -81,7 +81,7 @@ class PendingContributionDues extends Component
                     $currentDate->addDay();
                 }
                 // dd($monthsToView);
-                $myMonths = Transaction::where('user_id',  $single->user_id)->where([['status', 'Success'],['payment_type','Contribution']])->pluck('month')->toArray();
+                $myMonths = Transaction::where('user_id',  $single->user_id)->where([['status', 'Success'],['payment_type','Contribution']])->pluck('day')->toArray();
                 // dd($monthsToView, $myMonths);
                 // $months = [];
                 foreach ($monthsToView as $thisMonth) {
@@ -94,7 +94,7 @@ class PendingContributionDues extends Component
             // dd($months);
         }
         $data = [
-            'title' => "Pending Dues On $group->title Circle",
+            'title' => "Dues Payment On $group->title Circle",
            'months' => $months,
         ];
         // dd($data);
