@@ -372,7 +372,7 @@ class ProfileController extends Controller
             // Handle profile image upload
             if ($request->hasFile('image')) {
                 $profileImage = uploadImage($request->file('image'), 'file');
-                $validated['image'] = $profileImage;
+                $validated['photo'] = $profileImage;
             }
 
             // Handle cover image upload
