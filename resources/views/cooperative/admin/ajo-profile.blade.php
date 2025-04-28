@@ -111,12 +111,12 @@
                             <div class="profile-header text-center">
                                 <div class="profile-image-wrapper position-relative d-inline-block mb-4">
                                     <div class="profile-image">
-                                        <img @if($user->profile_image)
-                                        src="https://syncosave.com/public/file/{{ $user->profile_image }}"
-                                        @elseif($user->photo)
+                                        <img 
+                                        @if($user->photo)
                                         src="https://syncosave.com/public/file/{{ $user->photo }}"
+                                       
                                         @else
-                                        src="{{ asset('admindashboard/images/avatar.png') }}"
+                                        src="{{ asset('/admindashboard/images/avatar.png') }}"
                                         @endif
                                         data-id="profile"
                                         id="userProfileImage"
