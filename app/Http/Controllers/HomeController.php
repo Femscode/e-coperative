@@ -36,13 +36,15 @@ class HomeController extends Controller
         
         $data['users'] = User::where('company_id',$company->uuid)->get();
         $transacts = Transaction::where('company_id',$company->uuid)->where('status','Success');
-        $data['transactions'] = $transacts->latest()->take(10)->get();
+       
         $data['all_transactions'] = $transacts->sum('amount');
-        $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->where('original','!=',0)->paginate(10);
         $data['plan'] = $company;//Company::find(auth()->user()->company_id);
-        $data['loans'] = MemberLoan::where('company_id', $company->id)->get();
+      
        
         if($company->type == 1) {
+            $data['transactions'] = $transacts->latest()->take(10)->get();
+            $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->where('original','!=',0)->paginate(10);
+            $data['loans'] = MemberLoan::where('company_id', $company->id)->get();
 
             return view('cooperative.admin.index', $data);
         } else {

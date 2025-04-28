@@ -99,49 +99,51 @@
 @endsection
 
 @section('content')
-<main class="adminuiux-content has-sidebar" onclick="contentClick()">
+<div class="container-fluid">
     <div class="container mt-4" id="main-content">
         <h2>My Profile</h2>
         <div class="row">
             <div class="col-lg-4">
                 <div class="card profile-card border-0 shadow-sm">
                     <div class="card-body p-4">
-                        <div class="profile-header text-center">
-                            <div class="profile-image-wrapper position-relative d-inline-block mb-4">
-                                <div class="profile-image">
-                                    <img @if($user->profile_image)
-                                    src="https://syncosave.com/synco_files/public/{{ $user->profile_image }}"
-                                    @elseif($user->photo)
-                                    src="https://syncosave.com/synco_files/public/{{ $user->photo }}"
-                                    @else
-                                    src="{{ asset('assets/images/avatar.png') }}"
-                                    @endif
-                                    data-id="profile"
-                                    id="userProfileImage"
-                                    class="rounded-circle img-thumbnail user-profile-image previews"
-                                    alt="{{ $user->name }}'s profile photo">
-                                </div>
-                                <div class="profile-image-edit">
-                                    <input id="profile-img-file-input"
-                                        accept=".jpg, .png, image/jpeg, image/png"
-                                        type="file"
+                        <form id="profileUpdate" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="profile-header text-center">
+                                <div class="profile-image-wrapper position-relative d-inline-block mb-4">
+                                    <div class="profile-image">
+                                        <img @if($user->profile_image)
+                                        src="https://syncosave.com/synco_files/public/file/{{ $user->profile_image }}"
+                                        @elseif($user->photo)
+                                        src="https://syncosave.com/synco_files/public/file/{{ $user->photo }}"
+                                        @else
+                                        src="{{ url('admindashboard/images/avatar.png') }}"
+                                        @endif
                                         data-id="profile"
-                                        class="profile-img-file-input fileInput">
-                                    <label for="profile-img-file-input" class="edit-button">
-                                        <i class="bi bi-camera-fill"></i>
-                                    </label>
+                                        id="userProfileImage"
+                                        class="rounded-circle img-thumbnail user-profile-image previews"
+                                        alt="{{ $user->name }}'s profile photo">
+                                    </div>
+                                    <div class="profile-image-edit">
+                                        <input name='image' id="profile-img-file-input"
+                                            accept=".jpg, .png, image/jpeg, image/png"
+                                            type="file"
+                                            data-id="profile"
+                                            class="profile-img-file-input fileInput">
+                                        <label for="profile-img-file-input" class="edit-button">
+                                            <i class="bi bi-camera-fill"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="profile-info">
+                                    <h4 class="mb-1">{{ $user->name }}</h4>
+                                    <div class="user-id">
+                                        <span class="badge bg-light text-dark">
+                                            <i class="bi bi-person-badge me-1"></i>
+                                            {{ $user->username ?? 'Username Not provided' }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="profile-info">
-                                <h4 class="mb-1">{{ $user->name }}</h4>
-                                <div class="user-id">
-                                    <span class="badge bg-light text-dark">
-                                        <i class="bi bi-person-badge me-1"></i>
-                                        {{ $user->username ?? 'Not provided' }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -169,50 +171,49 @@
                     <div class="card-body p-4">
                         <div class="tab-content">
                             <div class="tab-pane active" id="personalDetails" role="tabpanel">
-                                <form id="profileUpdate" method="post">
-                                    @csrf
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label for="nameInput" class="form-label">Full Name</label>
-                                                <input type="text" class="form-control" id="nameInput" name="name"
-                                                    value="{{ $user->name }}" placeholder="Enter your full name">
-                                            </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="nameInput" class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="nameInput" name="name"
+                                                value="{{ $user->name }}" placeholder="Enter your full name">
                                         </div>
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label for="usernameInput" class="form-label">Username</label>
-                                                <input type="text" class="form-control" id="usernameInput" name="username"
-                                                    value="{{ $user->username ?? '' }}" placeholder="Enter your username">
-                                            </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="usernameInput" class="form-label">Username</label>
+                                            <input type="text" class="form-control" id="usernameInput" name="username"
+                                                value="{{ $user->username ?? '' }}" placeholder="Enter your username">
                                         </div>
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label for="emailInput" class="form-label">Email</label>
-                                                <input type="email" class="form-control" id="emailInput" readonly
-                                                    value="{{ $user->email }}" placeholder="Enter your email">
-                                            </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="emailInput" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="emailInput" readonly
+                                                value="{{ $user->email }}" placeholder="Enter your email">
                                         </div>
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label for="phoneInput" class="form-label">Phone</label>
-                                                <input type="text" class="form-control" id="phoneInput" name="phone"
-                                                    value="{{ $user->phone ?? '' }}" placeholder="Enter your phone">
-                                            </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="phoneInput" class="form-label">Phone</label>
+                                            <input type="text" class="form-control" id="phoneInput" name="phone"
+                                                value="{{ $user->phone ?? '' }}" placeholder="Enter your phone">
                                         </div>
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label for="addressInput" class="form-label">Address</label>
-                                                <input type="text" class="form-control" id="addressInput" name="address"
-                                                    value="{{ $user->address ?? '' }}" placeholder="Enter your address">
-                                            </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="addressInput" class="form-label">Address</label>
+                                            <input type="text" class="form-control" id="addressInput" name="address"
+                                                value="{{ $user->address ?? '' }}" placeholder="Enter your address">
                                         </div>
-                                        {{-- <div class="col-lg-6">
+                                    </div>
+                                    {{-- <div class="col-lg-6">
                                             <div class="mb-3">
                                                 <label for="joinDateInput" class="form-label">Joined Date</label>
                                                 <input type="text" class="form-control" id="joinDateInput" readonly
                                                        value="{{ $user->created_at->format('F d, Y') }}">
-                                    </div>
+                                </div>
                             </div> --}}
                             <div class="col-lg-4">
                                 <div class="mb-3">
@@ -271,8 +272,80 @@
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label for="bankCodeInput" class="form-label">Bank Code</label>
-                                        <input type="text" class="form-control" id="bankCodeInput" name="bank_code"
-                                            value="{{ $user->bank_code ?? '' }}" placeholder="Enter bank code">
+
+                                        <select class="form-control" id="bankCodeInput" name="bank_code">
+                                           
+                                                <option value="{{ $user->bank_code ?? '' }}" data-name="">{{ $user->bank_name ?? '--Select a Bank--' }}</option>
+                                                <option value="090134" data-name="Accion Microfinance Bank">Accion Microfinance Bank</option>
+                                                <option value="044" data-name="Access Bank">Access Bank</option>
+                                                <option value="014" data-name="Afribank">Afribank</option>
+                                                <option value="090133" data-name="AL-Barakah Microfinance Bank">AL-Barakah Microfinance Bank</option>
+                                                <option value="090136" data-name="Baobab Microfinance Bank">Baobab Microfinance Bank</option>
+                                                <option value="090127" data-name="BC Kash Microfinance Bank">BC Kash Microfinance Bank</option>
+                                                <option value="090117" data-name="Boctrust Microfinance Bank">Boctrust Microfinance Bank</option>
+                                                <option value="023" data-name="Citibank">Citibank</option>
+                                                <option value="090130" data-name="Consumer Microfinance Bank">Consumer Microfinance Bank</option>
+                                                <option value="063" data-name="Diamond Bank">Diamond Bank</option>
+                                                <option value="090608" data-name="Dot Microfinance Bank">Dot Microfinance Bank</option>
+                                                <option value="050" data-name="Ecobank">Ecobank</option>
+                                                <option value="040" data-name="Equitorial Trust Bank">Equitorial Trust Bank</option>
+                                                <option value="070" data-name="Fidelity Bank">Fidelity Bank</option>
+                                                <option value="090126" data-name="Fidfund Microfinance Bank">Fidfund Microfinance Bank</option>
+                                                <option value="085" data-name="Finbank">Finbank</option>
+                                                <option value="011" data-name="First Bank">First Bank</option>
+                                                <option value="214" data-name="First City Monument Bank (FCMB)">First City Monument Bank (FCMB)</option>
+                                                <option value="090122" data-name="Gowans Microfinance Bank">Gowans Microfinance Bank</option>
+                                                <option value="058" data-name="Guaranty Trust Bank (GTBank)">Guaranty Trust Bank (GTBank)</option>
+                                                <option value="090121" data-name="Hasal Microfinance Bank">Hasal Microfinance Bank</option>
+                                                <option value="090118" data-name="IBILE Microfinance Bank">IBILE Microfinance Bank</option>
+                                                <option value="069" data-name="Intercontinental Bank">Intercontinental Bank</option>
+                                                <option value="323" data-name="Jaiz Bank">Jaiz Bank</option>
+                                                <option value="50968" data-name="Kuda Bank">Kuda Bank</option>
+                                                <option value="51322" data-name="Mkobo Microfinance Bank">Mkobo Microfinance Bank</option>
+                                                <option value="51318" data-name="Mint Finex Microfinance Bank">Mint Finex Microfinance Bank</option>
+                                                <option value="50515" data-name="Moniepoint Microfinance Bank">Moniepoint Microfinance Bank</option>
+                                                <option value="090128" data-name="Ndiorah Microfinance Bank">Ndiorah Microfinance Bank</option>
+                                                <option value="056" data-name="Oceanic Bank">Oceanic Bank</option>
+                                                <option value="090119" data-name="Ohafia Microfinance Bank">Ohafia Microfinance Bank</option>
+                                                <option value="999992" data-name="OPay Digital Services Limited (OPay)">OPay Digital Services Limited (OPay)</option>
+                                                <option value="100033" data-name="PalmPay Limited">PalmPay Limited</option>
+                                                <option value="090135" data-name="Personal Trust Microfinance Bank">Personal Trust Microfinance Bank</option>
+                                                <option value="317" data-name="Providus Bank">Providus Bank</option>
+                                                <option value="51297" data-name="Raven Microfinance Bank">Raven Microfinance Bank</option>
+                                                <option value="090125" data-name="Regent Microfinance Bank">Regent Microfinance Bank</option>
+                                                <option value="090132" data-name="Richway Microfinance Bank">Richway Microfinance Bank</option>
+                                                <option value="090138" data-name="Royal Exchange Microfinance Bank">Royal Exchange Microfinance Bank</option>
+                                                <option value="50870" data-name="Rubies Microfinance Bank">Rubies Microfinance Bank</option>
+                                                <option value="090140" data-name="Sagamu Microfinance Bank">Sagamu Microfinance Bank</option>
+                                                <option value="076" data-name="Skye Bank">Skye Bank</option>
+                                                <option value="221" data-name="Stanbic IBTC">Stanbic IBTC</option>
+                                                <option value="068" data-name="Standard Chartered Bank">Standard Chartered Bank</option>
+                                                <option value="232" data-name="Sterling Bank">Sterling Bank</option>
+                                                <option value="084" data-name="SpringBank">SpringBank</option>
+                                                <option value="304" data-name="Suntrust Bank">Suntrust Bank</option>
+                                                <option value="033" data-name="United Bank for Africa (UBA)">United Bank for Africa (UBA)</option>
+                                                <option value="032" data-name="Union Bank">Union Bank</option>
+                                                <option value="215" data-name="Unity Bank">Unity Bank</option>
+                                                <option value="090123" data-name="Verite Microfinance Bank">Verite Microfinance Bank</option>
+                                                <option value="50754" data-name="VFD Microfinance Bank">VFD Microfinance Bank</option>
+                                                <option value="090139" data-name="Visa Microfinance Bank">Visa Microfinance Bank</option>
+                                                <option value="035" data-name="Wema Bank">Wema Bank</option>
+                                                <option value="090120" data-name="Wetland Microfinance Bank">Wetland Microfinance Bank</option>
+                                                <option value="090124" data-name="Xslnce Microfinance Bank">Xslnce Microfinance Bank</option>
+                                                <option value="057" data-name="Zenith Bank">Zenith Bank</option>
+                                            </select>
+
+                                            <script>
+                                                document.getElementById('bank').addEventListener('change', function() {
+                                                    const bankCode = this.value;
+                                                    const bankName = this.options[this.selectedIndex].dataset.name;
+                                                    if (bankCode && bankName) {
+                                                        console.log('Bank Code:', bankCode, 'Bank Name:', bankName);
+                                                    }
+                                                });
+                                            </script>
+                                            <!-- <input type="text" class="form-control" id="bankCodeInput" name="bank_code"
+                                            value="{{ $user->bank_code ?? '' }}" placeholder="Enter bank code"> -->
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
@@ -307,9 +380,9 @@
             </div>
         </div>
     </div>
-    </div>
-    </div>
-</main>
+</div>
+</div>
+</div>
 @endsection
 
 @section('script')
@@ -388,6 +461,10 @@
 
         $("#profileUpdate").on('submit', function(e) {
             e.preventDefault();
+
+            // Create FormData object to handle file uploads
+            const formData = new FormData(this);
+
             Swal.fire({
                 title: 'Updating profile',
                 text: 'Please wait...',
@@ -399,23 +476,26 @@
                     Swal.showLoading();
                 }
             });
+
             $.ajax({
                 url: "{{ route('profile.update') }}",
                 method: 'POST',
-                data: $(this).serialize(),
+                data: formData,
                 dataType: 'json',
+                contentType: false, // Required for file upload
+                processData: false, // Required for file upload
+                cache: false, // Prevent caching
                 beforeSend: function() {
-                    $('.preloader').show(); // Show loading indicator if you have one
+                    $('.preloader').show();
                 },
                 success: function(response) {
                     $('.preloader').hide();
                     if (response.success) {
-                        // Show success message (you might want to use your custom alert)
-                        Swal.fire(response.message)
-                        // Or use: new showCustomAlert("Success", response.message, "success");
-
-                        // Optionally update the UI with new values
-                        // location.reload(); // Refresh page if needed
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message
+                        });
                     }
                 },
                 error: function(xhr) {
@@ -424,14 +504,15 @@
                     if (xhr.responseJSON && xhr.responseJSON.message) {
                         errorMessage = xhr.responseJSON.message;
                     }
-                    // Show error message
-                    Swal.fire(errorMessage);
-                    // Or use: new showCustomAlert("Error", errorMessage, "error");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: errorMessage
+                    });
 
-                    // If you have validation errors
                     if (xhr.status === 422) {
                         let errors = xhr.responseJSON.errors;
-                        console.log(errors); // Handle validation errors if needed
+                        console.log(errors);
                     }
                 }
             });
@@ -439,18 +520,52 @@
 
         $("#verifyAccount").on('submit', async function(e) {
             e.preventDefault();
-            $('.preloader').show();
-            const serializedData = $(this).serializeArray();
-            try {
-                const postRequest = await request("/verify-account",
-                    processFormInputs(serializedData), 'post');
-                new showCustomAlert("Good Job", postRequest.message, "success");
-                $('.preloader').hide();
-            } catch (e) {
-                $('.preloader').hide();
-                if ('message' in e) {
-                    new showCustomAlert("Opss", e.message, "error");
+            Swal.fire({
+                title: 'Verifying Bank Details',
+                text: 'Please wait...',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
                 }
+            });
+            $('.preloader').show();
+
+            const bankCode = $('#bankCodeInput').val();
+            const bankName = $('#bankCodeInput option:selected').data('name');
+
+            const formData = new FormData(this);
+            formData.append('bank_name', bankName);
+
+            try {
+                const response = await $.ajax({
+                    url: "/verify-account",
+                    type: 'POST',
+                    data: Object.fromEntries(formData),
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                if (response.status === 'ok') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: response.message
+                    });
+                } else {
+                    throw new Error(response.message);
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Unable to verify bank details. Try a different bank!'
+                });
+            } finally {
+                $('.preloader').hide();
             }
         });
     });

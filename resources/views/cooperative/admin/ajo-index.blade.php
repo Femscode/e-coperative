@@ -1,65 +1,44 @@
 @extends('cooperative.admin.master')
 @section('header')
 <style>
-    .referral-code-container {
-        position: relative;
-        background: #f8f9fa;
-        border-radius: 8px;
-        padding: 15px;
-        margin: 15px 0;
-        border: 1px solid #e9ecef;
-    }
+     .referral-code-container {
+          position: relative;
+          background: #f8f9fa;
+          border-radius: 8px;
+          padding: 15px;
+          margin: 15px 0;
+          border: 1px solid #e9ecef;
+     }
 
-    .referral-code-container h3 {
-        font-size: 14px;
-        margin: 0;
-        color: #094168;
-        word-break: break-all;
-    }
+     .referral-code-container h3 {
+          font-size: 14px;
+          margin: 0;
+          color: #094168;
+          word-break: break-all;
+     }
 
-    .copy-icon2 {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        color: #094168;
-        font-size: 18px;
-        transition: all 0.3s ease;
-    }
+     .copy-icon2 {
+          position: absolute;
+          right: 15px;
+          top: 50%;
+          transform: translateY(-50%);
+          cursor: pointer;
+          color: #094168;
+          font-size: 18px;
+          transition: all 0.3s ease;
+     }
 
-    .copy-icon2:hover {
-        color: #073553;
-    }
+     .copy-icon2:hover {
+          color: #073553;
+     }
 
-    .ref-code {
-        font-weight: normal;
-        color: #6c757d;
-    }
+     .ref-code {
+          font-weight: normal;
+          color: #6c757d;
+     }
 </style>
 
-<script>
-function copyRefLink() {
-    const linkText = document.getElementById('ref_link').value;
-    navigator.clipboard.writeText(linkText).then(() => {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-        Toast.fire({
-            icon: 'success',
-            title: 'Link copied to clipboard'
-        });
-    });
-}
-</script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endsection
 
@@ -73,21 +52,93 @@ function copyRefLink() {
                <h4>Hi, {{ $user->name }}</h4>
                <div class="row">
 
-                    <div class='col-md-8'>
+                    <div class='col-md-12'>
                          <div class="row">
                               <div class="col">
-                                   <div class="card">
-                                        <div class="card-body overflow-hidden position-relative">
-
-                                             <div class="d-flex align-items-center gap-2">
-                                                  <h1 class="mb-0 fw-bold mt-3 mb-1" id="amount-display">₦{{ number_format($all_transactions,2) }}</h1>
-                                                  <button class="btn btn-link text-muted p-0 mt-3" id="toggle-amount">
-                                                       <i class="ti ti-eye fs-20"></i>
-                                                  </button>
+                                   <div class="row g-4">
+                                        <div class="col-lg-4">
+                                             <div class="card border-0 shadow-sm h-100">
+                                                  <div class="card-body">
+                                                       <div class="d-flex align-items-center mb-3">
+                                                            <div class="flex-shrink-0">
+                                                                 <div class="avatar-sm">
+                                                                      <div class="avatar-title bg-soft-primary text-primary rounded-circle">
+                                                                           <i class="bx bx-wallet-alt fs-4"></i>
+                                                                      </div>
+                                                                 </div>
+                                                            </div>
+                                                            <div class="flex-grow-1 ms-3">
+                                                                 <h5 class="card-title mb-0">Total Revenue</h5>
+                                                            </div>
+                                                            <button class="btn btn-ghost-primary btn-icon" id="toggle-amount">
+                                                                 <i class="ti ti-eye fs-20"></i>
+                                                            </button>
+                                                       </div>
+                                                       <h2 class="mb-3 fw-semibold" id="amount-display">₦{{ number_format($all_transactions,2) }}</h2>
+                                                       <a href='/admin/all-transactions' class="btn btn-sm btn-primary">View Transactions</a>
+                                                  </div>
                                              </div>
-                                             <a href='/admin/transaction/all' class="text-muted">Total Revenue</a>
-                                             <i class="bx bx-building-house widget-icon"></i>
-                                        </div> <!-- end card-body -->
+                                        </div>
+
+                                        <div class="col-lg-8">
+                                             <div class="card border-0 shadow-sm h-100">
+                                                  <div class="card-body">
+                                                       <div class="d-flex align-items-center justify-content-between mb-4">
+                                                            <div>
+                                                                 <h5 class="card-title mb-1">Share your Synco Link</h5>
+                                                                 <p class="text-muted small mb-0">Share this link with your members to join the group</p>
+                                                            </div>
+                                                       </div>
+
+                                                       <div class="referral-code-container bg-light rounded-3 p-3 mb-4">
+                                                            <div class="d-flex align-items-center">
+                                                                 <div class="flex-grow-1">
+                                                                      <span class="text-muted small">Your unique invite link</span>
+                                                                      <div class="d-flex align-items-center gap-2">
+                                                                           <h6 class="mb-0 text-truncate" id="referral-link">https://syncosave.com/signup/{{ $plan->slug }}</h6>
+                                                                      </div>
+                                                                 </div>
+                                                                 <button class="btn btn-soft-primary btn-icon" onclick="copyRefLink()">
+                                                                      <i class="ti ti-copy fs-16"></i>
+                                                                 </button>
+                                                            </div>
+                                                       </div>
+
+                                                       <div class="d-flex align-items-center justify-content-between">
+                                                            <span class="text-muted small">Share via</span>
+                                                            <ul class="list-inline mb-0 d-flex gap-2">
+                                                                 <li class="list-inline-item">
+                                                                      <a href="https://www.facebook.com/sharer/sharer.php?u=https://syncosave.com/{{ $plan->slug }}"
+                                                                           target="_blank"
+                                                                           class="btn btn-icon btn-soft-primary btn-sm">
+                                                                           <i class="bx bxl-facebook"></i>
+                                                                      </a>
+                                                                 </li>
+                                                                 <li class="list-inline-item">
+                                                                      <a href="https://api.whatsapp.com/send?text=Join our Synco group: https://syncosave.com/{{ $plan->slug }}"
+                                                                           target="_blank"
+                                                                           class="btn btn-icon btn-soft-success btn-sm">
+                                                                           <i class="bx bxl-whatsapp"></i>
+                                                                      </a>
+                                                                 </li>
+                                                                 <li class="list-inline-item">
+                                                                      <a href="https://twitter.com/intent/tweet?url=https://syncosave.com/{{ $plan->slug }}"
+                                                                           target="_blank"
+                                                                           class="btn btn-icon btn-soft-info btn-sm">
+                                                                           <i class="bx bxl-twitter"></i>
+                                                                      </a>
+                                                                 </li>
+                                                                 <li class="list-inline-item">
+                                                                      <a href="mailto:?subject=Join Our Synco Group&body=https://syncosave.com/{{ $plan->slug }}"
+                                                                           class="btn btn-icon btn-soft-warning btn-sm">
+                                                                           <i class="bx bx-envelope"></i>
+                                                                      </a>
+                                                                 </li>
+                                                            </ul>
+                                                       </div>
+                                                  </div>
+                                             </div>
+                                        </div>
                                    </div> <!-- end card -->
                               </div> <!-- end col -->
                               <!-- end col -->
@@ -96,168 +147,55 @@ function copyRefLink() {
 
 
                          <div class="row mt-4 mb-4">
-
-                              <div class="col-12">
-                                   <div class="d-flex justify-content-center gap-4">
-
-                                        <a href="/admin/transaction/repayment" class="text-decoration-none">
-                                             <div class="circle-box text-center">
-                                                  <div class="circle-icon">
-                                                       <iconify-icon icon="solar:clock-circle-broken" class="fs-32"></iconify-icon>
+                              <div class="col-md-6 mb-2">
+                                   <div class="card h-100">
+                                        <div class="card-body">
+                                             <div class="d-flex align-items-center mb-3">
+                                                  <div class="flex-shrink-0">
+                                                       <div class="avatar-sm">
+                                                            <div class="avatar-title bg-soft-primary text-primary rounded">
+                                                                 <iconify-icon icon="solar:inbox-line-broken" class="fs-24"></iconify-icon>
+                                                            </div>
+                                                       </div>
                                                   </div>
-                                                  <h6 class="mt-2 mb-0">Payment History</h6>
-                                             </div>
-                                        </a>
-
-                                        <a href="/admin/group" class="text-decoration-none">
-                                             <div class="circle-box text-center">
-                                                  <div class="circle-icon">
-                                                       <iconify-icon icon="solar:inbox-line-broken" class="fs-32"></iconify-icon>
-
+                                                  <div class="flex-grow-1 ms-3">
+                                                       <h5 class="card-title mb-0">Create New Group</h5>
                                                   </div>
-                                                  <h6 class="mt-2 mb-0">Create New Group</h6>
                                              </div>
-                                        </a>
-
-                                        <a href="/admin/transaction/monthly_dues" class="text-decoration-none">
-                                             <div class="circle-box text-center">
-                                                  <div class="circle-icon">
-                                                       <iconify-icon icon="solar:clipboard-check-broken" class="fs-32"></iconify-icon>
-                                                  </div>
-                                                  <h6 class="mt-2 mb-0">My Dues</h6>
-                                             </div>
-                                        </a>
-
-                                       
-                                   </div>
-                              </div>
-
-                         </div>
-
-
-                    </div>
-                    <div class='col-md-4'>
-
-                         <div class="col">
-                              <div class="card">
-                                   <div class="card-body text-center">
-                                   <h4 class="card-title mb-2">Share your Synco Link</h4>
-                                        <p class="text-muted">Copy the URL below and share it with your members:</p>
-                                      
-                                        <div class="referral-code-container">
-                                             <i class="fas fa-copy copy-icon2" onclick="copyRefLink()"></i>
-                                             <h3>Synco Link: <span class="ref-code">https://syncosave.com/signup/{{ $plan->slug }}</span><a href="#!" onclick="copyRefLink()" class="ms-auto fs-3 text-primary"><i class="copy-link ti ti-copy"></i></a></h3>
-                                             <input type="hidden" id="ref_link" value="https://syncosave.com/signup/{{ $plan->slug }}" />
+                                             <p class="text-muted mb-4">Create and manage new contribution groups for your members</p>
+                                             <a href="/admin/group" class="btn btn-primary">Create Group</a>
                                         </div>
-                                        <ul class="list-inline d-flex gap-1 my-3 align-items-center justify-content-center">
-                                             <li class="list-inline-item">
-                                                  <a href="https://www.facebook.com/sharer/sharer.php?u=https://syncosave.com/{{ $plan->slug }}&quote=Dear members, kindly join our synco group via this link"
-                                                       target="_blank"
-                                                       class="btn btn-soft-primary avatar-sm d-flex align-items-center justify-content-center fs-20">
-                                                       <i class="bx bxl-facebook"></i>
-                                                  </a>
-                                             </li>
+                                   </div>
+                              </div>
 
-                                             <li class="list-inline-item">
-                                                  <a href="https://www.instagram.com/share?url=https://syncosave.com/{{ $plan->slug }}"
-                                                       target="_blank"
-                                                       class="btn btn-soft-danger avatar-sm d-flex align-items-center justify-content-center fs-20">
-                                                       <i class="bx bxl-instagram"></i>
-                                                  </a>
-                                             </li>
-
-                                             <li class="list-inline-item">
-                                                  <a href="https://twitter.com/intent/tweet?url=https://syncosave.com/{{ $plan->slug }}&text=Dear members, kindly join our synco group via this link"
-                                                       target="_blank"
-                                                       class="btn btn-soft-info avatar-sm d-flex align-items-center justify-content-center fs-20">
-                                                       <i class="bx bxl-twitter"></i>
-                                                  </a>
-                                             </li>
-
-                                             <li class="list-inline-item">
-                                                  <a href="https://api.whatsapp.com/send?text=Dear members, kindly join our synco group via this link: https://syncosave.com/{{ $plan->slug }}"
-                                                       target="_blank"
-                                                       class="btn btn-soft-success avatar-sm d-flex align-items-center justify-content-center fs-20">
-                                                       <i class="bx bxl-whatsapp"></i>
-                                                  </a>
-                                             </li>
-
-                                             <li class="list-inline-item">
-                                                  <a href="mailto:?subject=Join Our Synco Group&body=Dear members, kindly join our synco group via this link: https://syncosave.com/{{ $plan->slug }}"
-                                                       class="btn btn-soft-warning avatar-sm d-flex align-items-center justify-content-center fs-20">
-                                                       <i class="bx bx-envelope"></i>
-                                                  </a>
-                                             </li>
-                                        </ul>
-                                        
+                              <div class="col-md-6">
+                                   <div class="card h-100">
+                                        <div class="card-body">
+                                             <div class="d-flex align-items-center mb-3">
+                                                  <div class="flex-shrink-0">
+                                                       <div class="avatar-sm">
+                                                            <div class="avatar-title bg-soft-success text-success rounded">
+                                                                 <iconify-icon icon="solar:clipboard-check-broken" class="fs-24"></iconify-icon>
+                                                            </div>
+                                                       </div>
+                                                  </div>
+                                                  <div class="flex-grow-1 ms-3">
+                                                       <h5 class="card-title mb-0">My Dues</h5>
+                                                  </div>
+                                             </div>
+                                             <p class="text-muted mb-4">View and manage your contribution dues and payments</p>
+                                             <a href="/admin/group/contribution-dues" class="btn btn-success">View Dues</a>
+                                        </div>
                                    </div>
                               </div>
                          </div>
 
+
                     </div>
+
 
                </div>
 
-               
-
-
-
-
-               <div class='row'>
-                    <div class='col-md-12'>
-
-                         <div class="card">
-                              <div class="card-body">
-
-                                   <div class="row">
-                                        <div class="col-xl-12">
-                                             <div class="card">
-                                                  <div class="card-header d-flex align-items-center">
-                                                       <h4 class="card-title flex-grow-1 mb-0">Transaction Histrory</h4>
-                                                       <div class="flex-shrink-0">
-                                                            <a href="/admin/all-transactions" class="btn btn-soft-dark btn-sm">View All Transactions</a>
-                                                       </div>
-                                                  </div><!-- end cardheader -->
-                                                  <div class="card-body">
-                                                       <div class="table-responsive table-card">
-                                                            <table class="table table-nowrap table-centered align-middle">
-                                                                 <thead class="bg-light text-muted">
-                                                                      <tr>
-                                                                           <th scope="col">S/N</th>
-                                                                           <th scope="col">Member</th>
-                                                                           <th scope="col">Description</th>
-                                                                      
-                                                                           <th scope="col">Amount</th>
-                                                                           <th scope="col">Date</th>
-                                                                      </tr><!-- end tr -->
-                                                                 </thead><!-- thead -->
-
-                                                                 <tbody>
-                                                                      @foreach ($transactions as $transaction)
-                                                                      <tr>
-                                                                           <td class="fw-medium">{{ $loop->iteration }}</td>
-                                                                           <td class="fw-medium">{{ $transaction->user->name ?? ""}}</td>
-                                                                           <td class="fw-medium">{{ $transaction->payment_type }}</td>
-                                                                           <td class="fw-medium">₦ {{ $transaction->original > 0 ? number_format($transaction->original, 2 ) : number_format($transaction->amount, 2 )}}</td>
-                                                                           <td class="text-muted">{{ \Carbon\Carbon::parse($transaction->updated_at)->format('jS M, Y - h:iA') }}</td>
-                                                                      </tr>
-                                                                      @endforeach
-                                                                 </tbody><!-- end tbody -->
-                                                            </table><!-- end table -->
-                                                       </div>
-                                                      
-                                                  </div><!-- end card body -->
-                                             </div><!-- end card -->
-                                        </div><!-- end col -->
-
-                                        <div class="col-xl-5">
-                                        </div><!-- end col -->
-                                   </div>
-
-                              </div>
-                         </div>
-                    </div>
-               </div>
 
           </div> <!-- end col -->
 
@@ -270,145 +208,39 @@ function copyRefLink() {
 
 @section('script')
 <script>
-     $('.copy-link').click(function() {
-          // Get the text of the link
-          var linkText = $('#cttaste-link').text();
-
-          // Create a temporary input element to copy the text
-          var tempInput = $('<input>');
-          $('body').append(tempInput);
-          tempInput.val(linkText).select();
-          document.execCommand('copy');
-          tempInput.remove();
-          const Toast = Swal.mixin({
-               toast: true,
-               position: 'top-end',
-               showConfirmButton: false,
-               timer: 3000,
-               timerProgressBar: true,
-               didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-               }
-          })
-          // Optionally show a notification or alert
-          Toast.fire('Link Copied')
-     });
-
-     document.addEventListener("DOMContentLoaded", function() {
-          const ctx = document.getElementById('ordersChart').getContext('2d');
-          const ordersChart = new Chart(ctx, {
-               type: 'bar', // Bar chart
-               data: {
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                    datasets: [{
-                         label: 'Total Orders',
-                         data: [{
-                                   {
-                                        $january ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $february ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $march ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $april ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $may ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $june ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $july ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $august ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $september ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $october ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $november ?? 0
-                                   }
-                              },
-                              {
-                                   {
-                                        $december ?? 0
-                                   }
-                              }
-                         ],
-
-                         // Correct data array
-                         backgroundColor: [
-                              'rgba(75, 192, 192, 0.2)',
-                              'rgba(153, 102, 255, 0.2)',
-                              'rgba(255, 159, 64, 0.2)',
-                              'rgba(54, 162, 235, 0.2)',
-                              'rgba(255, 206, 86, 0.2)',
-                              'rgba(75, 192, 192, 0.2)',
-                              'rgba(153, 102, 255, 0.2)',
-                              'rgba(255, 159, 64, 0.2)',
-                              'rgba(54, 162, 235, 0.2)',
-                              'rgba(255, 206, 86, 0.2)',
-                              'rgba(75, 192, 192, 0.2)',
-                              'rgba(153, 102, 255, 0.2)'
-                         ],
-                         borderColor: [
-                              'rgba(75, 192, 192, 1)',
-                              'rgba(153, 102, 255, 1)',
-                              'rgba(255, 159, 64, 1)',
-                              'rgba(54, 162, 235, 1)',
-                              'rgba(255, 206, 86, 1)',
-                              'rgba(75, 192, 192, 1)',
-                              'rgba(153, 102, 255, 1)',
-                              'rgba(255, 159, 64, 1)',
-                              'rgba(54, 162, 235, 1)',
-                              'rgba(255, 206, 86, 1)',
-                              'rgba(75, 192, 192, 1)',
-                              'rgba(153, 102, 255, 1)'
-                         ],
-                         borderWidth: 1
-                    }]
-               },
-               options: {
-                    responsive: true,
-                    scales: {
-                         y: {
-                              beginAtZero: true
-                         }
+     function copyRefLink() {
+          const linkText = document.getElementById('referral-link').textContent;
+          
+          // Create a temporary textarea element to copy the text
+          const textarea = document.createElement('textarea');
+          textarea.value = linkText;
+          document.body.appendChild(textarea);
+          textarea.select();
+          
+          try {
+               document.execCommand('copy');
+               const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                         toast.addEventListener('mouseenter', Swal.stopTimer)
+                         toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
-               }
-          });
-     });
+               });
+               Toast.fire({
+                    icon: 'success',
+                    title: 'Link copied to clipboard'
+               });
+          } catch (err) {
+               console.error('Failed to copy text: ', err);
+          } finally {
+               document.body.removeChild(textarea);
+          }
+     }
 </script>
-
 <script>
      document.addEventListener('DOMContentLoaded', function() {
           const toggleBtn = document.getElementById('toggle-amount');

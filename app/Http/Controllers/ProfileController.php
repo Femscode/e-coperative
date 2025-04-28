@@ -239,10 +239,11 @@ class ProfileController extends Controller
             // Handle the error response accordingly
         }
     }
-    public function verifyAccount(Request $request)
+    public function oldverifyAccount(Request $request)
     {
+        
         $account_number = $request->account_number;
-        $code = $request->code;
+        $code = $request->bank_code;
         $key = env("PAYSTACK_SECRET_KEY");
         $url = "https://api.paystack.co/bank/resolve?account_number=$account_number&bank_code=$code";
         $authorization = "Bearer $key";
@@ -279,6 +280,64 @@ class ProfileController extends Controller
         }
     }
 
+    public function verifyAccount(Request $request)
+    {
+        try {
+            $account_number = $request->account_number;
+            $code = $request->bank_code;
+            $bank_name = $request->bank_name;
+           
+            
+            if (empty($code) || empty($account_number)) {
+                return api_request_response(
+                    'error',
+                    'Bank code and account number are required',
+                    bad_response_status_code()
+                );
+            }
+
+            $key = env("PAYSTACK_SECRET_KEY");
+            $url = "https://api.paystack.co/bank/resolve?account_number=$account_number&bank_code=$code";
+            
+            $response = Http::withHeaders([
+                'Authorization' => "Bearer $key",
+            ])->get($url);
+
+            if ($response->successful()) {
+                $data = $response->json();
+                $user = Auth::user();
+                
+                $user->update([
+                    'bank_code' => $code,
+                    'bank_name' => $bank_name,
+                    'account_name' => $data['data']['account_name'],
+                    'account_number' => $data['data']['account_number']
+                ]);
+
+                return api_request_response(
+                    'ok',
+                    'Bank Details Verified Successfully!',
+                    success_status_code(),
+                    $data['data']['account_name']
+                );
+            }
+
+            $errorData = $response->json();
+            return api_request_response(
+                'error',
+                $errorData['message'] ?? 'Unable to verify account',
+                bad_response_status_code()
+            );
+
+        } catch (\Exception $e) {
+            return api_request_response(
+                'error',
+                'An error occurred while verifying the account',
+                bad_response_status_code()
+            );
+        }
+    }
+
     public function show()
     {
         $data['user'] = $user = Auth::user();
@@ -299,21 +358,39 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'username' => 'nullable|string|max:255|unique:users,username,' . $user->id,
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:20|unique:users,phone,' . $user->id,
             'address' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:100',
             'state' => 'nullable|string|max:100',
             'country' => 'nullable|string|max:100',
             'bio' => 'nullable|string|max:500',
-            // 'photo' => 'nullable|mimes:jpeg,png,jpg,svg|max:2048'
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048'
         ]);
 
-        // Update the user
-        $user->update($validated);
+        try {
+            // Handle profile image upload
+            if ($request->hasFile('image')) {
+                $profileImage = uploadImage($request->file('image'), 'file');
+                $validated['image'] = $profileImage;
+            }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Profile updated successfully'
-        ]);
+            // Handle cover image upload
+           
+
+            // Update the user
+            $user->update($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile updated successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating profile: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
