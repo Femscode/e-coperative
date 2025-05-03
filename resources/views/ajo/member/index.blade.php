@@ -14,9 +14,9 @@
 
             <div class="col-6 col-sm-4 col-lg-6 col-xl-4 mb-4">
                 <div class="card adminuiux-card bg-theme-1">
-                    <?php $variable = getTotalDues($user->id); ?>
+                    <?php $variable = getContributionDues($user->id); ?>
                     <div class="card-body">
-                        <p class="fw-normal small mb-2">Pending Due</p>
+                        <p class="fw-normal small mb-2">Pending Dues</p>
                         <h4 class="mb-3">₦
 
                             @if($variable >= 1000000)
@@ -29,7 +29,7 @@
 
                         </h4>
                         @if($variable > 0)
-                        <a href='/member/manual-payment' style='cursor:pointer' class="badge badge-light text-bg-warning">Pay Now</a>
+                        <a href='/member/contribution-dues' style='cursor:pointer' class="badge badge-light text-bg-warning">Pay Now</a>
                         @else
                         <span href='#' class="badge badge-light text-bg-success">Paid</span>
                         @endif
@@ -39,17 +39,12 @@
             <div class="col-6 col-sm-4 col-lg-6 col-xl-4 mb-4">
                 <div class="card adminuiux-card">
                     <div class="card-body">
-                        <p class="text-secondary small mb-2">Applied Loan</p>
-                        <h4 class="mb-3">₦
-                            @if($member_loan->sum('total_left') >= 1000000)
-                            {{ number_format($member_loan->sum('total_left') / 1000000, 1) }}M
-                            @elseif($member_loan->sum('total_left') >= 1000)
-                            {{ number_format($member_loan->sum('total_left') / 1000, 1) }}K
-                            @else
-                            {{ number_format($member_loan->sum('total_left')) }}
-                            @endif
+                        <p class="text-secondary small mb-2">Contribution Circles</p>
+                        <h4 class="mb-3">
+                        <?php $totalCircles = getTotalContributionCircles($user->id); ?>
+                            {{ $totalCircles }}
                         </h4>
-                        <a style='cursor:pointer' class="badge badge-light text-bg-danger">Repay Loan</a>
+                        <a style='cursor:pointer' href="/my-contribution" class="badge badge-light text-bg-secondary">View Circles</a>
                     </div>
                 </div>
             </div>
@@ -163,7 +158,7 @@
                                             <div class="col">
                                                 <h6>Recent Transaction</h6>
                                             </div>
-                                            <div class="col-auto px-0"><a class="btn btn-sm btn btn-link">See All</a></div>
+                                            <div class="col-auto px-0"><a href="/member/transactions" class="btn btn-sm btn btn-link">See All</a></div>
                                             <div class="col-auto"><button class="btn btn-sm btn-outline-theme"><i class="bi bi-arrow-up-right me-1"></i> Export </button></div>
                                         </div>
                                     </div>

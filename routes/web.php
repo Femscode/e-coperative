@@ -67,6 +67,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/toggle-2fa', [App\Http\Controllers\ProfileController::class, 'toggleTwo'])->name('enable-2fa');
         Route::get('/join-contribution', [App\Http\Controllers\GroupController::class, 'approve'])->name('join-contribution');
         Route::get('/my-contribution', [App\Http\Controllers\GroupController::class, 'contribution'])->name('my-contribution');
+        Route::post('/member/contribution/create', [App\Http\Controllers\GroupController::class, 'create'])->name('member_create_group');
+        Route::get('/member/dues/{uuid}', [App\Http\Controllers\GroupController::class, 'cDues'])->name('member-contribution-dues');
+        Route::get('/member-start-contribution', [App\Http\Controllers\GroupController::class, 'start'])->name('member-start-contribution');
+                   
         Route::get('circle-members-{uuid}', [App\Http\Controllers\GroupController::class, 'circleMembers'])->name('circle-members');
 
         Route::group(['middleware' => 'admin'], function () {

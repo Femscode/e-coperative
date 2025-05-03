@@ -71,7 +71,7 @@
                                             <i class="ri-file-copy-line me-1"></i> Copy Link
                                         </button>
 
-                                        @if($transaction->status == 0)
+                                        @if($transaction->status == 0 && $transaction->company_id == auth()->user()->id)
                                         <button class="btn btn-soft-success btn-sm approveButton"
                                             data-id="{{ $transaction->id }}">
                                             <i class="ri-play-circle-line me-1"></i> Start
@@ -82,6 +82,11 @@
                                             <i class="ri-eye-line me-1"></i> View Dues
                                         </a>
                                         @endif
+
+                                        <a href="{{route('circle-members', $transaction->uuid)}}"
+                                            class="btn btn-soft-secondary btn-sm">
+                                            <i class="ri-eye-line me-1"></i> View Details
+                                        </a>
                                     </div>
                                 </div>
                             </div>

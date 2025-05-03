@@ -275,10 +275,17 @@ class GroupController extends Controller
     {
         $data['group'] = $group = Group::where('uuid', $uuid)->first();
         $data['id'] = $uuid;
+        $user = Auth::user();
         if (!$group) {
             return redirect()->back();
         }
-        return view('ajo.circle_members', $data);
+        if($user->user_type == 'Member') {
+            return view('ajo.member.circle_members', $data);
+
+        } else {
+            return view('ajo.circle_members', $data);
+
+        }
     }
 
     public function view($id)
@@ -289,9 +296,14 @@ class GroupController extends Controller
     }
     public function cDues($id)
     {
-
+        $user = Auth::user();
         $data['id'] = $id;
-        return view('ajo.admin.ajo.pending', $data);
+        if ($user->user_type == 'Member') {
+            return view('ajo.member.ajo_pending', $data);
+        } else {
+
+            return view('ajo.admin.ajo.pending', $data);
+        }
     }
 
     /**

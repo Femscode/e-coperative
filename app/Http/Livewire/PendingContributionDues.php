@@ -14,7 +14,7 @@ class PendingContributionDues extends Component
     {
         $this->memberId = $memberId;
     }
-    public function render()
+    public function oldrender()
     {
         $group = Group::where('uuid', $this->memberId)->first();
         $members = GroupMember::where('group_id', $group->id)->get();
@@ -98,6 +98,96 @@ class PendingContributionDues extends Component
            'months' => $months,
         ];
         // dd($data);
+        return view('livewire.pending-contribution-dues', $data);
+    }
+
+
+    public function render()
+    {
+        $group = Group::where('uuid', $this->memberId)->first();
+        $members = GroupMember::where('group_id', $group->id)->get();
+        $startDate = Carbon::parse($group->start_date);
+        $endDate = Carbon::now();
+        $mode = $group->mode;
+        $months = [];
+        
+        foreach($members as $single){
+            if($mode == "Weekly"){
+                $currentDate = $startDate->copy()->startOfWeek();
+                $weeksToView = [];
+        
+                while ($currentDate->lte($endDate)) {
+                    $weekStart = $currentDate->format('M d');
+                    $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
+                    $weeksToView[] = "$weekStart - $weekEnd";
+                    $currentDate->addWeek();
+                }
+
+                $myWeeks = Transaction::where([
+                    ['user_id', $single->user_id],
+                    ['status', 'Success'],
+                    ['payment_type', 'Contribution'],
+                    ['uuid', $group->uuid] // Add this line to filter by specific contribution
+                ])->pluck('week')->toArray();
+        
+                foreach ($weeksToView as $thisWeek) {
+                    $check = in_array($thisWeek, $myWeeks);
+                    if (!$check) {
+                        $months[] = ['name' => $single->user->name, 'month' => $thisWeek, "amount" => $group->amount, 'uuid' => $group->uuid];
+                    }
+                }
+            }elseif ($mode == "Monthly") {
+                $monthsToView = [];
+                $currentDate = $startDate->copy()->startOfMonth();
+                
+                while ($currentDate->lte($endDate)) {
+                    $monthsToView[] = $currentDate->format('F Y');
+                    $currentDate->addMonth();
+                }
+                
+                $myMonths = Transaction::where([
+                    ['user_id', $single->user_id],
+                    ['status', 'Success'],
+                    ['payment_type', 'Contribution'],
+                    ['uuid', $group->uuid] // Add this line to filter by specific contribution
+                ])->pluck('month')->toArray();
+                
+                foreach ($monthsToView as $thisMonth) {
+                    $check = in_array($thisMonth, $myMonths);
+                    if (!$check) {
+                        $months[] = ['name' => $single->user->name, 'month' => $thisMonth, "amount" => $group->amount, 'uuid' => $group->uuid];
+                    }
+                }
+            }else{
+                $monthsToView = [];
+                $currentDate = $startDate->copy()->startOfDay();
+                
+                while ($currentDate->lte($endDate)) {
+                    $monthsToView[] = $currentDate->format('F d, Y');
+                    $currentDate->addDay();
+                }
+                
+                $myMonths = Transaction::where([
+                    ['user_id', $single->user_id],
+                    ['status', 'Success'],
+                    ['payment_type', 'Contribution'],
+                    ['uuid', $group->uuid] // Add this line to filter by specific contribution
+                ])->pluck('day')->toArray();
+                
+                foreach ($monthsToView as $thisMonth) {
+                    $check = in_array($thisMonth, $myMonths);
+                    if (!$check) {
+                        $months[] = ['name' => $single->user->name, 'month' => $thisMonth, "amount" => $group->amount, 'uuid' => $group->uuid];
+                    }
+                }
+            }
+        }
+        
+        $data = [
+            'title' => "Dues Payment On $group->title Circle",
+            'months' => $months,
+        ];
+        
         return view('livewire.pending-contribution-dues', $data);
     }
 }

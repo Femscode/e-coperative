@@ -52,9 +52,24 @@
                                             <button class="btn copy-btn" data-link="{{ $transaction->link }}">
                                                 <i class="bi bi-link-45deg"></i> Copy Link
                                             </button>
+
+
                                             <a class="btn view-btn" href="{{route('circle-members', $transaction->uuid)}}">
                                                 <i class="bi bi-eye"></i> View Details
                                             </a>
+                                        </div>
+                                        <div class="card-actions">
+                                            @if($transaction->status == 0 && $transaction->company_id == auth()->user()->id)
+                                            <button class="btn btn-success btn-sm approveButton"
+                                                data-id="{{ $transaction->id }}">
+                                                <i class="fa fa-play-circle-line me-1"></i> Start
+                                            </button>
+                                            @else
+                                            <a href="{{ route('member-contribution-dues', $transaction->uuid) }}"
+                                                class="btn btn-info btn-sm">
+                                                <i class="ri-eye-line me-1"></i> View Dues
+                                            </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -109,8 +124,8 @@
         border: 1px solid rgba(9, 65, 104, 0.1);
         transition: all 0.3s ease;
         height: 100%;
-        box-shadow: 4px 4px 8px rgba(9, 65, 104, 0.05), 
-                    -4px -4px 8px rgba(255, 255, 255, 0.9);
+        box-shadow: 4px 4px 8px rgba(9, 65, 104, 0.05),
+            -4px -4px 8px rgba(255, 255, 255, 0.9);
     }
 
     .card-content {

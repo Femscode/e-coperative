@@ -1,15 +1,19 @@
 <?php
 // use Jenssegers\Agent\Facades\Agent;
-use Illuminate\Support\Facades\DB;
-use App\Models\WemaVirtualAccount;
-use GuzzleHttp\Client;
-use Carbon\Carbon;
-use Illuminate\Support\Str;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\MemberLoan;
-use App\Models\User;
 use App\Models\Transaction;
+use App\Models\User;
+use App\Models\WemaVirtualAccount;
+use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Jenssegers\Agent\Agent;
+
+
 
 
     // function audit($action, $modelType, $modelId, $oldValues = [], $newValues = [], $description = null, $agents = null)
@@ -131,6 +135,110 @@ use Jenssegers\Agent\Agent;
             // dd($weeks);
     }
 
+    function getContributionDues($userId) {
+        $user = User::find($userId);
+        if (!$user) {
+            return 0;
+        }
+
+        // Get groups the user is part of
+        $groups = Group::whereIn(
+            'id',
+            GroupMember::where('user_id', $user->id)
+                ->select('group_id')
+                ->distinct()
+                ->pluck('group_id')
+                ->toArray()
+        )
+            ->where('status', 1)
+            ->get();
+
+        $totalDues = 0;
+        foreach ($groups as $group) {
+            $startDate = Carbon::parse($group->start_date);
+            $endDate = Carbon::now();
+
+            if ($group->mode == "Daily") {
+                $currentDate = $startDate->copy()->startOfDay();
+                while ($currentDate->lte($endDate)) {
+                    $dayFormat = $currentDate->format('F d, Y');
+                    
+                    // Check if payment exists for this day
+                    $paid = Transaction::where([
+                        ['user_id', $user->uuid],
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution'],
+                        ['uuid', $group->uuid],
+                        ['day', $dayFormat]
+                    ])->exists();
+
+                    if (!$paid) {
+                        $totalDues += $group->amount;
+                    }
+                    $currentDate->addDay();
+                }
+            }
+            elseif ($group->mode == "Weekly") {
+                $currentDate = $startDate->copy()->startOfWeek();
+                while ($currentDate->lte($endDate)) {
+                    $weekStart = $currentDate->format('M d');
+                    $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
+                    $weekFormat = "$weekStart - $weekEnd";
+
+                    // Check if payment exists for this week
+                    $paid = Transaction::where([
+                        ['user_id', $user->uuid],
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution'],
+                        ['uuid', $group->uuid],
+                        ['week', $weekFormat]
+                    ])->exists();
+
+                    if (!$paid) {
+                        $totalDues += $group->amount;
+                    }
+                    $currentDate->addWeek();
+                }
+            }
+            elseif ($group->mode == "Monthly") {
+                $currentDate = $startDate->copy()->startOfMonth();
+                while ($currentDate->lte($endDate)) {
+                    $monthFormat = $currentDate->format('F Y');
+
+                    // Check if payment exists for this month
+                    $paid = Transaction::where([
+                        ['user_id', $user->uuid],
+                        ['status', 'Success'],
+                        ['payment_type', 'Contribution'],
+                        ['uuid', $group->uuid],
+                        ['month', $monthFormat]
+                    ])->exists();
+
+                    if (!$paid) {
+                        $totalDues += $group->amount;
+                    }
+                    $currentDate->addMonth();
+                }
+            }
+        }
+
+        return $totalDues;
+    }
+
+    function getTotalContributionCircles($userId) {
+        $user = User::find($userId);
+        if (!$user) {
+            return 0;
+        }
+    
+        // Get the total amount from all active contribution circles the user belongs to
+        $totalGroup = GroupMember::where('user_id', $user->id)
+            ->join('groups', 'groups.id', '=', 'group_members.group_id')
+            ->where('groups.status', 1)
+            ->count();
+    
+        return $totalGroup;
+    }
     function uploadImage($file, $path)
     {
         $image_name = $file->getClientOriginalName();

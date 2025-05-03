@@ -163,7 +163,7 @@
                                                   </div>
                                              </div>
                                              <p class="text-muted mb-4">Create and manage new contribution groups for your members</p>
-                                             <a href="/admin/group" class="btn btn-primary">Create Group</a>
+                                             <a href="/admin/group" class="btn btn-primary">Contribution Groups</a>
                                         </div>
                                    </div>
                               </div>

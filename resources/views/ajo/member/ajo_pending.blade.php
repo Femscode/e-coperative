@@ -1,11 +1,11 @@
 
-@extends('cooperative.admin.master')
+@extends('ajo.member.master')
 
 
-@section('content')
+@section('main')
 
-
-    <div class="container-fluid">
+<main class="adminuiux-content has-sidebar" onclick="contentClick()">
+    <div class="container-fluid py-4">
         <!-- start page title -->
         <div class="row">
             <div class="col-12">
@@ -25,6 +25,7 @@
         <!-- end page title -->
         @livewire('pending-contribution-dues',['memberId' => $id])
     </div>
+    </main>
 
     {{-- <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
 

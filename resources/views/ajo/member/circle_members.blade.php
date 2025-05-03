@@ -1,11 +1,9 @@
+@extends('ajo.member.master')
 
-@extends('cooperative.admin.master')
+@section('main')
 
-
-@section('content')
-
-
-    <div class="container-fluid">
+<main class="adminuiux-content has-sidebar" onclick="contentClick()">
+    <div class="container-fluid py-4">
         <!-- start page title -->
         <div class="row">
             <div class="col-12">
@@ -23,10 +21,11 @@
             </div>
         </div>
         <!-- end page title -->
-        @livewire('pending-contribution-dues',['memberId' => $id])
+        @livewire('circle-members',['uuid' => $id])
     </div>
+</main>
 
-    {{-- <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+{{-- <div class="modal fade zoomIn" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
 
 </div> --}}
 @endsection
@@ -44,16 +43,18 @@
         showCustomAlert({
             icon: 'success',
             title: 'Success',
-            text: '{{ Session::get('message') }}'
+            text: '{{ Session::get('
+            message ') }}'
         });
-    @endif
-    @if(Session::has('error'))
+        @endif
+        @if(Session::has('error'))
         showCustomAlert({
             icon: 'success',
             title: 'Success',
-            text: '{{ Session::get('error') }}'
+            text: '{{ Session::get('
+            error ') }}'
         });
-    @endif
+        @endif
         var preLoader = $(".preloader")
         //copy link
         $(".copy-btn").click(function() {
@@ -73,20 +74,20 @@
             $(".preloader").show()
             const serializedData = $("#importMemberForm").serializeArray();
             try {
-                    const postRequest = await request("/admin/group/create",
+                const postRequest = await request("/admin/group/create",
                     processFormInputs(
                         serializedData), 'post');
-                    // console.log('postRequest.message', postRequest.message);
-                    new swal("Good Job", postRequest.message, "success");
-                    $('#importMemberForm').trigger("reset");
-                    $("#importMemberForm .close").click();
-                    window.location.reload();
+                // console.log('postRequest.message', postRequest.message);
+                new swal("Good Job", postRequest.message, "success");
+                $('#importMemberForm').trigger("reset");
+                $("#importMemberForm .close").click();
+                window.location.reload();
             } catch (e) {
                 $(".preloader").hide()
                 if ('message' in e) {
                     // console.log('e.message', e.message);
                     new swal("Opss", e.message, "error");
-                    
+
                 }
             }
         })
@@ -109,12 +110,13 @@
         });
         $('body').on('click', '.edit-user', function() {
             var id = $(this).data('id');
-            $.get('{{ route('user_details') }}?id=' + id, function(data) {
-                // alert('hhgf');
-                $('#idUser').val(data.id);
-                $('#emailDetail').val(data.email);
-                $('#nameDetail').val(data.name);
-            })
+            $.get('{{ route('user_details') }}?id=' + id,
+                function(data) {
+                    // alert('hhgf');
+                    $('#idUser').val(data.id);
+                    $('#emailDetail').val(data.email);
+                    $('#nameDetail').val(data.name);
+                })
         });
 
         $("#frm_main").on('submit', async function(e) {

@@ -357,7 +357,7 @@
 
 
 </div>
-</div>
+
 @endsection
 
 @section('script')
@@ -443,7 +443,8 @@
         });
         $('body').on('click', '.edit-user', function() {
             var id = $(this).data('id');
-            $.get('{{ route('user_details') }}?id=' + id,
+            $.get('{{ route('
+                user_details ') }}?id=' + id,
                 function(data) {
                     // alert('hhgf');
                     $('#idUser').val(data.id);
@@ -552,7 +553,8 @@
         function performDelete(el, user_id) {
             //alert(user_id);
             try {
-                $.get('{{ route('delete_users') }}?id=' + user_id,
+                $.get('{{ route('
+                    delete_users ') }}?id=' + user_id,
                     function(data, status) {
                         if (data.status === "error") {
                             new swal("Opss", data.message, "error");
