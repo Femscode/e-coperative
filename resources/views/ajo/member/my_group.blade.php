@@ -1,6 +1,31 @@
 @extends('ajo.member.master')
 
 @section('main')
+<style> 
+    .turn-type-selection {
+        padding: 0.75rem;
+    }
+
+    .turn-type-selection .form-check {
+        padding: 0.5rem 1rem;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+    .turn-type-selection .form-check:hover {
+        background: #f8f9fa;
+    }
+
+    .turn-type-selection .form-check-input:checked + .form-check-label {
+        color: #094168;
+    }
+
+    .turn-type-selection .form-check-input:checked ~ .form-check {
+        border-color: #094168;
+        background: rgba(9, 65, 104, 0.05);
+    }
+</style>
 <!-- Payment Modal -->
 
 <div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -58,6 +83,34 @@
                                 <label>Maximum Participants</label>
                             </div>
                         </div>
+
+                        <div class="col-lg-6">
+                                <div class="form-floating">
+                                    <div class="turn-type-selection">
+                                        <label class="form-label mb-2">Group Turn Type</label>
+                                        <div class="d-flex gap-4">
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="linearTurn" 
+                                                    name="turn_type" value="linear" checked required>
+                                                <label class="form-check-label" for="linearTurn">
+                                                    <i class="ri-list-ordered me-1"></i>Linear Order
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="randomTurn" 
+                                                    name="turn_type" value="random" required>
+                                                <label class="form-check-label" for="randomTurn">
+                                                    <i class="ri-shuffle-line me-1"></i>Random Order
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <small class="text-muted mt-1 d-block">
+                                            Linear: Members get turns in order of joining<br>
+                                            Random: Turns are assigned randomly
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                 </div>
 
@@ -249,9 +302,7 @@
             if (willUpdate.isConfirmed == true) {
                 //performReset()
                 performStart(el, id);
-            } else {
-                new swal("Opss", "Operation Terminated", "error");
-            }
+            } 
         }
 
         /* When click approve button */

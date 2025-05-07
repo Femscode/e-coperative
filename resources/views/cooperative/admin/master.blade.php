@@ -27,6 +27,7 @@
 
      <!-- Theme Config js (Require in all Page) -->
      <script src="{{url('admindashboard/js/config.js')}}"></script>
+    
      <style>
           .dropdown-toggle::after {
                font-family: boxicons;
@@ -425,9 +426,9 @@
      <!-- Dashboard Js -->
      <script src="{{url('admindashboard/js/pages/cooperative.admin.js')}}"></script>
      <script src="{{url('cdn/sweetalert.min.js')}}" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-     <script src="{{ asset('admindashboard/js/jquery/jquery.min.js') }}"></script>
-     <script src="{{ asset('js\requestController.js') }}"></script>
-     <script src="{{ asset('js\formController.js') }}"></script>
+     <script src="{{ url('admindashboard/js/jquery/jquery.min.js') }}"></script>
+     <script src="{{ url('js\requestController.js') }}"></script>
+     <script src="{{ url('js\formController.js') }}"></script>
 
      <script src="{{url('assets/js/professionallocker.js')}}"></script>
      <script>

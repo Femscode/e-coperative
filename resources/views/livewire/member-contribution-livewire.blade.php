@@ -54,8 +54,8 @@
                                             </button>
 
 
-                                            <a class="btn view-btn" href="{{route('circle-members', $transaction->uuid)}}">
-                                                <i class="bi bi-eye"></i> View Details
+                                            <a class="btn view-btn btn-success" href="{{route('circle-members', $transaction->uuid)}}">
+                                                <i class="bi bi-eye"></i> View Members
                                             </a>
                                         </div>
                                         <div class="card-actions">
@@ -67,7 +67,7 @@
                                             @else
                                             <a href="{{ route('member-contribution-dues', $transaction->uuid) }}"
                                                 class="btn btn-info btn-sm">
-                                                <i class="ri-eye-line me-1"></i> View Dues
+                                                <i class="bi bi-eye me-1"></i> View Dues
                                             </a>
                                             @endif
                                         </div>

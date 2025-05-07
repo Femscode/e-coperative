@@ -4,11 +4,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title mb-0">{{ $title }}</h4>
-                    <div class="search-box-lg">
+                    <!-- <div class="search-box-lg">
                         <i class="ri-search-2-line search-icon"></i>
                         <input type="text" class="form-control form-control-lg" wire:model="search"
                             placeholder="Search groups...">
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="card-body">
@@ -85,7 +85,7 @@
 
                                         <a href="{{route('circle-members', $transaction->uuid)}}"
                                             class="btn btn-soft-secondary btn-sm">
-                                            <i class="ri-eye-line me-1"></i> View Details
+                                            <i class="ri-eye-line me-1"></i> View Members
                                         </a>
                                     </div>
                                 </div>

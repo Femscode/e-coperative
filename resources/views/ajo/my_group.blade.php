@@ -57,6 +57,34 @@
                                     <label>Maximum Participants</label>
                                 </div>
                             </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-floating">
+                                    <div class="turn-type-selection">
+                                        <label class="form-label mb-2">Group Turn Type</label>
+                                        <div class="d-flex gap-4">
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="linearTurn" 
+                                                    name="turn_type" value="linear" checked required>
+                                                <label class="form-check-label" for="linearTurn">
+                                                    <i class="ri-list-ordered me-1"></i>Linear Order
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="randomTurn" 
+                                                    name="turn_type" value="random" required>
+                                                <label class="form-check-label" for="randomTurn">
+                                                    <i class="ri-shuffle-line me-1"></i>Random Order
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <small class="text-muted mt-1 d-block">
+                                            Linear: Members get turns in order of joining<br>
+                                            Random: Turns are assigned randomly
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -308,9 +336,7 @@
             if (willUpdate.isConfirmed == true) {
                 //performReset()
                 performStart(el, id);
-            } else {
-                new swal("Opss", "Operation Terminated", "error");
-            }
+            } 
         }
 
         function performStart(el, id) {

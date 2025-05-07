@@ -10,6 +10,7 @@ use Livewire\Component;
 class PendingContributionDues extends Component
 {
     public $memberId;
+    public $search = ''; 
     public function mount($memberId)
     {
         $this->memberId = $memberId;

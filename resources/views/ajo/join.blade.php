@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,21 +13,26 @@
         .gradient-bg {
             background: linear-gradient(135deg, #094168 0%, #000000 100%);
         }
+
         .custom-shadow {
             box-shadow: 0 10px 30px rgba(9, 65, 104, 0.1);
         }
+
         .amount-badge {
             background: linear-gradient(135deg, rgba(9, 65, 104, 0.1) 0%, rgba(9, 65, 104, 0.05) 100%);
             border: 1px solid rgba(9, 65, 104, 0.1);
         }
+
         .join-btn {
             background: linear-gradient(135deg, #094168 0%, #083857 100%);
             transition: all 0.3s ease;
         }
+
         .join-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(9, 65, 104, 0.2);
         }
+
         .join-btn:disabled {
             background: #cbd5e1;
             cursor: not-allowed;
@@ -34,15 +40,34 @@
         }
     </style>
 </head>
+
 <body class="flex items-center justify-center min-h-screen bg-gray-50 p-4">
     <div class="bg-white custom-shadow rounded-2xl p-8 max-w-md w-full">
         <div class="text-center">
             <h1 class="text-3xl font-bold text-gray-800 mb-2">Join {{ $group->mode}} Contribution</h1>
             <p class="text-gray-600">Be a part of something great! Join our trusted savings community.</p>
-            
-            <div class="amount-badge mt-6 p-4 rounded-xl">
-                <p class="text-sm text-gray-600 mb-1">Contribution Amount</p>
-                <div class="text-2xl font-bold text-[#094168]">₦{{ number_format($group->amount,2) }}</div>
+
+            <div class="amount-badge mt-6 p-6 rounded-xl space-y-4">
+                <div class="flex flex-col items-center">
+                    <p class="text-sm text-gray-600 mb-2">Contribution Amount</p>
+                    <div class="text-3xl font-bold text-[#094168] flex items-center">
+                        <span class="text-xl mr-1">₦</span>
+                        {{ number_format($group->amount,2) }}
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-center space-x-2 pt-2 border-t border-gray-100">
+                    <div class="flex items-center">
+                        <span class="text-sm text-gray-600">Your Turn:</span>
+                        <span class="ml-2 px-3 py-1 bg-[#094168] bg-opacity-10 rounded-full text-[#094168] font-semibold">
+                            @if($group->turn_type == 'random')
+                                <i class="fas fa-random mr-1"></i> Random
+                            @else
+                                <i class="fas fa-list-ol mr-1"></i> {{ $numAlreadyJoined }}
+                            @endif
+                        </span>
+                    </div>
+                </div>
             </div>
 
             <div class="grid grid-cols-3 gap-4 mt-6">
@@ -60,15 +85,15 @@
                 </div>
             </div>
 
-            <button 
-                data-id="{{ $group->id }}" 
+            <button
+                data-id="{{ $group->id }}"
                 class="join-btn mt-8 w-full text-white font-semibold py-4 px-6 rounded-xl approveButton"
                 @if($group->start_date) disabled @endif
-            >
-                @if($group->start_date) 
-                    Already Started
-                @else 
-                    Join Now
+                >
+                @if($group->start_date)
+                Already Started
+                @else
+                Join Now
                 @endif
             </button>
         </div>
@@ -150,29 +175,30 @@
         });
 
         // Handle Laravel Flash Messages
-        @if ($errors->any())
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                html: "{!! implode('', $errors->all('<p class=\"text-sm mb-1\">:message</p>')) !!}",
-                confirmButtonColor: '#094168',
-                customClass: {
-                    popup: 'rounded-2xl'
-                }
-            });
+        @if($errors->any())
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            html: "{!! implode('', $errors->all('<p class=\"text-sm mb-1\">:message</p>')) !!}",
+            confirmButtonColor: '#094168',
+            customClass: {
+                popup: 'rounded-2xl'
+            }
+        });
         @endif
 
-        @if (session()->has('message') || session()->has('success'))
-            Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: "{{ session()->get('message') ?? session()->get('success') }}",
-                confirmButtonColor: '#094168',
-                customClass: {
-                    popup: 'rounded-2xl'
-                }
-            });
+        @if(session()->has('message') || session()->has('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: "{{ session()->get('message') ?? session()->get('success') }}",
+            confirmButtonColor: '#094168',
+            customClass: {
+                popup: 'rounded-2xl'
+            }
+        });
         @endif
     </script>
 </body>
+
 </html>

@@ -320,7 +320,12 @@ class GroupController extends Controller
             $input['link'] = url('/') . '/join/contribution/' . "join" . "-" . $gen;
             // dd($input,);
             $input['amount'] = str_replace(',', '', $input['amount']);
-            Group::create($input);
+            $group = Group::create($input);
+            GroupMember::create([
+                'user_id' => auth()->user()->id,
+                'group_id' => $group->id,
+                'turn' => $group->turn_type == 'random' ? null : 1, // First member gets first turn
+            ]);
             return api_request_response(
                 'ok',
                 'Group saved successfully!',
@@ -368,10 +373,11 @@ class GroupController extends Controller
             }
             $number = $countNumber + 1;
 
+
             $application = GroupMember::create([
                 "group_id" =>  $group->id,
                 "user_id" =>  $user->id,
-                "turn" => $number,
+                "turn" => $group->turn_type == 'random' ? null : $number,
             ]);
 
             $message = "Welcome Onboard!";
@@ -416,6 +422,17 @@ class GroupController extends Controller
             $mode = $group->mode;
             $startDate = Carbon::now(); // Start from today
             $use = clone $startDate;
+
+            //update turn 
+
+            if($group->turn_type == 'random') {
+                $members = $group->members;
+                $members = $members->shuffle();
+                $members->each(function ($member, $key) {
+                    $member->turn = $key + 1;
+                    $member->save();
+                });
+            }
             // dd($startDate);
             switch ($mode) {
                 case 'Daily':
