@@ -282,6 +282,7 @@ class ProfileController extends Controller
 
     public function verifyAccount(Request $request)
     {
+     
         try {
             $account_number = $request->account_number;
             $code = $request->bank_code;

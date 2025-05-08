@@ -271,7 +271,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3">
-                                        <label for="bankCodeInput" class="form-label">Bank Code</label>
+                                        <label for="bankCodeInput" class="form-label">Select Bank</label>
 
                                         <select class="form-control" id="bankCodeInput" name="bank_code">
                                            

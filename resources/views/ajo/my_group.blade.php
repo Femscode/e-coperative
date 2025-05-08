@@ -6,7 +6,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content border-0 shadow-lg">
                 <div class="modal-header border-0 bg-gradient-primary p-4">
-                    <h5 class="modal-title text-white fs-4">Create New Group</h5>
+                    <h5 class="modal-title text-dark fs-4">Create New Group</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -93,7 +93,7 @@
                             Cancel
                         </button>
                         <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill" id="update-btn">
-                            <i class="ri-save-line me-1"></i> Create Group
+                        <i class="bi bi-save me-1"></i>Create Group
                         </button>
                     </div>
                 </form>
@@ -119,7 +119,8 @@
                 </nav> -->
             </div>
             <div>
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" data-bs-toggle="modal" id="create-btn"
+                data-bs-target="#addUser">
                     <i class="bi bi-plus-circle me-2"></i>
                     New Contribution
                 </button>
@@ -224,13 +225,14 @@
                 console.error("Failed to copy: ", err);
             });
         });
+     
         // save contribution group
         $("#importMemberForm").on('submit', async function(e) {
             e.preventDefault();
             $(".preloader").show()
             const serializedData = $("#importMemberForm").serializeArray();
             try {
-                const postRequest = await request("/admin/group/create",
+                const postRequest = await request("/member/contribution/create",
                     processFormInputs(
                         serializedData), 'post');
                 // console.log('postRequest.message', postRequest.message);
@@ -264,16 +266,7 @@
 
             });
         });
-        $('body').on('click', '.edit-user', function() {
-            var id = $(this).data('id');
-            $.get("{{ route('user_details') }}?id=' + id,
-                function(data) {
-                    // alert('hhgf');
-                    $('#idUser').val(data.id);
-                    $('#emailDetail').val(data.email);
-                    $('#nameDetail').val(data.name);
-                })
-        });
+     
 
         $("#frm_main").on('submit', async function(e) {
             e.preventDefault();
@@ -325,7 +318,7 @@
         });
         async function startAccount(el, id) {
             const willUpdate = await new swal({
-                title: "Confirm User Action",
+                title: "Start Contribution!",
                 text: `Are you sure you want to start this contribution?`,
                 icon: "warning",
                 confirmButtonColor: "#DD6B55",
@@ -343,13 +336,13 @@
             $('.approveButton').prop('disabled', true).text('Loading ...');
             try {
                 // alert(data);
-                $.get("{{ route('start-contribution') }}?id=" + id,
+                $.get("{{ route('member-start-contribution') }}?id=" + id,
                     function(data, status) {
                         // console.log(data, status);
                         //    alert(data.message)
                         if (data.status == "ok") {
                             let alert = new swal("Good Job", data.message, "success");
-                            window.location.href = "{{ route('admin_group_home') }}";
+                            window.location.href = "/my-contribution";
                         } else {
                             $('.approveButton').prop('disabled', false).text('Start');
                             new swal("Opss", data.message, "error");

@@ -26,129 +26,7 @@ class GroupController extends Controller
         return view('ajo.admin.ajo.group');
     }
 
-
-
     public function oldcontributionPayment()
-    {
-
-        $groups = GroupMember::where('user_id', Auth::user()->id)
-            ->select('group_id')
-            ->distinct()
-            ->pluck('group_id')
-            ->toArray();
-
-        $participation = Group::whereIn('id', $groups)->where('status', 1)->get();
-        $months = [];
-
-        foreach ($participation as $single) {
-            $startDate = Carbon::parse($single->start_date);
-            $endDate = Carbon::now();
-            $mode = $single->mode;
-
-            if ($mode == "Weekly") {
-                $currentDate = $startDate->copy()->startOfWeek();
-                $weeksToView = [];
-
-                while ($currentDate->lte($endDate)) {
-                    $weekStart = $currentDate->format('M d');
-                    $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
-                    $weeksToView[] = "$weekStart - $weekEnd";
-                    $currentDate->addWeek();
-                }
-
-                $myWeeks = Transaction::where('user_id', auth()->user()->id)
-                    ->where([
-                        ['status', 'Success'],
-                        ['payment_type', 'Contribution'],
-                        ['uuid', $single->uuid] // Add this to check specific contribution
-                    ])
-                    ->pluck('week')
-                    ->toArray();
-
-                foreach ($weeksToView as $thisWeek) {
-                    $check = in_array($thisWeek, $myWeeks);
-                    if (!$check) {
-                        $months[] = [
-                            'source' => '1',
-                            'week' => $thisWeek,
-                            'amount' => $single->amount,
-                            'uuid' => $single->uuid,
-                            'title' => $single->title,
-                            'mode' => $mode
-                        ];
-                    }
-                }
-            } elseif ($mode == "Monthly") {
-                $monthsToView = [];
-                $currentDate = $startDate->copy()->startOfMonth();
-
-                while ($currentDate->lte($endDate) && ($currentDate->year < $endDate->year || ($currentDate->year == $endDate->year && $currentDate->month <= $endDate->month))) {
-                    $monthsToView[] = $currentDate->format('F Y');
-                    $currentDate->addMonth();
-                }
-
-                $myMonths = Transaction::where('user_id', auth()->user()->id)
-                    ->where([
-                        ['status', 'Success'],
-                        ['payment_type', 'Contribution']
-                    ])
-                    ->pluck('month')
-                    ->toArray();
-
-                foreach ($monthsToView as $thisMonth) {
-                    $check = in_array($thisMonth, $myMonths);
-                    if (!$check) {
-                        $months[] = [
-                            'source' => '1',
-                            'month' => $thisMonth,
-                            'amount' => $single->amount,
-                            'uuid' => $single->uuid,
-                            'title' => $single->title,
-                            'mode' => $mode
-                        ];
-                    }
-                }
-            } else { // Daily
-                $daysToView = [];
-                $currentDate = $startDate->copy()->startOfDay();
-
-                while ($currentDate->lte($endDate)) {
-                    $daysToView[] = $currentDate->format('F d, Y');
-                    $currentDate->addDay();
-                }
-
-                $myDays = Transaction::where('user_id', auth()->user()->id)
-                    ->where([
-                        ['status', 'Success'],
-                        ['payment_type', 'Contribution'],
-                        ['uuid', $single->uuid] // Add this to check specific contribution
-                    ])
-                    ->pluck('day') // Change from 'month' to 'day'
-                    ->toArray();
-
-                foreach ($daysToView as $thisDay) {
-                    $check = in_array($thisDay, $myDays);
-                    if (!$check) {
-                        $months[] = [
-                            'source' => '1',
-                            'day' => $thisDay, // Change from 'month' to 'day'
-                            'amount' => $single->amount,
-                            'uuid' => $single->uuid,
-                            'title' => $single->title,
-                            'mode' => $mode
-                        ];
-                    }
-                }
-            }
-        }
-
-        return view('ajo.admin.ajo.dues', [
-            'months' => $months,
-            'user' => Auth::user()
-        ]);
-    }
-
-    public function contributionPayment()
     {
 
         $user = Auth::user();
@@ -271,6 +149,126 @@ class GroupController extends Controller
         return view('ajo.admin.ajo.dues', $data);
     }
 
+
+
+    public function contributionPayment()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        $data['user'] = $user;
+
+        // Fetch groups the user is part of
+        $groupIds = GroupMember::where('user_id', $user->id)
+            ->distinct()
+            ->pluck('group_id')
+            ->toArray();
+
+        $participation = Group::whereIn('id', $groupIds)
+            ->where('status', 1)
+            ->get();
+
+        // Fetch all paid contributions
+        $transactions = Transaction::where('user_id', $user->uuid)
+            ->where('status', 'Success')
+            ->where('payment_type', 'Contribution')
+            ->whereIn('uuid', $participation->pluck('uuid'))
+            ->select('uuid', 'week', 'month', 'day')
+            ->get();
+
+        // Create a lookup array for faster checking
+        $paidContributions = [];
+        foreach ($transactions as $transaction) {
+            $periodValue = $transaction->day ?? $transaction->week ?? $transaction->month;
+            $key = $transaction->uuid . '_' . $periodValue;
+            $paidContributions[$key] = true;
+        }
+
+        $allMonths = [];
+
+        foreach ($participation as $single) {
+            // Get total number of members in the group
+            $totalMembers = GroupMember::where('group_id', $single->id)->count();
+            $contributionCount = 0; // Track contributions for this member in this group
+
+            $startDate = Carbon::parse($single->start_date);
+            $endDate = Carbon::now();
+            $mode = $single->mode;
+
+            if ($mode == "Weekly") {
+                $currentDate = $startDate->copy()->startOfWeek();
+                while ($currentDate->lte($endDate) && $contributionCount < $totalMembers) {
+                    $weekStart = $currentDate->format('M d');
+                    $weekEnd = $currentDate->copy()->endOfWeek()->format('M d, Y');
+                    $weekFormat = "$weekStart - $weekEnd";
+
+                    // Check if this specific contribution is paid
+                    $isPaid = isset($paidContributions[$single->uuid . '_' . $weekFormat]);
+
+                    $allMonths[] = [
+                        'week' => $weekFormat,
+                        'period' => $weekFormat,
+                        'amount' => $single->amount,
+                        'uuid' => $single->uuid,
+                        'title' => $single->title,
+                        'mode' => $mode,
+                        'paid' => $isPaid
+                    ];
+
+                    $contributionCount++;
+                    $currentDate->addWeek();
+                }
+            } elseif ($mode == "Monthly") {
+                $currentDate = $startDate->copy()->startOfMonth();
+                while ($currentDate->lte($endDate) && $contributionCount < $totalMembers) {
+                    $monthFormat = $currentDate->format('F Y');
+
+                    $isPaid = isset($paidContributions[$single->uuid . '_' . $monthFormat]);
+                    $allMonths[] = [
+                        'month' => $monthFormat,
+                        'period' => $monthFormat,
+                        'amount' => $single->amount,
+                        'uuid' => $single->uuid,
+                        'title' => $single->title,
+                        'mode' => $mode,
+                        'paid' => $isPaid
+                    ];
+
+                    $contributionCount++;
+                    $currentDate->addMonth();
+                }
+            } else { // Daily
+                $currentDate = $startDate->copy()->startOfDay();
+                while ($currentDate->lte($endDate) && $contributionCount < $totalMembers) {
+                    $dayFormat = $currentDate->format('F d, Y');
+
+                    // Check if this specific day contribution is paid
+                    $isPaid = isset($paidContributions[$single->uuid . '_' . $dayFormat]);
+
+                    $allMonths[] = [
+                        'day' => $dayFormat,
+                        'period' => $dayFormat,
+                        'amount' => $single->amount,
+                        'uuid' => $single->uuid,
+                        'title' => $single->title,
+                        'mode' => $mode,
+                        'paid' => $isPaid
+                    ];
+
+                    $contributionCount++;
+                    $currentDate->addDay();
+                }
+            }
+        }
+
+        $data['months'] = $allMonths;
+
+        // Render view based on company type
+        return view('ajo.admin.ajo.dues', $data);
+    }
+
     public function circleMembers($uuid)
     {
         $data['group'] = $group = Group::where('uuid', $uuid)->first();
@@ -279,12 +277,10 @@ class GroupController extends Controller
         if (!$group) {
             return redirect()->back();
         }
-        if($user->user_type == 'Member') {
+        if ($user->user_type == 'Member') {
             return view('ajo.member.circle_members', $data);
-
         } else {
             return view('ajo.circle_members', $data);
-
         }
     }
 
@@ -301,7 +297,6 @@ class GroupController extends Controller
         if ($user->user_type == 'Member') {
             return view('ajo.member.ajo_pending', $data);
         } else {
-
             return view('ajo.admin.ajo.pending', $data);
         }
     }
@@ -425,7 +420,7 @@ class GroupController extends Controller
 
             //update turn 
 
-            if($group->turn_type == 'random') {
+            if ($group->turn_type == 'random') {
                 $members = $group->members;
                 $members = $members->shuffle();
                 $members->each(function ($member, $key) {
@@ -485,7 +480,6 @@ class GroupController extends Controller
     {
         $data['user'] = $user = Auth::user();
         if ($user->company->type == 2) {
-
             return view('ajo.member.my_group', $data);
         }
         return view('ajo.my_group', $data);

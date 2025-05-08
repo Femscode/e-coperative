@@ -11,6 +11,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --adminuiux-content-font: "Open Sans", sans-serif;
@@ -29,6 +30,29 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
     <style>
+         .turn-type-selection {
+        padding: 0.75rem;
+    }
+
+    .turn-type-selection .form-check {
+        padding: 0.5rem 1rem;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+    .turn-type-selection .form-check:hover {
+        background: #f8f9fa;
+    }
+
+    .turn-type-selection .form-check-input:checked + .form-check-label {
+        color: #094168;
+    }
+
+    .turn-type-selection .form-check-input:checked ~ .form-check {
+        border-color: #094168;
+        background: rgba(9, 65, 104, 0.05);
+    }
         .grand-total-container {
             max-width: 300px;
             margin: auto;

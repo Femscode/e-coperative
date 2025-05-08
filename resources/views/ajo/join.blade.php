@@ -63,7 +63,7 @@
                             @if($group->turn_type == 'random')
                                 <i class="fas fa-random mr-1"></i> Random
                             @else
-                                <i class="fas fa-list-ol mr-1"></i> {{ $numAlreadyJoined }}
+                                <i class="fas fa-list-ol mr-1"></i> {{ $numAlreadyJoined + 1}}
                             @endif
                         </span>
                     </div>

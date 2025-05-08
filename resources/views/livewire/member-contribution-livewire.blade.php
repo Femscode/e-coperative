@@ -62,7 +62,7 @@
                                             @if($transaction->status == 0 && $transaction->company_id == auth()->user()->id)
                                             <button class="btn btn-success btn-sm approveButton"
                                                 data-id="{{ $transaction->id }}">
-                                                <i class="fa fa-play-circle-line me-1"></i> Start
+                                                <i class="bi bi-play-circle me-1"></i> Start
                                             </button>
                                             @else
                                             <a href="{{ route('member-contribution-dues', $transaction->uuid) }}"
