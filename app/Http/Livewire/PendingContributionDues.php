@@ -255,6 +255,7 @@ class PendingContributionDues extends Component
             ->where('uuid', $group->uuid)
             ->select('user_id', 'week', 'month', 'day')
             ->get();
+            dd($transactions);
 
             
 
