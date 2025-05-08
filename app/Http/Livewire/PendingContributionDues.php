@@ -265,8 +265,7 @@ class PendingContributionDues extends Component
             $periodValue = $transaction->day ?? $transaction->week ?? $transaction->month;
             $key = $transaction->uuid . '_' . $periodValue;  // FIXED: Use user_id instead of uuid
             $paidContributions[$key] = true;
-          dd($transaction,$paidContributions);
-        }
+          }
 
         foreach ($members as $single) {
             $contributionCount = 0; // Track contributions for this member
@@ -280,6 +279,7 @@ class PendingContributionDues extends Component
 
                     // Check if this specific contribution is paid
                     $isPaid = isset($paidContributions[$group->uuid . '_' . $weekFormat]);
+                    dd($isPaid);
                     $months[] = [
                         'name' => $single->user->name,
                         'period' => $weekFormat,
