@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\Transaction;
+use App\Models\User;
 use Carbon\Carbon;
 use Livewire\Component;
 
@@ -243,10 +244,12 @@ class PendingContributionDues extends Component
         $mode = $group->mode;
         $months = [];
 
-        dd($members);
+        $realmembers = User::whereIn('id', $members->pluck('user_id'))->get();
+
+       
 
         // Fetch all paid contributions for the group
-        $transactions = Transaction::whereIn('user_id', $members->pluck('user_id'))
+        $transactions = Transaction::whereIn('user_id', $realmembers->pluck('uuid'))
             ->where('status', 'Success')
             ->where('payment_type', 'Contribution')
             ->where('uuid', $group->uuid)
