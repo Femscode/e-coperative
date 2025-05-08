@@ -273,7 +273,7 @@ public function render()
 
                 $months[] = [
                     'name' => $single->user->name,
-                    'month' => $weekFormat,
+                    'period' => $weekFormat,
                     'amount' => $group->amount,
                     'uuid' => $group->uuid,
                     'paid' => $isPaid
@@ -292,7 +292,7 @@ public function render()
 
                 $months[] = [
                     'name' => $single->user->name,
-                    'month' => $monthFormat,
+                    'period' => $monthFormat,
                     'amount' => $group->amount,
                     'uuid' => $group->uuid,
                     'paid' => $isPaid
@@ -311,7 +311,7 @@ public function render()
 
                 $months[] = [
                     'name' => $single->user->name,
-                    'month' => $dayFormat,
+                    'period' => $dayFormat,
                     'amount' => $group->amount,
                     'uuid' => $group->uuid,
                     'paid' => $isPaid
@@ -330,5 +330,8 @@ public function render()
 
     return view('livewire.pending-contribution-dues', $data);
 }
+
+
+
 
 }

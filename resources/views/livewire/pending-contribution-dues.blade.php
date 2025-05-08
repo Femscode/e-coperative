@@ -40,7 +40,7 @@
                                             </div>
                                         </td>
                                         <td class="fw-medium">
-                                            {{ $transaction['month'] }}
+                                            {{ $transaction['period'] }}
                                             <br>
                                             @if($transaction['paid'])
                                                 <span class="badge bg-success-subtle text-success px-2 py-1">Paid</span>
