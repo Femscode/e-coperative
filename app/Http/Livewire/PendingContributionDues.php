@@ -265,7 +265,7 @@ class PendingContributionDues extends Component
             $periodValue = $transaction->day ?? $transaction->week ?? $transaction->month;
             $key = $transaction->uuid . '_' . $periodValue;  // FIXED: Use user_id instead of uuid
             $paidContributions[$key] = true;
-          
+          dd($transaction,$paidContributions);
         }
 
         foreach ($members as $single) {
