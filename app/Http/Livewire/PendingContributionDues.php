@@ -279,13 +279,16 @@ class PendingContributionDues extends Component
 
                     // Check if this specific contribution is paid
                     $isPaid = isset($paidContributions[$weekFormat]);
+                    $modelIsPaid = $single->user->checkIfPaid($group->uuid, null, $weekFormat, null);
+                   
                     
                     $months[] = [
                         'name' => $single->user->name,
+                        'user' => $single->user,
                         'period' => $weekFormat,
                         'amount' => $group->amount,
                         'uuid' => $group->uuid,
-                        'paid' => $isPaid
+                        'type' => 'weekly'
                     ];
 
                     $contributionCount++;
@@ -301,10 +304,11 @@ class PendingContributionDues extends Component
 
                     $months[] = [
                         'name' => $single->user->name,
+                        'user' => $single->user,
                         'period' => $monthFormat,
                         'amount' => $group->amount,
                         'uuid' => $group->uuid,
-                        'paid' => $isPaid
+                        'type' => 'monthly'
                     ];
 
                     $contributionCount++;
@@ -320,10 +324,11 @@ class PendingContributionDues extends Component
 
                     $months[] = [
                         'name' => $single->user->name,
+                        'user' => $single->user,
                         'period' => $dayFormat,
                         'amount' => $group->amount,
                         'uuid' => $group->uuid,
-                        'paid' => $isPaid
+                        'type' => 'daily'
                     ];
 
                     $contributionCount++;

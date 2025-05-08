@@ -42,10 +42,10 @@
                                         <td class="fw-medium">
                                             {{ $transaction['period'] }}
                                             <br>
-                                            @if($transaction['paid'])
-                                                <span class="badge bg-success-subtle text-success px-2 py-1">Paid</span>
-                                            @else
-                                                <span class="badge bg-danger-subtle text-danger px-2 py-1">Pending</span>
+                                            @if($transaction['type'] == 'weekly')
+                                                <span class="badge bg-{{ $transaction['user']->checkIfPaid($transaction['uuid'], null, $transaction['period'], null) ? 'success' : 'warning' }}-subtle text-{{ $transaction['user']->checkIfPaid($transaction['uuid'], null, $transaction['period'], null) ? 'success' : 'warning' }} px-2 py-1">
+                                                    {{ $transaction['user']->checkIfPaid($transaction['uuid'], null, $transaction['period'], null) ? 'Paid' : 'Pending' }}
+                                                </span>
                                             @endif
                                         </td>
                                     </tr>

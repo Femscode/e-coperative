@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use App\Models\Plan;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -116,7 +117,7 @@ class User extends Authenticatable implements Auditable
 
     public function company()
     {
-        return $this->belongsTo(Company::class, 'company_id','uuid');
+        return $this->belongsTo(Company::class, 'company_id', 'uuid');
     }
 
     protected static function getTotalDues()
@@ -192,8 +193,6 @@ class User extends Authenticatable implements Auditable
 
                 // return $this->redirectTo;
                 break;
-
-
         }
         $currentDate = $startDate->copy()->startOfWeek();  // Start at the beginning of the week
         $weeksToView = [];
@@ -225,6 +224,28 @@ class User extends Authenticatable implements Auditable
         dd($weeks);
     }
 
+    public function checkIfPaid($uuid, $month =  null, $week = null, $day = null)
+    {
+        $query = Transaction::where('user_id', $this->uuid)
+            ->where('status', 'Success')
+            ->where('payment_type', 'Contribution')
+            ->where('uuid', $uuid);
+        if ($month !== null) {
+            $query->where('month', $month);
+        } elseif ($week !== null) {
+            $query->where('week', $week);
+        } elseif ($day !== null) {
+            $query->where('day', $day);
+        }
+
+        $check = $query->select('user_id', 'week', 'month', 'day')
+            ->first();
+        if ($check) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     protected static function boot()
     {
         parent::boot();
@@ -233,6 +254,4 @@ class User extends Authenticatable implements Auditable
             $user->uuid = $user->uuid ?? Str::uuid();
         });
     }
-
-
 }
