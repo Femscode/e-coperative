@@ -155,7 +155,7 @@
     .group-actions {
         display: flex;
         gap: 0.5rem;
-        justify-content: flex-end;
+        justify-content: center;
     }
 
     .btn-soft-primary,
