@@ -42,7 +42,11 @@
                                         <td class="fw-medium">
                                             {{ $transaction['month'] }}
                                             <br>
-                                            <span class="badge bg-danger-subtle text-danger px-2 py-1">Pending</span>
+                                            @if($transaction['paid'])
+                                                <span class="badge bg-success-subtle text-success px-2 py-1">Paid</span>
+                                            @else
+                                                <span class="badge bg-danger-subtle text-danger px-2 py-1">Pending</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach
@@ -67,4 +71,5 @@
             </div><!-- end card -->
         </div>
     </div>
+</div>
 </div>
