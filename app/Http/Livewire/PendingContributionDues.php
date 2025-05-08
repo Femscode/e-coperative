@@ -279,7 +279,7 @@ class PendingContributionDues extends Component
 
                     // Check if this specific contribution is paid
                     $isPaid = isset($paidContributions[$group->uuid . '_' . $weekFormat]);
-                    dd($isPaid);
+                    dd($isPaid, $paidContributions);
                     $months[] = [
                         'name' => $single->user->name,
                         'period' => $weekFormat,
