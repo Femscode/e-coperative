@@ -251,6 +251,7 @@ class PendingContributionDues extends Component
             ->select('user_id', 'week', 'month', 'day')
             ->get();
 
+            dd($transactions);
             
 
         // Create a lookup array for faster checking
