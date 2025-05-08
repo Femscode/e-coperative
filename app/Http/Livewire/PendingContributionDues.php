@@ -254,7 +254,7 @@ public function render()
     $paidContributions = [];
     foreach ($transactions as $transaction) {
         $periodValue = $transaction->day ?? $transaction->week ?? $transaction->month;
-        $key = $transaction->user_id . '_' . $periodValue;
+        $key = $transaction->uuid . '_' . $periodValue;
         $paidContributions[$key] = true;
     }
 
