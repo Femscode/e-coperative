@@ -279,7 +279,7 @@ class PendingContributionDues extends Component
 
                     // Check if this specific contribution is paid
                     $isPaid = isset($paidContributions[$weekFormat]);
-                    dd($isPaid, $paidContributions);
+                    
                     $months[] = [
                         'name' => $single->user->name,
                         'period' => $weekFormat,
@@ -297,7 +297,7 @@ class PendingContributionDues extends Component
                     $monthFormat = $currentDate->format('F Y');
 
                     // Check if this specific contribution is paid
-                    $isPaid = isset($paidContributions[$group->uuid . '_' . $monthFormat]);
+                    $isPaid = isset($paidContributions[$monthFormat]);
 
                     $months[] = [
                         'name' => $single->user->name,
@@ -316,7 +316,7 @@ class PendingContributionDues extends Component
                     $dayFormat = $currentDate->format('F d, Y');
 
                     // Check if this specific contribution is paid
-                    $isPaid = isset($paidContributions[$group->uuid . '_' . $dayFormat]);
+                    $isPaid = isset($paidContributions[$dayFormat]);
 
                     $months[] = [
                         'name' => $single->user->name,
