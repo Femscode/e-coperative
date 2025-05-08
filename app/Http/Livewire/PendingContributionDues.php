@@ -246,7 +246,7 @@ class PendingContributionDues extends Component
 
         $realmembers = User::whereIn('id', $members->pluck('user_id'))->get();
 
-       dd($realmembers);
+    //    dd($realmembers);
 
         // Fetch all paid contributions for the group
         $transactions = Transaction::whereIn('user_id', $realmembers->pluck('uuid'))
