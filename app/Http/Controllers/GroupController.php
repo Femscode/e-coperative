@@ -153,6 +153,7 @@ class GroupController extends Controller
 
     public function contributionPayment()
     {
+     
         $user = Auth::user();
         if (!$user) {
             return redirect()->route('login');
@@ -178,12 +179,14 @@ class GroupController extends Controller
             ->select('uuid', 'week', 'month', 'day')
             ->get();
 
+
         // Create a lookup array for faster checking
         $paidContributions = [];
         foreach ($transactions as $transaction) {
             $periodValue = $transaction->day ?? $transaction->week ?? $transaction->month;
             $key = $transaction->uuid . '_' . $periodValue;
             $paidContributions[$key] = true;
+           
         }
 
         $allMonths = [];

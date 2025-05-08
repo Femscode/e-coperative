@@ -251,12 +251,15 @@ class PendingContributionDues extends Component
             ->select('user_id', 'week', 'month', 'day')
             ->get();
 
+            
+
         // Create a lookup array for faster checking
         $paidContributions = [];
         foreach ($transactions as $transaction) {
             $periodValue = $transaction->day ?? $transaction->week ?? $transaction->month;
-            $key = $transaction->user_id . '_' . $periodValue;  // FIXED: Use user_id instead of uuid
+            $key = $transaction->uuid . '_' . $periodValue;  // FIXED: Use user_id instead of uuid
             $paidContributions[$key] = true;
+          
         }
 
         foreach ($members as $single) {
@@ -270,7 +273,7 @@ class PendingContributionDues extends Component
                     $weekFormat = "$weekStart - $weekEnd";
 
                     // Check if this specific contribution is paid
-                    $isPaid = isset($paidContributions[$single->user_id . '_' . $weekFormat]);
+                    $isPaid = isset($paidContributions[$group->uuid . '_' . $weekFormat]);
                     $months[] = [
                         'name' => $single->user->name,
                         'period' => $weekFormat,
@@ -288,7 +291,7 @@ class PendingContributionDues extends Component
                     $monthFormat = $currentDate->format('F Y');
 
                     // Check if this specific contribution is paid
-                    $isPaid = isset($paidContributions[$single->user_id . '_' . $monthFormat]);
+                    $isPaid = isset($paidContributions[$group->uuid . '_' . $monthFormat]);
 
                     $months[] = [
                         'name' => $single->user->name,
@@ -307,7 +310,7 @@ class PendingContributionDues extends Component
                     $dayFormat = $currentDate->format('F d, Y');
 
                     // Check if this specific contribution is paid
-                    $isPaid = isset($paidContributions[$single->user_id . '_' . $dayFormat]);
+                    $isPaid = isset($paidContributions[$group->uuid . '_' . $dayFormat]);
 
                     $months[] = [
                         'name' => $single->user->name,
