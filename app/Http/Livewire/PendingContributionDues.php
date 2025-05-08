@@ -269,7 +269,7 @@ public function render()
                 $weekFormat = "$weekStart - $weekEnd";
 
                 // Check if this specific contribution is paid
-                $isPaid = isset($paidContributions[$single->user_id . '_' . $weekFormat]);
+                $isPaid = isset($paidContributions[$single->uuid . '_' . $weekFormat]);
 
                 $months[] = [
                     'name' => $single->user->name,
@@ -288,7 +288,7 @@ public function render()
                 $monthFormat = $currentDate->format('F Y');
 
                 // Check if this specific contribution is paid
-                $isPaid = isset($paidContributions[$single->user_id . '_' . $monthFormat]);
+                $isPaid = isset($paidContributions[$single->uuid . '_' . $monthFormat]);
 
                 $months[] = [
                     'name' => $single->user->name,
@@ -307,7 +307,7 @@ public function render()
                 $dayFormat = $currentDate->format('F d, Y');
 
                 // Check if this specific contribution is paid
-                $isPaid = isset($paidContributions[$single->user_id . '_' . $dayFormat]);
+                $isPaid = isset($paidContributions[$single->uuid . '_' . $dayFormat]);
 
                 $months[] = [
                     'name' => $single->user->name,
