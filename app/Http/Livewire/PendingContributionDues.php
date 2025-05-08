@@ -263,7 +263,7 @@ class PendingContributionDues extends Component
         $paidContributions = [];
         foreach ($transactions as $transaction) {
             $periodValue = $transaction->day ?? $transaction->week ?? $transaction->month;
-            $key = $transaction->uuid . '_' . $periodValue;  // FIXED: Use user_id instead of uuid
+            $key = $periodValue;  // FIXED: Use user_id instead of uuid
             $paidContributions[$key] = true;
           }
 
@@ -278,7 +278,7 @@ class PendingContributionDues extends Component
                     $weekFormat = "$weekStart - $weekEnd";
 
                     // Check if this specific contribution is paid
-                    $isPaid = isset($paidContributions[$group->uuid . '_' . $weekFormat]);
+                    $isPaid = isset($paidContributions[$weekFormat]);
                     dd($isPaid, $paidContributions);
                     $months[] = [
                         'name' => $single->user->name,
