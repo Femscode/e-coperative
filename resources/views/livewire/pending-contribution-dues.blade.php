@@ -43,16 +43,18 @@
                                             {{ $transaction['period'] }}
                                             <br>
                                             @if($transaction['type'] == 'weekly')
-                                                <span class="badge bg-{{ $transaction['paid'] ? 'success' : 'warning' }}-subtle text-{{ $transaction['paid'] ? 'success' : 'warning' }} px-2 py-1">
-                                                    {{ $transaction['paid'] ? 'Paid' : 'Pending' }}
+                                                <span class="badge bg-{{ $transaction['user']->checkIfPaid($transaction['uuid'], null, $transaction['period'], null) ? 'success' : 'warning' }}-subtle text-{{ $transaction['user']->checkIfPaid($transaction['uuid'], null, $transaction['period'], null) ? 'success' : 'warning' }} px-2 py-1">
+                                                    {{ $transaction['user']->checkIfPaid($transaction['uuid'], null, $transaction['period'], null) ? 'Paid' : 'Pending' }}
                                                 </span>
-                                            @elseif($transaction['type'] == 'monthly')
-                                                <span class="badge bg-{{ $transaction['paid'] ? 'success' : 'warning' }}-subtle text-{{ $transaction['paid'] ? 'success' : 'warning' }} px-2 py-1">
-                                                    {{ $transaction['paid'] ? 'Paid' : 'Pending' }}
+                                            @endif
+                                            @if($transaction['type'] == 'daily')
+                                                <span class="badge bg-{{ $transaction['user']->checkIfPaid($transaction['uuid'], null, null, $transaction['period']) ? 'success' : 'warning' }}-subtle text-{{ $transaction['user']->checkIfPaid($transaction['uuid'], null, $transaction['period'], null) ? 'success' : 'warning' }} px-2 py-1">
+                                                    {{ $transaction['user']->checkIfPaid($transaction['uuid'], null, $transaction['period'], null) ? 'Paid' : 'Pending' }}
                                                 </span>
-                                            @elseif($transaction['type'] == 'daily')
-                                                <span class="badge bg-{{ $transaction['paid'] ? 'success' : 'warning' }}-subtle text-{{ $transaction['paid'] ? 'success' : 'warning' }} px-2 py-1">
-                                                    {{ $transaction['paid'] ? 'Paid' : 'Pending' }}
+                                            @endif
+                                            @if($transaction['type'] == 'monthly')
+                                                <span class="badge bg-{{ $transaction['user']->checkIfPaid($transaction['uuid'],  $transaction['period'], null, null) ? 'success' : 'warning' }}-subtle text-{{ $transaction['user']->checkIfPaid($transaction['uuid'], null, $transaction['period'], null) ? 'success' : 'warning' }} px-2 py-1">
+                                                    {{ $transaction['user']->checkIfPaid($transaction['uuid'], null, $transaction['period'], null) ? 'Paid' : 'Pending' }}
                                                 </span>
                                             @endif
                                         </td>
