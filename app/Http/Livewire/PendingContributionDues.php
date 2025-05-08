@@ -243,6 +243,8 @@ class PendingContributionDues extends Component
         $mode = $group->mode;
         $months = [];
 
+        dd($members);
+
         // Fetch all paid contributions for the group
         $transactions = Transaction::whereIn('user_id', $members->pluck('user_id'))
             ->where('status', 'Success')
@@ -251,7 +253,6 @@ class PendingContributionDues extends Component
             ->select('user_id', 'week', 'month', 'day')
             ->get();
 
-            dd($transactions);
             
 
         // Create a lookup array for faster checking
