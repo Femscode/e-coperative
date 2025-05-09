@@ -85,7 +85,7 @@
 
                                         <a href="{{route('circle-members', $transaction->uuid)}}"
                                             class="btn btn-soft-secondary btn-sm">
-                                            <i class="ri-eye-line me-1"></i> View Members
+                                            <i class="ri-eye-line me-1"></i> View Turns
                                         </a>
                                     </div>
                                 </div>

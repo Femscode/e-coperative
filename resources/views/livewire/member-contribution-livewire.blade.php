@@ -55,7 +55,7 @@
 
 
                                             <a class="btn view-btn btn-success" href="{{route('circle-members', $transaction->uuid)}}">
-                                                <i class="bi bi-eye"></i> View Members
+                                                <i class="bi bi-eye"></i> View Turns
                                             </a>
                                         </div>
                                         <div class="card-actions">
