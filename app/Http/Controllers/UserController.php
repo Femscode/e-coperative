@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 use App\Models\Company;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\NumberCount;
 use App\Models\User;
+use App\Models\WithdrawRequest;
 use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
 use function App\Helpers\success_status_code;
@@ -146,5 +149,59 @@ class UserController extends Controller
     } else {
         return redirect()->back()->with('error', 'File not found.');
     }
+    }
+
+    public function fetchProfile() {
+        $user = auth()->user();
+
+        return response()->json($user);
+    }
+
+    public function withdrawRequest() {
+        try {
+            $user = auth()->user();
+            $input = request()->all();
+            
+            // Validate required fields
+            if (!isset($input['transaction_id']) || !isset($input['pin'])) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Transaction ID and PIN are required'
+                ], 400);
+            }
+
+            // Verify user's PIN (assuming PIN is stored as a hashed value in the user's record)
+            // if (!Hash::check($input['pin'], $user->pin)) {
+            //     return response()->json([
+            //         'status' => 'error',
+            //         'message' => 'Invalid PIN'
+            //     ], 400);
+            // }
+
+            // Create withdrawal request
+            $group = Group::where('uuid', $input['transaction_id'])->first();
+            $group_members = GroupMember::where('group_id', $group->id)->count();
+            $amount = $group_members * $group->amount;
+            
+           
+            $withdrawRequest = WithdrawRequest::create([
+                'user_id' => $user->uuid,
+                'group_id' => $input['transaction_id'],
+                'amount' => $amount,
+                'status' => 2, // Default status as per migration
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Withdrawal request submitted successfully',
+                'data' => $withdrawRequest
+            ]);
+
+        } catch (\Exception $exception) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $exception->getMessage()
+            ], 500);
+        }
     }
 }

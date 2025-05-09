@@ -20,6 +20,8 @@ Route::get('/test', function () {
     return view('test');
 })->name('test');
 
+Route::get('/fetch-profile', [App\Http\Controllers\UserController::class, 'fetchProfile'])->name('fetch_profile');
+Route::post('/withdraw-request', [App\Http\Controllers\UserController::class, 'withdrawRequest'])->name('withdrawRequest');
 // Route::post('/admin/group/create', [App\Http\Controllers\GroupController::class, 'create'])->name('admin_create_group');
                    
 

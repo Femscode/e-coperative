@@ -246,6 +246,17 @@ class User extends Authenticatable implements Auditable
             return false;
         }
     }
+
+    public function checkWithdrawalStatus($id)
+    {
+        $check = WithdrawRequest::where('group_id', $id)->where('user_id', $this->uuid)->first();
+       
+        if ($check) {
+            return $check;
+        } else {
+            return false;
+        }
+    }
     protected static function boot()
     {
         parent::boot();
