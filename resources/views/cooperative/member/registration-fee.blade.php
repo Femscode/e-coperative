@@ -171,6 +171,9 @@
                         <div class="payment-icon bg-soft-primary rounded-circle mx-auto mb-3" style="width: 64px; height: 64px;">
                             <i class="bi bi-bank fs-2 text-primary d-flex align-items-center justify-content-center h-100"></i>
                         </div>
+                        <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
                         <h4 class="mb-1">Bank Transfer Details</h4>
                         <p class="text-muted">Complete your payment using the details below</p>
                     </div>

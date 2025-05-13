@@ -674,10 +674,7 @@
                     <p class="mb-1"><strong>Email:</strong> ${$('#email').val()}</p>
                     <p class="mb-1"><strong>Phone:</strong> ${$('#phone').val()}</p>
                 </div>
-                <div class="review-item">
-                    <h6 class="mb-2">Account Details</h6>
-                    <p class="mb-1"><strong>Address:</strong> ${$('#address').val()}</p>
-                </div>
+               
             </div>
         `;
             $('.review-info').html(reviewHtml);

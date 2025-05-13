@@ -93,7 +93,7 @@
                                             $isCurrentTurn = false;
                                             $currentDate = now();
                                             if ($group->mode === 'daily') {
-                                                $isCurrentTurn = $currentDate->format('Y-m-d') === $transaction->turn_date;
+                                                $isCurrentTurn = $currentDate->format('Y-m-d') === $transaction->turn_date->format('Y-m-d');
                                             } elseif ($group->mode === 'weekly') {
                                                 $isCurrentTurn = $currentDate->weekOfYear === Carbon\Carbon::parse($transaction->turn_date)->weekOfYear;
                                             } elseif ($group->mode === 'monthly') {
