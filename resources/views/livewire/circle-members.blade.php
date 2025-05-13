@@ -116,8 +116,8 @@
                                                     @elseif($withdraw_status->status == 0)
                                                         <button onclick="initiateWithdrawal('{{ $group->uuid }}')" 
                                                                 class="btn btn-primary d-inline-flex align-items-center"
-                                                                {{ $isCurrentTurn ? 'disabled' : '' }}
-                                                                style="cursor: {{ $isCurrentTurn ? 'not-allowed' : 'pointer' }};">
+                                                                {{ !$isCurrentTurn ? 'disabled' : '' }}
+                                                                style="cursor: {{ !$isCurrentTurn ? 'not-allowed' : 'pointer' }};">
                                                             <i class="ri-bank-card-line me-1"></i>
                                                             Withdraw Funds
                                                         </button>
@@ -187,8 +187,8 @@
                                                 @else
                                                     <button onclick="initiateWithdrawal('{{ $group->uuid }}')" 
                                                             class="btn btn-primary d-inline-flex align-items-center"
-                                                            {{ !$isCurrentTurn ? 'disabled' : '' }}
-                                                            style="cursor: {{ !$isCurrentTurn ? 'not-allowed' : 'pointer' }};">
+                                                            {{ $isCurrentTurn ? 'disabled' : '' }}
+                                                            style="cursor: {{ $isCurrentTurn ? 'not-allowed' : 'pointer' }};">
                                                         <i class="ri-bank-card-line me-1"></i>
                                                         Withdraw Funds
                                                     </button>
