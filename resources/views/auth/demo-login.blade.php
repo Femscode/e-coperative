@@ -281,19 +281,19 @@
             // Demo login credentials
             const demoCredentials = {
                 cooperative_admin: {
-                    email: 'admin@syncocoop.com',
+                    email: 'admin@syncosave.com',
                     password: 'Password123'
                 },
                 cooperative_member: {
-                    email: 'member@syncocoop.com',
+                    email: 'member@syncosave.com',
                     password: 'Password123'
                 },
                 thrift_admin: {
-                    email: 'thriftadmin@syncocoop.com',
+                    email: 'thriftadmin@syncosave.com',
                     password: 'Password123'
                 },
                 thrift_member: {
-                    email: 'thriftmember@syncocoop.com',
+                    email: 'thriftmember@syncosave.com',
                     password: 'Password123'
                 }
             };
