@@ -93,7 +93,7 @@
                                             $isCurrentTurn = false;
                                             $currentDate = now();
                                             if ($group->mode === 'daily') {
-                                                $isCurrentTurn = $currentDate->format('Y-m-d') === $transaction->created_at->format('Y-m-d');
+                                                $isCurrentTurn = $currentDate->format('Y-m-d') === $transaction->turn_date;
                                             } elseif ($group->mode === 'weekly') {
                                                 $isCurrentTurn = $currentDate->weekOfYear === Carbon\Carbon::parse($transaction->turn_date)->weekOfYear;
                                             } elseif ($group->mode === 'monthly') {
@@ -116,8 +116,8 @@
                                                     @elseif($withdraw_status->status == 0)
                                                         <button onclick="initiateWithdrawal('{{ $group->uuid }}')" 
                                                                 class="btn btn-primary d-inline-flex align-items-center"
-                                                                {{ !$isCurrentTurn ? 'disabled' : '' }}
-                                                                style="cursor: {{ !$isCurrentTurn ? 'not-allowed' : 'pointer' }};">
+                                                                {{ $isCurrentTurn ? 'disabled' : '' }}
+                                                                style="cursor: {{ $isCurrentTurn ? 'not-allowed' : 'pointer' }};">
                                                             <i class="ri-bank-card-line me-1"></i>
                                                             Withdraw Funds
                                                         </button>
