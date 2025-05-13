@@ -38,20 +38,21 @@
                             <div class="mb-4">
                                 <label class="form-label">Payment Method</label>
                                 <div class="payment-methods">
-                                    <div class="form-check mb-3">
-                                        <input class="form-check-input" type="radio" name="type" id="cardPayment" value="card" checked>
-                                        <label class="form-check-label d-flex align-items-center" for="cardPayment">
-                                            <i class="bi bi-credit-card me-2"></i>
-                                            Pay with Card
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="type" id="bankTransfer" value="transfer">
+                                <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="type" id="bankTransfer" value="transfer" checked>
                                         <label class="form-check-label d-flex align-items-center" for="bankTransfer">
                                             <i class="bi bi-bank me-2"></i>
                                             Bank Transfer
                                         </label>
                                     </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="radio" name="type" id="cardPayment" value="card" >
+                                        <label class="form-check-label d-flex align-items-center" for="cardPayment">
+                                            <i class="bi bi-credit-card me-2"></i>
+                                            Pay with Card
+                                        </label>
+                                    </div>
+                                   
                                 </div>
                             </div>
 
