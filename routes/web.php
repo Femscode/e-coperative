@@ -7,6 +7,7 @@ Route::get('/checkpayment', [App\Http\Controllers\WebsiteController::class, 'che
 
 Route::get('/cooperative/signup', [App\Http\Controllers\Auth\RegisterController::class, 'coop_reg'])->name('coop_reg');
 Route::post('/cooperative/save_coop_reg', [App\Http\Controllers\Auth\RegisterController::class, 'save_coop_reg'])->name('save_coop_reg');
+Route::get('/demo-login', [App\Http\Controllers\Auth\RegisterController::class, 'demoLogin'])->name('signup');
 Route::get('/signup', [App\Http\Controllers\Auth\RegisterController::class, 'signup'])->name('signup');
 Route::get('/signup/{slug}', [App\Http\Controllers\Auth\RegisterController::class, 'signup'])->name('signup');
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'signup'])->name('signup');

@@ -171,12 +171,12 @@ class UserController extends Controller
             }
 
             // Verify user's PIN (assuming PIN is stored as a hashed value in the user's record)
-            // if (!Hash::check($input['pin'], $user->pin)) {
-            //     return response()->json([
-            //         'status' => 'error',
-            //         'message' => 'Invalid PIN'
-            //     ], 400);
-            // }
+            if (!Hash::check($input['pin'], $user->pin)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid PIN'
+                ], 400);
+            }
 
             // Create withdrawal request
             $group = Group::where('uuid', $input['transaction_id'])->first();

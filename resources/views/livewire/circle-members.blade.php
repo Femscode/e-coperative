@@ -197,7 +197,7 @@
                                                 @if(!$isCurrentTurn)
                                                     <small class="text-muted d-block mt-1" style="font-size: 0.7rem;">
                                                         <i class="ri-information-line me-1"></i>
-                                                        Not your turn yet
+                                                        Not your turn
                                                     </small>
                                                 @endif
                                             </div>

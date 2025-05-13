@@ -17,9 +17,9 @@
     <meta property="og:type" content="article" />
     <meta property="og:title" content="Join {{ $company->name ?? 'us' }} to save together | Building Financial Success Together." />
     <meta property="og:url" content="https://syncosave.com/signup/{{$company->slug ?? ''}}" />
-    
+
     <meta property="og:image" content="https://syncosave.com/public/{{ $company->image ?? 'syncologo.png' }}" />
-   
+
 
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet">
@@ -46,6 +46,87 @@
 
     <script src="{{ asset('admindashboard/js/sweetalert-custom.js') }}"></script>
     <style>
+        .password-mismatch-alert {
+            display: none;
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            background-color: rgba(220, 53, 69, 0.1);
+            border-left: 3px solid #dc3545;
+            transition: all 0.3s ease;
+        }
+
+        .password-mismatch-alert.show {
+            display: block;
+            animation: fadeInAlert 0.3s ease;
+        }
+        .pin-input-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .pin-input {
+            width: 3.5rem;
+            height: 3.5rem;
+            text-align: center;
+            font-size: 1.5rem;
+            border: 1px solid black;
+            border-radius: 8px;
+            background: transparent;
+        }
+
+        .pin-input:focus {
+            border-color: #094168;
+            box-shadow: none;
+            outline: none;
+        }
+        .animate-text {
+            display: inline-block;
+            color: #3b82f6;
+            background: linear-gradient(120deg, #094168, #2563eb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes textTransition {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            45% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                opacity: 0;
+                transform: translateY(10px) scale(0.98);
+            }
+
+            55% {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.98);
+            }
+
+            60% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .animate-text.transitioning {
+            animation: textTransition 6s infinite;
+        }
+
         .step-arrow-nav .nav-pills .nav-link {
             position: relative;
             padding: 15px;
@@ -180,13 +261,19 @@
             <div class="col-12 col-lg-5 p-4">
                 <div class="text-center mb-4">
                     <img src="{{ asset('admindashboard/images/logo/syncologo2.png') }}" alt="SyncoSave" class="mb-4" style="width: 160px;">
-                    <h2 class="fw-bold mb-2">Create Your Account</h2>
+
+
                     @if(isset($slug))
-                    <p class="text-muted">Join {{ $company->name }} today!</p>
+                    <h2>Join {{ $company->name }} today!</h2>
                     @else
-                    <p class="text-muted">Join a cooperative today!</p>
+
+                    <h2 class="cta-title">Join a <span class="animate-text">cooperative</span> today!</h2>
+
+
                     @endif
+                    <p class="mb-0"><a href="/cooperative/signup">Click here</a> to register your own cooperative or thrift contribution.</p>
                 </div>
+
 
                 <form id="process-order-form" method="post" class="registration-form">
                     @csrf
@@ -215,14 +302,15 @@
                     <div class="tab-content">
                         <!-- Step 1: Personal Information -->
                         <div class="tab-pane fade show active" id="step1">
+                            
                             <div class="mb-3">
-                                <label class="form-label">Select Cooperative</label>
+                                <label class="form-label">Select Group</label>
                                 @if(isset($company) && $company)
                                 <input type="hidden" name="company" value="{{ $company->id }}">
                                 <input type="text" class="form-control" value="{{ $company->name }}" readonly>
                                 @else
                                 <select class="form-control form-select planId" name="company">
-                                    <option value="">Choose a cooperative</option>
+                                    <option value="">Choose a group</option>
                                     @foreach(\App\Models\Company::where('visibility','public')->get() as $cooperative)
                                     <option value="{{ $cooperative->id }}">{{ $cooperative->name }}</option>
                                     @endforeach
@@ -269,11 +357,7 @@
 
                         <!-- Step 2: Account Setup -->
                         <div class="tab-pane fade" id="step2">
-                            <div class="mb-3">
-                                <label class="form-label">Address</label>
-                                <input type="text" class="form-control" name="address" id="address" required>
-                                <div class="invalid-feedback">Please enter your address</div>
-                            </div>
+                           
                             <div class="row">
                                 <div class="col-12 mb-3">
                                     <label class="form-label">Password</label>
@@ -294,8 +378,21 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div id="danger_password"></div>
+                                <div id="danger_password" class="password-mismatch-alert col-12 mb-3"></div>
                             </div>
+
+                            <div class="col-12 mb-4">
+                                                    <label class="form-label d-block text-center mb-4">Set Your 4-Digit PIN</label>
+                                                    <div class="pin-input-group">
+                                                        <input type="text" class="pin-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                                                        <input type="text" class="pin-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                                                        <input type="text" class="pin-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                                                        <input type="text" class="pin-input" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                                                        <input type="hidden" name="pin" id="pin-combined" value="8932">
+                                                    </div>
+                                                </div>
+
+
                             <div class="d-flex justify-content-between mt-4">
                                 <button type="button" class="btn btn-outline-secondary previestab" data-previous="step1">
                                     <i class="bi bi-arrow-left me-2"></i> Back
@@ -336,7 +433,7 @@
 
             <!-- Right Column - Banner -->
             <div class="col-lg-7 d-none d-lg-block">
-                <div class="position-relative h-100 bg-primary bg-gradient rounded-4 p-5">
+                <div class="position-relative h-100 bg-gradient rounded-4" style="background:#094168">
                     <div class="position-absolute top-50 start-50 translate-middle text-center text-white" style="width: 80%;">
                         <h1 class="display-5 fw-bold mb-4">Cooperative Savings Made Simple</h1>
                         <p class="lead">"When we save together, we grow together. Cooperative savings is the foundation of community wealth."</p>
@@ -510,11 +607,12 @@
 
         var password = $("#password-fieldx").val()
         var confirm = $("#password-fieldc").val()
+        const passwordAlert = $('#danger_password');
         if (password.length > 7) {
             if (password !== confirm) {
-                $("#danger_password").html("<div class='alert alert-danger'>Password not matched!</div>");
+                passwordAlert.text('Passwords do not match').addClass('show');
             } else {
-                $("#danger_password").html("<div class='alert alert-success'>Password matched!</div>")
+                passwordAlert.removeClass('show');
             }
         }
 
@@ -684,3 +782,54 @@
         showStep(1);
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const animateText = document.querySelector('.animate-text');
+        const texts = ['cooperative', 'thrift contribution'];
+        let currentIndex = 0;
+
+        animateText.classList.add('transitioning');
+
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % texts.length;
+            requestAnimationFrame(() => {
+                animateText.style.opacity = '0';
+                animateText.style.transform = 'translateY(10px) scale(0.98)';
+
+                setTimeout(() => {
+                    animateText.textContent = texts[currentIndex];
+                    requestAnimationFrame(() => {
+                        animateText.style.opacity = '1';
+                        animateText.style.transform = 'translateY(0) scale(1)';
+                    });
+                }, 400);
+            });
+        }, 3000);
+    });
+</script>
+<script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const pinInputs = document.querySelectorAll('.pin-input');
+                                            const pinCombined = document.getElementById('pin-combined');
+
+                                            pinInputs.forEach((input, index) => {
+                                                input.addEventListener('input', () => {
+                                                    // Move to next input if a digit is entered
+                                                    if (input.value.length === 1 && index < pinInputs.length - 1) {
+                                                        pinInputs[index + 1].focus();
+                                                    }
+                                                    // Update hidden input with combined PIN
+                                                    const pinValue = Array.from(pinInputs).map(i => i.value).join('');
+                                                    pinCombined.value = pinValue;
+                                                });
+
+                                                // Handle backspace
+                                                input.addEventListener('keydown', (e) => {
+                                                    if (e.key === 'Backspace' && input.value === '' && index > 0) {
+                                                        pinInputs[index - 1].focus();
+                                                    }
+                                                });
+                                            });
+                                        });
+                                    </script>

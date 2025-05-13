@@ -84,23 +84,20 @@ class RegisterController extends Controller
 
     public function save_coop_reg(Request $request)
     {
+        // dd($request->all());
+        
         $this->validate($request, [
             'name' => ['required', 'unique:companies'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['required',  'max:13', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'address' => ['required']
+            'pin' => ['required']
         ]);
         $data = $request->all();
         $randomNumber = rand(1, 1000);
         $prefix = strtoupper(substr($request->name, 0, 3));
         $uuid = $prefix . str_pad($randomNumber, 4, '0', STR_PAD_LEFT);
-        // dd($data);
-        // return Validator::make($data, [
-        //     'name' => ['required', 'string', 'max:255'],
-        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        //     'password' => ['required', 'string', 'min:8', 'confirmed'],
-        // ]);
-        // dd('here');
+      
         $company = Company::create([
             'name' => $request->name,
             'slug' => str_replace(' ', '', $request->name),
@@ -116,6 +113,7 @@ class RegisterController extends Controller
             'user_type' => 'Admin',
             'password' => Hash::make($data['password']),
             'company_id' => $company->uuid,
+            'pin' => Hash::make($request->pin)
         ]);
         Auth::login($user);
         return redirect('/dashboard ')->with('message', 'Registration Successful! Proceed to login');
@@ -137,7 +135,7 @@ class RegisterController extends Controller
     public function register_user(Request $request)
     {
         $data = $request->all();
-        // dd($data);
+      
         // return Validator::make($data, [
         //     'name' => ['required', 'string', 'max:255'],
         //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -166,7 +164,7 @@ class RegisterController extends Controller
         $validator = Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'address' => ['required'],
+            // 'address' => ['required'],
             'company' => ['required'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -209,9 +207,10 @@ class RegisterController extends Controller
                 'user_type' => 'Member',
                 'password' => Hash::make($data['password']),
                 'company_id' => $company->uuid,
-                'address' => $data['address'],
+                // 'address' => $data['address'],
                 'referred_by' => $data['referred_by'] ?? null,
-                'status' => $company->visibility == "private" ? NULL : 1
+                'status' => $company->visibility == "private" ? NULL : 1,
+                'pin' => Hash::make($request->pin),
             ]);
 
             Auth::login($user);
@@ -227,5 +226,9 @@ class RegisterController extends Controller
                 'message' => 'Registration failed. Please try again.'
             ], 500);
         }
+    }
+
+    public function demoLogin() {
+        return view('auth.demo-login');
     }
 }

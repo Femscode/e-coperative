@@ -57,6 +57,7 @@ class User extends Authenticatable implements Auditable
         'status',
         'photo',
         'bank_name',
+        'pin',
     ];
 
     /**
@@ -250,7 +251,7 @@ class User extends Authenticatable implements Auditable
     public function checkWithdrawalStatus($id)
     {
         $check = WithdrawRequest::where('group_id', $id)->where('user_id', $this->uuid)->first();
-       
+
         if ($check) {
             return $check;
         } else {
