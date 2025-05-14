@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\MemberLoanController;
 use Illuminate\Support\Facades\Route;
+
 
 
 Route::get('/checkpayment', [App\Http\Controllers\WebsiteController::class, 'checkpayment'])->name('checkpayment');
@@ -159,6 +161,7 @@ Route::group(['middleware' => ['auth']], function () {
                     Route::get('/ongoing', [App\Http\Controllers\MemberLoanController::class, 'ongoing'])->name('loan.ongoing');
                     Route::get('/completed', [App\Http\Controllers\MemberLoanController::class, 'completed'])->name('loan.completed');
                     Route::post('/apply', [App\Http\Controllers\MemberLoanController::class, 'apply'])->name('apply-loan');
+                    Route::post('/loan-payment/track', [MemberLoanController::class, 'track'])->name('loan.payment.track');
                 });
               
             });

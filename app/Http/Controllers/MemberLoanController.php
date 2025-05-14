@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\LoanPaymentTracker;
 use App\Models\MemberLoan;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
 use function App\Helpers\success_status_code;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class MemberLoanController extends Controller
@@ -82,6 +83,37 @@ class MemberLoanController extends Controller
                 $exception->getMessage(),
                 bad_response_status_code()
             );
+        }
+    }
+
+    public function track(Request $request)
+    {
+        try {
+            $check = LoanPaymentTracker::where('user_id', $request->user_id)->where('loan_id', $request->loan_id)->where('type', $request->type)->where('status',0)->first();
+            if($check){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Payment tracking already initiated',
+                    'data' => $check
+                ]);
+            }
+            $tracker = LoanPaymentTracker::create([
+                'user_id' => $request->user_id,
+                'loan_id' => $request->loan_id,
+                'type' => $request->type,
+                'status' => $request->status
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Payment tracking initiated',
+                'data' => $tracker
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to track payment: ' . $e->getMessage()
+            ], 500);
         }
     }
 
