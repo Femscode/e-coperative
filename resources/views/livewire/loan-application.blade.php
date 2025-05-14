@@ -525,7 +525,7 @@
 
         // Save payment tracking record
         $.ajax({
-            url: '/member/loan-payment/track',
+            url: '/member/loan/loan-payment/track',
             method: 'POST',
             data: {
                 _token: '{{ csrf_token() }}',
