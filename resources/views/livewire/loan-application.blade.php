@@ -519,8 +519,8 @@
 
 
         const loanCard = document.querySelector('.loan-card');
-    const id = loanCard.getAttribute('data-id');
-    const type = loanCard.getAttribute('data-type');
+    const loanId = loanCard.getAttribute('data-id');
+    const loanType = loanCard.getAttribute('data-type');
         const userId = '{{ auth()->user()->uuid }}';
 
         // Save payment tracking record
