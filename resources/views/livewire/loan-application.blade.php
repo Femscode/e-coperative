@@ -140,10 +140,14 @@
                         </div>
 
                         <div class="repayment-info mt-4 text-center p-4 bg-light rounded-4">
+                            @if($user->checkLoanApplicationStatus())
                             <button type="button" class="btn btn-success payApplicationFee"
                                 data-bs-toggle="modal" data-bs-target="#paymentModal">
-                                Pay Application Fee
+                                Pay Application Fee 
                             </button>
+
+                            @endif
+
                             <span class="label d-block mb-2">Monthly Repayment</span>
                             <h2 class="mb-0">₦{{ number_format($transaction->monthly_return, 2) }}</h2>
 

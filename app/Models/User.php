@@ -258,6 +258,16 @@ class User extends Authenticatable implements Auditable
             return false;
         }
     }
+    public function checkLoanApplicationStatus() {
+        $loan = MemberLoan::where('user_id', $this->uuid)->first();
+        $application_fee = Company::where('uuid', $this->company_id)->first()->application_fee;
+        if($application_fee == 0 || $loan->status == 1) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
     protected static function boot()
     {
         parent::boot();
