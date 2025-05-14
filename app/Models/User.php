@@ -260,7 +260,7 @@ class User extends Authenticatable implements Auditable
     }
     public function checkLoanApplicationStatus() {
         $loan = LoanPaymentTracker::where('user_id', $this->uuid)->first();
-        $application_fee = Company::where('uuid', $this->company_id)->first()->application_fee;
+        $application_fee = Company::where('uuid', $this->company_id)->first()->loan_amount_form;
         if($application_fee == 0 || $loan->status == 1) {
             return true;
         } else {
