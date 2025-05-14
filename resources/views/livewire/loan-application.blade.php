@@ -140,7 +140,7 @@
                         </div>
 
                         <div class="repayment-info mt-4 text-center p-4 bg-light rounded-4">
-                            @if($user->checkLoanApplicationStatus())
+                            @if(!$user->checkLoanApplicationStatus())
                             <button type="button" class="btn btn-success payApplicationFee"
                                 data-bs-toggle="modal" data-bs-target="#paymentModal">
                                 Pay Application Fee 
