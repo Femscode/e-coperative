@@ -98,7 +98,7 @@
     <div class="row g-4">
         @foreach($loans as $transaction)
         <div class="col-md-6">
-            <div data-loan-id="{{ $transaction->id }}" data-loan-type="application-fee" class="card loan-card processing h-100 border-0 shadow-sm">
+            <div data-id="{{ $transaction->id }}" data-type="application-fee" class="card loan-card processing h-100 border-0 shadow-sm">
                 <div class="card-body p-4">
                     <div class="loan-status mb-4">
                         <span class="status-badge processing">
@@ -163,7 +163,7 @@
 
         @foreach($ongoing_loans as $transaction)
         <div class="col-md-6">
-            <div  data-loan-id="{{ $transaction->id }}" data-loan-type="repayment" class="card loan-card ongoing h-100 border-0 shadow-sm">
+            <div  data-id="{{ $transaction->id }}" data-type="repayment" class="card loan-card ongoing h-100 border-0 shadow-sm">
                 <div class="card-body p-4">
                     <div class="loan-status mb-4">
                         <span class="status-badge ongoing">
@@ -518,9 +518,9 @@
         const paymentType = document.querySelector('input[name="type"]:checked').value;
 
 
-        const loanCard = event.target.closest('.loan-card');
-        const loanId = loanCard.dataset.loanId;
-        const loanType = loanCard.dataset.loanType;
+        const loanCard = document.querySelector('.loan-card');
+    const id = loanCard.getAttribute('data-id');
+    const type = loanCard.getAttribute('data-type');
         const userId = '{{ auth()->user()->uuid }}';
 
         // Save payment tracking record
