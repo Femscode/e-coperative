@@ -151,7 +151,7 @@
 
                             <div class="alert alert-success d-flex align-items-center m-0 px-3 py-2">
                                 <i class="bi bi-check-circle me-2"></i>
-                                <small>Application fee has been paid, awaiting admin approval</small>
+                                <small>Application fee has been paid, awaiting admin approval {{ $user->checkLoanApplicationStatus() }</small>
                             </div>
 
                             @endif
