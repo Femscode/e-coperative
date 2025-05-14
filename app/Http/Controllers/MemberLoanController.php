@@ -105,7 +105,7 @@ class MemberLoanController extends Controller
                 'user_id' => $request->user_id,
                 'loan_id' => $request->loan_id,
                 'type' => $request->type,
-                'amount' => $plan->form_amount,
+                'amount' => $plan->loan_form_amount,
                 'status' => $request->status
             ]);
 
