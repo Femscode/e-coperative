@@ -538,9 +538,9 @@
                 if (response.success) {
                     // Continue with payment processing
                     if (paymentType === 'card') {
-                        processCardPayment();
+                        makePayment();
                     } else {
-                        processTransferPayment();
+                        generateBankDetails();
                     }
                 }
             },
