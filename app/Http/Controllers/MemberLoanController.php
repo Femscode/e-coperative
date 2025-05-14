@@ -100,7 +100,7 @@ class MemberLoanController extends Controller
                 ]);
             }
             $loan = MemberLoan::find($request->loan_id);
-            $plan = Company::where('uuid',$loan->company_id);
+            $plan = Company::where('uuid',$loan->company_id)->first();
             $tracker = LoanPaymentTracker::create([
                 'user_id' => $request->user_id,
                 'loan_id' => $request->loan_id,
