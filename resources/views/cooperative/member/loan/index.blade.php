@@ -275,7 +275,7 @@ $(document).ready(function() {
         const max = parseFloat($this.data('max')) || Infinity;
         const refund = parseInt($this.data('refund')) || 1;
         const totalsaved = parseFloat($this.data('total')) || 0;
-        const interestRate = parseFloat($this.data('interest')) || 0; // Assumes interest is stored in data attribute
+        const interestRate = parseFloat($this.data('interest')) || 0;
 
         const minApplication = totalsaved * min;
         const maxApplication = totalsaved * max;
@@ -388,13 +388,14 @@ $(document).ready(function() {
                     });
 
                     $('.preloader').hide();
-                    $('#amountToBePaid').html(parseFloat(response.amount).toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }));
-                    $('.real_amount').val(response.amount);
-                    $('#order_id').val(response.order_id?.transaction_id || '');
-                    $('#paymentModal').modal('show');
+                    await Swal.fire({
+                        title: 'Success',
+                        text: 'Loan application submitted successfully!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    resetCalculations();
+                    $('#loanApplication')[0].reset();
                 } catch (error) {
                     $('.preloader').hide();
                     const errorMessage = error.responseJSON?.message || 'An error occurred. Please try again.';
