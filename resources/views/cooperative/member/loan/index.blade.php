@@ -275,7 +275,7 @@ $(document).ready(function() {
         const max = parseFloat($this.data('max')) || Infinity;
         const refund = parseInt($this.data('refund')) || 1;
         const totalsaved = parseFloat($this.data('total')) || 0;
-        const interestRate = parseFloat($this.data('interest')) || 0;
+        const interestRate = parseFloat($this.data('interest')) || 0; // Interest rate as percentage (e.g., 5 for 5%)
 
         const minApplication = totalsaved * min;
         const maxApplication = totalsaved * max;
@@ -324,15 +324,17 @@ $(document).ready(function() {
         $passwordHelpBlock.html('');
         $submitBtn.show();
 
+        // Calculate interest (simple interest: principal * rate / 100)
         const totalInterest = (newValue * interestRate) / 100;
         const totalRepayment = newValue + totalInterest;
         const monthlyPayment = totalRepayment / refund;
 
-        // Update display
+        // Update display with precise formatting
         $('.interest-amount').text(`₦${totalInterest.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         })}`);
+        $('.interest-rate').text(`${interestRate.toFixed(2)}%`); // Display interest rate
         $('.refund').text(monthlyPayment.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
@@ -350,6 +352,7 @@ $(document).ready(function() {
     // Reset calculations
     function resetCalculations() {
         $('.interest-amount').text('₦0.00');
+        $('.interest-rate').text('0.00%');
         $('.refund').text('0.00');
         $('.total-repayment').text('₦0.00');
         $('.refund_input').val('');
