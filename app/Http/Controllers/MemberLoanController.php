@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Company;
 use App\Models\LoanPaymentTracker;
 use App\Models\MemberLoan;
 use App\Models\Plan;
@@ -99,7 +100,7 @@ class MemberLoanController extends Controller
                 ]);
             }
             $loan = MemberLoan::find($request->loan_id);
-            $plan = Plan::find($loan->plan_id);
+            $plan = Company::where('uuid',$loan->company_id);
             $tracker = LoanPaymentTracker::create([
                 'user_id' => $request->user_id,
                 'loan_id' => $request->loan_id,
