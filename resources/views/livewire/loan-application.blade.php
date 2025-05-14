@@ -149,11 +149,9 @@
                             <div class="alert alert-success d-flex align-items-center m-0 px-3 py-2">
                                 <i class="bi bi-check-circle me-2"></i>
                                 <small>
-                                    @if(!$feeRequired)
-                                    No application fee required.
-                                    @else
+                                   
                                     Application fee has been paid, awaiting admin approval.
-                                    @endif
+                                   
                                 </small>
                             </div>
                             @endif
