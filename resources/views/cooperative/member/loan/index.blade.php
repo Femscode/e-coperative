@@ -107,6 +107,35 @@
 
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container mt-4" id="main-content">
+
+        <div class="loan-nav-wrapper mb-4">
+            <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active2" href="/member/loan">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        <span>Request For Loan</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/member/loan-repayment">
+                        <i class="bi bi-hourglass-split me-1"></i>
+                        <span>Pending Repayments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/member/loan/ongoing">
+                        <i class="bi bi-arrow-repeat me-1"></i>
+                        <span>Ongoing Loans</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="/member/loan/completed">
+                        <i class="bi bi-check-circle me-1"></i>
+                        <span>Completed Loans</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
         <!-- start page title -->
         <div class="row">
             <div class="col-12">
@@ -146,7 +175,7 @@
                                                         data-total="{{ auth()->user()->totalSavings() ?? '' }}"
                                                         class="form-control loanAmount amount" id="loanAmount"
                                                         placeholder="Enter loan amount">
-                                                    <input id="form_fee" value="{{ auth()->user()->plan()->loan_form_amount ?? 0}}" type="hidden"/>
+                                                    <input id="form_fee" value="{{ auth()->user()->plan()->loan_form_amount ?? 0}}" type="hidden" />
                                                 </div>
                                                 <div id="passwordHelpBlock" class="form-text text-danger"></div>
                                             </div>
@@ -200,7 +229,7 @@
                                                     <i class="ri-close-line me-1 align-middle"></i> Close
                                                 </button>
                                                 <button type="submit" class="btn btn-primary submitBtn">
-                                                    <i class="ri-save-3-line align-bottom me-1"></i> Apply for Loan
+                                                    Apply for Loan →
                                                 </button>
                                             </div>
                                         </div>
@@ -244,7 +273,11 @@
             var max = $(this).data('max');
             var refund = $(this).data('refund');
             var totalsaved = $(this).data('total');
-            var interestRate = {{auth()->user()->plan()->interest }};
+            var interestRate = {
+                {
+                    auth() - > user() - > plan() - > interest
+                }
+            };
             var minApplication = totalsaved * min;
             var maxApplication = totalsaved * max;
             var value = $(this).val().replace(/\D/g, '');
@@ -307,6 +340,7 @@
                 }));
             }
         });
+
         function resetCalculations() {
             $('.interest-amount').text('₦0.00');
             $('.refund').text('0.00');
@@ -316,7 +350,7 @@
         $("#loanApplication").on('submit', async function(e) {
             e.preventDefault();
             var form_fee = $("#form_fee").val();
-            if(form_fee > 0){
+            if (form_fee > 0) {
                 Swal.fire({
                     title: 'Confirm Application',
                     text: 'You will be charged ₦' + parseFloat(form_fee).toLocaleString() + ' for this loan application.',
@@ -330,37 +364,40 @@
                         setTimeout(() => {
                             $("#amountToBePaid").html(parseFloat(form_fee).toLocaleString());
                             $(".real_amount").val(form_fee);
-                            $('#paymentModal').modal('show');
+
+                            // $('#paymentModal').modal('show');
                             window.loanFormData = serializedData;
+                            const serializedData = $("#loanApplication").serializeArray();
+                            $('.preloader').show();
+                            try {
+                                const postRequest = await $.ajax({
+                                    url: "/member/loan/apply",
+                                    type: 'POST',
+                                    data: processFormInputs(serializedData),
+                                    dataType: 'json'
+                                });
+                                $('.preloader').hide();
+                                $("#amountToBePaid").html(parseFloat(postRequest.amount).toLocaleString());
+                                $(".real_amount").val(postRequest.amount);
+                                $("#order_id").val(postRequest.order_id?.transaction_id || '');
+
+                                $('#paymentModal').modal('show');
+                            } catch (e) {
+                                $('.preloader').hide();
+                                if (e.responseJSON && 'message' in e.responseJSON) {
+                                    new swal("Opss", e.responseJSON.message, "error");
+                                } else {
+                                    new swal("Opss", "An error occurred. Please try again.", "error");
+                                }
+                            }
+
                         }, 500);
                     }
                 });
                 return;
             }
 
-            const serializedData = $("#loanApplication").serializeArray();
-            $('.preloader').show();
-            try {
-                const postRequest = await $.ajax({
-                    url: "/member/loan/apply",
-                    type: 'POST',
-                    data: processFormInputs(serializedData),
-                    dataType: 'json'
-                });
-                $('.preloader').hide();
-                $("#amountToBePaid").html(parseFloat(postRequest.amount).toLocaleString());
-                $(".real_amount").val(postRequest.amount);
-                $("#order_id").val(postRequest.order_id?.transaction_id || '');
-               
-                $('#paymentModal').modal('show');
-            } catch (e) {
-                $('.preloader').hide();
-                if (e.responseJSON && 'message' in e.responseJSON) {
-                    new swal("Opss", e.responseJSON.message, "error");
-                } else {
-                    new swal("Opss", "An error occurred. Please try again.", "error");
-                }
-            }
+
         });
 
         function processFormInputs(formInputs) {

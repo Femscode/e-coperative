@@ -216,7 +216,7 @@
                 </div>
                 <!-- Right Column - Image -->
                 <div class="col-lg-7 d-none d-lg-block p-0">
-                    <div class="h-100 position-relative bg-primary bg-gradient">
+                    <div class="h-100 position-relative bg-gradient" style="background:#094168">
                         <div class="position-absolute top-50 start-50 translate-middle text-center text-white p-4" style="max-width: 600px;">
                             <h1 class="display-5 fw-bold mb-4">Cooperative Savings Made Simple</h1>
                             <p class="lead mb-4">"When we save together, we grow together. Cooperative savings is the foundation of community wealth."</p>

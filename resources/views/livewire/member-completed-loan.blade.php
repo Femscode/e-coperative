@@ -4,6 +4,12 @@
         <div class="loan-nav-wrapper mb-4">
             <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
                 <li class="nav-item">
+                    <a class="nav-link" href="/member/loan">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        <span>Request For Loan</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/member/loan-repayment">
                         <i class="bi bi-hourglass-split me-1"></i>
                         <span>Pending Repayments</span>
@@ -77,8 +83,8 @@
                             @else
                             <div class="text-center py-5">
                                 <div class="mb-3">
-                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" 
-                                        trigger="loop" colors="primary:#094168,secondary:#22c55e" 
+                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json"
+                                        trigger="loop" colors="primary:#094168,secondary:#22c55e"
                                         style="width:80px;height:80px">
                                     </lord-icon>
                                 </div>
@@ -101,86 +107,86 @@
 </div>
 
 <style>
-.loan-nav-wrapper {
-    background: #fff;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
+    .loan-nav-wrapper {
+        background: #fff;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
 
-.nav-tabs-custom {
-    border: 0;
-    gap: 0.5rem;
-}
+    .nav-tabs-custom {
+        border: 0;
+        gap: 0.5rem;
+    }
 
-.nav-tabs-custom .nav-link {
-    border: 0;
-    padding: 0.75rem 1.25rem;
-    border-radius: 0.5rem;
-    color: #6c757d;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
+    .nav-tabs-custom .nav-link {
+        border: 0;
+        padding: 0.75rem 1.25rem;
+        border-radius: 0.5rem;
+        color: #6c757d;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
 
-.nav-tabs-custom .nav-link:hover {
-    color: #094168;
-    background: rgba(9, 65, 104, 0.05);
-}
+    .nav-tabs-custom .nav-link:hover {
+        color: #094168;
+        background: rgba(9, 65, 104, 0.05);
+    }
 
-.active2 {
-    color: #094168 !important;
-    background: rgba(9, 65, 104, 0.1) !important;
-    border: none;
-    box-shadow: 0 1px 2px rgba(9, 65, 104, 0.1);
-}
+    .active2 {
+        color: #094168 !important;
+        background: rgba(9, 65, 104, 0.1) !important;
+        border: none;
+        box-shadow: 0 1px 2px rgba(9, 65, 104, 0.1);
+    }
 
-.search-box .form-control {
-    padding-right: 2.5rem;
-}
+    .search-box .form-control {
+        padding-right: 2.5rem;
+    }
 
-.avatar {
-    width: 2.5rem;
-    height: 2.5rem;
-}
+    .avatar {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
 
-.avatar-title {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 500;
-}
+    .avatar-title {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
+    }
 
-.table th {
-    font-weight: 600;
-    background: #f8f9fa;
-}
+    .table th {
+        font-weight: 600;
+        background: #f8f9fa;
+    }
 
-.table td {
-    padding: 1rem;
-    vertical-align: middle;
-}
+    .table td {
+        padding: 1rem;
+        vertical-align: middle;
+    }
 
-.pagination {
-    margin: 0;
-    gap: 0.25rem;
-}
+    .pagination {
+        margin: 0;
+        gap: 0.25rem;
+    }
 
-.page-link {
-    border-radius: 0.25rem;
-    padding: 0.5rem 0.75rem;
-    color: #094168;
-    border: none;
-}
+    .page-link {
+        border-radius: 0.25rem;
+        padding: 0.5rem 0.75rem;
+        color: #094168;
+        border: none;
+    }
 
-.page-link:hover {
-    background: rgba(9, 65, 104, 0.05);
-    color: #094168;
-}
+    .page-link:hover {
+        background: rgba(9, 65, 104, 0.05);
+        color: #094168;
+    }
 
-.page-item.active .page-link {
-    background: #094168;
-    color: #fff;
-}
+    .page-item.active .page-link {
+        background: #094168;
+        color: #fff;
+    }
 </style>

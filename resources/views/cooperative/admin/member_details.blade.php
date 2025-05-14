@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <h5 class="fs-16 mb-1">{{ $user->name }}</h5>
-                        <p class="text-muted mb-0">Member / {{$coop->name}}</p>
+                        <p class="text-muted mb-0">Member / {{$coop->name ?? ''}}</p>
                     </div>
                 </div>
             </div><!--end card-->

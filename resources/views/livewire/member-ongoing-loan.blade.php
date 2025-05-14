@@ -3,6 +3,12 @@
         <!-- Navigation Tabs -->
         <div class="loan-nav-wrapper mb-4">
             <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+            <li class="nav-item">
+                    <a class="nav-link" href="/member/loan">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        <span>Request For Loan</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/member/loan-repayment">
                         <i class="bi bi-hourglass-split me-1"></i>

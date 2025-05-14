@@ -487,11 +487,11 @@
                     </div>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="/member/profile"><i class="menu-icon bi bi-person-circle"></i> <span class="menu-name">Profile</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="/member/transactions"><i class="menu-icon bi bi-receipt"></i> <span class="menu-name">Transactions</span></a></li>
+                <!-- <li class="nav-item"><a class="nav-link" href="/member/transactions"><i class="menu-icon bi bi-receipt"></i> <span class="menu-name">Transactions</span></a></li>
                 <li class="nav-item"><a href="/member/loan-repayment" class="nav-link"><i class="menu-icon bi bi-cash-stack"></i> <span class="menu-name">Loan Repayment</span></a></li>
                 <li class="nav-item"><a href="/member/loan" class="nav-link"><i class="menu-icon bi bi-hourglass-split"></i> <span class="menu-name">Pending Loan Applications</span></a></li>
                 <li class="nav-item"><a href="/member/loan/ongoing" class="nav-link"><i class="menu-icon bi bi-arrow-repeat"></i> <span class="menu-name">Ongoing Loan Applications</span></a></li>
-                <li class="nav-item"><a href="/member/loan/completed" class="nav-link"><i class="menu-icon bi bi-check2-circle"></i> <span class="menu-name">Completed Loan Applications</span></a></li>
+                <li class="nav-item"><a href="/member/loan/completed" class="nav-link"><i class="menu-icon bi bi-check2-circle"></i> <span class="menu-name">Completed Loan Applications</span></a></li> -->
                 <li class="nav-item"><a href="{{ route('my-contribution') }}" class="nav-link"><i class="menu-icon bi bi-people-fill"></i> <span class="menu-name">My Circle(s)</span></a></li>
                 <li class="nav-item"><a href="{{ route('member-contribution-payment') }}" class="nav-link"><i class="menu-icon bi bi-currency-dollar"></i> <span class="menu-name">Contribution Dues</span></a></li>
                 <li class="nav-item"><a href="/logout" onclick='return confirm("Are you sure you want to log this user out?");' class="nav-link"><i class="menu-icon bi bi-box-arrow-right"></i> <span class="menu-name">Logout</span></a></li>
