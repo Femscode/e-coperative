@@ -520,7 +520,7 @@
 
         const loanId = form.closest('.loan-card').dataset.loanId;
         const loanType = form.closest('.loan-card').dataset.loanType;
-        const userId = '{{ auth()->user->uuid() }}';
+        const userId = '{{ auth()->user()->uuid }}';
 
         // Save payment tracking record
         $.ajax({
