@@ -280,12 +280,13 @@ $(document).ready(function() {
         const minApplication = totalsaved * min;
         const maxApplication = totalsaved * max;
         const value = $this.val().replace(/\D/g, '');
-        const newValue = parseFloat(value) || 0;
+        const loanAmount = parseFloat(value) || 0;
 
-        // Reset display
+        // Cache selectors
         const $passwordHelpBlock = $('#passwordHelpBlock');
         const $submitBtn = $('.submitBtn');
 
+        // Validation checks
         if (totalsaved < 1) {
             $passwordHelpBlock.html('You have no savings yet!');
             $submitBtn.hide();
@@ -300,7 +301,7 @@ $(document).ready(function() {
             return;
         }
 
-        if (newValue < minApplication) {
+        if (loanAmount < minApplication) {
             $passwordHelpBlock.html(`Minimum amount to apply for is ₦${minApplication.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
@@ -310,7 +311,7 @@ $(document).ready(function() {
             return;
         }
 
-        if (newValue > maxApplication) {
+        if (loanAmount > maxApplication) {
             $passwordHelpBlock.html(`Maximum amount to apply for is ₦${maxApplication.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
@@ -320,21 +321,21 @@ $(document).ready(function() {
             return;
         }
 
-        // Valid input, show calculations
+        // Valid input, perform calculations
         $passwordHelpBlock.html('');
         $submitBtn.show();
 
         // Calculate interest (simple interest: principal * rate / 100)
-        const totalInterest = (newValue * interestRate) / 100;
-        const totalRepayment = newValue + totalInterest;
+        const totalInterest = (loanAmount * interestRate) / 100;
+        const totalRepayment = loanAmount + totalInterest;
         const monthlyPayment = totalRepayment / refund;
 
-        // Update display with precise formatting
+        // Update display
         $('.interest-amount').text(`₦${totalInterest.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         })}`);
-        $('.interest-rate').text(`${interestRate.toFixed(2)}%`); // Display interest rate
+        $('.interest-rate').text(`${interestRate.toFixed(2)}%`);
         $('.refund').text(monthlyPayment.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
