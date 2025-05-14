@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Group;
 use App\Models\GroupMember;
+use App\Models\LoanPaymentTracker;
 use App\Models\MemberLoan;
 use App\Models\Transaction;
 use App\Models\User;
@@ -108,7 +109,29 @@ class PaymentController extends Controller
                 }
             }
         } else { // Cooperative type
+
+            //check loan payment 
+            $loan_application_fee = LoanPaymentTracker::where('user_id', $user->uuid)->where('status', 0)->where('type','application-fee')->first();
+            if($loan_application_fee){
+                if($amountPaid >= $loan_application_fee->amount){
+                    Transaction::create([
+                        'user_id' => $user->uuid,
+                        'company_id' => $company->uuid,
+                        'amount' => $loan_application_fee->amount,
+                        'transaction_id' => $reference,
+                        'status' => 'Success',
+                        'payment_type' => 'Loan-Application-Fee',
+                        
+                        'email' => $email
+                    ]);
+                    $amountPaid -= $loan_application_fee->amount;
+                }
+                $loan_application_fee->update([
+                    'status' => 1
+                ]);
+            }
             // 1. Check cooperative dues
+            
             $pendingCoopDues = $this->getPendingCoopDues($user);
             foreach ($pendingCoopDues as $due) {
                 if ($amountPaid >= $due['amount']) {

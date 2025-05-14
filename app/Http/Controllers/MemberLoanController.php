@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\LoanPaymentTracker;
 use App\Models\MemberLoan;
+use App\Models\Plan;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use function App\Helpers\api_request_response;
@@ -97,10 +98,13 @@ class MemberLoanController extends Controller
                     'data' => $check
                 ]);
             }
+            $loan = MemberLoan::find($request->loan_id);
+            $plan = Plan::find($loan->plan_id);
             $tracker = LoanPaymentTracker::create([
                 'user_id' => $request->user_id,
                 'loan_id' => $request->loan_id,
                 'type' => $request->type,
+                'amount' => $plan->form_amount,
                 'status' => $request->status
             ]);
 
