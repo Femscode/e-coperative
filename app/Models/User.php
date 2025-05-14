@@ -268,22 +268,22 @@ class User extends Authenticatable implements Auditable
         }
 
     }
-    public function checkLoanApplicationStatus() {
-        $loan = LoanPaymentTracker::where('user_id', $this->uuid)->first();
-        $application_fee = Company::where('uuid', $this->company_id)->first()->application_fee;
-        
-        // If there's no application fee, no need to pay
-        if($application_fee == 0) {
-            return false;
-        }
-        
-        // If there's no loan payment tracker or it's not paid (status != 1)
-        if(!$loan || $loan->status != 1) {
-            return true; // Show payment button
-        }
-        
-        return false; // Hide payment button if already paid
+    public function checkLoanApplicationStatus()
+{
+    // Fetch the company based on company_id
+    $company = Company::where('uuid', $this->company_id)->first();
+
+    // If company doesn't exist or application_fee is 0, no payment is needed
+    if (!$company || $company->loan_form_amount == 0) {
+        return false; // No payment required
     }
+
+    // Check if a loan payment tracker exists and is paid
+    $loan = LoanPaymentTracker::where('user_id', $this->uuid)->first();
+
+    // If no tracker exists or status is not paid (status != 1), show payment button
+    return !$loan || $loan->status != 1;
+}
     protected static function boot()
     {
         parent::boot();

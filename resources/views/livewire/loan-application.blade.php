@@ -143,17 +143,19 @@
                             @if($user->checkLoanApplicationStatus())
                             <button type="button" class="btn btn-success payApplicationFee"
                                 data-bs-toggle="modal" data-bs-target="#paymentModal">
-                                Pay Application Fee 
+                                Pay Application Fee
                             </button>
-                           
-                            @else 
-                            
-
+                            @else
                             <div class="alert alert-success d-flex align-items-center m-0 px-3 py-2">
                                 <i class="bi bi-check-circle me-2"></i>
-                                <small>Application fee has been paid, awaiting admin approval.</small>
+                                <small>
+                                    @if(!$feeRequired)
+                                    No application fee required.
+                                    @else
+                                    Application fee has been paid, awaiting admin approval.
+                                    @endif
+                                </small>
                             </div>
-
                             @endif
 
                             <span class="label d-block mb-2">Monthly Repayment</span>
@@ -175,7 +177,7 @@
 
         @foreach($ongoing_loans as $transaction)
         <div class="col-md-6">
-            <div  data-id="{{ $transaction->id }}" data-type="repayment" class="card loan-card ongoing h-100 border-0 shadow-sm">
+            <div data-id="{{ $transaction->id }}" data-type="repayment" class="card loan-card ongoing h-100 border-0 shadow-sm">
                 <div class="card-body p-4">
                     <div class="loan-status mb-4">
                         <span class="status-badge ongoing">
@@ -531,8 +533,8 @@
 
 
         const loanCard = document.querySelector('.loan-card');
-    const loanId = loanCard.getAttribute('data-id');
-    const loanType = loanCard.getAttribute('data-type');
+        const loanId = loanCard.getAttribute('data-id');
+        const loanType = loanCard.getAttribute('data-type');
         const userId = '{{ auth()->user()->uuid }}';
 
         // Save payment tracking record
