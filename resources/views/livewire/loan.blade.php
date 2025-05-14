@@ -27,10 +27,14 @@
                                 </div>
                                 <div class="t-amount" data-status="{{ $transaction->approval_status == 0 ? 'pending' : 'processing' }}">
                                     ₦{{ number_format($transaction->total_applied, 2) }}
+                                    @if($transaction->member->checkLoanApplicationStatus())
                                     @if($transaction->approval_status == 0)
                                         <button class="btn approveButton rounded-pill btn-sm btn-soft-info ms-2" data-id="{{ $transaction->id }}">Approve</button>
                                     @else
                                         <span class="badge bg-info ms-2">Processing</span>
+                                    @endif
+                                    @else  
+                                    <span class="badge bg-danger ms-2">Awaiting form payment</span>
                                     @endif
                                 </div>
                             </div>
