@@ -156,7 +156,7 @@
 
                             @endif
 
-                            <span class="label d-block mb-2">Monthly Repayment {{ $user->checkLoanApplicationStatus() }}</span>
+                            <span class="label d-block mb-2">Monthly Repayment 000{{ $user->checkLoanApplicationStatus() }}</span>
                             <h2 class="mb-0">₦{{ number_format($transaction->monthly_return, 2) }}</h2>
 
                             @if($transaction->approval_status == 1 && $transaction->status == "Awaiting" && $transaction->payment_status == 0)
