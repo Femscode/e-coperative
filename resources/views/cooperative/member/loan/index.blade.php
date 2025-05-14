@@ -248,166 +248,171 @@
 @section('script')
 <script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
-    $(document).ready(function() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $(".loanAmount").keypress(function(e) {
-            var charCode = (e.which) ? e.which : e.keyCode;
-            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-                return false;
-            }
-            $(".loanAmount").on('keyup', function() {
-                var n = parseInt($(this).val().replace(/\D/g, ''), 10);
-                $(this).val(n.toLocaleString());
-                if (isNaN(n)) {
-                    $(".loanAmount").val("");
-                }
-            });
-        });
-        $('.amount').on('keyup', function() {
-            var min = $(this).data('min');
-            var max = $(this).data('max');
-            var refund = $(this).data('refund');
-            var totalsaved = $(this).data('total');
-            var interestRate = {
-                {
-                    auth() - > user() - > plan() - > interest
-                }
-            };
-            var minApplication = totalsaved * min;
-            var maxApplication = totalsaved * max;
-            var value = $(this).val().replace(/\D/g, '');
-            var newValue = parseFloat(value);
-
-            if (totalsaved < 1) {
-                $('#passwordHelpBlock').html('You have no savings yet!');
-                $('.submitBtn').hide();
-                resetCalculations();
-                return;
-            }
-
-            if (value == "") {
-                resetCalculations();
-                return;
-            }
-
-            if (newValue < minApplication) {
-                $('#passwordHelpBlock').html('Minimum amount to apply for is ₦' + minApplication.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }));
-                $('.submitBtn').hide();
-                resetCalculations();
-                return;
-            }
-
-            if (newValue > maxApplication) {
-                $('#passwordHelpBlock').html('Maximum amount to apply for is ₦' + maxApplication.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }));
-                $('.submitBtn').hide();
-                resetCalculations();
-            } else {
-                $('#passwordHelpBlock').html('');
-                $('.submitBtn').show();
-
-                // Calculate loan details
-                var totalInterest = (newValue * interestRate) / 100;
-                var totalRepayment = newValue + totalInterest;
-                var monthlyPayment = totalRepayment / refund;
-
-                // Update display
-                $('.interest-amount').text('₦' + totalInterest.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }));
-                $('.refund').text(monthlyPayment.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }));
-                $('.refund_input').val(monthlyPayment.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }));
-                $('.total-repayment').text('₦' + totalRepayment.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }));
-            }
-        });
-
-        function resetCalculations() {
-            $('.interest-amount').text('₦0.00');
-            $('.refund').text('0.00');
-            $('.total-repayment').text('₦0.00');
-        }
-
-        $("#loanApplication").on('submit', async function(e) {
-            e.preventDefault();
-            var form_fee = $("#form_fee").val();
-            if (form_fee > 0) {
-                Swal.fire({
-                    title: 'Confirm Application',
-                    text: 'You will be charged ₦' + parseFloat(form_fee).toLocaleString() + ' for this loan application.',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, proceed',
-                    cancelButtonText: 'No, cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#addSeller').modal('hide');
-                        setTimeout(() => {
-                            $("#amountToBePaid").html(parseFloat(form_fee).toLocaleString());
-                            $(".real_amount").val(form_fee);
-
-                            // $('#paymentModal').modal('show');
-                            window.loanFormData = serializedData;
-                            const serializedData = $("#loanApplication").serializeArray();
-                            $('.preloader').show();
-                            try {
-                                const postRequest = await $.ajax({
-                                    url: "/member/loan/apply",
-                                    type: 'POST',
-                                    data: processFormInputs(serializedData),
-                                    dataType: 'json'
-                                });
-                                $('.preloader').hide();
-                                $("#amountToBePaid").html(parseFloat(postRequest.amount).toLocaleString());
-                                $(".real_amount").val(postRequest.amount);
-                                $("#order_id").val(postRequest.order_id?.transaction_id || '');
-
-                                $('#paymentModal').modal('show');
-                            } catch (e) {
-                                $('.preloader').hide();
-                                if (e.responseJSON && 'message' in e.responseJSON) {
-                                    new swal("Opss", e.responseJSON.message, "error");
-                                } else {
-                                    new swal("Opss", "An error occurred. Please try again.", "error");
-                                }
-                            }
-
-                        }, 500);
-                    }
-                });
-                return;
-            }
-
-
-        });
-
-        function processFormInputs(formInputs) {
-            const data = {};
-            formInputs.forEach(input => {
-                data[input.name] = input.value;
-            });
-            return data;
+$(document).ready(function() {
+    // CSRF Token Setup
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    // Input formatting for loan amount
+    $('.loanAmount').on('keypress', function(e) {
+        const charCode = e.which || e.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+    }).on('keyup', function() {
+        const value = $(this).val().replace(/\D/g, '');
+        const num = parseInt(value, 10);
+        $(this).val(isNaN(num) ? '' : num.toLocaleString());
+    });
+
+    // Loan amount validation and calculations
+    $('.amount').on('keyup', function() {
+        const $this = $(this);
+        const min = parseFloat($this.data('min')) || 0;
+        const max = parseFloat($this.data('max')) || Infinity;
+        const refund = parseInt($this.data('refund')) || 1;
+        const totalsaved = parseFloat($this.data('total')) || 0;
+        const interestRate = parseFloat($this.data('interest')) || 0; // Assumes interest is stored in data attribute
+
+        const minApplication = totalsaved * min;
+        const maxApplication = totalsaved * max;
+        const value = $this.val().replace(/\D/g, '');
+        const newValue = parseFloat(value) || 0;
+
+        // Reset display
+        const $passwordHelpBlock = $('#passwordHelpBlock');
+        const $submitBtn = $('.submitBtn');
+
+        if (totalsaved < 1) {
+            $passwordHelpBlock.html('You have no savings yet!');
+            $submitBtn.hide();
+            resetCalculations();
+            return;
+        }
+
+        if (!value) {
+            $passwordHelpBlock.html('');
+            $submitBtn.hide();
+            resetCalculations();
+            return;
+        }
+
+        if (newValue < minApplication) {
+            $passwordHelpBlock.html(`Minimum amount to apply for is ₦${minApplication.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}`);
+            $submitBtn.hide();
+            resetCalculations();
+            return;
+        }
+
+        if (newValue > maxApplication) {
+            $passwordHelpBlock.html(`Maximum amount to apply for is ₦${maxApplication.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}`);
+            $submitBtn.hide();
+            resetCalculations();
+            return;
+        }
+
+        // Valid input, show calculations
+        $passwordHelpBlock.html('');
+        $submitBtn.show();
+
+        const totalInterest = (newValue * interestRate) / 100;
+        const totalRepayment = newValue + totalInterest;
+        const monthlyPayment = totalRepayment / refund;
+
+        // Update display
+        $('.interest-amount').text(`₦${totalInterest.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })}`);
+        $('.refund').text(monthlyPayment.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }));
+        $('.refund_input').val(monthlyPayment.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }));
+        $('.total-repayment').text(`₦${totalRepayment.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })}`);
+    });
+
+    // Reset calculations
+    function resetCalculations() {
+        $('.interest-amount').text('₦0.00');
+        $('.refund').text('0.00');
+        $('.total-repayment').text('₦0.00');
+        $('.refund_input').val('');
+    }
+
+    // Form submission
+    $('#loanApplication').on('submit', async function(e) {
+        e.preventDefault();
+        const formFee = parseFloat($('#form_fee').val()) || 0;
+
+        if (formFee > 0) {
+            const result = await Swal.fire({
+                title: 'Confirm Application',
+                text: `You will be charged ₦${formFee.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })} for this loan application.`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, proceed',
+                cancelButtonText: 'No, cancel'
+            });
+
+            if (result.isConfirmed) {
+                $('#addSeller').modal('hide');
+                const serializedData = $(this).serializeArray();
+                window.loanFormData = serializedData;
+                $('.preloader').show();
+
+                try {
+                    const response = await $.ajax({
+                        url: '/member/loan/apply',
+                        type: 'POST',
+                        data: processFormInputs(serializedData),
+                        dataType: 'json'
+                    });
+
+                    $('.preloader').hide();
+                    $('#amountToBePaid').html(parseFloat(response.amount).toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }));
+                    $('.real_amount').val(response.amount);
+                    $('#order_id').val(response.order_id?.transaction_id || '');
+                    $('#paymentModal').modal('show');
+                } catch (error) {
+                    $('.preloader').hide();
+                    const errorMessage = error.responseJSON?.message || 'An error occurred. Please try again.';
+                    await Swal.fire('Error', errorMessage, 'error');
+                }
+            }
+        }
+    });
+
+    // Process form inputs
+    function processFormInputs(formInputs) {
+        const data = {};
+        formInputs.forEach(input => {
+            data[input.name] = input.value;
+        });
+        return data;
+    }
+});
 </script>
 <script>
     function makePayment() {
