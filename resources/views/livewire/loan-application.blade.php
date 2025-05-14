@@ -140,12 +140,15 @@
                         </div>
 
                         <div class="repayment-info mt-4 text-center p-4 bg-light rounded-4">
-                            @if(!$user->checkLoanApplicationStatus())
+                            @if($user->checkLoanApplicationStatus())
                             <button type="button" class="btn btn-success payApplicationFee"
                                 data-bs-toggle="modal" data-bs-target="#paymentModal">
                                 Pay Application Fee 
                             </button>
+                           
                             @else 
+                            
+
                             <div class="alert alert-success d-flex align-items-center m-0 px-3 py-2">
                                 <i class="bi bi-check-circle me-2"></i>
                                 <small>Application fee has been paid, awaiting admin approval</small>
