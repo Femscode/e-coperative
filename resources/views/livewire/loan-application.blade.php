@@ -151,12 +151,12 @@
 
                             <div class="alert alert-success d-flex align-items-center m-0 px-3 py-2">
                                 <i class="bi bi-check-circle me-2"></i>
-                                <small>Application fee has been paid, awaiting admin approval {{ $user->checkLoanApplicationStatus() }</small>
+                                <small>Application fee has been paid, awaiting admin approval.</small>
                             </div>
 
                             @endif
 
-                            <span class="label d-block mb-2">Monthly Repayment 000{{ $user->checkLoanApplicationStatus() }}</span>
+                            <span class="label d-block mb-2">Monthly Repayment</span>
                             <h2 class="mb-0">₦{{ number_format($transaction->monthly_return, 2) }}</h2>
 
                             @if($transaction->approval_status == 1 && $transaction->status == "Awaiting" && $transaction->payment_status == 0)
