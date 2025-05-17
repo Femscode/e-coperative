@@ -256,7 +256,7 @@
         const paymentType = document.querySelector('input[name="type"]:checked').value;
         $('#paymentMethodModal').modal('hide');
 
-
+        const checkedData = filterCheckedData();
         const loanId = checkedData.length > 0 ? checkedData[0].uuid : null;
         const loanType = 'repayment';
         const userId = '{{ auth()->user()->uuid }}';
