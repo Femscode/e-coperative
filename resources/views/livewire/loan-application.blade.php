@@ -159,13 +159,13 @@
                             <span class="label d-block mb-2">Monthly Repayment</span>
                             <h2 class="mb-0">₦{{ number_format($transaction->monthly_return, 2) }}</h2>
 
-                            @if($transaction->approval_status == 1 && $transaction->status == "Awaiting" && $transaction->payment_status == 0)
+                            <!-- @if($transaction->approval_status == 1 && $transaction->status == "Awaiting" && $transaction->payment_status == 0)
                             <button class="btn btn-primary mt-3" onclick="processPayment(this)"
                                 data-amount="{{$transaction->monthly_return}}"
                                 data-id="{{ $transaction->uuid }}">
                                 <i class="bi bi-credit-card me-2"></i>Pay Now
                             </button>
-                            @endif
+                            @endif -->
                         </div>
                     </div>
                 </div>
