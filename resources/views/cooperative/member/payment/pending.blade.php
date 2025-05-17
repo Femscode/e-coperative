@@ -256,11 +256,37 @@
         const paymentType = document.querySelector('input[name="type"]:checked').value;
         $('#paymentMethodModal').modal('hide');
 
-        if (paymentType === 'card') {
-            processCardPayment();
-        } else {
-            generateBankDetails();
-        }
+
+        const loanId = checkedData.length > 0 ? checkedData[0].uuid : null;
+        const loanType = 'repayment';
+        const userId = '{{ auth()->user()->uuid }}';
+
+        $.ajax({
+            url: '/member/loan/loan-payment/track',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                user_id: userId,
+                loan_id: loanId,
+                type: loanType,
+                status: 0 // Initial status
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Continue with payment processing
+                    if (paymentType === 'card') {
+                        processCardPayment();
+                    } else {
+                        generateBankDetails();
+                    }
+                }
+            },
+            error: function(xhr) {
+                console.error('Payment tracking failed:', xhr.responseText);
+            }
+        });
+
+       
         return false;
     }
 
