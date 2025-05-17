@@ -832,7 +832,7 @@ class MemberController extends Controller
                 $now = now()->format('F Y');
                 // dd($now,$pay);
                 if ($spue == false && \DateTime::createFromFormat('F Y', $pay) <= \DateTime::createFromFormat('F Y', $now)) {
-                    $dateArray[] = ['source' => '2', 'month' => $pay, 'amount' => $check->monthly_return, 'uuid' => $check->uuid];
+                    $dateArray[] = ['source' => '2', 'month' => $pay, 'amount' => $check->monthly_return, 'uuid' => $check->uuid, 'id' => $check->id];
                 }
             }
         }
