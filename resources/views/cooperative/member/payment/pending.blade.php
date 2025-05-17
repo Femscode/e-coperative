@@ -71,6 +71,7 @@
                                         <tr>
                                             <input type="hidden" @isset($month['amount']) value="Repayment" @else value="Monthly Dues" @endisset name="payment_type[]">
                                             <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}" @else value="" @endisset name="uuid[]">
+                                            <input type="hidden" @isset($month['amount']) value="{{ $month['id'] }}" @else value="" @endisset name="id[]">
                                             <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->dues }}" @endisset name="fee[]">
                                             <td>
                                                 <div class="form-check">
@@ -299,13 +300,15 @@
             var month = $row.find('[name="month[]"]').val();
             var original = $row.find('[name="original[]"]').val();
             var uuid = $row.find('[name="uuid[]"]').val();
+            var id = $row.find('[name="id[]"]').val();
 
             checkedData.push({
                 payment_type: paymentType,
                 fee: fee,
                 month: month,
                 original: original,
-                uuid: uuid
+                uuid: uuid,
+                id: id
             });
         });
         return checkedData;
