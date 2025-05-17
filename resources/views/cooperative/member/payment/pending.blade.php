@@ -1,48 +1,41 @@
 @extends('cooperative.member.master')
 
-
+@section('header')
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+@endsection
 
 @section('main')
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container mt-4" id="main-content">
-
-
         <!-- Navigation Tabs -->
         <div class="loan-nav-wrapper mb-4">
             <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
-            <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link" href="/member/loan">
                         <i class="bi bi-plus-circle me-1"></i>
                         <span>Request For Loan</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active2"
-                        href="/member/loan-repayment">
+                    <a class="nav-link active2" href="/member/loan-repayment">
                         <i class="bi bi-hourglass-split me-1"></i>
                         <span>Pending Repayments</span>
-
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link"
-                        href="/member/loan/ongoing">
+                    <a class="nav-link" href="/member/loan/ongoing">
                         <i class="bi bi-arrow-repeat me-1"></i>
                         <span>Ongoing Loans</span>
-
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('member/loan-repayment/completed*') ? 'active' : '' }}"
-                        href="/member/loan/completed">
+                    <a class="nav-link {{ request()->is('member/loan-repayment/completed*') ? 'active' : '' }}" href="/member/loan/completed">
                         <i class="bi bi-check-circle me-1"></i>
                         <span>Completed Loans</span>
                     </a>
                 </li>
             </ul>
         </div>
-
-       
 
         <!-- Main Content -->
         <div class="row">
@@ -56,7 +49,7 @@
                     </div>
 
                     <div class="card-body p-4">
-                        <form id="monthly-dues" method="post">
+                        <form id="monthly-dues" method="post" onsubmit="return handlePaymentSubmit(event)">
                             @csrf
                             <div class="table-responsive">
                                 @if(count($months) > 0)
@@ -65,8 +58,7 @@
                                         <tr>
                                             <th width="50">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="masterCheckbox" onchange="toggleAllCheckboxes()" value="option1">
+                                                    <input class="form-check-input" type="checkbox" id="masterCheckbox" onchange="toggleAllCheckboxes()" value="option1">
                                                 </div>
                                             </th>
                                             <th>Month</th>
@@ -77,18 +69,12 @@
                                     <tbody>
                                         @foreach ($months as $month)
                                         <tr>
-                                            <input type="hidden" @isset($month['amount']) value="Repayment"
-                                                @else value="Monthly Dues" @endisset name="payment_type[]">
-                                            <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}"
-                                                @else value="" @endisset name="uuid[]">
-                                            <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}"
-                                                @else value="{{ $plan->dues }}" @endisset name="fee[]">
+                                            <input type="hidden" @isset($month['amount']) value="Repayment" @else value="Monthly Dues" @endisset name="payment_type[]">
+                                            <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}" @else value="" @endisset name="uuid[]">
+                                            <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->dues }}" @endisset name="fee[]">
                                             <td>
                                                 <div class="form-check">
-                                                    <input class="form-check-input controlledCheckbox"
-                                                        @isset($month['amount']) data-id="{{ $month['amount'] }}"
-                                                        @else data-id="{{ $plan->dues }}" @endisset
-                                                        name="check[]" type="checkbox" id="inlineCheckbox2">
+                                                    <input class="form-check-input controlledCheckbox" @isset($month['amount']) data-id="{{ $month['amount'] }}" @else data-id="{{ $plan->dues }}" @endisset name="check[]" type="checkbox" id="inlineCheckbox2">
                                                 </div>
                                             </td>
                                             <td>
@@ -104,10 +90,7 @@
                                                 </span>
                                             </td>
                                             <td class="text-end">
-                                                <input type="hidden" name="original[]"
-                                                    @isset($month['amount']) value="{{ $month['amount'] }}"
-                                                    @else value="{{ $plan->getMondays($month['month']) * $plan->monthly_dues }}"
-                                                    @endisset>
+                                                <input type="hidden" name="original[]" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->getMondays($month['month']) * $plan->monthly_dues }}" @endisset>
                                                 <strong>
                                                     @isset($month['amount'])
                                                     {{ number_format($month['amount'], 2) }}
@@ -125,13 +108,15 @@
                                 <div class="payment-summary mt-4">
                                     <input type="hidden" id="userEmail" name="email" value="{{Auth::user()->email}}">
                                     <input type="hidden" id="userPhone" name="phone" value="{{Auth::user()->phone}}">
+                                    <input type="hidden" id="userName" name="name" value="{{Auth::user()->name}}">
+                                    <input id='public_key' value='{{ env('FLW_PUBLIC_KEY') }}' type='hidden' />
+                                    <input id='redirect_url' value='https://vtubiz.com/payment/callback' type='hidden' />
 
                                     <div class="row justify-content-end">
                                         <div class="col-md-4">
                                             <div class="bg-light rounded-4 p-4">
                                                 <label class="form-label text-uppercase fw-bold mb-3">Total Amount</label>
-                                                <input type="text" class="form-control form-control-lg text-center"
-                                                    name="total_amount" value="0" readonly id="total">
+                                                <input type="text" class="form-control form-control-lg text-center" name="total_amount" value="0" readonly id="total">
                                             </div>
                                         </div>
                                     </div>
@@ -145,9 +130,7 @@
                                 @else
                                 <div class="text-center py-5">
                                     <div class="mb-3">
-                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json"
-                                            trigger="loop" colors="primary:#094168,secondary:#22c55e"
-                                            style="width:80px;height:80px">
+                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#094168,secondary:#22c55e" style="width:80px;height:80px">
                                         </lord-icon>
                                     </div>
                                     <h5>No Pending Repayments!</h5>
@@ -169,7 +152,7 @@
     }
 
     .nav-tabs-custom .nav-link {
-        border: none;
+      border: none;
         padding: 1rem 1.5rem;
         color: #6c757d;
         position: relative;
@@ -231,27 +214,18 @@
 @endsection
 
 @section('script')
-<script src="https://js.paystack.co/v1/inline.js"></script>
 <script>
-    $('#monthly-dues').submit(function(e) {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        // $('.preloader').show();
-        e.preventDefault();
-        // alert("ere")
+    function handlePaymentSubmit(event) {
+        event.preventDefault();
         var checkedData = filterCheckedData();
         processPayment(checkedData);
-    })
+        return false;
+    }
 
     function filterCheckedData() {
         var checkedData = [];
-
-        // Iterate through the checked checkboxes and collect data from the same row
         $('.controlledCheckbox:checked').each(function() {
-            var $row = $(this).closest('tr'); // Find the closest row
+            var $row = $(this).closest('tr');
             var paymentType = $row.find('[name="payment_type[]"]').val();
             var fee = $row.find('[name="fee[]"]').val();
             var month = $row.find('[name="month[]"]').val();
@@ -266,104 +240,80 @@
                 uuid: uuid
             });
         });
-
         return checkedData;
     }
 
     function processPayment(data) {
-        data = data;
         var email = $('#userEmail').val();
         var phone = $('#userPhone').val();
-        var totalAmount = $('#total').val();
+        var name = $('#userName').val();
+        var totalAmount = $('#total').val().replace(/,/g, '');
         $('.preloader').show();
-        var ajaxUrl = "{{ route('pay-dues') }}";
+
         $.ajax({
             type: 'POST',
-            url: ajaxUrl,
+            url: "{{ route('pay-dues') }}",
             dataType: 'json',
             data: {
                 checkedData: data,
                 email: email,
                 phone: phone,
                 total_amount: totalAmount,
+                _token: "{{ csrf_token() }}"
             },
-            success: function(e) {
+            success: function(response) {
                 $('.preloader').hide();
-                $('.preloader').hide();
-                payWithPaystack(e);
+                makePayment(response);
             },
             error: function(e) {
                 $('.preloader').hide();
-                // var errorList = '';
-                // Object.keys(e.responseJSON.message).forEach(function(key) {
-                // errorList += '<li>' + e.responseJSON.message[key][0] + '</li>';
-                // });
                 new swal("Opss", e.responseJSON.message, "error");
             }
-        })
-
-    }
-
-    function handlePaystackPopup(event) {
-        const paystackPopup = PaystackPop.setup(config);
-        paystackPopup.openIframe();
-    }
-    const paystackSecretKey = @json(env('PAYSTACK_PUBLIC_KEY'));
-
-    function payWithPaystack(data) {
-        // console.log(data)
-        var orderObj = {
-            email: $('[name=email]').val(),
-            amount: data.amount_paid * 100,
-            order_id: data.order_id,
-            phone: $('[name=phone]').val(),
-            process_transaction: "1",
-            card: data.card,
-        };
-
-        var data = data;
-        var handler = PaystackPop.setup({
-            // key: 'pk_live_af922c7f707c7ad3dc1a03433a3768007f6a0401',
-            key: paystackSecretKey, //'pk_test_031c3ba6cf25565da961c7bceea2f75887d08e22',
-            // key: 'pk_test_a36f058d84321e7d8f7f2d27655ddddd6a700b3f',
-            // key: 'pk_live_e139b3ad8d001c8219ed6ea7fb1cb756d2ce66f1',
-            email: orderObj.email,
-            amount: orderObj.amount,
-            ref: data.transaction_id,
-            metadata: {
-                custom_fields: [{
-                    display_name: "Order ID",
-                    variable_name: "order_id",
-                    value: orderObj.order_id
-                }]
-            },
-            callback: function(response) {
-                $('.preloader').show();
-
-                location.href = "/paystack/transaction-successful?order_id=" + orderObj.order_id +
-                    '&reference=' + response.reference;
-
-            },
-            onClose: function() {
-                $('.preloader').hide();
-                alert('Click "Pay online now" to retry payment.');
-            }
         });
-        handler.openIframe();
     }
-</script>
-<script>
-    // toggle all
+
+    function makePayment(data) {
+        const public_key = document.getElementById('public_key').value;
+        const redirect_url = document.getElementById('redirect_url').value;
+        const email = document.getElementById('userEmail').value;
+        const phone = document.getElementById('userPhone').value;
+        const name = document.getElementById('userName').value;
+        const amount = parseFloat(document.getElementById('total').value.replace(/,/g, ''));
+
+        FlutterwaveCheckout({
+            public_key: public_key,
+            tx_ref: data.transaction_id || "titanic-48981487343MDI0NzJD",
+            amount: amount,
+            currency: "NGN",
+            payment_options: "card, mobilemoneyghana, ussd",
+            redirect_url: redirect_url,
+            meta: {
+                consumer_id: 13,
+                consumer_mac: "92a3-983jd-1192a",
+                order_id: data.order_id
+            },
+            customer: {
+                email: email,
+                phone_number: phone,
+                name: name,
+            },
+            customizations: {
+                title: "Syncosave Loan Repayment",
+                description: "Loan Repayment Payment",
+                logo: "https://syncosave.com/admindashboard/images/logo/syncologo2.png",
+            },
+        });
+    }
+
     function toggleAllCheckboxes() {
         const masterCheckbox = document.getElementById('masterCheckbox');
         const controlledCheckboxes = document.getElementsByClassName('controlledCheckbox');
         const isChecked = masterCheckbox.checked;
-        let totalAmount = 0; // Initialize the total amount variable
+        let totalAmount = 0;
 
         for (let i = 0; i < controlledCheckboxes.length; i++) {
             controlledCheckboxes[i].checked = isChecked;
             if (isChecked) {
-                // If the master checkbox is checked, add the data('id') to the totalAmount
                 const amount = parseFloat(controlledCheckboxes[i].getAttribute('data-id'));
                 totalAmount += amount;
             }
@@ -371,14 +321,11 @@
         $("#total").val(totalAmount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         if (totalAmount == 0) {
             $(".submit-btn").hide();
-            $(".submit-btn").hide();
         } else {
-            $(".submit-btn").show();
             $(".submit-btn").show();
         }
     }
-</script>
-<script>
+
     $(document).ready(function() {
         $.ajaxSetup({
             headers: {
@@ -386,35 +333,26 @@
             }
         });
         $(".submit-btn").hide();
-        $(".submit-btn").hide();
-        // check or uncheck any data
+
         $(".controlledCheckbox").on("change", function(e) {
-            // console.log("is_checked", $(this).is(":checked"));
-            // $(this).data('id');
             const total = $("#total").val().replace(/,/g, '');
             var sign = Number.parseFloat(total);
-            // const service = $(this).attr('value');
             const amount = $(this).data('id');
             var signet = Number.parseFloat(amount);
-            if ($(this).is(":checked") == true)
-                var addSum = sign + signet; //.toFixed(2);
-            $("#total").val(addSum);
-            // alert("heree")
-            if ($(this).is(":checked") == false)
-                var addSum = sign - signet; //.toFixed(2);
+            if ($(this).is(":checked")) {
+                var addSum = sign + signet;
+            } else {
+                var addSum = sign - signet;
+            }
 
             $("#total").val(addSum.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 
             if (addSum == 0) {
                 $(".submit-btn").hide();
-                $(".submit-btn").hide();
             } else {
                 $(".submit-btn").show();
-                $(".submit-btn").show();
             }
-
-        })
-
-    })
+        });
+    });
 </script>
 @endsection

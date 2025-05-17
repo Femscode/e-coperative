@@ -824,7 +824,7 @@ class MemberController extends Controller
                 $loanDate->addMonth();
             }
             //check if any payment has been made for this loan
-            $checkPayment = Transaction::where('user_id',  auth()->user()->id)->where([['status', 'Success'], ['payment_type', 'Repayment'], ['uuid', $check->uuid]])->pluck('month')->toArray();
+            $checkPayment = Transaction::where('user_id',  auth()->user()->uuid)->where([['status', 'Success'], ['payment_type', 'Repayment'], ['uuid', $check->uuid]])->pluck('month')->toArray();
             // $dateArray = [];
             // dd($availableNow);
             foreach ($availableNow as $pay) {
