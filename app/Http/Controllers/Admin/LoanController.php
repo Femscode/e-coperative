@@ -181,6 +181,7 @@ class LoanController extends Controller
             ]);
 
             $loanDetails->payment_status = 1;
+            $loanDetails->status = 'Ongoing';
             $loanDetails->save();
 
 
