@@ -127,7 +127,7 @@
                 //performReset()
                 performDelete(el, id);
             } else {
-                new swal("Opss", "Application will not be approved", "error");
+                // new swal("Opss", "Application will not be approved", "error");
             }
         }
 
@@ -169,7 +169,7 @@
                 //performReset()
                 performDisburse(el, id);
             } else {
-                new swal("Opss", "Disbursement Cancelled", "error");
+                // new swal("Opss", "Disbursement Cancelled", "error");
             }
         }
 

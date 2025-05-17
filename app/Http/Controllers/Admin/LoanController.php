@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\MemberLoan;
+use App\Models\WithdrawRequest;
+
 use function App\Helpers\api_request_response;
 use function App\Helpers\bad_response_status_code;
 use function App\Helpers\success_status_code;
@@ -67,7 +69,7 @@ class LoanController extends Controller
         }
     }
 
-    public function disburse(Request $request){
+    public function olddisburse(Request $request){
         try {
             $apiSecret = env('PAYSTACK_DISBURSE_SECRET_KEY');
             $client = new Client();
@@ -147,6 +149,48 @@ class LoanController extends Controller
                 );
                 // return redirect()->back()->with('error', $recipient->data->message);
             }
+        } catch (\Exception $exception) {
+            return api_request_response(
+                'error',
+                $exception->getMessage(),
+                bad_response_status_code()
+            );
+        }
+    }
+    public function disburse(Request $request){
+        try {
+         
+            $loanDetails = MemberLoan::where('id', $request->id)->first();
+            $user = $loanDetails->user();
+            $name = $user->account_name;
+            $code = $user->bank_code;
+            $number = $user->account_number;
+            if(!$code){
+                return api_request_response(
+                    'error',
+                    "Member hasn't completed bank info to receive loan!",
+                    success_status_code(),
+                );
+            }
+            $withdraw_request = WithdrawRequest::create([
+                'user_id' => $user->uuid,
+                'amount' => $loanDetails->total_applied,
+                'type' => 'loan',
+                'group_id' => $loanDetails->company_id,
+                'status' => 2,
+            ]);
+
+            $loanDetails->payment_status = 1;
+            $loanDetails->save();
+
+
+            return api_request_response(
+                'ok',
+                'Loan disbursement request created successfully!',
+                success_status_code()
+            );
+
+           
         } catch (\Exception $exception) {
             return api_request_response(
                 'error',
