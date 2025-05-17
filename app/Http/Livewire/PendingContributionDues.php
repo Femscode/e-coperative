@@ -51,7 +51,7 @@ class PendingContributionDues extends Component
                 foreach ($weeksToView as $thisWeek) {
                     $check = in_array($thisWeek, $myWeeks);
                     if (!$check) {
-                        $months[] = ['name' => $single->user->name, 'month' => $thisWeek, "amount" => $group->amount, 'uuid' => $group->uuid];
+                        $months[] = ['name' => $single->user->name, 'month' => $thisWeek, "amount" => $group->amount, 'uuid' => $group->uuid, 'id' => $group->id];
                     }
                 }
             } elseif ($mode == "Monthly") {
@@ -73,7 +73,7 @@ class PendingContributionDues extends Component
                 foreach ($monthsToView as $thisMonth) {
                     $check = in_array($thisMonth, $myMonths);
                     if (!$check) {
-                        $months[] = ['name' => $single->user->name, 'month' => $thisMonth, "amount" => $group->amount, 'uuid' => $group->uuid];
+                        $months[] = ['name' => $single->user->name, 'month' => $thisMonth, "amount" => $group->amount, 'uuid' => $group->uuid, 'id' => $group->id];
                     }
                 }
             } else {
@@ -95,7 +95,7 @@ class PendingContributionDues extends Component
                 foreach ($monthsToView as $thisMonth) {
                     $check = in_array($thisMonth, $myMonths);
                     if (!$check) {
-                        $months[] = ['name' => $single->user->name, 'month' => $thisMonth, "amount" => $group->amount, 'uuid' => $group->uuid];
+                        $months[] = ['name' => $single->user->name, 'month' => $thisMonth, "amount" => $group->amount, 'uuid' => $group->uuid, 'id' => $group->id];
                     }
                 }
             }
@@ -153,7 +153,8 @@ class PendingContributionDues extends Component
                             'name' => $single->user->name,
                             'month' => $thisWeek,
                             'amount' => $group->amount,
-                            'uuid' => $group->uuid
+                            'uuid' => $group->uuid,
+                            'id' => $group->id
                         ];
                         $contributionCount++;
                     }
@@ -185,7 +186,8 @@ class PendingContributionDues extends Component
                             'name' => $single->user->name,
                             'month' => $thisMonth,
                             'amount' => $group->amount,
-                            'uuid' => $group->uuid
+                            'uuid' => $group->uuid,
+                            'id' => $group->id
                         ];
                         $contributionCount++;
                     }
@@ -217,7 +219,8 @@ class PendingContributionDues extends Component
                             'name' => $single->user->name,
                             'month' => $thisDay,
                             'amount' => $group->amount,
-                            'uuid' => $group->uuid
+                            'uuid' => $group->uuid,
+                            'id' => $group->id
                         ];
                         $contributionCount++;
                     }
@@ -288,6 +291,7 @@ class PendingContributionDues extends Component
                         'period' => $weekFormat,
                         'amount' => $group->amount,
                         'uuid' => $group->uuid,
+                        'id' => $group->id,
                         'type' => 'weekly'
                     ];
 
@@ -308,6 +312,7 @@ class PendingContributionDues extends Component
                         'period' => $monthFormat,
                         'amount' => $group->amount,
                         'uuid' => $group->uuid,
+                        'id' => $group->id,
                         'type' => 'monthly'
                     ];
 
@@ -328,6 +333,7 @@ class PendingContributionDues extends Component
                         'period' => $dayFormat,
                         'amount' => $group->amount,
                         'uuid' => $group->uuid,
+                        'id' => $group->id,
                         'type' => 'daily'
                     ];
 
