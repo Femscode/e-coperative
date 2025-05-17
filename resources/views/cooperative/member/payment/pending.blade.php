@@ -269,6 +269,7 @@
                 _token: '{{ csrf_token() }}',
                 user_id: userId,
                 loan_id: loanId,
+                amount: $('#real_amount').val(),
                 type: loanType,
                 status: 0 // Initial status
             },

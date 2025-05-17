@@ -101,13 +101,24 @@ class MemberLoanController extends Controller
             }
             $loan = MemberLoan::find($request->loan_id);
             $plan = Company::where('uuid',$loan->company_id)->first();
-            $tracker = LoanPaymentTracker::create([
-                'user_id' => $request->user_id,
-                'loan_id' => $request->loan_id,
-                'type' => $request->type,
-                'amount' => $plan->loan_form_amount,
-                'status' => $request->status
-            ]);
+            if($request->type == 'repayment') {
+                $tracker = LoanPaymentTracker::create([
+                    'user_id' => $request->user_id,
+                    'loan_id' => $request->loan_id,
+                    'type' => $request->type,
+                    'amount' => $request->amount,
+                    'status' => $request->status
+                ]);
+            } else {
+                $tracker = LoanPaymentTracker::create([
+                    'user_id' => $request->user_id,
+                    'loan_id' => $request->loan_id,
+                    'type' => $request->type,
+                    'amount' => $plan->loan_form_amount,
+                    'status' => $request->status
+                ]);
+            }
+            
 
             return response()->json([
                 'success' => true,
