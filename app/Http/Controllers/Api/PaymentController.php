@@ -110,10 +110,10 @@ class PaymentController extends Controller
             }
         } else { // Cooperative type
 
-            //check loan payment 
-            $loan_application_fee = LoanPaymentTracker::where('user_id', $user->uuid)->where('status', 0)->where('type','application-fee')->first();
-            if($loan_application_fee){
-                if($amountPaid >= $loan_application_fee->amount){
+            //check loan payment form
+            $loan_application_fee = LoanPaymentTracker::where('user_id', $user->uuid)->where('status', 0)->where('type', 'application-fee')->first();
+            if ($loan_application_fee) {
+                if ($amountPaid >= $loan_application_fee->amount) {
                     Transaction::create([
                         'user_id' => $user->uuid,
                         'company_id' => $company->uuid,
@@ -121,7 +121,7 @@ class PaymentController extends Controller
                         'transaction_id' => $reference,
                         'status' => 'Success',
                         'payment_type' => 'Loan-Application-Fee',
-                        
+
                         'email' => $email
                     ]);
                     $amountPaid -= $loan_application_fee->amount;
@@ -130,8 +130,41 @@ class PaymentController extends Controller
                     'status' => 1
                 ]);
             }
+            // check loan repayment
+
+            $loan_application_fee = LoanPaymentTracker::where('user_id', $user->uuid)->where('status', 0)->where('type', 'repayment')->first();
+            if ($loan_application_fee) {
+
+                $pendingLoans = MemberLoan::where([
+                    ['user_id', $user->id],
+                    ['status', 'Ongoing']
+                ])->get();
+
+                if ($amountPaid >= $loan_application_fee->amount) {
+                    foreach ($pendingLoans as $loan) {
+                        if ($amountPaid >= $loan->monthly_return) {
+                            Transaction::create([
+                                'user_id' => $user->uuid,
+                                'company_id' => $company->uuid,
+                                'amount' => $loan->monthly_return,
+                                'transaction_id' => $reference,
+                                'status' => 'Success',
+                                'payment_type' => 'Repayment',
+                                // 'month' => $loan['month'] ?? null,
+                                // 'week' => $loan['week'] ?? null,
+                                'uuid' => $loan->uuid,
+                                'email' => $email
+                            ]);
+                            $amountPaid -= $loan->monthly_return;
+                        }
+                    }
+                    $loan_application_fee->update([
+                        'status' => 1
+                    ]);
+                }
+            }
             // 1. Check cooperative dues
-            
+
             $pendingCoopDues = $this->getPendingCoopDues($user);
             foreach ($pendingCoopDues as $due) {
                 if ($amountPaid >= $due['amount']) {
@@ -465,7 +498,7 @@ class PaymentController extends Controller
             $startDate = Carbon::parse($group->start_date);
             $endDate = Carbon::now();
 
-            if($group->mode == "Daily") {
+            if ($group->mode == "Daily") {
                 $currentDate = $startDate->copy()->startOfDay();
                 while ($currentDate->lte($endDate)) {
                     $dayFormat = $currentDate->format('F d, Y');
@@ -493,9 +526,7 @@ class PaymentController extends Controller
                     }
                     $currentDate->addDay();
                 }
-            }
-
-            elseif ($group->mode == "Weekly") {
+            } elseif ($group->mode == "Weekly") {
                 $currentDate = $startDate->copy()->startOfWeek();
                 while ($currentDate->lte($endDate)) {
                     $weekStart = $currentDate->format('M d');
@@ -524,9 +555,7 @@ class PaymentController extends Controller
                     }
                     $currentDate->addWeek();
                 }
-            } 
-            
-            elseif ($group->mode == "Monthly") {
+            } elseif ($group->mode == "Monthly") {
                 $currentDate = $startDate->copy()->startOfMonth();
                 while ($currentDate->lte($endDate)) {
                     $monthFormat = $currentDate->format('F Y');
