@@ -13,7 +13,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/member/loan">
                         <i class="bi bi-plus-circle me-1"></i>
-                        <span>Request For Loan</span>
+                        <span>Requests For Loan</span>
                     </a>
                 </li>
                 <li class="nav-item">
