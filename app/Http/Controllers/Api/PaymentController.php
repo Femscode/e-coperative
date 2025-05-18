@@ -184,7 +184,7 @@ class PaymentController extends Controller
                                         'email' => $email
                                     ]);
                                     $amountPaid -= $loan->monthly_return;
-                                    $loan->total_refunded += $loan->monthly_return;
+                                    $loan->total_refund += $loan->monthly_return;
                                     $loan->save();
                                 } catch (\Exception $e) {
                                     \Log::error('Failed to create loan repayment transaction: ' . $e->getMessage());
