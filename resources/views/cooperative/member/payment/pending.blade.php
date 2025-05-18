@@ -72,6 +72,7 @@
                                             <input type="hidden" value="{{ $month['payment_type'] }}" name="payment_type[]">
                                             <input type="hidden" value="{{ $month['uuid'] }}" name="uuid[]">
                                             <input type="hidden" value="{{ $month['amount'] }}" name="fee[]">
+                                            <input type="hidden" value="{{ $month['id'] }}" name="id[]">
                                             <td>
                                                 <div class="form-check">
                                                     <input class="form-check-input controlledCheckbox" 
