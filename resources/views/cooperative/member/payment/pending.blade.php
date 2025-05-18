@@ -69,13 +69,17 @@
                                     <tbody>
                                         @foreach ($months as $month)
                                         <tr>
-                                            <input type="hidden" @isset($month['amount']) value="Repayment" @else value="Monthly Dues" @endisset name="payment_type[]">
-                                            <input type="hidden" @isset($month['amount']) value="{{ $month['uuid'] }}" @else value="" @endisset name="uuid[]">
-                                            <input type="hidden" @isset($month['amount']) value="{{ $month['id'] }}" @else value="" @endisset name="id[]">
-                                            <input type="hidden" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->dues }}" @endisset name="fee[]">
+                                            <input type="hidden" value="{{ $month['payment_type'] }}" name="payment_type[]">
+                                            <input type="hidden" value="{{ $month['uuid'] }}" name="uuid[]">
+                                            <input type="hidden" value="{{ $month['amount'] }}" name="fee[]">
                                             <td>
                                                 <div class="form-check">
-                                                    <input class="form-check-input controlledCheckbox" @isset($month['amount']) data-id="{{ $month['amount'] }}" @else data-id="{{ $plan->dues }}" @endisset name="check[]" type="checkbox" id="inlineCheckbox2">
+                                                    <input class="form-check-input controlledCheckbox" 
+                                                           data-id="{{ $month['amount'] }}" 
+                                                           name="check[]" 
+                                                           type="checkbox" 
+                                                           {{ $month['paid'] ? 'disabled' : '' }}
+                                                           id="checkbox_{{ $loop->index }}">
                                                 </div>
                                             </td>
                                             <td>
@@ -86,25 +90,17 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <span class="badge bg-light text-dark">
-                                                    @isset($month['amount']) Repayment @else Monthly Dues @endisset
+                                                <span class="badge {{ $month['payment_type'] === 'Repayment' ? 'bg-info' : 'bg-light text-dark' }}">
+                                                    {{ $month['payment_type'] }}
                                                 </span>
                                             </td>
                                             <td class="text-end">
-                                                <input type="hidden" name="original[]" @isset($month['amount']) value="{{ $month['amount'] }}" @else value="{{ $plan->getMondays($month['month']) * $plan->monthly_dues }}" @endisset>
-                                                <strong>
-                                                    @isset($month['amount'])
-                                                    {{ number_format($month['amount'], 2) }}
-                                                    @else
-                                                    {{ number_format($plan->dues, 2) }}
-                                                    @endisset
-                                                </strong>
+                                                <strong>{{ number_format($month['amount'], 2) }}</strong>
                                             </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
-
                                 <!-- Payment Summary -->
                                 <div class="payment-summary mt-4">
                                     <input type="hidden" id="userEmail" name="email" value="{{Auth::user()->email}}">
@@ -288,7 +284,7 @@
             }
         });
 
-       
+
         return false;
     }
 
@@ -381,7 +377,7 @@
     function generateBankDetails() {
         const amount = parseFloat(document.getElementById('real_amount').value);
         const submitBtn = document.querySelector('#paymentForm button[type="submit"]');
-        
+
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating Account...';
 
@@ -441,13 +437,13 @@
                 const countdownTimer = setInterval(() => {
                     const now = new Date().getTime();
                     const distance = expiryDate - now;
-                    
+
                     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                    
+
                     document.getElementById("countdown").innerHTML = `${hours}h ${minutes}m ${seconds}s`;
-                    
+
                     if (distance < 0) {
                         clearInterval(countdownTimer);
                         document.getElementById("countdown").innerHTML = "EXPIRED";
@@ -460,7 +456,7 @@
             error: function(xhr) {
                 console.error(xhr);
                 alert('Error generating bank details. Please try again.');
-                
+
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Pay';
             }

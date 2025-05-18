@@ -802,7 +802,7 @@ class MemberController extends Controller
     }
 
 
-    public function loanPayment()
+    public function oldloanPayment()
     {
         $startDate = Carbon::parse(Auth::user()->created_at);
         $endDate = Carbon::now();
@@ -842,6 +842,60 @@ class MemberController extends Controller
         // $data['months'] = $months + $dateArray;
         // dd($check, $data);
         return view('cooperative.member.payment.pending', $data);
+    }
+
+    public function loanPayment()
+    {
+        try {
+            $user = Auth::user();
+            $data['plan'] = $user->plan();
+            $data['user'] = $user;
+            $dateArray = [];
+
+            // check if member has ongoing loan application
+            $ongoingLoan = MemberLoan::where([
+                ['user_id', $user->id], 
+                ['status', 'Ongoing']
+            ])->first();
+
+            if ($ongoingLoan) {
+                $payback = $data['plan']->loan_month_repayment - 1;
+                $loanDate = Carbon::parse($ongoingLoan->disbursed_date);
+                $endMonth = Carbon::parse($ongoingLoan->disbursed_date)->addMonths($payback);
+
+                // Get all paid transactions for this loan
+                $paidTransactions = Transaction::where([
+                    ['user_id', $user->uuid],
+                    ['status', 'Success'],
+                    ['payment_type', 'Repayment'],
+                    ['uuid', $ongoingLoan->uuid]
+                ])->pluck('month')->toArray();
+
+                while ($loanDate->lessThanOrEqualTo($endMonth)) {
+                    $monthFormat = $loanDate->format('F Y');
+                    
+                    if (!in_array($monthFormat, $paidTransactions) && 
+                        $loanDate->lessThanOrEqualTo(now())) {
+                        $dateArray[] = [
+                            'source' => '2',
+                            'month' => $monthFormat,
+                            'amount' => $ongoingLoan->monthly_return,
+                            'uuid' => $ongoingLoan->uuid,
+                            'id' => $ongoingLoan->id,
+                            'payment_type' => 'Repayment',
+                            'paid' => false
+                        ];
+                    }
+                    $loanDate->addMonth();
+                }
+            }
+
+            $data['months'] = $dateArray;
+            return view('cooperative.member.payment.pending', $data);
+        } catch (\Exception $e) {
+            \Log::error('Loan payment error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while processing your request.');
+        }
     }
 
     public function automaticPayment() {}
