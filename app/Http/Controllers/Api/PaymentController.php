@@ -34,8 +34,8 @@ class PaymentController extends Controller
         file_put_contents(__DIR__ . '/flutterwave_payment3.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
 
         // Verify the payment data
-        $email = $request->input('customer.email');
-        // $email = 'member@syncosave.com';
+        // $email = $request->input('customer.email');
+        $email = 'member@syncosave.com';
         $amountPaid = intval($request->input('amount'));
         $reference = $request->input('id');
 
