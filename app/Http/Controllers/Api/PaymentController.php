@@ -34,8 +34,8 @@ class PaymentController extends Controller
         file_put_contents(__DIR__ . '/flutterwave_payment3.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
 
         // Verify the payment data
-        // $email = $request->input('customer.email');
-        $email = 'member@syncosave.com';
+        $email = $request->input('customer.email');
+        // $email = 'member@syncosave.com';
         $amountPaid = intval($request->input('amount'));
         $reference = $request->input('id');
 
@@ -112,12 +112,31 @@ class PaymentController extends Controller
         } else { // Cooperative type
 
             //check loan payment form
-           
+            $loan_application_fee = LoanPaymentTracker::where('user_id', $user->uuid)->where('status', 0)->where('type', 'application-fee')->first();
+            if ($loan_application_fee) {
+                if ($amountPaid >= $loan_application_fee->amount) {
+                    Transaction::create([
+                        'user_id' => $user->uuid,
+                        'company_id' => $company->uuid,
+                        'amount' => $loan_application_fee->amount,
+                        'transaction_id' => $reference,
+                        'status' => 'Success',
+                        'payment_type' => 'Loan-Application-Fee',
+
+                        'email' => $email
+                    ]);
+                    $amountPaid -= $loan_application_fee->amount;
+                }
+                $loan_application_fee->update([
+                    'status' => 1
+                ]);
+            }
+
 
             $loan_application_fee = LoanPaymentTracker::where('user_id', $user->uuid)->where('status', 0)->where('type', 'repayment')->first();
             if ($loan_application_fee) {
                 $pendingLoans = MemberLoan::where([
-                    ['user_id', $user->uuid], // Use uuid consistently
+                    ['user_id', $user->id], // Use id for MemberLoan query
                     ['status', 'Ongoing']
                 ])->get();
 
@@ -149,19 +168,23 @@ class PaymentController extends Controller
                         
                         // Process payments for unpaid months in chronological order
                         foreach ($unpaidMonths as $month) {
-                            if ($amountPaid >= $loan_application_fee->amount) {
-                                Transaction::create([
-                                    'user_id' => $user->uuid,
-                                    'company_id' => $company->uuid,
-                                    'amount' => $loan->monthly_return,
-                                    'transaction_id' => $reference,
-                                    'status' => 'Success',
-                                    'payment_type' => 'Repayment',
-                                    'month' => "Pelxz",
-                                    'uuid' => $loan->uuid,
-                                    'email' => $email
-                                ]);
-                                $amountPaid -= $loan->monthly_return;
+                            if ($amountPaid >= $loan->monthly_return) {  // Changed from loan_application_fee->amount to loan->monthly_return
+                                try {
+                                    Transaction::create([
+                                        'user_id' => $user->uuid,
+                                        'company_id' => $company->uuid,
+                                        'amount' => $loan->monthly_return,
+                                        'transaction_id' => $reference,
+                                        'status' => 'Success',
+                                        'payment_type' => 'Repayment',
+                                        'month' => $month,
+                                        'uuid' => $loan->uuid,
+                                        'email' => $email
+                                    ]);
+                                    $amountPaid -= $loan->monthly_return;
+                                } catch (\Exception $e) {
+                                    \Log::error('Failed to create loan repayment transaction: ' . $e->getMessage());
+                                }
                             } else {
                                 break; // Not enough money for next payment
                             }
@@ -173,41 +196,7 @@ class PaymentController extends Controller
                 }
             }
 
-
-
-            // check loan repayment
-
-            $loan_application_fee = LoanPaymentTracker::where('user_id', $user->uuid)->where('status', 0)->where('type', 'repayment')->first();
-            if ($loan_application_fee) {
-
-                $pendingLoans = MemberLoan::where([
-                    ['user_id', $user->id],
-                    ['status', 'Ongoing']
-                ])->get();
-
-                if ($amountPaid >= $loan_application_fee->amount) {
-                    foreach ($pendingLoans as $loan) {
-                        if ($amountPaid >= $loan->monthly_return) {
-                            Transaction::create([
-                                'user_id' => $user->uuid,
-                                'company_id' => $company->uuid,
-                                'amount' => $loan->monthly_return,
-                                'transaction_id' => $reference,
-                                'status' => 'Success',
-                                'payment_type' => 'Repayment',
-                                // 'month' => $loan['month'] ?? null,
-                                // 'week' => $loan['week'] ?? null,
-                                'uuid' => $loan->uuid,
-                                'email' => $email
-                            ]);
-                            $amountPaid -= $loan->monthly_return;
-                        }
-                    }
-                    $loan_application_fee->update([
-                        'status' => 1
-                    ]);
-                }
-            }
+          
             // 1. Check cooperative dues
 
             $pendingCoopDues = $this->getPendingCoopDues($user);
@@ -267,7 +256,6 @@ class PaymentController extends Controller
                             'transaction_id' => $reference,
                             'status' => 'Success',
                             'payment_type' => 'Repayment',
-                            'month' => 'Jan',
                             // 'month' => $loan['month'] ?? null,
                             // 'week' => $loan['week'] ?? null,
                             'uuid' => $loan->uuid,
