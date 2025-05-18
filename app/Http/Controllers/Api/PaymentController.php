@@ -112,25 +112,69 @@ class PaymentController extends Controller
         } else { // Cooperative type
 
             //check loan payment form
-            $loan_application_fee = LoanPaymentTracker::where('user_id', $user->uuid)->where('status', 0)->where('type', 'application-fee')->first();
-            if ($loan_application_fee) {
-                if ($amountPaid >= $loan_application_fee->amount) {
-                    Transaction::create([
-                        'user_id' => $user->uuid,
-                        'company_id' => $company->uuid,
-                        'amount' => $loan_application_fee->amount,
-                        'transaction_id' => $reference,
-                        'status' => 'Success',
-                        'payment_type' => 'Loan-Application-Fee',
+           
 
-                        'email' => $email
+            $loan_application_fee = LoanPaymentTracker::where('user_id', $user->uuid)->where('status', 0)->where('type', 'repayment')->first();
+            if ($loan_application_fee) {
+                $pendingLoans = MemberLoan::where([
+                    ['user_id', $user->uuid], // Use uuid consistently
+                    ['status', 'Ongoing']
+                ])->get();
+
+                if ($amountPaid >= $loan_application_fee->amount) {
+                    foreach ($pendingLoans as $loan) {
+                        // Get all unpaid months for this loan
+                        $loanStartDate = Carbon::parse($loan->disbursed_date);
+                        $currentDate = Carbon::now();
+                        $unpaidMonths = [];
+                        
+                        while ($loanStartDate->lessThanOrEqualTo($currentDate)) {
+                            $monthFormat = $loanStartDate->format('F Y');
+                            
+                            // Check if this month is already paid
+                            $isPaid = Transaction::where([
+                                'user_id' => $user->uuid,
+                                'uuid' => $loan->uuid,
+                                'payment_type' => 'Repayment',
+                                'status' => 'Success',
+                                'month' => $monthFormat
+                            ])->exists();
+                            
+                            if (!$isPaid) {
+                                $unpaidMonths[] = $monthFormat;
+                            }
+                            
+                            $loanStartDate->addMonth();
+                        }
+                        
+                        // Process payments for unpaid months in chronological order
+                        foreach ($unpaidMonths as $month) {
+                            if ($amountPaid >= $loan->monthly_return) {
+                                Transaction::create([
+                                    'user_id' => $user->uuid,
+                                    'company_id' => $company->uuid,
+                                    'amount' => $loan->monthly_return,
+                                    'transaction_id' => $reference,
+                                    'status' => 'Success',
+                                    'payment_type' => 'Repayment',
+                                    'month' => $month,
+                                    'uuid' => $loan->uuid,
+                                    'email' => $email
+                                ]);
+                                $amountPaid -= $loan->monthly_return;
+                            } else {
+                                break; // Not enough money for next payment
+                            }
+                        }
+                    }
+                    $loan_application_fee->update([
+                        'status' => 1
                     ]);
-                    $amountPaid -= $loan_application_fee->amount;
                 }
-                $loan_application_fee->update([
-                    'status' => 1
-                ]);
             }
+
+
+
             // check loan repayment
 
             $loan_application_fee = LoanPaymentTracker::where('user_id', $user->uuid)->where('status', 0)->where('type', 'repayment')->first();
