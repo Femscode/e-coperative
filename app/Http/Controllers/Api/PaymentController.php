@@ -267,6 +267,7 @@ class PaymentController extends Controller
                             'transaction_id' => $reference,
                             'status' => 'Success',
                             'payment_type' => 'Repayment',
+                            'month' => 'Jan',
                             // 'month' => $loan['month'] ?? null,
                             // 'week' => $loan['week'] ?? null,
                             'uuid' => $loan->uuid,
