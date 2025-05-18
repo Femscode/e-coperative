@@ -149,7 +149,7 @@ class PaymentController extends Controller
                         
                         // Process payments for unpaid months in chronological order
                         foreach ($unpaidMonths as $month) {
-                            if ($amountPaid >= $loan->monthly_return) {
+                            if ($amountPaid >= $loan_application_fee->amount) {
                                 Transaction::create([
                                     'user_id' => $user->uuid,
                                     'company_id' => $company->uuid,
@@ -157,7 +157,7 @@ class PaymentController extends Controller
                                     'transaction_id' => $reference,
                                     'status' => 'Success',
                                     'payment_type' => 'Repayment',
-                                    'month' => $month,
+                                    'month' => "Pelxz",
                                     'uuid' => $loan->uuid,
                                     'email' => $email
                                 ]);
