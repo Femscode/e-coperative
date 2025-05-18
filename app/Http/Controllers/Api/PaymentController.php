@@ -167,7 +167,7 @@ class PaymentController extends Controller
                         }
 
 
-                        file_put_contents(__DIR__ . '/unpaid_month.txt', json_encode($unpaidMonths, JSON_PRETTY_PRINT), FILE_APPEND);
+                        // file_put_contents(__DIR__ . '/unpaid_month.txt', json_encode($unpaidMonths, JSON_PRETTY_PRINT), FILE_APPEND);
                         // Process payments for unpaid months in chronological order
                         foreach ($unpaidMonths as $month) {
                             if ($amountPaid >= $loan->monthly_return) {  // Changed from loan_application_fee->amount to loan->monthly_return
@@ -184,6 +184,8 @@ class PaymentController extends Controller
                                         'email' => $email
                                     ]);
                                     $amountPaid -= $loan->monthly_return;
+                                    $loan->total_refunded += $loan->monthly_return;
+                                    $loan->save();
                                 } catch (\Exception $e) {
                                     \Log::error('Failed to create loan repayment transaction: ' . $e->getMessage());
                                 }
@@ -242,27 +244,22 @@ class PaymentController extends Controller
 
             // 3. Check loan repayments
             if ($amountPaid > 0) {
-                $pendingLoans = MemberLoan::where([
-                    ['user_id', $user->id],
-                    ['status', 'Ongoing']
-                ])->get();
+                try {
+                    Transaction::create([
+                        'user_id' => $user->uuid,
+                        'company_id' => $company->uuid,
+                        'amount' => $amountPaid,
+                        'transaction_id' => $reference,
+                        'status' => 'Success',
+                        'payment_type' => 'Balance',
+                        'email' => $email
+                    ]);
 
-                foreach ($pendingLoans as $loan) {
-                    if ($amountPaid >= $loan->monthly_return) {
-                        Transaction::create([
-                            'user_id' => $user->uuid,
-                            'company_id' => $company->uuid,
-                            'amount' => $loan->monthly_return,
-                            'transaction_id' => $reference,
-                            'status' => 'Success',
-                            'payment_type' => 'Repayment',
-                            // 'month' => $loan['month'] ?? null,
-                            // 'week' => $loan['week'] ?? null,
-                            'uuid' => $loan->uuid,
-                            'email' => $email
-                        ]);
-                        $amountPaid -= $loan->monthly_return;
-                    }
+                    // Update user's balance
+                    $user->increment('balance', $amountPaid);
+                    
+                } catch (\Exception $e) {
+                    \Log::error('Failed to add remaining amount to balance: ' . $e->getMessage());
                 }
             }
         }
