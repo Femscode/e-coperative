@@ -15,7 +15,7 @@ class ApprovedLoan extends Component
     }
     public function render()
     {
-        $data['title'] = "Awaiting Disbursement Applications";
+        $data['title'] = "Awaiting Disbursement";
         $user = auth()->user();
         $company = Company::where('uuid', $user->company_id)->first();
         
