@@ -2,32 +2,40 @@
     <div class="container mt-4">
         <!-- Navigation Tabs -->
         <div class="loan-nav-wrapper mb-4">
-            <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link" href="/member/loan">
-                        <i class="bi bi-plus-circle me-1"></i>
-                        <span>Request For Loan</span>
+            <div class="row g-2">
+                <div class="col-6">
+                    <a href="/member/loan" class="nav-link text-center py-3 h-100 ">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="bi bi-plus-circle me-1"></i>
+                            <span>Request Loan</span>
+                        </div>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/member/loan-repayment">
-                        <i class="bi bi-hourglass-split me-1"></i>
-                        <span>Pending Repayments</span>
+                </div>
+                <div class="col-6">
+                    <a href="/member/loan-repayment" class="nav-link text-center py-3 h-100">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="bi bi-hourglass-split me-1"></i>
+                            <span>Repayments</span>
+                        </div>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/member/loan/ongoing">
-                        <i class="bi bi-arrow-repeat me-1"></i>
-                        <span>Ongoing Loans</span>
+                </div>
+                <div class="col-6">
+                    <a href="/member/loan/ongoing" class="nav-link text-center py-3 h-100">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="bi bi-arrow-repeat me-1"></i>
+                            <span>Ongoing Loans</span>
+                        </div>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active2" href="/member/loan/completed">
-                        <i class="bi bi-check-circle me-1"></i>
-                        <span>Completed Loans</span>
+                </div>
+                <div class="col-6">
+                    <a href="/member/loan/completed" class="nav-link text-center py-3 h-100 active2 {{ request()->is('member/loan-repayment/completed*') ? 'active' : '' }}">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="bi bi-check-circle me-1"></i>
+                            <span>Completed Loans</span>
+                        </div>
                     </a>
-                </li>
-            </ul>
+                </div>
+            </div>
         </div>
 
         <div class="row">
