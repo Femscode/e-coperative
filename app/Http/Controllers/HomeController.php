@@ -43,9 +43,9 @@ class HomeController extends Controller
        
         if($company->type == 1) {
             $data['transactions'] = $transacts->latest()->take(10)->get();
-            $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->where('original','!=',0)->paginate(10);
+            $data['monthly'] = $transacts->whereMonth('created_at', '=', now()->format('m'))->where('amount','!=',0)->paginate(10);
             $data['loans'] = MemberLoan::where('company_id', $company->id)->get();
-
+// dd('here');
             return view('cooperative.admin.index', $data);
         } else {
             return view('cooperative.admin.ajo-index', $data);
