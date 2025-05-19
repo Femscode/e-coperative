@@ -52,7 +52,7 @@
                             {{ number_format($member_loan->sum('total_left')) }}
                             @endif
                         </h4>
-                        <a style='cursor:pointer' class="badge badge-light text-bg-danger">Repay Loan</a>
+                        <a href='/member/loan' style='cursor:pointer' class="badge badge-light text-bg-danger">Repay Loan</a>
                     </div>
                 </div>
             </div>
