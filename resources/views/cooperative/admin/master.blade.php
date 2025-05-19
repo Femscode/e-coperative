@@ -322,12 +322,7 @@
                                                   <span>Profile</span>
                                              </a>
                                         </li>
-                                        <li>
-                                             <a class="dropdown-item d-flex align-items-center" href="/admin/my-transactions">
-                                                  <i class="bx bx-table text-muted fs-18 me-2"></i>
-                                                  <span>My Transactions</span>
-                                             </a>
-                                        </li>
+                                       
                                         <li>
                                              <a class="dropdown-item d-flex align-items-center" href="https://wa.me/2349058744473">
                                                   <i class="bx bx-help-circle text-muted fs-18 me-2"></i>

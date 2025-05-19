@@ -343,7 +343,7 @@ class ProfileController extends Controller
     {
         $data['user'] = $user = Auth::user();
        
-        if($user->plan()->type == 2) {
+        if($user->plan()->type == 2 || $user->user_type == 'Admin') {
 
             return view('cooperative.admin.ajo-profile', $data);
 
