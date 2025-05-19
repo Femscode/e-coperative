@@ -26,7 +26,7 @@
                                     <div class="t-date">{{ $transaction->updated_at->format('M d, Y. h:ia') }}</div>
                                 </div>
                                 <div class="t-amount" data-status="{{ $transaction->status ?? 'success' }}">
-                                    ₦{{ number_format($transaction->original, 2) }}
+                                    ₦{{ number_format($transaction->amount, 2) }}
                                 </div>
                             </div>
                             @endforeach
