@@ -394,4 +394,26 @@
             }
         }
 
+        $(".copy-btn").on('click', function() {
+            const link = $(this).data("link");
+            navigator.clipboard.writeText(link)
+                .then(() => {
+                    Swal.fire({
+ 
+                        icon: 'success',
+                        title: 'Link Copied',
+                        text: 'Link copied: ' + link
+                    });
+                })
+                .catch(err => {
+                    console.error("Failed to copy: ", err);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to copy link.'
+                    });
+                });
+        });
+
+
 </script>
