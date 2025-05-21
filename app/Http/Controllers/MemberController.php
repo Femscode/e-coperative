@@ -533,6 +533,7 @@ class MemberController extends Controller
                     return redirect()->back()->with('error', 'Invalid payment mode');
             }
         } catch (\Exception $e) {
+            dd($e->getMessage());
             \Log::error('Manual payment error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'An error occurred while processing your request.');
         }
