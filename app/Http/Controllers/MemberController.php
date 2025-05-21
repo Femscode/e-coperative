@@ -432,11 +432,16 @@ class MemberController extends Controller
                     ])->first();
 
                     if ($ongoingLoan) {
-                        $loanPayments = Transaction::where('user_id', $user->uuid)
+                        
+
+
+                            $loanPayments = Transaction::where('user_id', $user->uuid)
                             ->where('status', 'Success')
                             ->where('payment_type', 'Repayment')
                             ->where('uuid', $ongoingLoan->uuid)
+                            ->whereNotNull('month')  // Add this line to filter out null values
                             ->pluck('month')
+                            ->filter()  // Add this to remove any remaining null values
                             ->flip()
                             ->toArray();
 
@@ -499,7 +504,9 @@ class MemberController extends Controller
                             ->where('status', 'Success')
                             ->where('payment_type', 'Repayment')
                             ->where('uuid', $ongoingLoan->uuid)
+                            ->whereNotNull('week')  // Add this line to filter out null values
                             ->pluck('week')
+                            ->filter()  // Add this to remove any remaining null values
                             ->flip()
                             ->toArray();
 
