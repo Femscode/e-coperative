@@ -212,14 +212,16 @@
                 .then(response => {
                     $(".preloader").hide();
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: response.message
-                    }).then(() => {
-                        $('#importMemberForm').trigger('reset');
-                        $('#addUser').modal('hide');
-                        window.location.reload();
-                    });
+                                        title: 'Success!',
+                                        text: response.message,
+                                        icon: 'success',
+                                        timer: 2000,  // 2 seconds
+                                        showConfirmButton: false
+                                    }).then(() => {
+                                        setTimeout(() => {
+                                            window.location.reload();
+                                        }, 500);
+                                    });
                 })
                 .catch(error => {
                     $(".preloader").hide();

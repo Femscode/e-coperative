@@ -62,6 +62,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/change-file', [App\Http\Controllers\ProfileController::class, 'saveFile'])->name('save-file');
     Route::post('/verify-account', [App\Http\Controllers\ProfileController::class, 'verifyAccount'])->name('verify-account');
     Route::post('/user/verify-two-factor-authentication', [App\Http\Controllers\ProfileController::class, 'verify'])->name('verify-otp');
+    
+    Route::delete('/member-delete-contribution/{id}', [App\Http\Controllers\GroupController::class, 'delete'])->name('member-delete-contribution');
+          
     Route::group(['middleware' => ['2fa']], function () {
         Route::post('/toggle-2fa', [App\Http\Controllers\ProfileController::class, 'toggleTwo'])->name('enable-2fa');
         Route::get('/join-contribution', [App\Http\Controllers\GroupController::class, 'approve'])->name('join-contribution');
@@ -69,7 +72,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/member/contribution/create', [App\Http\Controllers\GroupController::class, 'create'])->name('member_create_group');
         Route::get('/member/dues/{uuid}', [App\Http\Controllers\GroupController::class, 'cDues'])->name('member-contribution-dues');
         Route::get('/member-start-contribution', [App\Http\Controllers\GroupController::class, 'start'])->name('member-start-contribution');
-                   
+                 
         Route::get('circle-members-{uuid}', [App\Http\Controllers\GroupController::class, 'circleMembers'])->name('circle-members');
 
         Route::group(['middleware' => 'admin'], function () {

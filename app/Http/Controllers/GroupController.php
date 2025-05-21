@@ -410,10 +410,10 @@ class GroupController extends Controller
                 );
             }
             $countNumber = $group->members->count();
-            if ($countNumber < 1) {
+            if ($countNumber < 2) {
                 return api_request_response(
                     'error',
-                    'No member on this contribution yet !',
+                    'You are only the member on this contribution, try adding more members!',
                     success_status_code()
                 );
             }
@@ -478,6 +478,59 @@ class GroupController extends Controller
             );
         }
     }
+
+    public function delete($id)
+    {
+        try {
+            $user = Auth::user();
+            $group = Group::find($id);
+
+            if (!$group) {
+                return api_request_response(
+                    'error',
+                    'Contribution group not found!',
+                    bad_response_status_code()
+                );
+            }
+
+            // Verify if user is the owner of this group
+            if ($group->company_id != $user->id) {
+                return api_request_response(
+                    'error',
+                    'You are not authorized to delete this group!',
+                    bad_response_status_code()
+                );
+            }
+
+            // Check if contribution is already in progress
+            if ($group->start_date) {
+                return api_request_response(
+                    'error',
+                    'Contribution is already in progress!',
+                    success_status_code()
+                );
+            }
+
+            // Delete all group members first
+            GroupMember::where('group_id', $group->id)->delete();
+            
+            // Delete the group
+            $group->delete();
+
+            return api_request_response(
+                'ok',
+                'Contribution group deleted successfully!',
+                success_status_code()
+            );
+        } catch (\Exception $exception) {
+            return api_request_response(
+                'error',
+                $exception->getMessage(),
+                bad_response_status_code()
+            );
+        }
+    }
+
 
     public function contribution()
     {

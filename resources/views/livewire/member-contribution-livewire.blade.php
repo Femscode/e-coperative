@@ -64,6 +64,9 @@
                                                 data-id="{{ $transaction->id }}">
                                                 <i class="bi bi-play-circle me-1"></i> Start
                                             </button>
+                                            <button class="btn btn-danger btn-sm deleteButton" data-id="{{ $transaction->id }}">
+                                                <i class="bi bi-trash me-1"></i> Delete Group
+                                            </button>
                                             @else
                                             <a href="{{ route('member-contribution-dues', $transaction->uuid) }}"
                                                 class="btn btn-info btn-sm">
@@ -272,3 +275,123 @@
         }
     }
 </style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle delete button clicks
+        document.querySelectorAll('.deleteButton').forEach(button => {
+            button.addEventListener('click', function() {
+                const groupId = this.getAttribute('data-id');
+
+                // Show confirmation dialog
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/member-delete-contribution/${groupId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                    'Accept': 'application/json'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 'ok') {
+                                    // Refresh the page or update UI as needed
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: data.message,
+                                        icon: 'success',
+                                        timer: 2000,  // 2 seconds
+                                        showConfirmButton: false
+                                    }).then(() => {
+                                        setTimeout(() => {
+                                            window.location.reload();
+                                        }, 500);
+                                    });
+                                } else {
+                                    alert('Failed to delete contribution group');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('An error occurred while deleting the contribution group');
+                            });
+                    }
+                });
+            });
+        });
+    });
+
+    // Listen for success/error events from Livewire
+    window.addEventListener('groupDeleted', event => {
+        Swal.fire(
+            'Deleted!',
+            'Contribution group has been deleted.',
+            'success'
+        );
+    });
+
+    window.addEventListener('deletionError', event => {
+        Swal.fire(
+            'Error!',
+            event.detail.message,
+            'error'
+        );
+    });
+
+    $('body').on('click', '.approveButton', function() {
+            var id = $(this).data('id');
+            var token = $("meta[name='csrf-token']").attr("content");
+            var el = this;
+            // alert("here")
+            startAccount(el, id);
+        });
+        async function startAccount(el, id) {
+            const willUpdate = await new swal({
+                title: "Confirm User Action",
+                text: `Are you sure you want to start this contribution?`,
+                icon: "warning",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes!",
+                showCancelButton: true,
+                buttons: ["Cancel", "Yes, Am In!"]
+            });
+            if (willUpdate.isConfirmed == true) {
+                //performReset()
+                performStart(el, id);
+            } 
+        }
+
+        function performStart(el, id) {
+            $('.approveButton').prop('disabled', true).text('Loading ...');
+            try {
+                // alert(data);
+                $.get("{{ route("member-start-contribution") }}?id=" + id,
+                    function(data, status) {
+                        // console.log(data, status);
+                        //    alert(data.message)
+                        if (data.status == "ok") {
+                            let alert = new swal("Good Job", data.message, "success");
+                            window.location.href = "{{ route('my-contribution') }}";
+                        } else {
+                            $('.approveButton').prop('disabled', false).text('Start');
+                            new swal("Opss", data.message, "error");
+                        }
+
+                    }
+                );
+            } catch (e) {
+                $('.approveButton').prop('disabled', false).text('Start');
+                // alert("here")
+                let alert = new swal("Opss", e.message, "error");
+            }
+        }
+
+</script>
