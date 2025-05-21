@@ -1,128 +1,112 @@
 @extends('cooperative.member.master')
 
 @section('main')
-
 <div class="modal fade" id="addUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content border-0 shadow-lg">
-                <div class="modal-header border-0 bg-gradient-primary p-4">
-                    <h5 class="modal-title text-dark fs-4">Create New Group</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header border-0 bg-gradient-primary p-4">
+                <h5 class="modal-title text-dark fs-4">Create New Group</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-                <form method="Post" id="importMemberForm" class="needs-validation" novalidate>
-                    @csrf
-                    <div class="modal-body p-4">
-                        <div class="row g-4">
-                            <div class="col-lg-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="title" name="title"
-                                        placeholder="Enter group title" required>
-                                    <label for="title">Group Title</label>
-                                </div>
+            <form method="POST" id="importMemberForm" class="needs-validation" novalidate>
+                @csrf
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="title" name="title" placeholder="Enter group title" required>
+                                <label for="title">Group Title</label>
+                                <div class="invalid-feedback">Please enter a group title.</div>
                             </div>
+                        </div>
 
-                            <div class="col-lg-6">
-                                <div class="form-floating">
-                                    <select class="form-select form-control changeMode" name="mode" required>
-                                        <option value="" disabled selected>Select contribution mode</option>
-                                        <option value="Daily">Daily</option>
-                                        <option value="Weekly">Weekly</option>
-                                        <option value="Monthly">Monthly</option>
-                                    </select>
-                                    <label>Contribution Mode</label>
-                                </div>
+                        <div class="col-lg-6">
+                            <div class="form-floating">
+                                <select class="form-select form-control changeMode" name="mode" required>
+                                    <option value="" disabled selected>Select contribution mode</option>
+                                    <option value="Daily">Daily</option>
+                                    <option value="Weekly">Weekly</option>
+                                    <option value="Monthly">Monthly</option>
+                                </select>
+                                <label>Contribution Mode</label>
+                                <div class="invalid-feedback">Please select a contribution mode.</div>
                             </div>
+                        </div>
 
-                            <div class="col-lg-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control loanAmount amount" name="amount"
-                                        placeholder="Enter amount" required>
-                                    <label>Contribution Amount (₦)</label>
-                                </div>
+                        <div class="col-lg-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control loanAmount amount" name="amount" placeholder="Enter amount" required>
+                                <label>Contribution Amount (₦)</label>
+                                <div class="invalid-feedback">Please enter a valid amount.</div>
                             </div>
+                        </div>
 
-                            <div class="col-lg-6">
-                                <div class="form-floating">
-                                    <input type="number" class="form-control" name="min" min="2"
-                                        placeholder="Enter minimum participants" required>
-                                    <label>Minimum Participants</label>
-                                </div>
+                        <div class="col-lg-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" name="min" min="2" placeholder="Enter minimum participants" required>
+                                <label>Minimum Participants</label>
+                                <div class="invalid-feedback">Please enter a valid number (minimum 2).</div>
                             </div>
+                        </div>
 
-                            <div class="col-lg-6">
-                                <div class="form-floating">
-                                    <input type="number" class="form-control" name="max" min="2"
-                                        placeholder="Enter maximum participants" required>
-                                    <label>Maximum Participants</label>
-                                </div>
+                        <div class="col-lg-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" name="max" min="2" placeholder="Enter maximum participants" required>
+                                <label>Maximum Participants</label>
+                                <div class="invalid-feedback">Please enter a valid number (minimum 2).</div>
                             </div>
+                        </div>
 
-                            <div class="col-lg-6">
-                                <div class="form-floating">
-                                    <div class="turn-type-selection">
-                                        <label class="form-label mb-2">Group Turn Type</label>
-                                        <div class="d-flex gap-4">
-                                            <div class="form-check">
-                                                <input type="radio" class="form-check-input" id="linearTurn" 
-                                                    name="turn_type" value="linear" checked required>
-                                                <label class="form-check-label" for="linearTurn">
-                                                    <i class="ri-list-ordered me-1"></i>Linear Order
-                                                </label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input type="radio" class="form-check-input" id="randomTurn" 
-                                                    name="turn_type" value="random" required>
-                                                <label class="form-check-label" for="randomTurn">
-                                                    <i class="ri-shuffle-line me-1"></i>Random Order
-                                                </label>
-                                            </div>
+                        <div class="col-lg-6">
+                            <div class="form-floating">
+                                <div class="turn-type-selection">
+                                    <label class="form-label mb-2">Group Turn Type</label>
+                                    <div class="d-flex gap-4">
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input" id="linearTurn" name="turn_type" value="linear" checked required>
+                                            <label class="form-check-label" for="linearTurn">
+                                                <i class="ri-list-ordered me-1"></i>Linear Order
+                                            </label>
                                         </div>
-                                        <small class="text-muted mt-1 d-block">
-                                            Linear: Members get turns in order of joining<br>
-                                            Random: Turns are assigned randomly
-                                        </small>
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input" id="randomTurn" name="turn_type" value="random" required>
+                                            <label class="form-check-label" for="randomTurn">
+                                                <i class="ri-shuffle-line me-1"></i>Random Order
+                                            </label>
+                                        </div>
                                     </div>
+                                    <small class="text-muted mt-1 d-block">
+                                        Linear: Members get turns in order of joining<br>
+                                        Random: Turns are assigned randomly
+                                    </small>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="modal-footer border-0 pt-0 px-4 pb-4">
-                        <button type="button" class="btn btn-light-subtle px-4 py-2 rounded-pill" data-bs-dismiss="modal">
-                            Cancel
-                        </button>
-                        <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill" id="update-btn">
+                <div class="modal-footer border-0 pt-0 px-4 pb-4">
+                    <button type="button" class="btn btn-light-subtle px-4 py-2 rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill" id="update-btn">
                         <i class="bi bi-save me-1"></i>Create Group
-                        </button>
-                    </div>
-                </form>
-            </div>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
+
 <main class="adminuiux-content has-sidebar" onclick="contentClick()">
     <div class="container-fluid py-4">
         <!-- Header -->
         <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4">
             <div class="mb-3 mb-md-0">
                 <h3 class="fw-bold mb-1">My Contribution Circle</h3>
-                <!-- <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item">
-                            <a href="#" class="text-decoration-none">
-                                <i class="bi bi-house-door small"></i>
-                                <span class="ms-2">Contribution</span>
-                            </a>
-                        </li>
-                        <li class="breadcrumb-item active">Circle</li>
-                    </ol>
-                </nav> -->
             </div>
             <div>
-                <button class="btn btn-primary" data-bs-toggle="modal" id="create-btn"
-                data-bs-target="#addUser">
-                    <i class="bi bi-plus-circle me-2"></i>
-                    New Contribution
+                <button class="btn btn-primary" data-bs-toggle="modal" id="create-btn" data-bs-target="#addUser">
+                    <i class="bi bi-plus-circle me-2"></i>New Contribution
                 </button>
             </div>
         </div>
@@ -148,11 +132,6 @@
     box-shadow: 0 0 0 0.2rem rgba(9, 65, 104, 0.1);
 }
 
-.input-group-text {
-    background: transparent;
-    border-left: 0;
-}
-
 .btn-primary {
     background: #094168;
     border: none;
@@ -165,252 +144,108 @@
     background: #073251;
     transform: translateY(-1px);
 }
-
-.breadcrumb-item + .breadcrumb-item::before {
-    content: "•";
-}
-
-.breadcrumb-item a {
-    color: #6c757d;
-}
-
-.breadcrumb-item.active {
-    color: #094168;
-    font-weight: 500;
-}
-
-@media (max-width: 768px) {
-    .container-fluid {
-        padding: 1rem;
-    }
-}
 </style>
 @endsection
 
 @section('script')
 <script>
     $(document).ready(function() {
+        // CSRF Token Setup
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
+        // Handle Session Messages
         @if(Session::has('message'))
-        showCustomAlert({
+        Swal.fire({
             icon: 'success',
             title: 'Success',
-            text: '{{ Session::get('
-            message ') }}'
+            text: '{{ Session::get("message") }}'
         });
         @endif
         @if(Session::has('error'))
-        showCustomAlert({
-            icon: 'success',
-            title: 'Success',
-            text: '{{ Session::get('
-            error ') }}'
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ Session::get("error") }}'
         });
         @endif
-        var preLoader = $(".preloader")
-        //copy link
-        $(".copy-btn").click(function() {
-            // Get the link from the data attribute of the clicked button
-            var link = $(this).data("link");
 
-            // Copy the link to the clipboard
-            navigator.clipboard.writeText(link).then(() => {
-                alert("Link copied: " + link);
-            }).catch(err => {
-                console.error("Failed to copy: ", err);
-            });
-        });
-     
-        // save contribution group
-        $("#importMemberForm").on('submit', async function(e) {
+        // Form Validation and Submission
+        $("#importMemberForm").on('submit', function(e) {
             e.preventDefault();
-            $(".preloader").show()
-            const serializedData = $("#importMemberForm").serializeArray();
-            try {
-                const postRequest = await request("/member/contribution/create",
-                    processFormInputs(
-                        serializedData), 'post');
-                // console.log('postRequest.message', postRequest.message);
-                new swal("Good Job", postRequest.message, "success");
-                $('#importMemberForm').trigger("reset");
-                $("#importMemberForm .close").click();
-                window.location.reload();
-            } catch (e) {
-                $(".preloader").hide()
-                if ('message' in e) {
-                    // console.log('e.message', e.message);
-                    new swal("Opss", e.message, "error");
 
-                }
+            // Bootstrap form validation
+            const form = this;
+            if (form.checkValidity() === false) {
+                e.stopPropagation();
+                form.classList.add('was-validated');
+                return;
             }
-        })
-        //on input amount
-        $(".loanAmount").keypress(function(e) {
-            var charCode = (e.which) ? e.which : e.keyCode;
+
+            $(".preloader").show();
+
+            const formData = $(form).serialize();
+
+            // Define the request function
+            function request(url, data, method) {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        url: url,
+                        type: method,
+                        data: data,
+                        success: function(response) {
+                            resolve(response);
+                        },
+                        error: function(xhr) {
+                            let errorMsg = xhr.responseJSON?.message || 'An error occurred. Please try again.';
+                            reject({ message: errorMsg });
+                        }
+                    });
+                });
+            }
+
+            // Submit the form
+            request('/member/contribution/create', formData, 'POST')
+                .then(response => {
+                    $(".preloader").hide();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: response.message
+                    }).then(() => {
+                        $('#importMemberForm').trigger('reset');
+                        $('#addUser').modal('hide');
+                        window.location.reload();
+                    });
+                })
+                .catch(error => {
+                    $(".preloader").hide();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: error.message
+                    });
+                });
+        });
+
+        // Format Contribution Amount Input
+        $(".loanAmount").on('keypress', function(e) {
+            var charCode = e.which ? e.which : e.keyCode;
             if (charCode > 31 && (charCode < 48 || charCode > 57)) {
                 return false;
             }
-            $(".loanAmount").on('keyup', function() {
-                // event.preventDefault();
-                var n = parseInt($(this).val().replace(/\D/g, ''), 10);
-                $(this).val(n.toLocaleString());
-                if (isNaN(n)) {
-                    $(".loanAmount").val("");
-                    // $(this).val();
-                }
-
-            });
-        });
-     
-
-        $("#frm_main").on('submit', async function(e) {
-            e.preventDefault();
-            const serializedData = $("#frm_main").serializeArray();
-
-            try {
-
-                const willUpdate = await new swal({
-                    title: "Confirm Action",
-                    text: `Are you sure you want to submit?`,
-                    icon: "warning",
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Yes!",
-                    showCancelButton: true,
-                    buttons: ["Cancel", "Yes, Submit"]
-                });
-                // console.log(willUpdate);
-                if (willUpdate) {
-                    //performReset()
-                    const postRequest = await request("/admin/user/update",
-                        processFormInputs(
-                            serializedData), 'post');
-                    console.log('postRequest.message', postRequest.message);
-                    new swal("Good Job", postRequest.message, "success");
-                    $('#frm_main').trigger("reset");
-                    $("#frm_main .close").click();
-                    window.location.reload();
-                } else {
-                    new swal("Process aborted  :)");
-                }
-
-            } catch (e) {
-                if ('message' in e) {
-                    console.log('e.message', e.message);
-                    new swal("Opss", e.message, "error");
-
-                }
-            }
-        })
-
-
-        /* When click approve button */
-        $('body').on('click', '.approveButton', function() {
-            var id = $(this).data('id');
-            var token = $("meta[name='csrf-token']").attr("content");
-            var el = this;
-            // alert("here")
-            startAccount(el, id);
-        });
-        async function startAccount(el, id) {
-            const willUpdate = await new swal({
-                title: "Start Contribution!",
-                text: `Are you sure you want to start this contribution?`,
-                icon: "warning",
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes!",
-                showCancelButton: true,
-                buttons: ["Cancel", "Yes, Am In!"]
-            });
-            if (willUpdate.isConfirmed == true) {
-                //performReset()
-                performStart(el, id);
-            } 
-        }
-
-        function performStart(el, id) {
-            $('.approveButton').prop('disabled', true).text('Loading ...');
-            try {
-                // alert(data);
-                $.get("{{ route('member-start-contribution') }}?id=" + id,
-                    function(data, status) {
-                        // console.log(data, status);
-                        //    alert(data.message)
-                        if (data.status == "ok") {
-                            let alert = new swal("Good Job", data.message, "success");
-                            window.location.href = "/my-contribution";
-                        } else {
-                            $('.approveButton').prop('disabled', false).text('Start');
-                            new swal("Opss", data.message, "error");
-                        }
-
-                    }
-                );
-            } catch (e) {
-                $('.approveButton').prop('disabled', false).text('Start');
-                // alert("here")
-                let alert = new swal("Opss", e.message, "error");
-            }
-        }
-
-
-        /* When click delete button */
-        $('body').on('click', '#deleteRecord', function() {
-            var user_id = $(this).data('id');
-            // alert(user_id)
-            var token = $("meta[name='csrf-token']").attr("content");
-            var el = this;
-            // alert(user_id);
-            resetAccount(el, user_id);
-        });
-
-        async function resetAccount(el, user_id) {
-            const willUpdate = await new swal({
-                title: "Confirm Delete",
-                text: `Are you sure you want to delete this record?`,
-                icon: "warning",
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes!",
-                showCancelButton: true,
-                buttons: ["Cancel", "Yes, Delete"]
-            });
-            // console.log(willUpdate);
-            if (willUpdate) {
-                //performReset()
-                performDelete(el, user_id);
+        }).on('keyup', function() {
+            let value = $(this).val().replace(/\D/g, '');
+            let n = parseInt(value, 10);
+            if (isNaN(n)) {
+                $(this).val('');
             } else {
-                new swal("User record will not be deleted  :)");
+                $(this).val(n.toLocaleString());
             }
-        }
-
-        function performDelete(el, user_id) {
-            //alert(user_id);
-            try {
-                $.get("{{ route('delete_users') }}?id=" + user_id,
-                    function(data, status) {
-                        if (data.status === "error") {
-                            new swal("Opss", data.message, "error");
-                        } else {
-                            if (status === "success") {
-                                let alert = new swal(" record successfully deleted!.");
-                                $(el).closest("tr").remove();
-                                window.location.reload();
-                                // alert.then(() => {
-                                // });
-                            }
-                        }
-
-                    }
-                );
-            } catch (e) {
-                let alert = new swal(e.message);
-            }
-        }
-
-    })
+        });
+    });
 </script>
 @endsection
