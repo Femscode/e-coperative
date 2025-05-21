@@ -426,46 +426,46 @@ class MemberController extends Controller
                     }
 
                     // Handle loan repayments
-                    $ongoingLoan = MemberLoan::where([
-                        ['user_id', $user->id],
-                        ['status', 'Ongoing']
-                    ])->first();
+                    // $ongoingLoan = MemberLoan::where([
+                    //     ['user_id', $user->id],
+                    //     ['status', 'Ongoing']
+                    // ])->first();
 
-                    if ($ongoingLoan) {
+                    // if ($ongoingLoan) {
                         
 
 
-                            $loanPayments = Transaction::where('user_id', $user->uuid)
-                            ->where('status', 'Success')
-                            ->where('payment_type', 'Repayment')
-                            ->where('uuid', $ongoingLoan->uuid)
-                            ->whereNotNull('month')  // Add this line to filter out null values
-                            ->pluck('month')
-                            ->filter()  // Add this to remove any remaining null values
-                            ->flip()
-                            ->toArray();
+                    //         $loanPayments = Transaction::where('user_id', $user->uuid)
+                    //         ->where('status', 'Success')
+                    //         ->where('payment_type', 'Repayment')
+                    //         ->where('uuid', $ongoingLoan->uuid)
+                    //         ->whereNotNull('month')  // Add this line to filter out null values
+                    //         ->pluck('month')
+                    //         ->filter()  // Add this to remove any remaining null values
+                    //         ->flip()
+                    //         ->toArray();
 
-                        $loanDate = Carbon::parse($ongoingLoan->disbursed_date);
-                        $payback = $user->plan()->loan_month_repayment - 1;
-                        $endMonth = Carbon::parse($ongoingLoan->disbursed_date)->addMonths($payback);
+                    //     $loanDate = Carbon::parse($ongoingLoan->disbursed_date);
+                    //     $payback = $user->plan()->loan_month_repayment - 1;
+                    //     $endMonth = Carbon::parse($ongoingLoan->disbursed_date)->addMonths($payback);
 
-                        while ($loanDate->lte($endMonth)) {
-                            $monthFormat = $loanDate->format('F Y');
+                    //     while ($loanDate->lte($endMonth)) {
+                    //         $monthFormat = $loanDate->format('F Y');
 
-                            if ($loanDate->lte(now())) {
-                                $monthsToView[] = [
-                                    'source' => '2',
-                                    'month' => $monthFormat,
-                                    'amount' => $ongoingLoan->monthly_return,
-                                    'uuid' => $ongoingLoan->uuid,
-                                    'paid' => isset($loanPayments[$monthFormat]),
-                                    'period' => $monthFormat,
-                                    'payment_type' => 'Repayment'
-                                ];
-                            }
-                            $loanDate->addMonth();
-                        }
-                    }
+                    //         if ($loanDate->lte(now())) {
+                    //             $monthsToView[] = [
+                    //                 'source' => '2',
+                    //                 'month' => $monthFormat,
+                    //                 'amount' => $ongoingLoan->monthly_return,
+                    //                 'uuid' => $ongoingLoan->uuid,
+                    //                 'paid' => isset($loanPayments[$monthFormat]),
+                    //                 'period' => $monthFormat,
+                    //                 'payment_type' => 'Repayment'
+                    //             ];
+                    //         }
+                    //         $loanDate->addMonth();
+                    //     }
+                    // }
 
                     $data['months'] = $monthsToView;
                     return view('cooperative.member.payment.monthly', $data);
@@ -494,44 +494,44 @@ class MemberController extends Controller
                     }
 
                     // Handle loan repayments
-                    $ongoingLoan = MemberLoan::where([
-                        ['user_id', $user->id],
-                        ['status', 'Ongoing']
-                    ])->first();
+                    // $ongoingLoan = MemberLoan::where([
+                    //     ['user_id', $user->id],
+                    //     ['status', 'Ongoing']
+                    // ])->first();
 
-                    if ($ongoingLoan) {
-                        $loanPayments = Transaction::where('user_id', $user->uuid)
-                            ->where('status', 'Success')
-                            ->where('payment_type', 'Repayment')
-                            ->where('uuid', $ongoingLoan->uuid)
-                            ->whereNotNull('week')  // Add this line to filter out null values
-                            ->pluck('week')
-                            ->filter()  // Add this to remove any remaining null values
-                            ->flip()
-                            ->toArray();
+                    // if ($ongoingLoan) {
+                    //     $loanPayments = Transaction::where('user_id', $user->uuid)
+                    //         ->where('status', 'Success')
+                    //         ->where('payment_type', 'Repayment')
+                    //         ->where('uuid', $ongoingLoan->uuid)
+                    //         ->whereNotNull('week')  // Add this line to filter out null values
+                    //         ->pluck('week')
+                    //         ->filter()  // Add this to remove any remaining null values
+                    //         ->flip()
+                    //         ->toArray();
 
-                        $loanDate = Carbon::parse($ongoingLoan->disbursed_date);
-                        $payback = $user->plan()->loan_month_repayment - 1;
-                        $endMonth = Carbon::parse($ongoingLoan->disbursed_date)->addMonths($payback);
+                    //     $loanDate = Carbon::parse($ongoingLoan->disbursed_date);
+                    //     $payback = $user->plan()->loan_month_repayment - 1;
+                    //     $endMonth = Carbon::parse($ongoingLoan->disbursed_date)->addMonths($payback);
 
-                        while ($loanDate->lte($endMonth)) {
-                            $weekFormat = $loanDate->format('M d') . ' - ' .
-                                $loanDate->copy()->endOfWeek()->format('M d, Y');
+                    //     while ($loanDate->lte($endMonth)) {
+                    //         $weekFormat = $loanDate->format('M d') . ' - ' .
+                    //             $loanDate->copy()->endOfWeek()->format('M d, Y');
 
-                            if ($loanDate->lte(now())) {
-                                $weeksToView[] = [
-                                    'source' => '2',
-                                    'week' => $weekFormat,
-                                    'amount' => $ongoingLoan->monthly_return,
-                                    'uuid' => $ongoingLoan->uuid,
-                                    'paid' => isset($loanPayments[$weekFormat]),
-                                    'period' => $weekFormat,
-                                    'payment_type' => 'Repayment'
-                                ];
-                            }
-                            $loanDate->addWeek();
-                        }
-                    }
+                    //         if ($loanDate->lte(now())) {
+                    //             $weeksToView[] = [
+                    //                 'source' => '2',
+                    //                 'week' => $weekFormat,
+                    //                 'amount' => $ongoingLoan->monthly_return,
+                    //                 'uuid' => $ongoingLoan->uuid,
+                    //                 'paid' => isset($loanPayments[$weekFormat]),
+                    //                 'period' => $weekFormat,
+                    //                 'payment_type' => 'Repayment'
+                    //             ];
+                    //         }
+                    //         $loanDate->addWeek();
+                    //     }
+                    // }
 
                     $data['months'] = $weeksToView;
                     return view('cooperative.member.payment.weekly', $data);
