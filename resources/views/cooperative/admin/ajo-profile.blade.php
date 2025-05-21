@@ -111,10 +111,10 @@
                             <div class="profile-header text-center">
                                 <div class="profile-image-wrapper position-relative d-inline-block mb-4">
                                     <div class="profile-image">
-                                        <img 
-                                        @if($user->photo)
+                                        <img
+                                            @if($user->photo)
                                         src="https://syncosave.com/public/{{ $user->photo }}"
-                                       
+
                                         @else
                                         src="{{ asset('/admindashboard/images/avatar.png') }}"
                                         @endif
@@ -274,77 +274,77 @@
                                         <label for="bankCodeInput" class="form-label">Select Bank</label>
 
                                         <select class="form-control" id="bankCodeInput" name="bank_code">
-                                           
-                                                <option value="{{ $user->bank_code ?? '' }}" data-name="">{{ $user->bank_name ?? '--Select a Bank--' }}</option>
-                                                <option value="090134" data-name="Accion Microfinance Bank">Accion Microfinance Bank</option>
-                                                <option value="044" data-name="Access Bank">Access Bank</option>
-                                                <option value="014" data-name="Afribank">Afribank</option>
-                                                <option value="090133" data-name="AL-Barakah Microfinance Bank">AL-Barakah Microfinance Bank</option>
-                                                <option value="090136" data-name="Baobab Microfinance Bank">Baobab Microfinance Bank</option>
-                                                <option value="090127" data-name="BC Kash Microfinance Bank">BC Kash Microfinance Bank</option>
-                                                <option value="090117" data-name="Boctrust Microfinance Bank">Boctrust Microfinance Bank</option>
-                                                <option value="023" data-name="Citibank">Citibank</option>
-                                                <option value="090130" data-name="Consumer Microfinance Bank">Consumer Microfinance Bank</option>
-                                                <option value="063" data-name="Diamond Bank">Diamond Bank</option>
-                                                <option value="090608" data-name="Dot Microfinance Bank">Dot Microfinance Bank</option>
-                                                <option value="050" data-name="Ecobank">Ecobank</option>
-                                                <option value="040" data-name="Equitorial Trust Bank">Equitorial Trust Bank</option>
-                                                <option value="070" data-name="Fidelity Bank">Fidelity Bank</option>
-                                                <option value="090126" data-name="Fidfund Microfinance Bank">Fidfund Microfinance Bank</option>
-                                                <option value="085" data-name="Finbank">Finbank</option>
-                                                <option value="011" data-name="First Bank">First Bank</option>
-                                                <option value="214" data-name="First City Monument Bank (FCMB)">First City Monument Bank (FCMB)</option>
-                                                <option value="090122" data-name="Gowans Microfinance Bank">Gowans Microfinance Bank</option>
-                                                <option value="058" data-name="Guaranty Trust Bank (GTBank)">Guaranty Trust Bank (GTBank)</option>
-                                                <option value="090121" data-name="Hasal Microfinance Bank">Hasal Microfinance Bank</option>
-                                                <option value="090118" data-name="IBILE Microfinance Bank">IBILE Microfinance Bank</option>
-                                                <option value="069" data-name="Intercontinental Bank">Intercontinental Bank</option>
-                                                <option value="323" data-name="Jaiz Bank">Jaiz Bank</option>
-                                                <option value="50968" data-name="Kuda Bank">Kuda Bank</option>
-                                                <option value="51322" data-name="Mkobo Microfinance Bank">Mkobo Microfinance Bank</option>
-                                                <option value="51318" data-name="Mint Finex Microfinance Bank">Mint Finex Microfinance Bank</option>
-                                                <option value="50515" data-name="Moniepoint Microfinance Bank">Moniepoint Microfinance Bank</option>
-                                                <option value="090128" data-name="Ndiorah Microfinance Bank">Ndiorah Microfinance Bank</option>
-                                                <option value="056" data-name="Oceanic Bank">Oceanic Bank</option>
-                                                <option value="090119" data-name="Ohafia Microfinance Bank">Ohafia Microfinance Bank</option>
-                                                <option value="999992" data-name="OPay Digital Services Limited (OPay)">OPay Digital Services Limited (OPay)</option>
-                                                <option value="100033" data-name="PalmPay Limited">PalmPay Limited</option>
-                                                <option value="090135" data-name="Personal Trust Microfinance Bank">Personal Trust Microfinance Bank</option>
-                                                <option value="317" data-name="Providus Bank">Providus Bank</option>
-                                                <option value="51297" data-name="Raven Microfinance Bank">Raven Microfinance Bank</option>
-                                                <option value="090125" data-name="Regent Microfinance Bank">Regent Microfinance Bank</option>
-                                                <option value="090132" data-name="Richway Microfinance Bank">Richway Microfinance Bank</option>
-                                                <option value="090138" data-name="Royal Exchange Microfinance Bank">Royal Exchange Microfinance Bank</option>
-                                                <option value="50870" data-name="Rubies Microfinance Bank">Rubies Microfinance Bank</option>
-                                                <option value="090140" data-name="Sagamu Microfinance Bank">Sagamu Microfinance Bank</option>
-                                                <option value="076" data-name="Skye Bank">Skye Bank</option>
-                                                <option value="221" data-name="Stanbic IBTC">Stanbic IBTC</option>
-                                                <option value="068" data-name="Standard Chartered Bank">Standard Chartered Bank</option>
-                                                <option value="232" data-name="Sterling Bank">Sterling Bank</option>
-                                                <option value="084" data-name="SpringBank">SpringBank</option>
-                                                <option value="304" data-name="Suntrust Bank">Suntrust Bank</option>
-                                                <option value="033" data-name="United Bank for Africa (UBA)">United Bank for Africa (UBA)</option>
-                                                <option value="032" data-name="Union Bank">Union Bank</option>
-                                                <option value="215" data-name="Unity Bank">Unity Bank</option>
-                                                <option value="090123" data-name="Verite Microfinance Bank">Verite Microfinance Bank</option>
-                                                <option value="50754" data-name="VFD Microfinance Bank">VFD Microfinance Bank</option>
-                                                <option value="090139" data-name="Visa Microfinance Bank">Visa Microfinance Bank</option>
-                                                <option value="035" data-name="Wema Bank">Wema Bank</option>
-                                                <option value="090120" data-name="Wetland Microfinance Bank">Wetland Microfinance Bank</option>
-                                                <option value="090124" data-name="Xslnce Microfinance Bank">Xslnce Microfinance Bank</option>
-                                                <option value="057" data-name="Zenith Bank">Zenith Bank</option>
-                                            </select>
 
-                                            <script>
-                                                document.getElementById('bank').addEventListener('change', function() {
-                                                    const bankCode = this.value;
-                                                    const bankName = this.options[this.selectedIndex].dataset.name;
-                                                    if (bankCode && bankName) {
-                                                        console.log('Bank Code:', bankCode, 'Bank Name:', bankName);
-                                                    }
-                                                });
-                                            </script>
-                                            <!-- <input type="text" class="form-control" id="bankCodeInput" name="bank_code"
+                                            <option value="{{ $user->bank_code ?? '' }}" data-name="">{{ $user->bank_name ?? '--Select a Bank--' }}</option>
+                                            <option value="090134" data-name="Accion Microfinance Bank">Accion Microfinance Bank</option>
+                                            <option value="044" data-name="Access Bank">Access Bank</option>
+                                            <option value="014" data-name="Afribank">Afribank</option>
+                                            <option value="090133" data-name="AL-Barakah Microfinance Bank">AL-Barakah Microfinance Bank</option>
+                                            <option value="090136" data-name="Baobab Microfinance Bank">Baobab Microfinance Bank</option>
+                                            <option value="090127" data-name="BC Kash Microfinance Bank">BC Kash Microfinance Bank</option>
+                                            <option value="090117" data-name="Boctrust Microfinance Bank">Boctrust Microfinance Bank</option>
+                                            <option value="023" data-name="Citibank">Citibank</option>
+                                            <option value="090130" data-name="Consumer Microfinance Bank">Consumer Microfinance Bank</option>
+                                            <option value="063" data-name="Diamond Bank">Diamond Bank</option>
+                                            <option value="090608" data-name="Dot Microfinance Bank">Dot Microfinance Bank</option>
+                                            <option value="050" data-name="Ecobank">Ecobank</option>
+                                            <option value="040" data-name="Equitorial Trust Bank">Equitorial Trust Bank</option>
+                                            <option value="070" data-name="Fidelity Bank">Fidelity Bank</option>
+                                            <option value="090126" data-name="Fidfund Microfinance Bank">Fidfund Microfinance Bank</option>
+                                            <option value="085" data-name="Finbank">Finbank</option>
+                                            <option value="011" data-name="First Bank">First Bank</option>
+                                            <option value="214" data-name="First City Monument Bank (FCMB)">First City Monument Bank (FCMB)</option>
+                                            <option value="090122" data-name="Gowans Microfinance Bank">Gowans Microfinance Bank</option>
+                                            <option value="058" data-name="Guaranty Trust Bank (GTBank)">Guaranty Trust Bank (GTBank)</option>
+                                            <option value="090121" data-name="Hasal Microfinance Bank">Hasal Microfinance Bank</option>
+                                            <option value="090118" data-name="IBILE Microfinance Bank">IBILE Microfinance Bank</option>
+                                            <option value="069" data-name="Intercontinental Bank">Intercontinental Bank</option>
+                                            <option value="323" data-name="Jaiz Bank">Jaiz Bank</option>
+                                            <option value="50968" data-name="Kuda Bank">Kuda Bank</option>
+                                            <option value="51322" data-name="Mkobo Microfinance Bank">Mkobo Microfinance Bank</option>
+                                            <option value="51318" data-name="Mint Finex Microfinance Bank">Mint Finex Microfinance Bank</option>
+                                            <option value="50515" data-name="Moniepoint Microfinance Bank">Moniepoint Microfinance Bank</option>
+                                            <option value="090128" data-name="Ndiorah Microfinance Bank">Ndiorah Microfinance Bank</option>
+                                            <option value="056" data-name="Oceanic Bank">Oceanic Bank</option>
+                                            <option value="090119" data-name="Ohafia Microfinance Bank">Ohafia Microfinance Bank</option>
+                                            <option value="999992" data-name="OPay Digital Services Limited (OPay)">OPay Digital Services Limited (OPay)</option>
+                                            <option value="100033" data-name="PalmPay Limited">PalmPay Limited</option>
+                                            <option value="090135" data-name="Personal Trust Microfinance Bank">Personal Trust Microfinance Bank</option>
+                                            <option value="317" data-name="Providus Bank">Providus Bank</option>
+                                            <option value="51297" data-name="Raven Microfinance Bank">Raven Microfinance Bank</option>
+                                            <option value="090125" data-name="Regent Microfinance Bank">Regent Microfinance Bank</option>
+                                            <option value="090132" data-name="Richway Microfinance Bank">Richway Microfinance Bank</option>
+                                            <option value="090138" data-name="Royal Exchange Microfinance Bank">Royal Exchange Microfinance Bank</option>
+                                            <option value="50870" data-name="Rubies Microfinance Bank">Rubies Microfinance Bank</option>
+                                            <option value="090140" data-name="Sagamu Microfinance Bank">Sagamu Microfinance Bank</option>
+                                            <option value="076" data-name="Skye Bank">Skye Bank</option>
+                                            <option value="221" data-name="Stanbic IBTC">Stanbic IBTC</option>
+                                            <option value="068" data-name="Standard Chartered Bank">Standard Chartered Bank</option>
+                                            <option value="232" data-name="Sterling Bank">Sterling Bank</option>
+                                            <option value="084" data-name="SpringBank">SpringBank</option>
+                                            <option value="304" data-name="Suntrust Bank">Suntrust Bank</option>
+                                            <option value="033" data-name="United Bank for Africa (UBA)">United Bank for Africa (UBA)</option>
+                                            <option value="032" data-name="Union Bank">Union Bank</option>
+                                            <option value="215" data-name="Unity Bank">Unity Bank</option>
+                                            <option value="090123" data-name="Verite Microfinance Bank">Verite Microfinance Bank</option>
+                                            <option value="50754" data-name="VFD Microfinance Bank">VFD Microfinance Bank</option>
+                                            <option value="090139" data-name="Visa Microfinance Bank">Visa Microfinance Bank</option>
+                                            <option value="035" data-name="Wema Bank">Wema Bank</option>
+                                            <option value="090120" data-name="Wetland Microfinance Bank">Wetland Microfinance Bank</option>
+                                            <option value="090124" data-name="Xslnce Microfinance Bank">Xslnce Microfinance Bank</option>
+                                            <option value="057" data-name="Zenith Bank">Zenith Bank</option>
+                                        </select>
+
+                                        <script>
+                                            document.getElementById('bank').addEventListener('change', function() {
+                                                const bankCode = this.value;
+                                                const bankName = this.options[this.selectedIndex].dataset.name;
+                                                if (bankCode && bankName) {
+                                                    console.log('Bank Code:', bankCode, 'Bank Name:', bankName);
+                                                }
+                                            });
+                                        </script>
+                                        <!-- <input type="text" class="form-control" id="bankCodeInput" name="bank_code"
                                             value="{{ $user->bank_code ?? '' }}" placeholder="Enter bank code"> -->
                                     </div>
                                 </div>
@@ -357,6 +357,79 @@
                         </form>
                     </div>
                     <div class="tab-pane" id="security" role="tabpanel">
+                        <div class="row">
+                            <!-- Password Update Form -->
+                            <div class="col-lg-12 mb-4">
+                                <h5 class="mb-3">Update Password</h5>
+                                <form method="post" id="passwordChange">
+                                    @csrf
+                                    <div class="row g-2">
+                                        <div class="col-lg-4">
+                                            <div>
+                                                <label for="oldpasswordInput" class="form-label">Old Password*</label>
+                                                <input type="password" class="form-control" required name="password" id="password-fielda" placeholder="Enter current password">
+                                                <span toggle="#password-fielda" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div>
+                                                <label for="newpasswordInput" class="form-label">New Password*</label>
+                                                <input type="password" class="form-control" required name="new_password" id="password-fieldb" placeholder="Enter new password">
+                                                <span toggle="#password-fieldb" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div>
+                                                <label for="confirmpasswordInput" class="form-label">Confirm Password*</label>
+                                                <input type="password" class="form-control" required name="confirm_password" id="password-fieldz" placeholder="Confirm password">
+                                                <span toggle="#password-fieldz" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="text-end">
+                                                <button type="submit" class="btn btn-primary">Update Password</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- PIN Update Form -->
+                            <div class="col-lg-12">
+                                <h5 class="mb-3">Update PIN</h5>
+                                <form method="post" id="pinChange">
+                                    @csrf
+                                    <div class="row g-2">
+                                        <div class="col-lg-4">
+                                            <div>
+                                                <label for="currentPinInput" class="form-label">Current PIN*</label>
+                                                <input type="password" class="form-control" required name="current_pin" id="pin-fielda" maxlength="4" placeholder="Enter current PIN">
+                                                <span toggle="#pin-fielda" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div>
+                                                <label for="newPinInput" class="form-label">New PIN*</label>
+                                                <input type="password" class="form-control" required name="new_pin" id="pin-fieldb" maxlength="4" placeholder="Enter new PIN">
+                                                <span toggle="#pin-fieldb" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div>
+                                                <label for="confirmPinInput" class="form-label">Confirm PIN*</label>
+                                                <input type="password" class="form-control" required name="confirm_pin" id="pin-fieldz" maxlength="4" placeholder="Confirm new PIN">
+                                                <span toggle="#pin-fieldz" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="text-end">
+                                                <button type="submit" class="btn btn-primary">Update PIN</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         <div class="mb-4 pb-2">
                             <h5 class="card-title text-decoration-underline mb-3">Security:</h5>
                             <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0">
@@ -568,6 +641,46 @@
                 $('.preloader').hide();
             }
         });
+
+        $("#passwordChange").on('submit', async function(e) {
+            e.preventDefault();
+            $('.preloader').show();
+            const serializedData = $("#passwordChange").serializeArray();
+            try {
+                const postRequest = await request("/change-password",
+                    processFormInputs(
+                        serializedData), 'post');
+                new showCustomAlert("Good Job", postRequest.message, "success");
+                $('#passwordChange').trigger("reset");
+                $('.preloader').hide();
+            } catch (e) {
+                $('.preloader').hide();
+                if ('message' in e) {
+                    new showCustomAlert("Opss", e.message, "error");
+
+                }
+            }
+        })
+        $("#pinChange").on('submit', async function(e) {
+            e.preventDefault();
+            $('.preloader').show();
+            const serializedData = $("#pinChange").serializeArray();
+            try {
+                const postRequest = await request("/change-pin",
+                    processFormInputs(
+                        serializedData), 'post');
+                new showCustomAlert("Good Job", postRequest.message, "success");
+                $('#pinChange').trigger("reset");
+                $('.preloader').hide();
+            } catch (e) {
+                $('.preloader').hide();
+                if ('message' in e) {
+                    new showCustomAlert("Opss", e.message, "error");
+
+                }
+            }
+        })
+
     });
 </script>
 

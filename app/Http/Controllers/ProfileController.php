@@ -48,6 +48,7 @@ class ProfileController extends Controller
             if ($user->company->type == 2) {
                 return view('ajo.member.profile', $data);
             }
+
             return view('cooperative.member.profile', $data);
         }
     }
@@ -195,6 +196,77 @@ class ProfileController extends Controller
         );
     }
 
+    public function changePin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'current_pin' => ['required', 'digits:4'],
+            'new_pin' => ['required', 'digits:4'],
+            'confirm_pin' => ['required', 'digits:4'],
+        ]);
+
+        $validator->setAttributeNames([
+            'current_pin' => 'Current PIN',
+            'new_pin' => 'New PIN',
+            'confirm_pin' => 'Confirm PIN'
+        ]);
+
+        $validator->setCustomMessages([
+            'current_pin.required' => 'The :attribute field is required.',
+            'current_pin.digits' => 'The :attribute must be exactly 4 digits.',
+            'new_pin.required' => 'The :attribute field is required.',
+            'new_pin.digits' => 'The :attribute must be exactly 4 digits.',
+            'confirm_pin.required' => 'The :attribute field is required.',
+            'confirm_pin.digits' => 'The :attribute must be exactly 4 digits.',
+        ]);
+
+        if ($validator->fails()) {
+            return api_request_response(
+                'error',
+                $validator->errors()->first(),
+                bad_response_status_code()
+            );
+        }
+
+        $user = Auth::user();
+        $currentPin = $request->current_pin;
+        $newPin = $request->new_pin;
+        $confirmPin = $request->confirm_pin;
+
+        if (!Hash::check($currentPin, $user->pin)) {
+            return api_request_response(
+                'error',
+                "Incorrect current PIN",
+                bad_response_status_code()
+            );
+        }
+
+        if ($newPin != $confirmPin) {
+            return api_request_response(
+                'error',
+                "Confirm PIN does not match new PIN",
+                bad_response_status_code()
+            );
+        }
+
+        if (Hash::check($newPin, $user->pin)) {
+            return api_request_response(
+                'error',
+                "You can't change to current PIN",
+                bad_response_status_code()
+            );
+        }
+
+        $user->pin = Hash::make($newPin);
+        $user->save();
+
+        return api_request_response(
+            'ok',
+            'PIN changed successfully!',
+            success_status_code()
+        );
+    }
+
+
     public function saveFile(Request $request)
     {
         $user = Auth::user();
@@ -241,7 +313,7 @@ class ProfileController extends Controller
     }
     public function oldverifyAccount(Request $request)
     {
-        
+
         $account_number = $request->account_number;
         $code = $request->bank_code;
         $key = env("PAYSTACK_SECRET_KEY");
@@ -282,13 +354,13 @@ class ProfileController extends Controller
 
     public function verifyAccount(Request $request)
     {
-     
+
         try {
             $account_number = $request->account_number;
             $code = $request->bank_code;
             $bank_name = $request->bank_name;
-           
-            
+
+
             if (empty($code) || empty($account_number)) {
                 return api_request_response(
                     'error',
@@ -299,7 +371,7 @@ class ProfileController extends Controller
 
             $key = env("PAYSTACK_SECRET_KEY");
             $url = "https://api.paystack.co/bank/resolve?account_number=$account_number&bank_code=$code";
-            
+
             $response = Http::withHeaders([
                 'Authorization' => "Bearer $key",
             ])->get($url);
@@ -307,7 +379,7 @@ class ProfileController extends Controller
             if ($response->successful()) {
                 $data = $response->json();
                 $user = Auth::user();
-                
+
                 $user->update([
                     'bank_code' => $code,
                     'bank_name' => $bank_name,
@@ -329,7 +401,6 @@ class ProfileController extends Controller
                 $errorData['message'] ?? 'Unable to verify account',
                 bad_response_status_code()
             );
-
         } catch (\Exception $e) {
             return api_request_response(
                 'error',
@@ -342,11 +413,9 @@ class ProfileController extends Controller
     public function show()
     {
         $data['user'] = $user = Auth::user();
-       
-        if($user->plan()->type == 2 || $user->user_type == 'Admin') {
 
+        if ($user->plan()->type == 2 || $user->user_type == 'Admin') {
             return view('cooperative.admin.ajo-profile', $data);
-
         }
 
         return view('profile.show', compact('user'));
@@ -377,7 +446,7 @@ class ProfileController extends Controller
             }
 
             // Handle cover image upload
-           
+
 
             // Update the user
             $user->update($validated);
@@ -386,7 +455,6 @@ class ProfileController extends Controller
                 'success' => true,
                 'message' => 'Profile updated successfully'
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

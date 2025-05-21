@@ -171,6 +171,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         });
         Route::post('/change-password', [App\Http\Controllers\ProfileController::class, 'changePassword'])->name('user-change-password');
+        Route::post('/change-pin', [App\Http\Controllers\ProfileController::class, 'changePin'])->name('user-change-pin');
     });
     Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 });
