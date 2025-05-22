@@ -363,158 +363,160 @@
                                 <form method="post" id="passwordChange">
                                     @csrf
                                     <div class="row g-2">
-                                    <div class="col-lg-12">
-                                    <h5 class="mb-3">Update Password</h5>
-                                        <div class="col-lg-4">
-                                            <div>
-                                                <label for="oldpasswordInput" class="form-label">Old Password*</label>
-                                                <input type="password" class="form-control" required name="password" id="password-fielda" placeholder="Enter current password">
-                                                <span toggle="#password-fielda" class="fas toggle-password field-icon fa-eye-slash"></span>
-                                            </div>
-                                        </div><!--end col-->
-                                        <div class="col-lg-4">
-                                            <div>
-                                                <label for="newpasswordInput" class="form-label">New Password*</label>
-                                                <input type="password" class="form-control" required name="new_password" id="password-fieldb" placeholder="Enter new password">
-                                                <span toggle="#password-fieldb" class="fas toggle-password field-icon fa-eye-slash"></span>
-                                            </div>
-                                        </div><!--end col-->
-                                        <div class="col-lg-4">
-                                            <div>
-                                                <label for="confirmpasswordInput" class="form-label">Confirm Password*</label>
-                                                <input type="password" class="form-control" required name="confirm_password" id="password-fieldz" placeholder="Confirm password">
-                                                <span toggle="#password-fieldz" class="fas toggle-password field-icon fa-eye-slash"></span>
-                                            </div>
-                                        </div><!--end col-->
-                                        
                                         <div class="col-lg-12">
-                                            <div class="text-end">
-                                                <button type="submit" class="btn btn-success">Change Password</button>
-                                            </div>
-                                        </div><!--end col-->
-                                        </div>
+                                            <h5 class="mb-3">Update Password</h5>
+                                            <div class="col-lg-4">
+                                                <div>
+                                                    <label for="oldpasswordInput" class="form-label">Old Password*</label>
+                                                    <input type="password" class="form-control" required name="password" id="password-fielda" placeholder="Enter current password">
+                                                    <span toggle="#password-fielda" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-lg-4">
+                                                <div>
+                                                    <label for="newpasswordInput" class="form-label">New Password*</label>
+                                                    <input type="password" class="form-control" required name="new_password" id="password-fieldb" placeholder="Enter new password">
+                                                    <span toggle="#password-fieldb" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-lg-4">
+                                                <div>
+                                                    <label for="confirmpasswordInput" class="form-label">Confirm Password*</label>
+                                                    <input type="password" class="form-control" required name="confirm_password" id="password-fieldz" placeholder="Confirm password">
+                                                    <span toggle="#password-fieldz" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                                </div>
+                                            </div><!--end col-->
 
-                                        <div class="col-lg-12">
-                                <h5 class="mb-3">Update PIN</h5>
-                                <form method="post" id="pinChange">
-                                    @csrf
-                                    <div class="row g-2">
-                                        <div class="col-lg-4">
-                                            <div>
-                                                <label for="currentPinInput" class="form-label">Current PIN*</label>
-                                                <input type="password" class="form-control" required name="current_pin" id="pin-fielda" maxlength="4" placeholder="Enter current PIN">
-                                                <span toggle="#pin-fielda" class="fas toggle-password field-icon fa-eye-slash"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div>
-                                                <label for="newPinInput" class="form-label">New PIN*</label>
-                                                <input type="password" class="form-control" required name="new_pin" id="pin-fieldb" maxlength="4" placeholder="Enter new PIN">
-                                                <span toggle="#pin-fieldb" class="fas toggle-password field-icon fa-eye-slash"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div>
-                                                <label for="confirmPinInput" class="form-label">Confirm PIN*</label>
-                                                <input type="password" class="form-control" required name="confirm_pin" id="pin-fieldz" maxlength="4" placeholder="Confirm new PIN">
-                                                <span toggle="#pin-fieldz" class="fas toggle-password field-icon fa-eye-slash"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="text-end">
-                                                <button type="submit" class="btn btn-primary">Update PIN</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                                    </div><!--end row-->
-                                </form>
-                            </div><!--end tab-pane-->
-                            @if($user->user_type == "Member")
-                            <div class="tab-pane" id="experience" role="tabpanel">
-                                <div id="newlink">
-                                    <div id="1">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="" class="form-label">Plan Name</label>
-                                                    <input type="text" name="name" class="form-control" value="{{ $plan->name }}" placeholder="Enter plan ame">
-                                                </div>
-                                            </div><!--end col-->
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="lastnameInput" class="form-label">Plan registration Fee</label>
-                                                    <input type="number" name="reg_fee" class="form-control" value="{{ $plan->reg_fee }}" placeholder="Enter plan registration fee">
-                                                </div>
-                                            </div><!--end col-->
-                                            <div class="col-lg-4">
-                                                <div class="mb-3">
-                                                    <label for="contactnumberInput" class="form-label">Plan Weekly Dues</label>
-                                                    <input type="number" class="form-control" name="monthly_dues" value="{{ $plan->monthly_dues }}" placeholder="Enter plan weekly dues">
-                                                </div>
-                                            </div><!--end col-->
-                                            <div class="col-lg-4">
-                                                <div class="mb-3">
-                                                    <label for="phonenumberInput" class="form-label">Plan Monthly Charge</label>
-                                                    <input type="number" class="form-control" value="{{ $plan->monthly_charge }}" name="monthly_charge" placeholder="Enter monthly charge">
-                                                </div>
-                                            </div><!--end col-->
-                                            <div class="col-lg-4">
-                                                <div class="mb-3">
-                                                    <label for="emailidInput" class="form-label">Plan Loan Application Referrer</label>
-                                                    <input type="number" class="form-control" name="referrer_no" value="{{ $plan->referrer_no }}" placeholder="Enter number of referrer for loan application eligibility">
-                                                </div>
-                                            </div><!--end col-->
-                                            <div class="col-lg-4">
-                                                <div class="mb-3">
-                                                    <label for="contactnumberInput" class="form-label">Min Loan Application</label>
-                                                    <input type="number" class="form-control" name="min_loan_range" value="{{ $plan->min_loan_range }}" placeholder="Enter plan minimum loan application">
-                                                </div>
-                                            </div><!--end col-->
-                                            <div class="col-lg-4">
-                                                <div class="mb-3">
-                                                    <label for="phonenumberInput" class="form-label">Max Loan Application</label>
-                                                    <input type="number" class="form-control" name="max_loan_range" value="{{ $plan->max_loan_range }}" placeholder="Enter plan maximum loan application">
-                                                </div>
-                                            </div><!--end col-->
-                                            <div class="col-lg-4">
-                                                <div class="mb-3">
-                                                    <label for="emailidInput" class="form-label">Defaulter Loan Charge</label>
-                                                    <input type="number" class="form-control" name="default_charge" value="{{ $plan->default_charge }}" placeholder="Enter amount for defaulters">
-                                                </div>
-                                            </div><!--end col-->
                                             <div class="col-lg-12">
-                                                <div class="mb-3">
-                                                    <label for="exampleFormControlTextarea1" class="form-label">Note</label>
-                                                    <textarea class="form-control" name="note" rows="3" placeholder="Enter plan description">{{ $plan->note }}</textarea>
+                                                <div class="text-end">
+                                                    <button type="submit" class="btn btn-success">Change Password</button>
                                                 </div>
                                             </div><!--end col-->
-                                        </div><!--end row-->
-                                        <!--end row-->
-                                    </div>
-                                </div>
-                                <div id="newForm" style="display: none;">
-
-                                </div>
-                            </div><!--end tab-pane-->
-                            @endif
-                            <div class="tab-pane" id="privacy" role="tabpanel">
-                                <div class="mb-4 pb-2">
-                                    <h5 class="card-title text-decoration-underline mb-3">Security:</h5>
-                                    <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0">
-                                        <div class="flex-grow-1">
-                                            <a href="javascript:void(0);" class="btn btn-sm btn-primary">Enable Two-facor Authentication</a>
-                                            <p class="text-muted">Two-factor authentication is an enhanced security measure. Once enabled, you will be required to enter a one-time password (OTP) sent to your email address whenever you want to access your account..</p>
                                         </div>
-                                        <div class="flex-shrink-0 ms-sm-3">
-                                            <div class="form-check form-switch">
-                                                <input class="form-check-input switchTwo" type="checkbox" role="switch" id="directMessage" {{ $user->tfa == "1" ? 'checked' : '' }} />
+                                    </div>
+                                </form>
+
+                                <div class="col-lg-12">
+                                    <h5 class="mb-3">Update PIN</h5>
+                                    <form method="post" id="pinChange">
+                                        @csrf
+                                        <div class="row g-2">
+                                            <div class="col-lg-4">
+                                                <div>
+                                                    <label for="currentPinInput" class="form-label">Current PIN*</label>
+                                                    <input type="password" class="form-control" required name="current_pin" id="pin-fielda" maxlength="4" placeholder="Enter current PIN">
+                                                    <span toggle="#pin-fielda" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div>
+                                                    <label for="newPinInput" class="form-label">New PIN*</label>
+                                                    <input type="password" class="form-control" required name="new_pin" id="pin-fieldb" maxlength="4" placeholder="Enter new PIN">
+                                                    <span toggle="#pin-fieldb" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div>
+                                                    <label for="confirmPinInput" class="form-label">Confirm PIN*</label>
+                                                    <input type="password" class="form-control" required name="confirm_pin" id="pin-fieldz" maxlength="4" placeholder="Confirm new PIN">
+                                                    <span toggle="#pin-fieldz" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="text-end">
+                                                    <button type="submit" class="btn btn-primary">Update PIN</button>
+                                                </div>
                                             </div>
                                         </div>
+                                    </form>
+                                </div>
+                            </div><!--end row-->
+                            </form>
+                        </div><!--end tab-pane-->
+                        @if($user->user_type == "Member")
+                        <div class="tab-pane" id="experience" role="tabpanel">
+                            <div id="newlink">
+                                <div id="1">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label for="" class="form-label">Plan Name</label>
+                                                <input type="text" name="name" class="form-control" value="{{ $plan->name }}" placeholder="Enter plan ame">
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label for="lastnameInput" class="form-label">Plan registration Fee</label>
+                                                <input type="number" name="reg_fee" class="form-control" value="{{ $plan->reg_fee }}" placeholder="Enter plan registration fee">
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label for="contactnumberInput" class="form-label">Plan Weekly Dues</label>
+                                                <input type="number" class="form-control" name="monthly_dues" value="{{ $plan->monthly_dues }}" placeholder="Enter plan weekly dues">
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label for="phonenumberInput" class="form-label">Plan Monthly Charge</label>
+                                                <input type="number" class="form-control" value="{{ $plan->monthly_charge }}" name="monthly_charge" placeholder="Enter monthly charge">
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label for="emailidInput" class="form-label">Plan Loan Application Referrer</label>
+                                                <input type="number" class="form-control" name="referrer_no" value="{{ $plan->referrer_no }}" placeholder="Enter number of referrer for loan application eligibility">
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label for="contactnumberInput" class="form-label">Min Loan Application</label>
+                                                <input type="number" class="form-control" name="min_loan_range" value="{{ $plan->min_loan_range }}" placeholder="Enter plan minimum loan application">
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label for="phonenumberInput" class="form-label">Max Loan Application</label>
+                                                <input type="number" class="form-control" name="max_loan_range" value="{{ $plan->max_loan_range }}" placeholder="Enter plan maximum loan application">
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label for="emailidInput" class="form-label">Defaulter Loan Charge</label>
+                                                <input type="number" class="form-control" name="default_charge" value="{{ $plan->default_charge }}" placeholder="Enter amount for defaulters">
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label for="exampleFormControlTextarea1" class="form-label">Note</label>
+                                                <textarea class="form-control" name="note" rows="3" placeholder="Enter plan description">{{ $plan->note }}</textarea>
+                                            </div>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                    <!--end row-->
+                                </div>
+                            </div>
+                            <div id="newForm" style="display: none;">
+
+                            </div>
+                        </div><!--end tab-pane-->
+                        @endif
+                        <div class="tab-pane" id="privacy" role="tabpanel">
+                            <div class="mb-4 pb-2">
+                                <h5 class="card-title text-decoration-underline mb-3">Security:</h5>
+                                <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0">
+                                    <div class="flex-grow-1">
+                                        <a href="javascript:void(0);" class="btn btn-sm btn-primary">Enable Two-facor Authentication</a>
+                                        <p class="text-muted">Two-factor authentication is an enhanced security measure. Once enabled, you will be required to enter a one-time password (OTP) sent to your email address whenever you want to access your account..</p>
+                                    </div>
+                                    <div class="flex-shrink-0 ms-sm-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input switchTwo" type="checkbox" role="switch" id="directMessage" {{ $user->tfa == "1" ? 'checked' : '' }} />
+                                        </div>
                                     </div>
                                 </div>
-                                {{-- <div>
+                            </div>
+                            {{-- <div>
                                 <h5 class="card-title text-decoration-underline mb-3">Delete This Account:</h5>
                                 <p class="text-muted">Go to the Data & Privacy section of your profile Account. Scroll to "Your data & privacy options." Delete your Profile Account. Follow the instructions to delete your account :</p>
                                 <div>
@@ -525,15 +527,15 @@
                                     <a href="javascript:void(0);" class="btn btn-light">Cancel</a>
                                 </div>
                             </div> --}}
-                            </div><!--end tab-pane-->
-                        </div>
+                        </div><!--end tab-pane-->
                     </div>
                 </div>
-            </div><!--end col-->
-        </div><!--end row-->
-        @if($user->user_type == "Member")
-        @livewire('referral', ['user' => $user])
-        @endif
+            </div>
+        </div><!--end col-->
+    </div><!--end row-->
+    @if($user->user_type == "Member")
+    @livewire('referral', ['user' => $user])
+    @endif
 
     </div>
 </main>
@@ -669,7 +671,7 @@
                 }
             }
         })
-       
+
         $("#pinChange").on('submit', async function(e) {
             e.preventDefault();
             $('.preloader').show();
