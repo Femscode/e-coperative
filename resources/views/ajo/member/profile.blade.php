@@ -170,7 +170,8 @@
                                     <i class="bi bi-shield-lock me-1"></i>Security
                                 </a>
                             </li>
-                            @if($user->user_type == "Member")
+                            <!-- @if($user->user_type == "Member") -->
+                            @if(1 == 0)
                             <li class="nav-item">
                                 <a class="nav-link" data-bs-toggle="tab" href="#experience">
                                     <i class="bi bi-star me-1"></i>My Plan
@@ -430,7 +431,7 @@
                                     </form>
                                 </div>
                             </div><!--end tab-pane-->
-                            @if($user->user_type == "Member")
+                            @if(1 == 0)
                             <div class="tab-pane" id="experience" role="tabpanel">
                                 <div id="newlink">
                                     <div id="1">
