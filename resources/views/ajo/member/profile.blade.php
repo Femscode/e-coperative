@@ -384,51 +384,51 @@
                                                 <span toggle="#password-fieldz" class="fas toggle-password field-icon fa-eye-slash"></span>
                                             </div>
                                         </div><!--end col-->
-                                        
+
                                         <div class="col-lg-12">
                                             <div class="text-end">
                                                 <button type="submit" class="btn btn-success">Change Password</button>
                                             </div>
                                         </div><!--end col-->
 
-                                        
+
                                     </div><!--end row-->
                                 </form>
 
                                 <div class="col-lg-12">
-                                <h5 class="mb-3">Update PIN</h5>
-                                <form method="post" id="pinChange">
-                                    @csrf
-                                    <div class="row g-2">
-                                        <div class="col-lg-4">
-                                            <div>
-                                                <label for="currentPinInput" class="form-label">Current PIN*</label>
-                                                <input type="password" class="form-control" required name="current_pin" id="pin-fielda" maxlength="4" placeholder="Enter current PIN">
-                                                <span toggle="#pin-fielda" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                    <h5 class="mb-3">Update PIN</h5>
+                                    <form method="post" id="pinChange">
+                                        @csrf
+                                        <div class="row g-2">
+                                            <div class="col-lg-4">
+                                                <div>
+                                                    <label for="currentPinInput" class="form-label">Current PIN*</label>
+                                                    <input type="password" class="form-control" required name="current_pin" id="pin-fielda" maxlength="4" placeholder="Enter current PIN">
+                                                    <span toggle="#pin-fielda" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div>
+                                                    <label for="newPinInput" class="form-label">New PIN*</label>
+                                                    <input type="password" class="form-control" required name="new_pin" id="pin-fieldb" maxlength="4" placeholder="Enter new PIN">
+                                                    <span toggle="#pin-fieldb" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div>
+                                                    <label for="confirmPinInput" class="form-label">Confirm PIN*</label>
+                                                    <input type="password" class="form-control" required name="confirm_pin" id="pin-fieldz" maxlength="4" placeholder="Confirm new PIN">
+                                                    <span toggle="#pin-fieldz" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="text-end">
+                                                    <button type="submit" class="btn btn-primary">Update PIN</button>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4">
-                                            <div>
-                                                <label for="newPinInput" class="form-label">New PIN*</label>
-                                                <input type="password" class="form-control" required name="new_pin" id="pin-fieldb" maxlength="4" placeholder="Enter new PIN">
-                                                <span toggle="#pin-fieldb" class="fas toggle-password field-icon fa-eye-slash"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div>
-                                                <label for="confirmPinInput" class="form-label">Confirm PIN*</label>
-                                                <input type="password" class="form-control" required name="confirm_pin" id="pin-fieldz" maxlength="4" placeholder="Confirm new PIN">
-                                                <span toggle="#pin-fieldz" class="fas toggle-password field-icon fa-eye-slash"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="text-end">
-                                                <button type="submit" class="btn btn-primary">Update PIN</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+                                    </form>
+                                </div>
                             </div><!--end tab-pane-->
                             @if($user->user_type == "Member")
                             <div class="tab-pane" id="experience" role="tabpanel">
@@ -547,148 +547,162 @@
 <script src="{{ asset('assets/js/pages/profile.init.js') }}"></script>
 <script>
     $(document).ready(function() {
+        // Set up CSRF token for all AJAX requests
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
+        // Request helper function
+        async function request(url, data, method = 'POST') {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: url,
+                    type: method,
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status === 'ok') {
+                            resolve(response);
+                        } else {
+                            reject(new Error(response.message));
+                        }
+                    },
+                    error: function(xhr) {
+                        reject(new Error(xhr.responseJSON?.message || 'An error occurred'));
+                    }
+                });
+            });
+        }
+
+        // Process form inputs
+        function processFormInputs(serializedData) {
+            const data = {};
+            serializedData.forEach(item => {
+                data[item.name] = item.value;
+            });
+            return data;
+        }
+
+        // Two-factor authentication toggle
         $('.switchTwo').on('click', function() {
-            if ($(this).is(':checked')) {
-                // Checkbox is checked
-                var type = 1;
-            } else {
-                // Checkbox is unchecked
-                var type = 0;
-            }
+            const type = $(this).is(':checked') ? 1 : 0;
             const formData = new FormData();
             formData.append('type', type);
             $.ajax({
                 type: 'POST',
-                url: "{{route('enable-2fa')}}",
+                url: "{{ route('enable-2fa') }}",
                 data: formData,
                 dataType: 'json',
                 cache: false,
                 contentType: false,
                 processData: false,
-                success: function(response) {},
-                error: function(data) {}
-            })
+                success: function(response) {
+                    // Handle success if needed
+                },
+                error: function(data) {
+                    // Handle error if needed
+                }
+            });
         });
 
-        // Listen for changes in the file input field
+        // Profile image upload
         $('.fileInput').change(function() {
-            // Get the selected file
             const file = this.files[0];
             const type = $(this).data('id');
-            const dataId = $(this).data('id'); // Get the data-id attribute
-            // alert("type")
+            const dataId = $(this).data('id');
             const formData = new FormData();
             formData.append('file', file);
             formData.append('type', type);
             const img = $('img[data-id="' + dataId + '"]');
-            if (file) {
-                // Check if the selected file is an image (you can add more file types)
-                if (file.type.match(/^image\//)) {
-                    // Create a FileReader to read the file
-                    const reader = new FileReader();
-
-                    // Define a callback function to execute when the file is loaded
-                    reader.onload = function(e) {
-                        // Get the image element by its ID
-                        img.attr('src', e.target.result);
-                    };
-                    $.ajax({
-                        type: 'POST',
-                        url: "{{route('save-file')}}",
-                        data: formData,
-                        dataType: 'json',
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        success: function(response) {},
-                        error: function(data) {}
-                    })
-                    // Read the file as a data URL (this will trigger the onload function)
-                    reader.readAsDataURL(file);
-                } else {
-                    // Display an error message for unsupported file types
-                    $('.previews').html('Unsupported file type');
-                }
+            if (file && file.type.match(/^image\//)) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.attr('src', e.target.result);
+                };
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('save-file') }}",
+                    data: formData,
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        // Handle success if needed
+                    },
+                    error: function(data) {
+                        // Handle error if needed
+                    }
+                });
+                reader.readAsDataURL(file);
             } else {
-                // Clear the previews if no file is selected
-                $('.previews').empty();
+                $('.previews').html('Unsupported file type');
             }
         });
+
+        // Edit user details
         $('body').on('click', '.edit-user', function() {
-            var id = $(this).data('id');
-            $.get("{{ route('user_details') }}?id=" + id,
-                function(data) {
-                    // alert('hhgf');
-                    $('#idUser').val(data.id);
-                    $('#emailDetail').val(data.email);
-                    $('#nameDetail').val(data.name);
-                })
+            const id = $(this).data('id');
+            $.get("{{ route('user_details') }}?id=" + id, function(data) {
+                $('#idUser').val(data.id);
+                $('#emailDetail').val(data.email);
+                $('#nameDetail').val(data.name);
+            });
         });
 
+        // Profile update form submission
         $("#profileUpdate").on('submit', async function(e) {
             e.preventDefault();
             $('.preloader').show();
             const serializedData = $("#profileUpdate").serializeArray();
             try {
-                const postRequest = await request("/member/update-profile",
-                    processFormInputs(
-                        serializedData), 'post');
-                new showCustomAlert("Good Job", postRequest.message, "success");
+                const response = await request("/member/update-profile", processFormInputs(serializedData), 'POST');
+                new showCustomAlert("Good Job", response.message, "success");
                 $('.preloader').hide();
             } catch (e) {
                 $('.preloader').hide();
-                if ('message' in e) {
-                    new showCustomAlert("Opss", e.message, "error");
-
-                }
+                new showCustomAlert("Opss", e.message, "error");
             }
-        })
+        });
+
+        // Password change form submission
         $("#passwordChange").on('submit', async function(e) {
             e.preventDefault();
             $('.preloader').show();
             const serializedData = $("#passwordChange").serializeArray();
             try {
-                const postRequest = await request("/change-password",
-                    processFormInputs(
-                        serializedData), 'post');
-                new showCustomAlert("Good Job", postRequest.message, "success");
+                const response = await request("/change-password", processFormInputs(serializedData), 'POST');
+                new showCustomAlert("Good Job", response.message, "success");
                 $('#passwordChange').trigger("reset");
                 $('.preloader').hide();
             } catch (e) {
                 $('.preloader').hide();
-                if ('message' in e) {
-                    new showCustomAlert("Opss", e.message, "error");
-
-                }
+                new showCustomAlert("Opss", e.message, "error");
             }
-        })
-        
+        });
+
+        // PIN change form submission
         $("#pinChange").on('submit', async function(e) {
             e.preventDefault();
             $('.preloader').show();
             const serializedData = $("#pinChange").serializeArray();
             try {
-                const postRequest = await request("/change-pin",
-                    processFormInputs(
-                        serializedData), 'post');
-                new showCustomAlert("Good Job", postRequest.message, "success");
+                const response = await request("/change-pin", processFormInputs(serializedData), 'POST');
+                new showCustomAlert("Good Job", response.message, "success");
                 $('#pinChange').trigger("reset");
                 $('.preloader').hide();
             } catch (e) {
                 $('.preloader').hide();
-                if ('message' in e) {
-                    new showCustomAlert("Opss", e.message, "error");
-
-                }
+                new showCustomAlert("Opss", e.message, "error");
             }
-        })
+        });
 
+        // Bank account verification
         $("#verifyAccount").on('submit', async function(e) {
             e.preventDefault();
             Swal.fire({
@@ -706,7 +720,6 @@
 
             const bankCode = $('#bankCodeInput').val();
             const bankName = $('#bankCodeInput option:selected').data('name');
-
             const formData = new FormData(this);
             formData.append('bank_name', bankName);
             formData.append('bank_code', bankCode);
@@ -721,15 +734,14 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
-
                 if (response.status === 'ok') {
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
                         text: response.message
                     });
-                    $("#accountNumberDiv").show()
-                    $("#accountName").val(response.data)
+                    $("#accountNumberDiv").show();
+                    $("#accountName").val(response.data);
                 } else {
                     throw new Error(response.message);
                 }
@@ -744,27 +756,17 @@
             }
         });
 
+        // Toggle password visibility
         $(".toggle-password").click(function() {
             $(this).toggleClass("fa-eye fa-eye-slash");
-            var input = $($(this).attr("toggle"));
-            if (input.attr("type") == "password") {
-                input.attr("type", "text");
-            } else {
-                input.attr("type", "password");
-            }
+            const input = $($(this).attr("toggle"));
+            input.attr("type", input.attr("type") === "password" ? "text" : "password");
         });
 
-        /* When click delete button */
-        $('body').on('click', '#deleteRecord', function() {
-            var user_id = $(this).data('id');
-            // alert(user_id)
-            var token = $("meta[name='csrf-token']").attr("content");
-            var el = this;
-            // alert(user_id);
-            resetAccount(el, user_id);
-        });
-
-        async function resetAccount(el, user_id) {
+        // Delete record
+        $('body').on('click', '#deleteRecord', async function() {
+            const user_id = $(this).data('id');
+            const el = this;
             const willUpdate = await new showCustomAlert({
                 title: "Confirm Delete",
                 text: `Are you sure you want to delete this record?`,
@@ -774,40 +776,26 @@
                 showCancelButton: true,
                 buttons: ["Cancel", "Yes, Delete"]
             });
-            // console.log(willUpdate);
             if (willUpdate) {
-                //performReset()
                 performDelete(el, user_id);
             } else {
-                new showCustomAlert("User record will not be deleted  :)");
+                new showCustomAlert("User record will not be deleted :)");
             }
-        }
+        });
 
         function performDelete(el, user_id) {
-            //alert(user_id);
-            try {
-                $.get("{{ route('delete_users') }}?id=" + user_id,
-                    function(data, status) {
-                        if (data.status === "error") {
-                            new showCustomAlert("Opss", data.message, "error");
-                        } else {
-                            if (status === "success") {
-                                let alert = new showCustomAlert(" record successfully deleted!.");
-                                $(el).closest("tr").remove();
-                                window.location.reload();
-                                // alert.then(() => {
-                                // });
-                            }
-                        }
-
-                    }
-                );
-            } catch (e) {
-                let alert = new showCustomAlert(e.message);
-            }
+            $.get("{{ route('delete_users') }}?id=" + user_id, function(data, status) {
+                if (data.status === "error") {
+                    new showCustomAlert("Opss", data.message, "error");
+                } else if (status === "success") {
+                    new showCustomAlert("Record successfully deleted!");
+                    $(el).closest("tr").remove();
+                    window.location.reload();
+                }
+            }).fail(function() {
+                new showCustomAlert("Opss", "An error occurred while deleting the record", "error");
+            });
         }
-
-    })
+    });
 </script>
-
 @endsection
