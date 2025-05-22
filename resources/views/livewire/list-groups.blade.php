@@ -26,9 +26,11 @@
                                                     {{ $transaction->status == 0 ? 'Processing' : 'Ongoing' }}
                                                 </span>
                                             </div>
-                                            <button class="btn btn-soft-danger btn-sm delete-group" data-id="{{ $transaction->id }}">
+                                            @if($transaction->status == 0 && $transaction->company_id == auth()->user()->id)
+                                            <button class="btn btn-soft-danger btn-sm deleteButton" data-id="{{ $transaction->id }}">
                                                 <i class="ri-delete-bin-line"></i>
                                             </button>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -194,15 +196,91 @@
         transform: translateY(-5px);
         box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
     }
-    .btn-soft-danger {
-    background-color: rgba(255, 74, 74, 0.1);
-    color: #FF4A4A;
-    border: none;
-    padding: 0.25rem 0.5rem;
-}
 
-.btn-soft-danger:hover {
-    background-color: #FF4A4A;
-    color: #fff;
-}
+    .btn-soft-danger {
+        background-color: rgba(255, 74, 74, 0.1);
+        color: #FF4A4A;
+        border: none;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .btn-soft-danger:hover {
+        background-color: #FF4A4A;
+        color: #fff;
+    }
 </style>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle delete button clicks
+        document.querySelectorAll('.deleteButton').forEach(button => {
+            button.addEventListener('click', function() {
+                const groupId = this.getAttribute('data-id');
+
+                // Show confirmation dialog
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/member-delete-contribution/${groupId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                    'Accept': 'application/json'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 'ok') {
+                                    // Refresh the page or update UI as needed
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: data.message,
+                                        icon: 'success',
+                                        timer: 2000, // 2 seconds
+                                        showConfirmButton: false
+                                    }).then(() => {
+                                        setTimeout(() => {
+                                            window.location.reload();
+                                        }, 500);
+                                    });
+                                } else {
+                                    alert('Failed to delete contribution group');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('An error occurred while deleting the contribution group');
+                            });
+                    }
+                });
+            });
+        });
+    });
+
+    // Listen for success/error events from Livewire
+    window.addEventListener('groupDeleted', event => {
+        Swal.fire(
+            'Deleted!',
+            'Contribution group has been deleted.',
+            'success'
+        );
+    });
+
+    window.addEventListener('deletionError', event => {
+        Swal.fire(
+            'Error!',
+            event.detail.message,
+            'error'
+        );
+    });
+
+
+</script>

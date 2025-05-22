@@ -183,7 +183,7 @@
                                 <label for="operationMode">Operation Mode</label>
                             </div>
                         </div>
-                        <div class="col-md-6 duesDiv" style="display: none">
+                        <div class="col-md-6 duesDiv" @if($plan->mode == 'Anytime') style="display: none" @endif>
                             <div class="form-floating">
                                 <input type="number" class="form-control dueInput" value="{{ $plan->dues }}" name="dues" id="duesInput" placeholder="Enter dues">
                                 <label for="duesInput" class="duesLabel">Dues Amount</label>
