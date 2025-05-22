@@ -80,7 +80,8 @@
                                 Change Password
                             </a>
                         </li>
-                        @if($user->user_type == "Member")
+                        <!-- @if($user->user_type == "Member") -->
+                        @if(1 == 0)
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#experience" role="tab">
                                 <i class="far fa-envelope"></i>
@@ -253,7 +254,7 @@
                                 </div><!--end row-->
                             </form>
                         </div><!--end tab-pane-->
-                        @if($user->user_type == "Member")
+                        @if(1 == 0)
                         <div class="tab-pane" id="experience" role="tabpanel">
                             <div id="newlink">
                                 <div id="1">
