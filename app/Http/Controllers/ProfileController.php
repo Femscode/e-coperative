@@ -46,7 +46,7 @@ class ProfileController extends Controller
             return view('cooperative.admin.profile', $data);
         } else {
             if ($user->company->type == 2) {
-                dd('here');
+                
                 return view('ajo.member.profile', $data);
             }
 
