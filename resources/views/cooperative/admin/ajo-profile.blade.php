@@ -463,30 +463,73 @@
 <script src="{{ asset('assets/js/pages/profile.init.js') }}"></script>
 <script>
     $(document).ready(function() {
+        // Set up CSRF token for all AJAX requests
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
+        // Request helper function
+        async function request(url, data, method = 'POST') {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: url,
+                    type: method,
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status === 'ok') {
+                            resolve(response);
+                        } else {
+                            reject(new Error(response.message));
+                        }
+                    },
+                    error: function(xhr) {
+                        reject(new Error(xhr.responseJSON?.message || 'An error occurred'));
+                    }
+                });
+            });
+        }
+
+        // Process form inputs
+        function processFormInputs(serializedData) {
+            const data = {};
+            serializedData.forEach(item => {
+                data[item.name] = item.value;
+            });
+            return data;
+        }
+
+        // Two-factor authentication toggle
         $('.switchTwo').on('click', function() {
             const type = $(this).is(':checked') ? 1 : 0;
             $.ajax({
                 type: 'POST',
                 url: "{{ route('enable-2fa') }}",
-                data: {
-                    type: type
-                },
+                data: { type: type },
                 dataType: 'json',
                 success: function(response) {
-                    // Handle success
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: response.message || 'Two-factor authentication updated successfully'
+                    });
                 },
-                error: function(data) {
-                    // Handle error
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: xhr.responseJSON?.message || 'Failed to update two-factor authentication'
+                    });
                 }
             });
         });
 
+        // Profile image upload
         $('.fileInput').change(function() {
             const file = this.files[0];
             const dataId = $(this).data('id');
@@ -508,38 +551,36 @@
                     cache: false,
                     contentType: false,
                     processData: false,
-                    success: function(response) {},
-                    error: function(data) {}
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message || 'Profile image updated successfully'
+                        });
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: xhr.responseJSON?.message || 'Failed to upload image'
+                        });
+                    }
                 });
                 reader.readAsDataURL(file);
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Unsupported file type'
+                });
             }
         });
 
-        // $("#profileUpdate").on('submit', async function(e) {
-        //     e.preventDefault();
-        //     $('.preloader').show();
-        //     const serializedData = $(this).serializeArray();
-        //     try {
-        //         const postRequest = await request("/update-profile",
-        //             processFormInputs(serializedData), 'post');
-        //         new showCustomAlert("Good Job", postRequest.message, "success");
-        //         $('.preloader').hide();
-        //     } catch (e) {
-        //         $('.preloader').hide();
-        //         if ('message' in e) {
-        //             new showCustomAlert("Opss", e.message, "error");
-        //         }
-        //     }
-        // });
-
-        $("#profileUpdate").on('submit', function(e) {
+        // Profile update form submission
+        $("#profileUpdate").on('submit', async function(e) {
             e.preventDefault();
-
-            // Create FormData object to handle file uploads
-            const formData = new FormData(this);
-
             Swal.fire({
-                title: 'Updating profile',
+                title: 'Updating Profile',
                 text: 'Please wait...',
                 allowOutsideClick: false,
                 allowEscapeKey: false,
@@ -549,48 +590,39 @@
                     Swal.showLoading();
                 }
             });
+            $('.preloader').show();
 
-            $.ajax({
-                url: "{{ route('profile.update') }}",
-                method: 'POST',
-                data: formData,
-                dataType: 'json',
-                contentType: false, // Required for file upload
-                processData: false, // Required for file upload
-                cache: false, // Prevent caching
-                beforeSend: function() {
-                    $('.preloader').show();
-                },
-                success: function(response) {
-                    $('.preloader').hide();
-                    if (response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: response.message
-                        });
-                    }
-                },
-                error: function(xhr) {
-                    $('.preloader').hide();
-                    let errorMessage = 'An error occurred while updating the profile';
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        errorMessage = xhr.responseJSON.message;
-                    }
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: errorMessage
-                    });
-
-                    if (xhr.status === 422) {
-                        let errors = xhr.responseJSON.errors;
-                        console.log(errors);
-                    }
+            const formData = new FormData(this);
+            try {
+                const response = await $.ajax({
+                    url: "{{ route('profile.update') }}",
+                    method: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    cache: false
+                });
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.message || 'Profile updated successfully'
+                });
+                $('.preloader').hide();
+            } catch (xhr) {
+                $('.preloader').hide();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: xhr.responseJSON?.message || 'An error occurred while updating the profile'
+                });
+                if (xhr.status === 422) {
+                    console.log(xhr.responseJSON.errors);
                 }
-            });
+            }
         });
 
+        // Bank account verification
         $("#verifyAccount").on('submit', async function(e) {
             e.preventDefault();
             Swal.fire({
@@ -608,9 +640,9 @@
 
             const bankCode = $('#bankCodeInput').val();
             const bankName = $('#bankCodeInput option:selected').data('name');
-
             const formData = new FormData(this);
             formData.append('bank_name', bankName);
+            formData.append('bank_code', bankCode);
 
             try {
                 const response = await $.ajax({
@@ -621,16 +653,11 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
-
-                if (response.status === 'ok') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: response.message
-                    });
-                } else {
-                    throw new Error(response.message);
-                }
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.message || 'Bank details verified successfully'
+                });
             } catch (error) {
                 Swal.fire({
                     icon: 'error',
@@ -642,46 +669,69 @@
             }
         });
 
+        // Password change form submission
         $("#passwordChange").on('submit', async function(e) {
             e.preventDefault();
             $('.preloader').show();
             const serializedData = $("#passwordChange").serializeArray();
             try {
-                const postRequest = await request("/change-password",
-                    processFormInputs(
-                        serializedData), 'post');
-                new showCustomAlert("Good Job", postRequest.message, "success");
+                const response = await request("/change-password", processFormInputs(serializedData), 'POST');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.message || 'Password updated successfully'
+                });
                 $('#passwordChange').trigger("reset");
                 $('.preloader').hide();
             } catch (e) {
                 $('.preloader').hide();
-                if ('message' in e) {
-                    new showCustomAlert("Opss", e.message, "error");
-
-                }
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: e.message || 'Failed to update password'
+                });
             }
-        })
+        });
+
+        // PIN change form submission
         $("#pinChange").on('submit', async function(e) {
             e.preventDefault();
             $('.preloader').show();
             const serializedData = $("#pinChange").serializeArray();
             try {
-                const postRequest = await request("/change-pin",
-                    processFormInputs(
-                        serializedData), 'post');
-                new showCustomAlert("Good Job", postRequest.message, "success");
+                const response = await request("/change-pin", processFormInputs(serializedData), 'POST');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.message || 'PIN updated successfully'
+                });
                 $('#pinChange').trigger("reset");
                 $('.preloader').hide();
             } catch (e) {
                 $('.preloader').hide();
-                if ('message' in e) {
-                    new showCustomAlert("Opss", e.message, "error");
-
-                }
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: e.message || 'Failed to update PIN'
+                });
             }
-        })
+        });
 
+        // Toggle password visibility
+        $(".toggle-password").click(function() {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            const input = $($(this).attr("toggle"));
+            input.attr("type", input.attr("type") === "password" ? "text" : "password");
+        });
+
+        // Bank select change event (moved from inline script)
+        $('#bankCodeInput').on('change', function() {
+            const bankCode = this.value;
+            const bankName = this.options[this.selectedIndex].dataset.name;
+            if (bankCode && bankName) {
+                console.log('Bank Code:', bankCode, 'Bank Name:', bankName);
+            }
+        });
     });
 </script>
-
 @endsection
