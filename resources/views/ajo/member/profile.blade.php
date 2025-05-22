@@ -394,6 +394,41 @@
                                         
                                     </div><!--end row-->
                                 </form>
+
+                                <div class="col-lg-12">
+                                <h5 class="mb-3">Update PIN</h5>
+                                <form method="post" id="pinChange">
+                                    @csrf
+                                    <div class="row g-2">
+                                        <div class="col-lg-4">
+                                            <div>
+                                                <label for="currentPinInput" class="form-label">Current PIN*</label>
+                                                <input type="password" class="form-control" required name="current_pin" id="pin-fielda" maxlength="4" placeholder="Enter current PIN">
+                                                <span toggle="#pin-fielda" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div>
+                                                <label for="newPinInput" class="form-label">New PIN*</label>
+                                                <input type="password" class="form-control" required name="new_pin" id="pin-fieldb" maxlength="4" placeholder="Enter new PIN">
+                                                <span toggle="#pin-fieldb" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div>
+                                                <label for="confirmPinInput" class="form-label">Confirm PIN*</label>
+                                                <input type="password" class="form-control" required name="confirm_pin" id="pin-fieldz" maxlength="4" placeholder="Confirm new PIN">
+                                                <span toggle="#pin-fieldz" class="fas toggle-password field-icon fa-eye-slash"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="text-end">
+                                                <button type="submit" class="btn btn-primary">Update PIN</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                             </div><!--end tab-pane-->
                             @if($user->user_type == "Member")
                             <div class="tab-pane" id="experience" role="tabpanel">
@@ -633,6 +668,27 @@
                 }
             }
         })
+        
+        $("#pinChange").on('submit', async function(e) {
+            e.preventDefault();
+            $('.preloader').show();
+            const serializedData = $("#pinChange").serializeArray();
+            try {
+                const postRequest = await request("/change-pin",
+                    processFormInputs(
+                        serializedData), 'post');
+                new showCustomAlert("Good Job", postRequest.message, "success");
+                $('#pinChange').trigger("reset");
+                $('.preloader').hide();
+            } catch (e) {
+                $('.preloader').hide();
+                if ('message' in e) {
+                    new showCustomAlert("Opss", e.message, "error");
+
+                }
+            }
+        })
+
         $("#verifyAccount").on('submit', async function(e) {
             e.preventDefault();
             Swal.fire({
