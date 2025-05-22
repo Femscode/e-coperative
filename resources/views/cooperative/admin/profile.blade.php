@@ -81,6 +81,7 @@
                             </a>
                         </li>
                         <!-- @if($user->user_type == "Member") -->
+                           <!-- @endif -->
                         @if(1 == 0)
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#experience" role="tab">
