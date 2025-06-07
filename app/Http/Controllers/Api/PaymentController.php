@@ -34,6 +34,7 @@ class PaymentController extends Controller
 
         // Verify the payment data
         $email = $request->input('customer.email');
+        $email = explode('_', $email)[count(explode('_', $email)) - 1];
         // $email = 'member@syncosave.com';
         $amountPaid = intval($request->input('amount'));
         $reference = $request->input('id');
