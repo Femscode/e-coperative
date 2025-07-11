@@ -30,11 +30,13 @@ class PaymentController extends Controller
     public function payment_webhook(Request $request)
     {
         // Log the webhook data
-        file_put_contents(__DIR__ . '/flutterwave_payment.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
+        file_put_contents(__DIR__ . '/ct_flutterwave_payment.txt', json_encode($request->all(), JSON_PRETTY_PRINT), FILE_APPEND);
 
         // Verify the payment data
         $email = $request->input('customer.email');
-        $email = explode('_', $email)[count(explode('_', $email)) - 1];
+        // $email =  "ravesb_3c519e4c461cd4601476_fasanyafemi@gmail.com";
+        // $email = explode('_', $email)[count(explode('_', $email)) - 1];
+        
         // $email = 'member@syncosave.com';
         $amountPaid = intval($request->input('amount'));
         $reference = $request->input('id');
